@@ -12,11 +12,11 @@ Ereignisfluss:
 - Das System speichert den Kommentar und zeigt ihm bei den News an.
 
 Abschlussbedingungen:
-- Text ist nicht leer und enth‰lt weniger als 256 Zeichen.
+- Kommentar ist abgespeichert.
 
 Ausnahmen:
-- Wenn der Text leer oder zu groﬂ ist, wird der Benutzer benachrichtigt und kann entweder
-  einen Text angeben, oder den Kommentier-Prozess abbrechen
+- Wenn der Text leer oder zu groﬂ (mehr als 256 Zeichen) ist, wird der Benutzer benachrichtigt und kann entweder
+  den Text ändern, oder den Kommentier-Prozess abbrechen
 
 Spezielle Anforderungen:
 - keine
@@ -38,11 +38,11 @@ Ereignisfluss:
 - Das System speichert den Kommentar und zeigt ihm bei dem Album an.
 
 Abschlussbedingungen:
-- Text ist nicht leer und enth‰lt weniger als 256 Zeichen.
+- Kommentar ist abgespeichert.
 
 Ausnahmen:
-- Wenn der Text leer oder zu groﬂ ist, wird der Benutzer benachrichtigt und kann entweder
-  einen Text angeben, oder den Kommentier-Prozess abbrechen
+- Wenn der Text leer oder zu groﬂ (mehr als 256 Zeichen) ist, wird der Benutzer benachrichtigt und kann entweder
+  den Text ändern, oder den Kommentier-Prozess abbrechen
 
 Spezielle Anforderungen:
 - keine
@@ -66,11 +66,11 @@ Ereignisfluss:
 - Das System speichert den Kommentar und zeigt ihm bei dem Medium an.
 
 Abschlussbedingungen:
-- Text ist nicht leer und enth‰lt weniger als 256 Zeichen.
+- Kommentar ist abgespeichert.
 
 Ausnahmen:
-- Wenn der Text leer oder zu groﬂ ist, wird der Benutzer benachrichtigt und kann entweder
-  einen Text angeben, oder den Kommentier-Prozess abbrechen
+- Wenn der Text leer oder zu groﬂ (mehr als 256 Zeichen) ist, wird der Benutzer benachrichtigt und kann entweder
+  den Text ändern, oder den Kommentier-Prozess abbrechen
 
 Spezielle Anforderungen:
 - keine
@@ -91,11 +91,11 @@ Ereignisfluss:
 - Das System speichert den Kommentar und zeigt ihm bei dem Objekt an.
 
 Abschlussbedingungen:
-- Text ist nicht leer und enth‰lt weniger als 256 Zeichen.
+- Kommentar ist abgespeichert.
 
 Ausnahmen:
-- Wenn der Text leer oder zu groﬂ ist, wird der Benutzer benachrichtigt und kann entweder
-  einen Text angeben, oder den Kommentier-Prozess abbrechen
+- Wenn der Text leer oder zu groﬂ (mehr als 256 Zeichen) ist, wird der Benutzer benachrichtigt und kann entweder
+  den Text ändern, oder den Kommentier-Prozess abbrechen
 
 Spezielle Anforderungen:
 - keine
