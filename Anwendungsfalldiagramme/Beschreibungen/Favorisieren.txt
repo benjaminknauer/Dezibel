@@ -1,3 +1,8 @@
+TO DO: Entfavorisieren einfŸgen. Auch im Diagramm
+
+
+
+
 Anwendungsfall Favorisieren Medium
 Beteiligte Akteuere:
 - Benutzer
@@ -11,7 +16,7 @@ Ereignisfluss:
   an, dass er es favorisiert.
 
 Abschlussbedingungen:
-- keine
+- Medium ist favorisiert.
 Ausnahmen:
 - keine
 
@@ -33,7 +38,7 @@ Ereignisfluss:
 - Der Benutzer wird jetzt über die Aktivitäten des favorisierten Benutzers benachrichtigt
 
 Abschlussbedingungen:
-- keine
+- Benutzer ist favorisiert
 Ausnahmen:
 - keine
 
@@ -56,7 +61,7 @@ Ereignisfluss:
 - Der Benutzer wird jetzt über die Aktivitäten des favorisierten Künstlers benachrichtigt
 
 Abschlussbedingungen:
-- keine
+- KŸnstler ist favorisiert.
 Ausnahmen:
 - keine
 
@@ -79,7 +84,7 @@ Ereignisfluss:
 - Der Benutzer wird jetzt über die Aktivitäten des favorisierten Labelss benachrichtigt
 
 Abschlussbedingungen:
-- keine
+- Label ist favorisiert.
 Ausnahmen:
 - keine
 
