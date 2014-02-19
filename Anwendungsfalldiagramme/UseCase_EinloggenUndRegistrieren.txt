@@ -1,0 +1,61 @@
+Einloggen
+
+Beteiligte Akteure:
+	Benutzer
+
+Anfangsbedingungen:
+	Der gewählte Account muss existieren
+
+Ereignisfluss:
+	Der Benutzer gibt in das Feld Email-Adresse seine Email ein, die seinen Account eindeutig kennzeichnet, in das Feld Passwort sein zugehöriges Passwort und klickt dann auf einloggen
+
+Abschlussbedingungen
+	Waren alle Eingaben korrekt wird der Benutzer eingeloggt und ist nun bis zum Ausloggen oder Schließen des Systems angemeldet
+
+Ausnahmen
+	Die Anmeldedaten sind inkorrekt, sprich die Email existiert nicht oder das Passwort ist falsch. Sollte der Account gesperrt sein bekommt er eine Meldung angezeigt, die ihn über seine Sperrung informiert und ggf. einen Grund nennt. Sollte einer dieser Ausnahmefälle eintreten wird der Benutzer nicht eingeloggt.
+
+Spezielle Anforderungen
+	keine
+
+
+Registrieren
+
+Beteiligte Akteure:
+	Benutzer
+
+Anfangsbedingungen:
+	keine
+
+Ereignisfluss:
+	Der Benutzer klickt auf den Registrieren Button und bekommt ein Formular mit den Feldern: Name, Geschlecht, Geburtsdatum, Email, Passwort und Passwort wiederholen. Dabei sind Name, Email, Passwort und Passwort wiederholen Pflichtfelder. Wenn er alle Pflichtfelder ordnungsgemäß ausgefüllt hat, muss er noch einen Haken bei den AGBs und Datenschutz machen und kann dann auf Registrieren klicken, woraufhin seine Eingaben kontrolliert werden und dementsprechend der Account angelegt oder der Benutzer gebeten wird einige Felder zu korriegieren.
+
+Abschlussbedingungen
+	Für den Benutzer existiert nun ein Account für die eingegebenen Daten unter dem er sich einloggen kann
+
+Ausnahmen
+	Pflichtfelder sind nicht ausgefüllt, Passwort und Passwort wiederholen sind nicht gleich, die Email-Adresse wird schon verwendet. Die Eingaben in den Feldern haben die falsche Form, zB kein @ in der Email-Adresse. Die AGBs und Datenschutzbestimmungen wurden nicht akzeptiert. Sollte einer dieser Ausnahmefälle greifen wird der Benutzer benachrichtigt gegebenes zu korrigieren und es wird noch kein Account erstellt.
+
+Spezielle Anforderungen
+	keine
+
+
+Ausloggen
+
+Beteiligte Akteure:
+	Benutzer
+
+Anfangsbedingungen:
+	Der Benutzer ist angemeldet
+
+Ereignisfluss:
+	Der Benutzer klickt auf den Ausloggen Button und wird daraufhin ausgeloggt.
+
+Abschlussbedingungen
+	Der Benutzer ist nun ausgeloggt und muss sich zum weiteren nutzen des Systems erneut anmelden
+
+Ausnahmen
+	keine
+
+Spezielle Anforderungen
+	keine
