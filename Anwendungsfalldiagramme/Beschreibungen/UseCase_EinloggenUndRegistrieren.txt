@@ -1,3 +1,7 @@
+TODO: Diagramm anpassen (Admin) - Label-Manager + KŸnstler lšschen
+
+
+
 Einloggen
 
 Beteiligte Akteure:
