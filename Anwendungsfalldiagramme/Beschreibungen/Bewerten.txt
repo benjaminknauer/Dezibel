@@ -12,7 +12,7 @@ Ereignisfluss:
 - Das System speichert den Grad der Bewertung und zeigt diese dem Benutzer bei dem Medium an und die Gesamtbewertung.
 
 Abschlussbedingungen:
-- keine
+- Medium ist Bewertet.
 
 Ausnahmen:
 - keine
@@ -38,8 +38,7 @@ Ereignisfluss:
 - Das System speichert den Grad der Bewertung und zeigt diese dem Benutzer bei dem Album an und die Gesamtbewertung.
 
 Abschlussbedingungen:
-- keine
-
+- Album ist Bewertet.
 Ausnahmen:
 - keine
 
@@ -62,7 +61,7 @@ Ereignisfluss:
 - Das System speichert den Grad der Bewertung und zeigt diese dem Benutzer bei der Wiedergabeliste an und die Gesamtbewertung.
 
 Abschlussbedingungen:
-- keine
+- Wiedergabeliste ist bewertet.
 Ausnahmen:
 - keine
 

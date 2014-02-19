@@ -7,8 +7,9 @@ Anfangsbedingungen:
 	Der Benutzer ist angemeldet
 
 Ereignisfluss:
-	Der Benutzer klickt in das Suchentextfeld, kann da angeben, nach welchem Schlüsselwörtern er suchen möchte. Er kann zusätzlich die Filterfunktion aktivieren, ob Benutzprofile, Künstlerprofile, Labelprofile oder Alben angezeigt werden sollen. Zusätzlich kann er eine Sortierung wählen, wie zB Alphabetisch, nach Hochladedatum oder Bewertung.
-
+	Der Benutzer klickt in das Suchentextfeld, gibt an, nach welchem Schlüsselwörtern er suchen möchte. Er kann zusätzlich die Filterfunktion aktivieren, ob Benutzprofile, Künstlerprofile, Labelprofile oder Alben angezeigt werden sollen. Zusätzlich kann er eine Sortierung wählen, wie zB Alphabetisch, nach Hochladedatum oder Bewertung.
+Schlie§lich klickt er auf den Suchen Button.
+Das System zeigt ihm die gewŸnschte Liste an.
 Abschlussbedingungen
 	Der Benutzer bekommt eine von ihm gewünschte Liste sortiert angezeigt, die ggf. auch leer sein kann
 
@@ -34,7 +35,7 @@ Abschlussbedingungen
 	Das Medium wird abgespielt
 
 Ausnahmen
-	Das Medium ist nicht verfügbar, sprich es ist gesperrt oder wurde entfernt. In diesem Fall wird der Benutzer benachrichtigt und nichts abgespielt
+	Das Medium ist nicht verfügbar, sprich es ist gesperrt oder wurde entfernt. In diesem Fall wird der Benutzer benachrichtigt und nichts abgespielt.
 
 Spezielle Anforderungen
 	keine
