@@ -1,0 +1,72 @@
+Anwendungsfall Bewertung Medium
+Beteiligte Akteuere:
+- Benutzer
+
+Anfangsbedingungen:
+- Benutzer ist im System eingeloggt
+
+Ereignisfluss:
+- Benutzer wählt das zu bewertende Medium aus und klickt auf bewerten.
+- Das System zeigt dem Benutzer eine Skala von 1 bis 5 an
+- Der benutzer wählt den Grad seiner Bewertung über die Skala
+- Das System speichert den Grad der Bewertung und zeigt diese dem Benutzer bei dem Medium an und die Gesamtbewertung.
+
+Abschlussbedingungen:
+- keine
+
+Ausnahmen:
+- keine
+
+Spezielle Anforderungen:
+- keine
+
+Sonderfall:
+- Wenn das Medium mit 5 Sterne bewertet wird, wird diese automatisch favorisiert.
+
+
+Anwendungsfall Bewertung Album
+Beteiligte Akteuere:
+- Benutzer
+
+Anfangsbedingungen:
+- Benutzer ist im System eingeloggt
+
+Ereignisfluss:
+- Benutzer wählt das zu bewertende Album aus und klickt auf bewerten.
+- Das System zeigt dem Benutzer eine Skala von 1 bis 5 an
+- Der benutzer wählt den Grad seiner Bewertung über die Skala
+- Das System speichert den Grad der Bewertung und zeigt diese dem Benutzer bei dem Album an und die Gesamtbewertung.
+
+Abschlussbedingungen:
+- keine
+
+Ausnahmen:
+- keine
+
+Spezielle Anforderungen:
+- keine
+
+
+
+Anwendungsfall Bewertung Wiedergabeliste
+Beteiligte Akteuere:
+- Benutzer
+
+Anfangsbedingungen:
+- Benutzer ist im System eingeloggt
+
+Ereignisfluss:
+- Benutzer wählt das zu bewertende Wiedergabeliste aus und klickt auf bewerten.
+- Das System zeigt dem Benutzer eine Skala von 1 bis 5 an
+- Der benutzer wählt den Grad seiner Bewertung über die Skala
+- Das System speichert den Grad der Bewertung und zeigt diese dem Benutzer bei der Wiedergabeliste an und die Gesamtbewertung.
+
+Abschlussbedingungen:
+- keine
+Ausnahmen:
+- keine
+
+Spezielle Anforderungen:
+- keine
+
+
