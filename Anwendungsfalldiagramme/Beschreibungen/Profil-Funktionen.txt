@@ -48,6 +48,7 @@ Beteiligte Akteure:
 	Administrator
 Anfangsbedingungen:
 	Der Administrator muss eingeloggt sein.
+	Profil ist nicht gesperrt.
 Ereignisfluss:
 	Der Administrator ruft das Profil eines Benutzers auf. Ihm wird dort die Schaltfläche "Benutzer sperren" angezeigt, die nur dann sichtbar ist, wenn der Benutzer ein Administrator ist. Dem Administrator wird daraufhin ein Formular angezeigt, in dem er einen Grund für die Sperrung eingeben kann. Er bestätigt das Formular mit "OK", um das Profil zu sperren.
 Abschlussbedingungen:
@@ -63,6 +64,7 @@ Beteiligte Akteure:
 	Administrator
 Anfangsbedingungen:
 	Der Administrator muss eingeloggt sein.
+	Profil ist gesperrt
 Ereignisfluss:
 	Der Administrator ruft das Profil eines gesperrten Benutzers auf. Es wird ihm als Administrator der "Profil entsperren"-Button angezeigt. Er klickt auf den Button und erhält eine Bestätigung, dass der Benutzer entsperrt wurde.
 Abschlussbedingungen:
@@ -92,7 +94,7 @@ Labelprofil bearbeiten
 Beteiligte Akteure: 
 	Label-Manager
 Anfangsbedingungen:
-	Der Benutzer muss eingeloggt sein und der Label-Manager des Label-Profils sein, das er bearbeiten möchte.
+	Der Label-Manager muss eingeloggt sein und der Label-Manager des Label-Profils sein, das er bearbeiten möchte.
 Ereignisfluss:
 	Der Benutzer ruft das Label-Profil auf, das er bearbeiten möchte. Da er der Label-Manager des Labels ist, wird ihm die Schaltfläche "Profil bearbeiten" angezeigt. Er klickt auf die Schaltfläche, woraufhin ihm das Profil angezeigt wird und er die Möglichkeit hat, alle Angaben zu verändern. Er kann nun auf die Schaltfläche "Speichern" klicken, um die Änderungen zu übernehmen. Mit der Schaltfläche "Abbrechen" kann er die Änderungen verwerfen.
 Abschlussbedingungen:

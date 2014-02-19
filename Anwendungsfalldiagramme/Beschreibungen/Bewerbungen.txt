@@ -1,12 +1,15 @@
+TODO: Bewerbung erstellen (UC + Beschreibung)
+
+
 Bewerbungen ansehen
 Beteiligte Akteure: 
-	Label-Manager, Künstler
+	Label-Manager ODER Künstler
 Anfangsbedingungen:
 	Der Label-Manager bzw. Küsntler muss angemeldet sein.
 Ereignisfluss:
 	Der Label-Manager oder Künstler befindet sich auf seiner eigenen Profil-Seite und betätigt dort die Schaltfläche "Bewerbungen ansehen". Ihm werden daraufhin zwei Arten von Bewerbungen angezeigt: Die Bewerbungen, die er selbst erhalten hat und die Bewerbungen, die er geschrieben hat. Zusätzlich zu der Bewerbung wird auch der Status der einzelnen Bewerbungen angezeigt.
 Abschlussbedingungen:
-	Keine.
+	Die Bewerbungen werden angezeigt.
 Ausnahmen:
 	Keine.
 Spezielle Anforderungen :
@@ -21,7 +24,7 @@ Anfangsbedingungen:
 Ereignisfluss:
 	Der Label-Manager bzw. Künstler lässt sich seine Bewerbungen anzeigen. Er kann nun jede offene Bewerbung, die er bekommen hat, annehmen oder ablehnen. Wenn er eine Bewerbung annimmt/ablehnt, wird der Status der Bewerbung auf angenommen/abgelehnt geändert.
 Abschlussbedingungen:
-	Keine.
+	Die Bewerbung ist entsprechend der Auswahl im System markiert.
 Ausnahmen:
 	Keine.
 Spezielle Anforderungen :
