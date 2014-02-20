@@ -19,7 +19,6 @@ Funktionale Anforderungen
 -Anzeigen von Empfehlungen von Medien für einen Benutzer anhand favorisierter Medien und Künstler sowie bereits abgespielter und ggf. hochgeladener Medien.
 -Aufrufen von Profilen anderer Benutzer, die folgende Informationen enthalten:
 	-Persönliche Daten,
-	-favorisierte Medien, Künstler, Labels, Benutzer, Wiedergabelisten
 	-ggf. bereits hochgeladener Medien,
 	-eigener Wiedergabelisten und ggf. Alben,
 	-ggf. eigene Fans.
