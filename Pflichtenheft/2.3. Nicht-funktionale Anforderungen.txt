@@ -1,4 +1,4 @@
-Kentnissstand der Benutzer:
+Kenntnissstand der Benutzer:
 	- Keine besonderen Anforderungen
 Normen für Benutzerschnittstelle:
 	- Möglichst einfache und flexible Nutzung der Oberfläche
