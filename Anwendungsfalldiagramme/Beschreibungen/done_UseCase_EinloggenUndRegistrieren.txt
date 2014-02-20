@@ -1,7 +1,7 @@
 TODO: Diagramm anpassen (Admin) - Label-Manager + KŸnstler lšschen OK
 
 
-TODO NEW: Diagramm "Einloggen" zu "Anmelden" etc.
+TODO NEW: Diagramm "Einloggen" zu "Anmelden" etc.OK
 
 
 
