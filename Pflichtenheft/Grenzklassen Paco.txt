@@ -1,0 +1,21 @@
+Grenzklassen
+
+
+NewsPanel
+Angedockt liefert das Panel eine kurze Übersicht der Titel der zuletzt erhaltenden News 
+des jeweilig angemeldete Benutzer an, die er bei bedarf einsehen kann.
+Falls es nicht angedockt ist, bietet das Panel dem Benutzer die Möglichkeit gesamten News durchzulesen
+, deren Kommentare einzusehen und neue News zu erstellen.
+
+
+Ads/RecommendationPanel
+Dieses Panel zeigt  eine kurze Übersicht der empfohlenen Medien und vom Betreiber ausgewählte Werbung,
+die bei bedarf komplett eingesehen werden kann.
+
+
+PlaylistPanel
+Zeigt die Wiedergabelisten des aktuellen Benutzers an,
+ausgedockt kann der Benutzer die Liste seiner Playlists verwalten.
+
+FavoritesPanel
+Zeigt die favorierten Benutzer in einer Liste, die man bei bedarf auswählen und das Profil einsehen kann.
