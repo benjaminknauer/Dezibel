@@ -1,19 +1,17 @@
-Playing media
+Player
 ----------------
-This function alows system play media from de database, such as music files. One medium would be played if it is available. Play a playlist means to play each medium that belongs to that list. If we are playing an Album, would be the same.
-
-Diese Systemfunktion erlaubt Spielmedien aus der Datenbank: wie Musik-Dateien. Ein Medium gespielt werden würde, wenn es verfügbar ist. Spielen Sie eine Playlist bedeutet, jedes Medium, die auf diese Liste gehört zu spielen. Wenn wir spielen ein Album sind, wäre die gleiche.
+Diese Systemfunktion erlaubt es Medien aus der Datenbank abzuspielen. Ein Medium wird gespielt, wenn es verfügbar ist. Eine Playlist abzuspielen bedeutet, jedes Medium, das zu dieser Liste gehört, zu spielen. Das gilt analog für ein Album.
 
 
-Comments
+Manage Comment
 --------
-One user can post a short contribution, to the user media, News, Albums and Playlists. The text has to be valid.
-
-Ein Benutzer können ein kurzer Beitrag, den User zu Medien, News, Albums, Playlists verfassen. Diese Text muss gultig sein.
+Ein Benutzer kann einen kurzen Beitrag zu Medien, News, Albums und Playlists verfassen.
 
 
-Playlists and Albums
+Manage Playlists
 --------------------
-One user can create a Playlists, with a valid name, that are going to contain certain mediums. Each user can manage and delete his own playlists. If one user wants to create an Album, has to be an Artist or a Label-Manager. The Albums work like the playlists.
+Ein Benutzer kann eine Playlist erstellen oder verwalten.
 
-Ein Benutzer kann eine Playlists, mit einem gültigen Namen, die gehen, um bestimmte Medien enthalten erstellen. Jeder Benutzer kann zu verwalten und löschen seine eigenen Playlists. Wenn ein Benutzer ein Album erstellen will, muss sich ein Künstler oder ein Label-Manager sein. Die Alben funktionieren wie die Wiedergabelisten.
+Manage Albums
+-------------
+Ein Artist oder Label-Manager kann ein Album erstellen oder verwalten.
