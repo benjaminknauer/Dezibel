@@ -1,0 +1,21 @@
+Player
+------
+Diese Systemfunktion erlaubt es Medien aus der Datenbank abzuspielen. Ein Medium wird gespielt, wenn es verfügbar ist. Eine Playlist abzuspielen bedeutet, jedes Medium, das zu dieser Liste gehört, zu spielen. Das gilt analog für ein Album.
+
+
+Manage Comment
+--------------
+Ein Benutzer kann einen kurzen Beitrag zu Medien, News, Albums und Playlists verfassen.
+
+
+Manage Playlists
+----------------
+Ein Benutzer kann eine Playlist erstellen oder verwalten.
+
+Manage Albums
+-------------
+Ein Artist oder Label-Manager kann ein Album erstellen oder verwalten.
+
+Search
+------
+Diese Systemfunktion erlaubt den Benutzer Medien, Label, News und anderen Benuzter zu finden.
