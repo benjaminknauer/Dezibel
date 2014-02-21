@@ -1,0 +1,20 @@
+Anwendungsfall Empfehlung anzeigen
+Beteiligte Akteuere:
+- Benutzer
+
+Anfangsbedingungen:
+- Benutzer ist im System eingeloggt
+
+Ereignisfluss:
+- Benutzer teilt dem System mit, dass er Empfehlungen angezeigt bekommen möchte
+- System sucht aus dem Medienbestand Empfehlungen heraus, die der Benutzer noch nicht favorisiert oder bewertet hat
+- Benutzer werden die Empfehlungen angezeigt
+
+Abschlussbedingungen:
+- Empfehlungen werden angezeigt.
+
+Ausnahmen:
+- keine
+
+Spezielle Anforderungen:
+- keine

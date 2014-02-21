@@ -1,0 +1,85 @@
+Suchen
+
+Beteiligte Akteure:
+	Benutzer
+
+Anfangsbedingungen:
+	Der Benutzer ist angemeldet
+
+Ereignisfluss:
+	Der Benutzer klickt in das Suchentextfeld, gibt an, nach welchem Schlüsselwörtern er suchen möchte. Er kann zusätzlich die Filterfunktion aktivieren, ob Benutzprofile, Künstlerprofile, Labelprofile oder Alben angezeigt werden sollen. Zusätzlich kann er eine Sortierung wählen, wie zB Alphabetisch, nach Hochladedatum oder Bewertung.
+Schlie§lich klickt er auf den Suchen Button.
+Das System zeigt ihm die gewŸnschte Liste an.
+Abschlussbedingungen
+	Der Benutzer bekommt eine von ihm gewünschte Liste sortiert angezeigt, die ggf. auch leer sein kann
+
+Ausnahmen
+	keine
+
+Spezielle Anforderungen
+	keine
+
+
+Medium abspielen
+
+Beteiligte Akteure:
+	Benutzer
+
+Anfangsbedingungen:
+	Der Benutzer ist angemeldet
+
+Ereignisfluss:
+	Der Benutzer wählt ein Medium aus und klickt auf abspielen. Der Player spielt das Medium dann ab.
+
+Abschlussbedingungen
+	Das Medium wird abgespielt
+
+Ausnahmen
+	Das Medium ist nicht verfügbar, sprich es ist gesperrt oder wurde entfernt. In diesem Fall wird der Benutzer benachrichtigt und nichts abgespielt.
+
+Spezielle Anforderungen
+	keine
+
+
+Wiedergabelist abspielen
+
+Beteiligte Akteure:
+	Benutzer
+
+Anfangsbedingungen:
+	Der Benutzer ist angemeldet
+
+Ereignisfluss:
+	Der Benutzer wählt eine Wiedergabeliste aus und klickt auf abspielen. Das Medium in der Wiedergabelist wird dann abgespielt (siehe hier für die Beschreibung von Medium abspielen). Wenn das Medium abgespielt wurde wird mit dem nächsten Medium in der Liste fortgefahren.
+
+Abschlussbedingungen
+	Die Wiedergabeliste wird abgespielt
+
+Ausnahmen
+	Sollte das Medium nicht verfügbar sein wird nach einer gewissen Zeit mit dem nächsten Medium fortgefahren. Selbst wenn das Medium nur eine Ankündigung ist wird diese angezeigt.
+
+
+Spezielle Anforderungen
+	keine
+
+
+Album abspielen
+
+Beteiligte Akteure:
+	Benutzer
+
+Anfangsbedingungen:
+	Der Benutzer ist angemeldet
+
+Ereignisfluss:
+	Der Benutzer wählt ein Album aus und klickt auf abspielen. Das Medium in dem Album wird dann abgespielt (siehe hier für die Beschreibung von Medium abspielen und Wiedergabeliste abspielen). Wenn das Medium abgespielt wurde wird mit dem nächsten Medium des Albums fortgefahren.
+
+Abschlussbedingungen
+	Das Album wird wie eine Wiedergabeliste abgespielt
+
+Ausnahmen
+	Sollte das Medium nicht verfügbar sein wird nach einer gewissen Zeit mit dem nächsten Medium fortgefahren. Selbst wenn das Medium nur eine Ankündigung ist wird diese angezeigt.
+
+
+Spezielle Anforderungen
+	keine

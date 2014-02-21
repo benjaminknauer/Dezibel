@@ -1,0 +1,101 @@
+Anwendungsfall Kommentiere News
+
+Beteiligte Akteuere:
+- Benutzer
+
+Anfangsbedingungen:
+- Benutzer ist im System eingeloggt
+
+Ereignisfluss:
+- Benutzer w‰hlt die zu kommentierende News aus und klickt auf Kommentieren.
+- Anschlieﬂend wird der Benutzer von System aufgefordert einen Text einzugeben.
+- Das System speichert den Kommentar und zeigt ihm bei den News an.
+
+Abschlussbedingungen:
+- Kommentar ist abgespeichert.
+
+Ausnahmen:
+- Wenn der Text leer oder zu groﬂ (mehr als 256 Zeichen) ist, wird der Benutzer benachrichtigt und kann entweder
+  den Text ändern, oder den Kommentier-Prozess abbrechen
+
+Spezielle Anforderungen:
+- keine
+
+
+
+
+Anwendungsfall Kommentiere Album
+
+Beteiligte Akteuere:
+- Benutzer
+
+Anfangsbedingungen:
+- Benutzer ist im System eingeloggt
+
+Ereignisfluss:
+- Benutzer w‰hlt das zu kommentierende Album aus und klickt auf Kommentieren. 
+- Anschlieﬂend wird der Benutzer von System aufgefordert einen Text einzugeben.
+- Das System speichert den Kommentar und zeigt ihm bei dem Album an.
+
+Abschlussbedingungen:
+- Kommentar ist abgespeichert.
+
+Ausnahmen:
+- Wenn der Text leer oder zu groﬂ (mehr als 256 Zeichen) ist, wird der Benutzer benachrichtigt und kann entweder
+  den Text ändern, oder den Kommentier-Prozess abbrechen
+
+Spezielle Anforderungen:
+- keine
+
+
+
+
+
+
+Anwendungsfall Kommentiere Medium
+
+Beteiligte Akteuere:
+- Benutzer
+
+Anfangsbedingungen:
+- Benutzer ist im System eingeloggt
+
+Ereignisfluss:
+- Benutzer w‰hlt das zu kommentierende Medium aus und klickt auf kommentieren. 
+- Anschlieﬂend wird der Benutzer von System aufgefordert einen Text einzugeben.
+- Das System speichert den Kommentar und zeigt ihm bei dem Medium an.
+
+Abschlussbedingungen:
+- Kommentar ist abgespeichert.
+
+Ausnahmen:
+- Wenn der Text leer oder zu groﬂ (mehr als 256 Zeichen) ist, wird der Benutzer benachrichtigt und kann entweder
+  den Text ändern, oder den Kommentier-Prozess abbrechen
+
+Spezielle Anforderungen:
+- keine
+
+
+
+Anwendungsfall Kommentiere Wiedergabeliste
+
+Beteiligte Akteuere:
+- Benutzer
+
+Anfangsbedingungen:
+- Benutzer ist im System eingeloggt
+
+Ereignisfluss:
+- Benutzer w‰hlt die zu kommentierende Wiedergabeliste aus und klickt auf kommentieren. 
+- Anschlieﬂend wird der Benutzer von System aufgefordert einen Text einzugeben.
+- Das System speichert den Kommentar und zeigt ihm bei dem Objekt an.
+
+Abschlussbedingungen:
+- Kommentar ist abgespeichert.
+
+Ausnahmen:
+- Wenn der Text leer oder zu groﬂ (mehr als 256 Zeichen) ist, wird der Benutzer benachrichtigt und kann entweder
+  den Text ändern, oder den Kommentier-Prozess abbrechen
+
+Spezielle Anforderungen:
+- keine

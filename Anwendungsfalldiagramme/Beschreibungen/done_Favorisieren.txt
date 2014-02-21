@@ -1,0 +1,92 @@
+TO DO: Entfavorisieren einfŸgen. Auch im Diagramm
+
+
+
+
+Anwendungsfall Favorisieren Medium
+Beteiligte Akteuere:
+- Benutzer
+
+Anfangsbedingungen:
+- Benutzer ist im System eingeloggt
+- Benutzer hat das Medium mit dem höchsten Grad bei der Bewertung bewertet
+
+Ereignisfluss: 
+- Das System speichert die Favorisierung und zeigt dem Benutzer bei dem Medium
+  an, dass er es favorisiert.
+
+Abschlussbedingungen:
+- Medium ist favorisiert.
+Ausnahmen:
+- keine
+
+Spezielle Anforderungen:
+- keine
+
+
+Anwendungsfall Favorisieren Benutzer
+Beteiligte Akteuere:
+- Benutzer
+
+Anfangsbedingungen:
+- Benutzer ist im System eingeloggt
+
+Ereignisfluss: 
+- Benutzer wählt den zu favorisierenden Benutzer aus und klickt auf favorisieren
+- Das System speichert die Favorisierung und zeigt dem Benutzer bei dem Benutzer
+  an, dass er diesen favorisiert.
+- Der Benutzer wird jetzt über die Aktivitäten des favorisierten Benutzers benachrichtigt
+
+Abschlussbedingungen:
+- Benutzer ist favorisiert
+Ausnahmen:
+- keine
+
+Spezielle Anforderungen:
+- keine
+
+
+
+Anwendungsfall Favorisieren Künstler
+Beteiligte Akteuere:
+- Benutzer
+
+Anfangsbedingungen:
+- Benutzer ist im System eingeloggt
+
+Ereignisfluss: 
+- Benutzer wählt den zu favorisierenden Künstler aus und klickt auf favorisieren
+- Das System speichert die Favorisierung und zeigt dem Benutzer bei dem Künstler
+  an, dass er diesen favorisiert.
+- Der Benutzer wird jetzt über die Aktivitäten des favorisierten Künstlers benachrichtigt
+
+Abschlussbedingungen:
+- KŸnstler ist favorisiert.
+Ausnahmen:
+- keine
+
+Spezielle Anforderungen:
+- keine
+
+
+
+Anwendungsfall Favorisieren Label
+Beteiligte Akteuere:
+- Benutzer
+
+Anfangsbedingungen:
+- Benutzer ist im System eingeloggt
+
+Ereignisfluss: 
+- Benutzer wählt den zu favorisierenden Label aus und klickt auf favorisieren
+- Das System speichert die Favorisierung und zeigt dem Benutzer bei dem Label
+  an, dass er diesen favorisiert.
+- Der Benutzer wird jetzt über die Aktivitäten des favorisierten Labelss benachrichtigt
+
+Abschlussbedingungen:
+- Label ist favorisiert.
+Ausnahmen:
+- keine
+
+Spezielle Anforderungen:
+- keine

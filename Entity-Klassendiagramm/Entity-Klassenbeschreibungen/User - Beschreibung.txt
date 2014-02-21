@@ -1,0 +1,6 @@
+User
+Der User ist ein allgemeiner Benutzer des Systems. Er hat 3 Attribute isArtist, isLabelManager und isAdmin mit denen festgelegt wird, welche Rolle der Nutzer einnimmt. Es gibt 3 Assoziationen zur Label-Klasse: Ein User kann Manager, unter Vertrag oder Fan von beliebig vielen Labels sein. Ebenso kann ein User Fan von beliebig vielen anderen Usern sein.
+Ein User in der Rolle Künstler oder Label-Manager kann beliebig viele News und Kommentare verfassen. Normaler User können nur kommentieren.
+Jedem Künstler oder Label-Manager sind beliebig viele Bewerbungen(Application) zugeordnet. Wenn der Künstler die Bewerbung verfasst hat, wird dies durch das Attribut fromArtist der Klasse Application signalisiert.
+Ein User kann beliebig viele Medien bewerten, indem er 1-5 Sterne vergibt. Die genaue Bewertung wird in der Assoziationsklasse Rating gespeichert.
+Ein User kann beliebig viele Alben und Wiedergabelisten erstellen.

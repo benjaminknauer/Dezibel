@@ -1,0 +1,105 @@
+Profil bearbeiten
+Beteiligte Akteure: 
+	Benutzer
+Anfangsbedingungen:
+	Der Benutzer muss eingeloggt sein
+Ereignisfluss:
+	Der Benutzer klickt auf seinem eigenen Profil oder auf dem Profil eines Labels, dessen Manager er ist, auf "Profil bearbeiten". Ihm wird daraufhin das Profil angezeigt und er hat die Möglichkeit jeden einzelnen Eintrag zu ändern. Anschließend kann er entweder auf "Abbrechen" klicken, um die Änderungen zu verwerfen, oder auf "Speichern", um die Änderungen zu übernehmen. Nach der Bearbeitung wird er auf die Profilseite weitergeleitet.
+Abschlussbedingungen:
+	Der AF ist bearbeitet, wenn alle Änderungen, die der Benutzer eingegeben hat, gespeichert wurden.
+Ausnahmen:
+	Sollte der Benutzer falsche Formulardaten angegeben haben, wie beispielsweise leere Pflichtfelder, ein inkorrektes Format oder die Mail-Adresse wird bereits genutzt, so wird ihm ein entsprechender Hinweis angezeigt. Er bleibt weiterhin auf der "Profil bearbeiten"-Seite und hat die Möglichkeit seine Angaben anzupassen.
+Spezielle Anforderungen :
+	Keine.
+
+
+eigenes Profil anzeigen
+Beteiligte Akteure: 
+	Benutzer
+Anfangsbedingungen:
+	Der Benutzer muss eingeloggt sein.
+Ereignisfluss:
+	Der Benutzer ruft sein eigenes Profil über den "Mein Profil"-Button auf. Ihm wird daraufhin seine eigene Profilseite angezeigt, die seine gesamten Daten enthält.
+Abschlussbedingungen:
+	Die Profilseite wurde vollständig geladen.
+Ausnahmen:
+	Keine.
+Spezielle Anforderungen :
+	Keine.
+
+
+fremdes Profil anzeigen
+Beteiligte Akteure: 
+	Benutzer
+Anfangsbedingungen:
+	Der Benutzer muss eingeloggt sein.
+Ereignisfluss:
+	Der Benutzer ruft das Profil eines anderen Benutzers oder Labels auf. Er kann dies entweder über die Suche oder über die Angabe des Künstlers bzw. des Labels unter einem Medium tun. Ihm wird daraufhin die Profilseite angezeigt mit allen Informationen, die öffentlich sichtbar sind.
+Abschlussbedingungen:
+	Die Profilseite wurde vollständig geladen.
+Ausnahmen:
+	Sollte das Profil gesperrt sein und der aufrufende Benutzer kein Administrator, so wird dem Benutzer das Profil nicht angezeigt. Stattdessen wird eine "Profil gesperrt"-Seite angezeigt.
+Spezielle Anforderungen :
+	Keine.
+
+
+Profil sperren
+Beteiligte Akteure: 
+	Administrator
+Anfangsbedingungen:
+	Der Administrator muss eingeloggt sein.
+	Profil ist nicht gesperrt.
+Ereignisfluss:
+	Der Administrator ruft das Profil eines Benutzers auf. Ihm wird dort die Schaltfläche "Benutzer sperren" angezeigt, die nur dann sichtbar ist, wenn der Benutzer ein Administrator ist. Dem Administrator wird daraufhin ein Formular angezeigt, in dem er einen Grund für die Sperrung eingeben kann. Er bestätigt das Formular mit "OK", um das Profil zu sperren.
+Abschlussbedingungen:
+	Das Profil wurde gesperrt.
+Ausnahmen:
+	Keine.
+Spezielle Anforderungen :
+	Keine.
+
+
+Profil entsperren
+Beteiligte Akteure:
+	Administrator
+Anfangsbedingungen:
+	Der Administrator muss eingeloggt sein.
+	Profil ist gesperrt
+Ereignisfluss:
+	Der Administrator ruft das Profil eines gesperrten Benutzers auf. Es wird ihm als Administrator der "Profil entsperren"-Button angezeigt. Er klickt auf den Button und erhält eine Bestätigung, dass der Benutzer entsperrt wurde.
+Abschlussbedingungen:
+	Das Profil wurde entsperrt und ist wieder für andere Benutzer einsehbar.
+Ausnahmen:
+	Keine.
+Spezielle Anforderungen :
+	Keine.
+
+
+Label erstellen
+Beteiligte Akteure: 
+	Benutzer
+Anfangsbedingungen:
+	Der Benutzer muss eingeloggt sein.
+Ereignisfluss:
+	Der Benutzer klickt auf die Schaltfläche "Label erstellen". Ihm wird daraufhin ein Formular angezeigt, in dem er einen Namen für das Label angeben kann. Der Benutzer kann anschließend auf "OK" klicken, um das Labell anzulegen, oder auf "Abbrechen", um die Erstellung abzubrechen.
+Abschlussbedingungen:
+	Das Label-Profil wurde mit dem angegebenen Namen erstellt und der Benutzer, der das Profil erstellt hat, wurde als Label-Manager eingetragen.
+Ausnahmen:
+	Sollte der Name bereits vergeben sein, wird dem Benutzer ein Hinweis angezeigt. Er hat daraufhin die Möglichkeit einen anderen Namen im Formular anzugeben.
+Spezielle Anforderungen:
+	Keine.
+
+
+Labelprofil bearbeiten
+Beteiligte Akteure: 
+	Label-Manager
+Anfangsbedingungen:
+	Der Label-Manager muss eingeloggt sein und der Label-Manager des Label-Profils sein, das er bearbeiten möchte.
+Ereignisfluss:
+	Der Benutzer ruft das Label-Profil auf, das er bearbeiten möchte. Da er der Label-Manager des Labels ist, wird ihm die Schaltfläche "Profil bearbeiten" angezeigt. Er klickt auf die Schaltfläche, woraufhin ihm das Profil angezeigt wird und er die Möglichkeit hat, alle Angaben zu verändern. Er kann nun auf die Schaltfläche "Speichern" klicken, um die Änderungen zu übernehmen. Mit der Schaltfläche "Abbrechen" kann er die Änderungen verwerfen.
+Abschlussbedingungen:
+	Das Profil wurde aktualisiert.
+Ausnahmen:
+	Sollte der Name bereits vergeben sein, wird dem Benutzer ein Hinweis angezeigt. Die "Profil bearbeiten"-Seite bleibt geöffnet und er hat daraufhin die Möglichkeit einen anderen Namen anzugeben.
+Spezielle Anforderungen :
+	Keine.
