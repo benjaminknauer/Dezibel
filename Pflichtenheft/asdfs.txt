@@ -1,0 +1,30 @@
+Grenzklassen:
+Welche Systemschnittstellen zu den Akteuren müssen realisiert werden?
+
+Alex:
+-RegistrationPanel
+-LoginPanel
+
+Paco:
+-NewsPanel
+-Ads/recommendationPanel
+-PlaylistPanel
+-FavoritePanel
+
+
+Richard:
+-ProfilPanel
+	-PersonalData
+	-Uploads
+	-Favorits
+	-Follower
+	-Comments
+	-News
+
+Ich:
+-SearchPanel:
+	Über das SearchPanel hat der Benutzer die Möglichkeit nach Medien, Wiedergabelisten, andere Benutzer, Künstlern und Labels zu suchen. Je nachdem, nach was er suchen möchte, bekommt er dementsprechende Filter, wo er auswählen kann wie er sein Ergebnis Filtern möchte. Zusätzlich bekommt der Benutzer unabhängig des vorangegangenen die Möglichkeit sein Ergebnisse entweder Alphabetisch oder nach Bewertung sortieren zu lassen. Nach dem Klicken auf den SearchButton bekommt der Nutzer seine Entsprechenden Ergebnisse in der gewünschten Form angezeigt.
+
+-PlayerPanel:
+	Der Benutzer kann hier seine aktuelle Wiedergabe verwalten, sprich er kann nächstes/vorheriges Lied, Play/Pause und Stop. Desweiteren hat der Player zwei Slider, jeweils für Lautstärke und als Suchleiste. Wird der Player abgedockt, kann man ihn größer ziehen und bekommt seine momentan abgespielte Wiedergabeliste angezeigt.
+
