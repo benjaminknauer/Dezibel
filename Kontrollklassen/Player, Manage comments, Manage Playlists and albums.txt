@@ -15,3 +15,7 @@ Ein Benutzer kann eine Playlist erstellen oder verwalten.
 Manage Albums
 -------------
 Ein Artist oder Label-Manager kann ein Album erstellen oder verwalten.
+
+Search
+------
+Diese Systemfunktion erlaubt den Benutzer Medien, Label, News und anderen Benuzter zu finden.
