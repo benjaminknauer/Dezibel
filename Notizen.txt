@@ -1,0 +1,6 @@
+- Tippfehler
+- Verfügbarkeit,... : Begründung fehlt
+- Internet-Unterstützung: Als "mögliche" Erweiterung beschreiben
+- Use-Case-Beschreibungen: übersichtlicher machen durch Formatierung
+- Klassendiagramm: eventuell Attribute hinzufügen
+- Sequenzdiagramm: Kontrollklassen fehlen
