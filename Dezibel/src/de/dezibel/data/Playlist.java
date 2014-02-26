@@ -1,3 +1,5 @@
+package de.dezibel.data;
+
 import java.util.ArrayList;
 
 public class Playlist implements Commentable {

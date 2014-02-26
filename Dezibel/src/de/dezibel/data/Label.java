@@ -1,3 +1,5 @@
+package de.dezibel.data;
+
 public class Label implements Lockable {
 
 	private String companyDetails;

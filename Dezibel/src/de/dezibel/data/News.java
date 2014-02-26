@@ -1,3 +1,5 @@
+package de.dezibel.data;
+
 import java.util.Date;
 import java.util.ArrayList;
 
@@ -8,8 +10,6 @@ public class News implements Commentable {
 	private String titel;
 
 	private Date creationDate;
-
-	private Comment comment;
 
 	private Comment comment;
 
