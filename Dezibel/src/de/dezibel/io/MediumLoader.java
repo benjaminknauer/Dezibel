@@ -1,5 +1,7 @@
 package de.dezibel.io;
 
+import java.io.File;
+
 public class MediumLoader {
 
 	public String upload(String path) {
