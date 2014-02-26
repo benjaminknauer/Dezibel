@@ -11,7 +11,7 @@ public class Player {
     private static Player instance = null;
 
     private Player() {
-
+        
     }
 
     public Player getInstance() {
