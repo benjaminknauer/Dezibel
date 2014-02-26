@@ -1,7 +1,9 @@
+package de.dezibel.data;
+
 import java.util.Date;
 import java.util.LinkedList;
 
-public class User implements Lockable, Lockable {
+public class User implements Lockable {
 
 	private boolean isArtist;
 

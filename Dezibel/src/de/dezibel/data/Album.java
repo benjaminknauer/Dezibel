@@ -1,5 +1,7 @@
 package de.dezibel.data;
 
+import de.dezibel.io.ImageLoader;
+
 public class Album extends Playlist {
 
 	private String coverPath;
@@ -7,7 +9,7 @@ public class Album extends Playlist {
 	private static ImageLoader imageLoader;
 
 	public Album(Medium medium, String titel) {
-
+            super(medium,titel);
 	}
 
 	public ErrorCode uploadCover(String path) {

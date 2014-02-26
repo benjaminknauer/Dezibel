@@ -1,3 +1,5 @@
+package de.dezibel.data;
+
 public interface Lockable {
 
 	public abstract void lock();

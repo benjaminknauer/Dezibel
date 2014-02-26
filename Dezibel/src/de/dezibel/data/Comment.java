@@ -1,3 +1,5 @@
+package de.dezibel.data;
+
 import java.util.Date;
 import java.util.ArrayList;
 

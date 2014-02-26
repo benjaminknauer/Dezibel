@@ -1,3 +1,5 @@
+package de.dezibel.data;
+
 
 import de.dezibel.io.XStreamAdapter;
 
