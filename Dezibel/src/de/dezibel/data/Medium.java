@@ -3,7 +3,6 @@ package de.dezibel.data;
 import de.dezibel.io.MediumLoader;
 import java.util.Date;
 import java.util.ArrayList;
-import java.io.File;
 
 public class Medium implements Commentable, Lockable {
 
