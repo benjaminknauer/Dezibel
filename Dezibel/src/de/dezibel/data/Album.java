@@ -1,7 +1,7 @@
 package de.dezibel.data;
 
 import de.dezibel.io.ImageLoader;
-
+// TODO: Eine Todo-Sache
 public class Album extends Playlist {
 
 	private String coverPath;
@@ -20,4 +20,5 @@ public class Album extends Playlist {
 	public Image getCover() {
 		return null;
 	}
+
 }
