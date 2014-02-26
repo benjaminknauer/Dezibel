@@ -5,6 +5,7 @@ import java.util.Date;
 /**
  * This class represents the application from an artist for a label and vice versa.
  * @author Henner
+ * @inv self.text != null && self.creationDate != null &&  self.label != null && self.artist != null
  */
 public class Application {
 
@@ -53,6 +54,8 @@ public class Application {
     /**
      * Returns true if this application was written by an artist and false otherwise.
      * @return True if the applicant is an artist, false if the applicant is a label.
+     * @pre true
+     * @post self.fromArtist = self.fromArtistAtPre
      */
     public boolean isFromArtist() {
         return this.fromArtist;
