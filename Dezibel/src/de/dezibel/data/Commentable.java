@@ -1,11 +1,11 @@
 package de.dezibel.data;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 public interface Commentable {
 
 	public abstract void comment(Comment comment);
 
-	public abstract ArrayList<Comment> getComments();
+	public abstract LinkedList<Comment> getComments();
 
 }
