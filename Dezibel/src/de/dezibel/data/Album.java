@@ -1,3 +1,5 @@
+package de.dezibel.data;
+
 public class Album extends Playlist {
 
 	private String coverPath;
