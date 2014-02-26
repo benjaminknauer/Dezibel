@@ -1,4 +1,4 @@
-package Package_Datamanagement;
+package de.dezibel.io;
 
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 /**
  * Wird aufgerufen um ein Bild aus einem Verzeichnis zu laden
- * und es zurück zu geben
+ * und es zurï¿½ck zu geben
  * 
  * @author Tobias Wiedau 
  * @version 
@@ -16,7 +16,7 @@ import java.util.HashMap;
 public class ImageLoader
 {
     /**
-     * Lädt ein Bild aus einer Datei
+     * Lï¿½dt ein Bild aus einer Datei
      * @param path Der Pfad des Bildes
      * @return Das Bild
      */
