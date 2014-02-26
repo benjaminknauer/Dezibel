@@ -10,6 +10,7 @@ public class Album extends Playlist {
 
 	public Album(Medium medium, String titel) {
             super(medium,titel);
+            
 	}
 
 	public ErrorCode uploadCover(String path) {
@@ -19,5 +20,4 @@ public class Album extends Playlist {
 	public Image getCover() {
 		return null;
 	}
-
 }

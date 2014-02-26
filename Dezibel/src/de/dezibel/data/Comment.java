@@ -12,7 +12,11 @@ public class Comment implements Commentable {
 	private Commentable commentable;
 
 	public Comment(String text, Commentable commentable, User author) {
-
+            this.text = text;
+            this.commentable = commentable;
+            
+            
+            this.creationDate = new Date();
 	}
 
 
