@@ -15,26 +15,21 @@ import java.util.HashMap;
 
 public class ImageLoader
 {
+
+    private HashMap<String, Image> cache;
+
+    public ImageLoader()
+    {
+        cache = new HashMap<String, Image>();
+    }
+	
+    
     /**
-     * L�dt ein Bild aus einer Datei
+     * Lädt ein Bild aus einer Datei
      * @param path Der Pfad des Bildes
      * @return Das Bild
      */
-	private static ImageLoader instance;
-	private HashMap<String, Image> cache;
-	
-	private ImageLoader()
-	{
-		cache = new HashMap<String, Image>();
-	}
-	
-	public static ImageLoader getInstance()
-	{
-		if(instance != null)
-			return instance;
-		return instance = new ImageLoader();
-	}
-	
+
     public Image getImageFromFile(String path)
     {
     	File file = new File(path);
@@ -50,11 +45,12 @@ public class ImageLoader
     	img = Toolkit.getDefaultToolkit().getImage(absolute);
     	if(img != null)
     	{
-    		cache.put(absolute, img);
-    		System.out.println("ImageLoader: loaded image '"+absolute+"'");
+            cache.put(absolute, img);
+            System.out.println("ImageLoader: loaded image '"+absolute+"'");
     	}
         return img;
     }
+    
     public void invalidateCache()
     {
     	cache.clear();
