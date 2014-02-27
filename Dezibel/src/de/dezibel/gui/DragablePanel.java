@@ -13,7 +13,7 @@ import com.javadocking.drag.DragListener;
 
 /**
  *
- * @author GonZo
+ * @author Tobias
  */
 public class DragablePanel extends JPanel implements DraggableContent {
 
