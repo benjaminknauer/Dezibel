@@ -44,7 +44,7 @@ public class News implements Commentable {
     }
 
     /**
-     * This Method adds a comment to the news.
+     * This method adds a comment to the news.
      * @param comment commet to add
      * @see Commentable#comment(Comment)
      */
@@ -59,6 +59,17 @@ public class News implements Commentable {
     @Override
     public LinkedList<Comment> getComments() {
         return (LinkedList<Comment>) comments.clone();
+    }
+    
+    /**
+     * This method delets all comments for this newsobject.
+     */
+    public void deleteComments(){
+        for(Comment currentComment : comments ){
+            currentComment.getAuthor().removeComment(currentComment);
+            Database.getInstance().removeComment(currentComment);   
+        }
+        comments = null;
     }
 
     public String getText() {
