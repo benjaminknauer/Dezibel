@@ -36,6 +36,17 @@ public class Database {
      * The amount of Lists in data.
      */
     private int listCount = 10;
+    
+    private LinkedList<User> users;
+    private LinkedList<Label> labels;
+    private LinkedList<Medium> media;
+    private LinkedList<Playlist> playlists;
+    private LinkedList<Album> albums;
+    private LinkedList<News> news;
+    private LinkedList<Comment> comments;
+    private LinkedList<Rating> ratings;
+    private LinkedList<Application> applications;
+    private LinkedList<Genre> genres;
 
     private String topGenreName = "topGenre";
 
@@ -48,8 +59,7 @@ public class Database {
      */
     private Database() {
         load();
-
-        // No data loaded? Create empty lists.
+        // No data loaded? Create empty lists and add the default stuff.
         if (data == null) {
             initializeDatabase();
         }
@@ -85,6 +95,18 @@ public class Database {
      */
     public void load() {
         data = xStreamer.load();
+        if(data == null)
+            return;
+        users = data[0];
+        labels = data[1];
+        media = data[2];
+        playlists = data[3];
+        albums = data[4];
+        news = data[5];
+        comments = data[6];
+        ratings = data[7];
+        applications = data[8];
+        genres = data[9];
     }
 
     /**
@@ -111,7 +133,7 @@ public class Database {
         u.setCity(city);
         u.setCountry(country);
        
-        this.getUsers().add(u);
+        users.add(u);
         return ErrorCode.SUCCESS;
     }
     public void removeLabel(Label aThis) {
@@ -182,9 +204,17 @@ public class Database {
 //TODO Initialisierung vervollstaendigen?
 
     private void initializeDatabase() {
-        for (int i = 0; i < this.listCount; i++) {
-            this.data[i] = new LinkedList();
-        }
+        data = new LinkedList[this.listCount];
+        users = new LinkedList<>();         data[0] = users;
+        labels = new LinkedList<>();        data[1] = labels;
+        media = new LinkedList<>();         data[2] = media;
+        playlists = new LinkedList<>();     data[3] = playlists;
+        albums = new LinkedList<>();        data[4] = albums;
+        news = new LinkedList<>();          data[5] = news;
+        comments = new LinkedList<>();      data[6] = comments;
+        ratings = new LinkedList<>();       data[7] = ratings;
+        applications = new LinkedList<>();  data[8] = applications;
+        genres = new LinkedList<>();        data[9] = genres;
 
         // Create default administrator.
         this.addUser("admin@dezibel.de", "admin", "admin", "admin", new Date(), null, null, (Math.random() < 0.5));
