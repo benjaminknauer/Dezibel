@@ -23,8 +23,10 @@ public class Playlist implements Commentable {
      * @param user owner of the playlist
      */
     public Playlist(Medium medium, String titel, User user) {
-        this.titel = titel;
         this.mediumList = new LinkedList<>();
+        this.comments = new LinkedList<>();
+
+        this.titel = titel;
         this.mediumList.add(medium);
         this.user = user;
         this.user.addPlaylist(this);
@@ -55,20 +57,17 @@ public class Playlist implements Commentable {
                 user.removePlaylist(this);
             }
         }
+    }
 
-        /**
-         * This method moves a mediaobject from it's current position to a new
-         * one.
-         *
-         * @param currentPos The current position of the mediaobject which is to
-         * be moved.
-         * @param newPos The position the mediaobject is supposed to be moved
-         * to.
-         * @pre currentPos and newPos are in range of 0 to mediumList.size()-1
-         * @post the medium is at newPos in mediumList
-         */
-    
-
+    /**
+     * This method moves a mediaobject from it's current position to a new one.
+     *
+     * @param currentPos The current position of the mediaobject which is to be
+     * moved.
+     * @param newPos The position the mediaobject is supposed to be moved to.
+     * @pre currentPos and newPos are in range of 0 to mediumList.size()-1
+     * @post the medium is at newPos in mediumList
+     */
     public void move(int currentPos, int newPos) {
         Medium temp = mediumList.get(currentPos);
         mediumList.add(newPos, temp);
