@@ -434,7 +434,7 @@ public class User implements Lockable {
     }
 
     public LinkedList<Application> getApplications() {
-        return sentApplications;
+        return (LinkedList<Application>)sentApplications.clone();
     }
 
     public LinkedList<Medium> getCreatedMediums() {
