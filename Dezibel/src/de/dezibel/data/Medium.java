@@ -114,6 +114,7 @@ public class Medium implements Commentable, Lockable {
         } else {
             ratingList.put(rater.hashCode(), new Rating(points));
         }
+            //TODO AverageRating errechnen
     }
 
     /**
