@@ -73,7 +73,7 @@ public class Database {
      * @post self.instance != null && ((self.instanceAtPre != null) =>
      * self.instanceAtPost == self.instanceAtPre)
      */
-    public static Database getInstance() {
+    public synchronized static Database getInstance() {
         if (instance == null) {
             instance = new Database();
         }
@@ -210,8 +210,8 @@ public class Database {
 
         return ErrorCode.SUCCESS;
     }
-//TODO Initialisierung vervollstaendigen?
 
+//TODO Initialisierung vervollstaendigen?
     private void initializeDatabase() {
         data = new LinkedList[this.listCount];
         users = new LinkedList<>();
