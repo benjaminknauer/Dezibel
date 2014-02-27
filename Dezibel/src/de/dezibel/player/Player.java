@@ -6,6 +6,7 @@ import de.dezibel.data.Playlist;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 /**
  * Implements all functionality needed to play music. It acts as a fassade for
@@ -28,6 +29,7 @@ public class Player {
         // Initialize JavaFX
         JFXPanel fxPanel = new JFXPanel();
         this.currentPosition = 0;
+        this.currentPlaylist = new LinkedList<Medium>();
     }
 
     /**
@@ -70,6 +72,7 @@ public class Player {
         if (this.player != null) {
             this.player.stop();
             this.currentPosition = 0;
+            this.player = this.createPlayer(this.currentPlaylist.get(this.currentPosition));
         }
     }
 
@@ -92,15 +95,10 @@ public class Player {
         this.currentPosition = (++this.currentPosition) % this.currentPlaylist.size();
         Medium newMedium = this.currentPlaylist.get(this.currentPosition);
         if (newMedium.isAvailable()) {
-            // Play new medium, if available
-            MediaPlayer tmpPlayer = new MediaPlayer(new Media(newMedium.getFile()
-                    .toURI().toString()));
-            if (this.player.getStatus() == MediaPlayer.Status.PLAYING) {
-                tmpPlayer.play();
-            }
+            this.player = this.createPlayer(newMedium);
         } else {
             // TODO - Sperrung bzw. Löschung für 3 Sekunden anzeigen
-            // Eventuell durch eigene Sperr- bzw. Lösche-Medien realisieren.
+            // Eventuell durch eigene Sperr- bzw. Lösch-Medien realisieren.
         }
     }
 
@@ -109,7 +107,14 @@ public class Player {
      * nothing happens.
      */
     public void previous() {
-
+        this.currentPosition = (--this.currentPosition) % this.currentPlaylist.size();
+        Medium newMedium = this.currentPlaylist.get(this.currentPosition);
+        if (newMedium.isAvailable()) {
+            this.player = this.createPlayer(newMedium);
+        } else {
+            // TODO - Sperrung bzw. Löschung für 3 Sekunden anzeigen
+            // Eventuell durch eigene Sperr- bzw. Lösch-Medien realisieren.
+        }
     }
 
     /**
@@ -118,7 +123,7 @@ public class Player {
      * @return The volume
      */
     public int getVolume() {
-        return 0;
+        return (int) Math.round(player.getVolume() * 100);
     }
 
     /**
@@ -128,7 +133,12 @@ public class Player {
      * [0, 100]
      */
     public void setVolume(int volume) {
-
+        if (volume > 100) {
+            volume = 100;
+        } else if (volume < 0) {
+            volume = 0;
+        }
+        this.player.setVolume(volume / 100.0);
     }
 
     /**
@@ -137,7 +147,7 @@ public class Player {
      * @return true if the player is currently playing, else false
      */
     public boolean isPlaying() {
-        return false;
+        return player.getStatus() == MediaPlayer.Status.PLAYING;
     }
 
     /**
@@ -146,7 +156,11 @@ public class Player {
      * @return The current Medium
      */
     public Medium getCurrentMedium() {
-        return;
+        if (this.currentPlaylist == null) {
+            return null;
+        } else {
+            return this.currentPlaylist.get(this.currentPosition);
+        }
     }
 
     /**
@@ -155,17 +169,19 @@ public class Player {
      * @param song The Medium to add
      */
     public void addMedium(Medium song) {
-        currentPlaylist.add(song);
+        if (song != null) {
+            this.currentPlaylist.add(song);
+        }
     }
 
     /**
      * Removes the given medium from the currentPlalist.
      *
-     * @param song The song to remove.
+     * @param index The index of the song to remove.
      */
-    public void removeMedium(Medium song) {
-        if (currentPlaylist.contains(song)) {
-            currentPlaylist.remove(song);
+    public void removeMedium(int index) {
+        if (index >= 0 && index < this.currentPlaylist.size()) {
+            this.currentPlaylist.remove(index);
         }
     }
 
@@ -176,7 +192,9 @@ public class Player {
      * @param playlist The playlist to add to the currentPlaylist
      */
     public void addPlaylist(Playlist playlist) {
-        currentPlaylist.append(playlist);
+        if (playlist != null) {
+            this.currentPlaylist.addAll(playlist.getList());
+        }
     }
 
     /**
@@ -185,7 +203,9 @@ public class Player {
      * @param playlist The new playlist
      */
     public void setPlaylist(Playlist playlist) {
-        currentPlaylist = playlist.getList();
+        if (playlist != null) {
+            this.currentPlaylist = playlist.getList();
+        }
     }
 
     /**
@@ -194,7 +214,8 @@ public class Player {
      * @post currentPlaylist = empty
      */
     public void clearPlaylist() {
-        currentPlaylist.clear();
+        this.stop();
+        this.currentPlaylist.clear();
     }
 
     /**
@@ -203,7 +224,34 @@ public class Player {
      * @param song The new currentMedia
      */
     public void setCurrentMedia(Medium song) {
+        if (song != null) {
+            this.currentPosition = this.currentPlaylist.indexOf(song);
+            this.player = this.createPlayer(song);
+        }
+    }
+    
+    /**
+     * Creates a MediaPlayer object for the given medium.
+     * @param medium The medium to create a player for
+     * @return The created player
+     * @pre medium != null
+     */
+    private MediaPlayer createPlayer(Medium medium) {
+        MediaPlayer tmpPlayer = new MediaPlayer(new Media(medium.getFile().toURI()
+                .toString()));
+        if (this.player != null) {
+            this.player.setOnEndOfMedia(null);
+            if (this.isPlaying()) tmpPlayer.play();
+            tmpPlayer.setVolume(this.player.getVolume());
+        }
         
+        tmpPlayer.setOnEndOfMedia(new Runnable() {
+            @Override
+            public void run() {
+                Player.this.next();
+            }
+        });
+        return tmpPlayer;
     }
 
 }
