@@ -171,6 +171,22 @@ public class Medium implements Commentable, Lockable {
     }
 
     /**
+     * 
+     * @param list 
+     */
+    public void addPlaylist(Playlist list){
+        this.playlistList.add(list);
+    }
+    
+    /**
+     * 
+     * @param list 
+     */
+    public void removePlaylist(Playlist list){
+        this.playlistList.remove(list);
+    }
+    
+    /**
      * @see Commentable#getComments()
      */
     @Override
