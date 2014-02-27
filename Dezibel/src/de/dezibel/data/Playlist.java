@@ -39,7 +39,7 @@ public class Playlist implements Commentable {
      */
     public void addMedium(Medium medium) {
         this.mediumList.add(medium);
-        medium.addCreatedPlaylist(this);
+        medium.addPlaylist(this);
     }
 
     /**
