@@ -1,6 +1,6 @@
 package de.dezibel.data;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 /**
  * This interface must be implemented by all classes that can be commented.
  * @author Henner
@@ -9,7 +9,7 @@ public interface Commentable {
 
     /**
      * Add the given <p>comment</p> to this object.
-     * @param comment 
+     * @param comment The comment to be added to this object.
      * @pre self.comment != null
      * @post true
      */
@@ -21,6 +21,6 @@ public interface Commentable {
      * @pre true
      * @post true
      */
-    public abstract ArrayList<Comment> getComments();
+    public abstract LinkedList<Comment> getComments();
 
 }
