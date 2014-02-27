@@ -23,8 +23,10 @@ public class Playlist implements Commentable {
      * @param user owner of the playlist
      */
     public Playlist(Medium medium, String titel, User user) {
-        this.titel = titel;
         this.mediumList = new LinkedList<>();
+        this.comments = new LinkedList<>();
+        
+        this.titel = titel;
         this.mediumList.add(medium);
         this.user = user;
         this.user.addPlaylist(this);
