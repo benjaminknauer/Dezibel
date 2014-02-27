@@ -225,8 +225,11 @@ public class Database {
      * with the given name.
      *
      * @param manager The user that will be the new label's manager.
-     * @param name
-     * @return
+     * @param name The name of the new label.
+     * @return ErrorCode
+     * @pre <code>manager</code> and <code>name</code> must not be null or the empty String.
+     * <code>name</code> must not be in use already.
+     * @post A new Label object is created and added to the database.
      */
     public ErrorCode addLabel(User manager, String name) {
         for (Label currentLabel : this.labels) {
@@ -238,11 +241,18 @@ public class Database {
         labels.add(new Label(manager, name));
         return ErrorCode.SUCCESS;
     }
-
+    /**
+     * Removes the given Label from the database. Does nothing if the
+     * Label didn't exist.
+     *
+     * @param label The label you want to remove.
+     * @post <code>label</code> is not in the database.
+     */
     public void removeLabel(Label label) {
         this.labels.remove(label);
     }
 
+    
     public void removeNews(News news) {
         this.news.remove(news);
     }
