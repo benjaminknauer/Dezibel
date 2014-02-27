@@ -1,6 +1,7 @@
 package de.dezibel.data;
 
 
+import de.dezibel.ErrorCode;
 import de.dezibel.io.XStreamAdapter;
 import java.util.LinkedList;
 /**
@@ -10,6 +11,7 @@ import java.util.LinkedList;
  * @author Henner
  * @inv self.xStreamer != null
  */
+//TODO Implementier mich!
 public class Database {
 
 	private static Database instance = null;
@@ -37,8 +39,7 @@ public class Database {
          * files.
          * If there is no saved data to import, it will create empty lists.
          */
-        
-// TODO: Admin User einrichten etc etc.
+
 	private Database() {
             load();
             
@@ -77,7 +78,7 @@ public class Database {
 	public void load() {
             data = xStreamer.load();
 	}
-
+        
         /**
          * Makes the Database add a new User with the given information.
          * This will fail and return a proper ErrorCode if there already exists
