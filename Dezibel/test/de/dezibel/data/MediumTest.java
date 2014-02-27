@@ -175,8 +175,6 @@ public class MediumTest {
         System.out.println("addPlaylist");
         Playlist list = new Playlist(instance, "TestList", loggedUser);
         
-        instance.addPlaylist(list);
-        
         assertTrue(list.getList().contains(instance));
 
     }
@@ -187,12 +185,11 @@ public class MediumTest {
     @Test
     public void testRemovePlaylist() {
         System.out.println("removePlaylist");
-        Playlist list = new Playlist(instance, "TestList", loggedUser);
+        Playlist testList = new Playlist(instance, "TestList2", loggedUser);
+
         
-        instance.addPlaylist(list);
-        
-        instance.removePlaylist(list);
-        assertFalse(instance.getPlaylistList().contains(list));
+        instance.removePlaylist(testList);
+        assertEquals(-1, instance.getPlaylistList().indexOf(testList));
     }
 
     /**
@@ -202,11 +199,18 @@ public class MediumTest {
     public void testGetComments() {
         System.out.println("getComments");
         
-        LinkedList expResult = null;
+        Comment comment1 = new Comment("Test1", instance, loggedUser);
+        Comment comment2 = new Comment("Test2", instance, loggedUser);
+        
+        LinkedList expResult = new LinkedList();
+        expResult.add(comment1);
+        expResult.add(comment2);
+        
+        instance.comment(comment1);
+        instance.comment(comment2);
+        
         LinkedList result = instance.getComments();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -280,27 +284,30 @@ public class MediumTest {
      * Test of setAlbum method, of class Medium.
      */
     @Test
+    @Ignore //TODO
     public void testSetAlbum() {
         System.out.println("setAlbum");
         Album album = null;
         
         instance.setAlbum(album);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        
     }
 
     /**
      * Test of getAvgRating method, of class Medium.
      */
     @Test
+    @Ignore
     public void testGetAvgRating() {
         System.out.println("getAvgRating");
         
-        double expResult = 0.0;
+        instance.rate(3, loggedUser);
+        instance.rate(2, new User("test", "test", "test", "test", true));
+        double expResult = 2.5;
         double result = instance.getAvgRating();
         assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -310,11 +317,7 @@ public class MediumTest {
     public void testGetArtist() {
         System.out.println("getArtist");
         
-        User expResult = null;
-        User result = instance.getArtist();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(loggedUser, instance.getArtist());
     }
 
     /**
@@ -323,38 +326,31 @@ public class MediumTest {
     @Test
     public void testSetArtist() {
         System.out.println("setArtist");
-        User artist = null;
+        User testUser = new User("test", "test", "test", "test", true);
         
-        instance.setArtist(artist);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        instance.setArtist(testUser);
+
+        assertEquals(testUser, instance.getArtist());
     }
 
     /**
      * Test of getGenre method, of class Medium.
      */
     @Test
+    @Ignore //TODO
     public void testGetGenre() {
         System.out.println("getGenre");
-        
-        Genre expResult = null;
-        Genre result = instance.getGenre();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
      * Test of setGenre method, of class Medium.
      */
     @Test
+    @Ignore
     public void testSetGenre() {
         System.out.println("setGenre");
-        Genre genre = null;
-        
-        instance.setGenre(genre);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -364,38 +360,31 @@ public class MediumTest {
     public void testGetLabel() {
         System.out.println("getLabel");
         
-        Label expResult = null;
-        Label result = instance.getLabel();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Label testLabel = new Label(loggedUser, "myLabel");
+        instance.setLabel(testLabel);
+
+        assertEquals(testLabel, instance.getLabel());
+
     }
 
     /**
      * Test of setLabel method, of class Medium.
      */
     @Test
+    @Ignore //Redundant?
     public void testSetLabel() {
         System.out.println("setLabel");
-        Label label = null;
-        
-        instance.setLabel(label);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
      * Test of getPath method, of class Medium.
      */
-    @Test
+    @Test 
+    @Ignore //Wie prüfen?
     public void testGetPath() {
         System.out.println("getPath");
-        
-        String expResult = "";
-        String result = instance.getPath();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -405,25 +394,21 @@ public class MediumTest {
     public void testGetUploadDate() {
         System.out.println("getUploadDate");
         
-        Date expResult = null;
+        Date expResult = new Date();
+        testUpload();
         Date result = instance.getUploadDate();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
      * Test of getRatingList method, of class Medium.
      */
     @Test
+    @Ignore //Wie auf Hashmap testen?
     public void testGetRatingList() {
         System.out.println("getRatingList");
-        
-        HashMap expResult = null;
-        HashMap result = instance.getRatingList();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -433,10 +418,15 @@ public class MediumTest {
     public void testGetPlaylistList() {
         System.out.println("getPlaylistList");
         
-        LinkedList expResult = null;
-        LinkedList result = instance.getPlaylistList();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Playlist playlist1 = new Playlist(instance, "myPlaylist", loggedUser);
+        Playlist playlist2 = new Playlist(instance, "myPlaylist2", loggedUser);
+
+        
+        LinkedList<Playlist> testList = new LinkedList<>();
+        testList.add(playlist1);
+        testList.add(playlist2);
+
+        assertEquals(testList, instance.getPlaylistList());
+
     }
 }
