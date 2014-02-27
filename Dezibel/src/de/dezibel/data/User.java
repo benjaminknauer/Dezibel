@@ -41,6 +41,7 @@ public class User implements Lockable {
      * @param firstname the users firstname
      * @param lastname the users lastname
      * @param password the users password
+     * @param isMale the users gender
      */
     public User(String email, String firstname, String lastname, 
             String password, boolean isMale) {
@@ -65,41 +66,41 @@ public class User implements Lockable {
     }
 
     /**
-     *
-     * @param news
+     * Informs the user about a new news by a favorite.
+     * @param news someone else's new news
      */
     public void notify(News news) {
         // TODO: Wo notifyen?
     }
 
     /**
-     *
-     * @param medium
+     * Informs the user about a new medium by a favorite.
+     * @param medium someone else's new medium
      */
     public void notify(Medium medium) {
 
     }
 
     /**
-     *
-     * @param album
+     * Informs the user about a new album by a favorite.
+     * @param album someone else's new album
      */
     public void notify(Album album) {
 
     }
 
     /**
-     *
-     * @param playlist
+     * Informs the user about a new playlist by a favorite.
+     * @param playlist someone else's new playlist
      */
     public void notify(Playlist playlist) {
 
     }
 
     /**
-     *
-     * @param label
-     * @param artist
+     * Informs the user about a new artist of a favorized label.
+     * @param label favorized label
+     * @param artist new artist of favorized label
      */
     public void notify(Label label, User artist) {
 
@@ -363,7 +364,7 @@ public class User implements Lockable {
     }
 
     public LinkedList<News> getNews() {
-        return news;
+        return newsList;
     }
 
     public LinkedList<Application> getSentApplications() {
