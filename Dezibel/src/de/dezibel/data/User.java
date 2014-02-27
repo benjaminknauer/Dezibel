@@ -10,15 +10,15 @@ import java.util.LinkedList;
  */
 public class User implements Lockable {
 
-    private boolean isArtist;
-    private boolean isLabelManager;
-    private boolean isAdmin;
+    private boolean artist;
+    private boolean labelManager;
+    private boolean admin;
     private String firstname;
     private String lastname;
     private Date birthdate;
     private String city;
     private String country;
-    private boolean isMale;
+    private boolean male;
     private boolean locked;
     private String email;
     private String password;
@@ -34,6 +34,8 @@ public class User implements Lockable {
     private LinkedList<Playlist> createdPlaylists;
     private LinkedList<Comment> createdComments;
 
+    // TODO: Flags in User einbauen!
+    
     /**
      * Class Constructor
      *
@@ -49,7 +51,7 @@ public class User implements Lockable {
         this.firstname = firstname;
         this.lastname = lastname;
         this.password = password;
-        this.isMale = isMale;
+        this.male = isMale;
 
         this.favoriteLabels = new LinkedList<Label>();
         this.favoriteUsers = new LinkedList<User>();
@@ -65,12 +67,15 @@ public class User implements Lockable {
         this.followers.add(fan);
     }
 
+    
+    // Notify Methoden:
+    // TODO: Klasse für Mails einbauen
     /**
      * Informs the user about a new news by a favorite.
      * @param news someone else's new news
      */
     public void notify(News news) {
-        // TODO: Wo notifyen?
+        
     }
 
     /**
@@ -360,12 +365,12 @@ public class User implements Lockable {
         this.country = country;
     }
 
-    public boolean isIsMale() {
-        return isMale;
+    public boolean isMale() {
+        return male;
     }
 
     public void setIsMale(boolean isMale) {
-        this.isMale = isMale;
+        this.male = isMale;
     }
 
     public String getEmail() {
@@ -392,40 +397,40 @@ public class User implements Lockable {
         this.description = description;
     }
 
-    public boolean isIsArtist() {
-        return isArtist;
+    public boolean isArtist() {
+        return artist;
     }
 
-    public boolean isIsLabelManager() {
-        return isLabelManager;
+    public boolean isLabelManager() {
+        return labelManager;
     }
 
-    public boolean isIsAdmin() {
-        return isAdmin;
+    public boolean isAdmin() {
+        return admin;
     }
 
     public LinkedList<User> getFavoriteUsers() {
-        return favoriteUsers;
+        return (LinkedList<User>)favoriteUsers.clone();
     }
 
     public LinkedList<Label> getFavoriteLabels() {
-        return favoriteLabels;
+        return (LinkedList<Label>)favoriteLabels.clone();
     }
     
     public LinkedList<User> getFollowers() {
-        return followers;
+        return (LinkedList<User>)followers.clone();
     }
 
     public LinkedList<Label> getManagedLabels() {
-        return managedLabels;
+        return (LinkedList<Label>)managedLabels.clone();
     }
 
     public LinkedList<Label> getPublishingLabels() {
-        return publishingLabels;
+        return (LinkedList<Label>)publishingLabels.clone();
     }
 
     public LinkedList<News> getNews() {
-        return newsList;
+        return (LinkedList<News>)newsList.clone();
     }
 
     public LinkedList<Application> getApplications() {
@@ -433,15 +438,15 @@ public class User implements Lockable {
     }
 
     public LinkedList<Medium> getCreatedMediums() {
-        return createdMediums;
+        return (LinkedList<Medium>)createdMediums.clone();
     }
 
     public LinkedList<Playlist> getCreatedPlaylists() {
-        return createdPlaylists;
+        return (LinkedList<Playlist>)createdPlaylists.clone();
     }
 
     public LinkedList<Comment> getCreatedComments() {
-        return createdComments;
+        return (LinkedList<Comment>)createdComments.clone();
     }
 
 }

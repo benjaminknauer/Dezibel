@@ -266,11 +266,11 @@ public class Medium implements Commentable, Lockable {
     }
 
     public HashMap<Integer, Rating> getRatingList() {
-        return ratingList;
+        return (HashMap<Integer, Rating>)this.ratingList.clone();
     }
 
     public LinkedList<Playlist> getPlaylistList() {
-        return playlistList;
+        return (LinkedList<Playlist>)this.playlistList.clone();
     }
 
 }
