@@ -34,6 +34,8 @@ public class User implements Lockable {
     private LinkedList<Playlist> createdPlaylists;
     private LinkedList<Comment> createdComments;
 
+    // TODO: Flags in User einbauen!
+    
     /**
      * Class Constructor
      *
@@ -65,12 +67,15 @@ public class User implements Lockable {
         this.followers.add(fan);
     }
 
+    
+    // Notify Methoden:
+    // TODO: Klasse für Mails einbauen
     /**
      * Informs the user about a new news by a favorite.
      * @param news someone else's new news
      */
     public void notify(News news) {
-        // TODO: Wo notifyen?
+        
     }
 
     /**
