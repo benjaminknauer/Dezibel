@@ -2,6 +2,7 @@ package de.dezibel.data;
 
 
 import de.dezibel.io.XStreamAdapter;
+import java.util.List;
 /**
  * This singleton class represents the Database. It holds references to all objects of
  * all classes of <code>de.dezibel.data</code> and manages the creation of such.
@@ -13,8 +14,25 @@ public class Database {
 
 	private static Database instance = null;
 
+        /**
+         * The XStreamAdapter used to export and import the system's data.
+         */
 	private XStreamAdapter xStreamer;
 
+        /**
+         * All of the system's data is stored in lists here in this order:
+         * [ 0  ,   1  ,    2  ,     3   ,   4  ,  5  ,    6   ,   7   ,      8     ,   9  ]
+         * [User, Label, Medium, Playlist, Album, News, Comment, Rating, Application, Genre]
+         */
+        private List[] data;
+        
+        /**
+         * Private constructor called by the first call of <code>getInstance()</code>.
+         * This creates the Database object that holds and manages all data while
+         * the system is running. It will attempt to import all data from XML
+         * files.
+         * If there is no saved data to import, it will create empty lists.
+         */
 	private Database() {
 
 	}
