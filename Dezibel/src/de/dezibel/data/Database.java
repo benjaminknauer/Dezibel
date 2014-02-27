@@ -142,23 +142,23 @@ public class Database {
     }
 
     void removeApplication(Application application) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         this.applications.remove(application);
     }
 
-    public void removeLabel(Label aThis) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void removeLabel(Label label) {
+         this.labels.remove(label);
     }
 
-    public void removeNews(News currentNews) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void removeNews(News news) {
+        this.news.remove(news);
     }
 
-    public void removeComment(Comment currentComment) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void removeComment(Comment comment) {
+         this.comments.remove(comment);
     }
 
-    public void removePlaylist(Playlist aThis) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void removePlaylist(Playlist playlist) {
+         this.playlists.remove(playlist);
     }
 
     /**
