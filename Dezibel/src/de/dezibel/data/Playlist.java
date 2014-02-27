@@ -29,7 +29,7 @@ public class Playlist implements Commentable {
         this.titel = titel;
         this.mediumList.add(medium);
         this.user = user;
-        this.user.addPlaylist(this);
+        this.user.addCreatedPlaylist(this);
     }
 
     /**
@@ -56,6 +56,9 @@ public class Playlist implements Commentable {
             if (mediumList.isEmpty()) {
                 Database.getInstance().removePlaylist(this);
                 user.removePlaylist(this);
+                for(Medium currentMedium : mediumList){
+                    currentMedium.removePlaylist(this);
+                }
             }
         }
     }
