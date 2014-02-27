@@ -49,7 +49,7 @@ public class Album extends Playlist {
          * @pre self.hasCover
          */
 	public Image getCover() {
-		return this.imageLoader.getImageFromFile(coverPath);
+		return this.imageLoader.getImage(coverPath);
 	}
         
         /**
