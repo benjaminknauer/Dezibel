@@ -15,7 +15,7 @@ public class Database {
 	private static Database instance = null;
 
         /**
-         * The XStreamAdapter used to export and import the system's data.
+         * The <code>XStreamAdapter</code> used to export and import the system's data.
          */
 	private XStreamAdapter xStreamer;
 
@@ -28,13 +28,13 @@ public class Database {
         
         /**
          * Private constructor called by the first call of <code>getInstance()</code>.
-         * This creates the Database object that holds and manages all data while
+         * This creates the <code>Database</code> object that holds and manages all data while
          * the system is running. It will attempt to import all data from XML
          * files.
          * If there is no saved data to import, it will create empty lists.
          */
 	private Database() {
-
+            
 	}
 
         /**
