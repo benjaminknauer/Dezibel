@@ -28,6 +28,9 @@ public class Album extends Playlist {
          */
 	public Album(Medium medium, String title, User user) {
             super(medium, title, user);
+            if(imageLoader == null){
+                imageLoader = new ImageLoader();
+            }
 	}
 
         /**
@@ -38,7 +41,11 @@ public class Album extends Playlist {
          * @post The attribute coverPath is now set to <code>path</code>.
          */
 	public ErrorCode uploadCover(String path) {
-            return null;
+            String uploadPath = imageLoader.upload(path);
+            if(uploadPath.isEmpty()){
+                return ErrorCode.UPLOAD_ERROR;
+            }
+            return ErrorCode.SUCCESS;
         }
 
         /**
