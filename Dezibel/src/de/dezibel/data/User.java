@@ -43,11 +43,12 @@ public class User implements Lockable {
      * @param password the users password
      */
     public User(String email, String firstname, String lastname, 
-            String password) {
+            String password, boolean isMale) {
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
         this.password = password;
+        this.isMale = isMale;
 
         this.favoriteLabels = new LinkedList<Label>();
         this.favoriteUsers = new LinkedList<User>();
@@ -179,6 +180,10 @@ public class User implements Lockable {
          this.createdPlaylists.add(list);
      }
      
+     public void removePlaylist(Playlist list){
+         this.createdPlaylists.remove(list);
+     }
+     
      /**
       * Adds a new comment to the list of comments created by the user.
       * @param comment new comment created by the user
@@ -187,6 +192,15 @@ public class User implements Lockable {
          this.createdComments.add(comment);
      }
      
+     /**
+     * Removes a comment from the list of comments which were created by the
+     * user.
+     * @param comment comment which should be removed
+     */
+    public void removeComment(Comment comment) {
+        this.createdComments.remove(comment);
+    }
+
     /**
      * Sets a flag for the user to give him the artist functionality.
      */
@@ -206,15 +220,6 @@ public class User implements Lockable {
      */
     public void promoteToAdmin() {
 
-    }
-
-    /**
-     * Removes a comment from the list of comments which were created by the
-     * user.
-     * @param comment comment which should be removed
-     */
-    public void removeComment(Comment comment) {
-        this.createdComments.remove(comment);
     }
 
     /**

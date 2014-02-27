@@ -36,7 +36,7 @@ public class Application {
 
         this.creationDate = new Date();
         
-        label.addAppliction(this);
+        label.addApplication(this);
         artist.addApplication(this);
     }
 
