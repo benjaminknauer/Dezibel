@@ -53,9 +53,16 @@ public class User implements Lockable {
         this.password = password;
         this.male = isMale;
 
-        this.favoriteLabels = new LinkedList<Label>();
-        this.favoriteUsers = new LinkedList<User>();
-        this.followers = new LinkedList<User>();
+        favoriteUsers = new LinkedList<User>();
+        followers = new LinkedList<User>();
+        favoriteLabels = new LinkedList<Label>();
+        managedLabels = new LinkedList<Label>();
+        publishingLabels = new LinkedList<Label>();
+        newsList = new LinkedList<News>();
+        sentApplications = new LinkedList<Application>();
+        createdMediums = new LinkedList<Medium>();
+        createdPlaylists = new LinkedList<Playlist>();
+        createdComments = new LinkedList<Comment>();
     }
 
     /**
