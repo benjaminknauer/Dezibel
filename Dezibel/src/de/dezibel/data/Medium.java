@@ -98,7 +98,7 @@ public class Medium implements Commentable, Lockable {
 	 * @see Commentable#getComments()
 	 */
         @Override
-	public ArrayList<Comment> getComments() {
+	public LinkedList<Comment> getComments() {
 		return null;
 	}
 

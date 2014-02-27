@@ -8,8 +8,8 @@ public class Album extends Playlist {
 
 	private static ImageLoader imageLoader;
 
-	public Album(Medium medium, String titel) {
-            super(medium,titel);
+	public Album(Medium medium, String title, User user) {
+            super(medium, title, user);
 	}
 
 	public ErrorCode uploadCover(String path) {
