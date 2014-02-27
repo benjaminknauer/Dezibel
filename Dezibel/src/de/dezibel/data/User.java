@@ -3,120 +3,231 @@ package de.dezibel.data;
 import java.util.Date;
 import java.util.LinkedList;
 
+/**
+ * Stores personal-, login- and role-informations about the users.
+ *
+ * @author Pascal und Bastian
+ */
 public class User implements Lockable {
 
-	private boolean isArtist;
+    private boolean isArtist;
+    private boolean isLabelManager;
+    private boolean isAdmin;
+    private String firstname;
+    private String lastname;
+    private Date birthdate;
+    private String city;
+    private String country;
+    private boolean isMale;
+    private String email;
+    private String password;
+    private String description;
+    private LinkedList<User> myFavoriteUsers;
+    private LinkedList<Label> myFavoriteLabel;
+    private LinkedList<User> myFollowers;
 
-	private boolean isLabelManager;
+    /**
+     * Class Constructor 
+     * 
+     * @param email the users email adress
+     * @param firstname the users firstname
+     * @param lastname the users lastname
+     * @param password the users password
+     */
+    public User(String email, String firstname, String lastname, String password) {
+            this.email = email;
+            this.firstname = firstname;
+            this.lastname = lastname;
+            this.password = password;
+            
+            this.myFavoriteLabel = new LinkedList<Label>();
+            this.myFavoriteUsers = new LinkedList<User>();
+            this.myFollowers = new LinkedList<User>();
+    }
 
-	private boolean isAdmin;
+    /**
+     * Adds a new favorite uses to the list 
+     * 
+     * @param fan the user to be followed 
+     */
+    public void follow(User fan) {
+            this.myFavoriteUsers.add(fan);
+    }
+    
+    /**
+     * 
+     * @param news 
+     */
+    public void notify(News news) {
 
-	private String firstname;
+    }
 
-	private String lastname;
+    public void notify(Medium medium) {
 
-	private Date birthdate;
+    }
 
-	private String city;
+    public void notify(Album album) {
 
-	private String country;
+    }
 
-	private boolean isMale;
+    public void notify(Playlist playlist) {
 
-	private String email;
+    }
 
-	private String password;
+    public void notify(Label label, User artist) {
 
-	private String description;
+    }
 
-	private LinkedList<User> fan;
+    public void addArtistLabel(Label label) {
 
-	public User(String email, String firstname, String lastname, String passwort) {
+    }
 
-	}
+    public void addManagerLabel(Label label) {
 
-	public void follow(User fan) {
+    }
 
-	}
+    public void promoteToArtist() {
 
-	public void notify(News news) {
+    }
 
-	}
+    public void promoteToLabelManager() {
 
-	public void notify(Medium medium) {
+    }
 
-	}
+    public void promoteToAdmin() {
 
-	public void notify(Album album) {
+    }
 
-	}
+    /**
+     * @see Lockable#lock()
+     */
+    public void lock() {
 
-	public void notify(Playlist playlist) {
+    }
 
-	}
+    /**
+     * @see Lockable#lock(java.lang.String)
+     */
+    public void lock(String text) {
 
-	public void notify(Label label, User artist) {
+    }
 
-	}
+    /**
+     * @see Lockable#unlock()
+     */
+    public void unlock() {
 
-	public void addArtistLabel(Label label) {
+    }
 
-	}
+    /**
+     * @see Lockable#isLocked()
+     */
+    public boolean isLocked() {
+        return false;
+    }
 
-	public void addManagerLabel(Label label) {
+    /**
+     * @see Lockable#getLockText()
+     */
+    public String getLockText() {
+        return null;
+    }
 
-	}
+    public String getFirstname() {
+        return firstname;
+    }
 
-	public void promoteToArtist() {
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
 
-	}
+    public String getLastname() {
+        return lastname;
+    }
 
-	public void promoteToLabelManager() {
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 
-	}
+    public Date getBirthdate() {
+        return birthdate;
+    }
 
-	public void promoteToAdmin() {
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
+    }
 
-	}
+    public String getCity() {
+        return city;
+    }
 
+    public void setCity(String city) {
+        this.city = city;
+    }
 
-	/**
-	 * @see Lockable#lock()
-	 */
-	public void lock() {
+    public String getCountry() {
+        return country;
+    }
 
-	}
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
+    public boolean isIsMale() {
+        return isMale;
+    }
 
-	/**
-	 * @see Lockable#lock(java.lang.String)
-	 */
-	public void lock(String text) {
+    public void setIsMale(boolean isMale) {
+        this.isMale = isMale;
+    }
 
-	}
+    public String getEmail() {
+        return email;
+    }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	/**
-	 * @see Lockable#unlock()
-	 */
-	public void unlock() {
+    public String getPassword() {
+        return password;
+    }
 
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
+    public String getDescription() {
+        return description;
+    }
 
-	/**
-	 * @see Lockable#isLocked()
-	 */
-	public boolean isLocked() {
-		return false;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
+    public boolean isIsArtist() {
+        return isArtist;
+    }
 
-	/**
-	 * @see Lockable#getLockText()
-	 */
-	public String getLockText() {
-		return null;
-	}
+    public boolean isIsLabelManager() {
+        return isLabelManager;
+    }
 
+    public boolean isIsAdmin() {
+        return isAdmin;
+    }
+
+    public LinkedList<User> getMyFavoriteUsers() {
+        return myFavoriteUsers;
+    }
+
+    public LinkedList<Label> getMyFavoriteLabel() {
+        return myFavoriteLabel;
+    }
+
+    public LinkedList<User> getMyfollowers() {
+        return myfollowers;
+    }
+
+    
 }
