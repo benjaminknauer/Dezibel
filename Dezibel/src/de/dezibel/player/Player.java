@@ -29,7 +29,7 @@ public class Player {
         // Initialize JavaFX
         JFXPanel fxPanel = new JFXPanel();
         this.currentPosition = 0;
-        this.currentPlaylist = new LinkedList<Medium>();
+        this.currentPlaylist = new LinkedList<>();
     }
 
     /**
@@ -38,10 +38,10 @@ public class Player {
      * @return The player instance
      */
     public Player getInstance() {
-        if (this.instance == null) {
-            this.instance = new Player();
+        if (instance == null) {
+            instance = new Player();
         }
-        return this.instance;
+        return instance;
     }
 
     /**

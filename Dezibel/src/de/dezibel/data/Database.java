@@ -1,8 +1,9 @@
 package de.dezibel.data;
 
 
+import de.dezibel.ErrorCode;
 import de.dezibel.io.XStreamAdapter;
-import java.util.List;
+import java.util.LinkedList;
 /**
  * This singleton class represents the Database. It holds references to all objects of
  * all classes of <code>de.dezibel.data</code> and manages the creation of such.
@@ -10,6 +11,7 @@ import java.util.List;
  * @author Henner
  * @inv self.xStreamer != null
  */
+//TODO Implementier mich!
 public class Database {
 
 	private static Database instance = null;
@@ -24,7 +26,11 @@ public class Database {
          * [ 0  ,   1  ,    2  ,     3   ,   4  ,  5  ,    6   ,   7   ,      8     ,   9  ]
          * [User, Label, Medium, Playlist, Album, News, Comment, Rating, Application, Genre]
          */
-        private List[] data;
+        private LinkedList[] data;
+        /**
+         * The amount of Lists in data.
+         */
+        private int listCount = 10;
         
         /**
          * Private constructor called by the first call of <code>getInstance()</code>.
@@ -33,8 +39,16 @@ public class Database {
          * files.
          * If there is no saved data to import, it will create empty lists.
          */
+
 	private Database() {
+            load();
             
+            // No data loaded? Create empty lists.
+            if(data == null){
+                data = new LinkedList[listCount];
+                for(int i = 0; i < listCount; i++)
+                    data[i] = new LinkedList();
+             }
 	}
 
         /**
@@ -53,16 +67,18 @@ public class Database {
          * Save and export all current data using <code>XStreamAdapter</code>.
          */
 	public void save() {
-
+            xStreamer.save(data);
 	}
         
         /**
          * Import and load all data from previously exported XML files.
+         * <code>data</code> will be null if there were no XML files to load.
+         * @post If there is no data to load then (self.data == null)
          */
 	public void load() {
-
+            data = xStreamer.load();
 	}
-
+        
         /**
          * Makes the Database add a new User with the given information.
          * This will fail and return a proper ErrorCode if there already exists

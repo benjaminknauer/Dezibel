@@ -1,5 +1,6 @@
 package de.dezibel.data;
 
+import de.dezibel.ErrorCode;
 import de.dezibel.io.ImageLoader;
 import java.awt.Image;
 // TODO: Eine Todo-Sache
