@@ -20,8 +20,11 @@ public class Example {
 	}
 	
 	/**
-	 * ...
+	 * Description
+         * @param
 	 * @return
+         * @throws
+         * @see
 	 * @pre
 	 * @post
 	 */
