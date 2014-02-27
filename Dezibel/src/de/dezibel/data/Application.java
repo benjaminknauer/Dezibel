@@ -39,6 +39,8 @@ public class Application {
 
     /**
      * Accept the application.
+     * @pre 
+     * @post 
      */
     public void accept() {
         
@@ -46,6 +48,8 @@ public class Application {
 
     /**
      * Decline the application.
+     * @pre 
+     * @post 
      */
     public void decline() {
 
