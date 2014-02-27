@@ -115,6 +115,15 @@ public class User implements Lockable {
     public void addArtistLabel(Label label) {
         this.publishingLabels.add(label);
     }
+    
+    /**
+     * Removes a label from the list of labels under which the user publishes
+     * his mediums.
+     * @param label artist label which should be removed
+     */
+    public void removeArtistLabel(Label label){
+        this.publishingLabels.remove(label);
+    }
 
     /**
      * Adds a label to the list of labels the user has to manage.
@@ -126,27 +135,59 @@ public class User implements Lockable {
     }
 
     /**
+     * Removes a label from the list of labels which the user has to manage.
+     * @param label manager label which should be removed
+     */
+    public void removeManagerLabel(Label label){
+        this.managedLabels.remove(label);
+    }
+    
+           
+    /**
      * Adds a label to the list of labels the user has favorized.
      * @param label  new favorized label
      */
      public void addFavoriteLabel(Label label){
-        favoriteLabels.add(label);
+        this.favoriteLabels.add(label);
     }
+     
+     /**
+      * Removes a label from the list of labels which the user favorized.
+      * @param label favorized label which should be removed
+      */
+     public void removeFavoriteLabel(Label label){
+         this.favoriteLabels.remove(label);
+     }
      
     /**
      * Adds a user to the list of users the user has favorized.
      * @param user new favorized user
      */
      public void addFavoriteUser(User user){
-         favoriteUsers.add(user);
+         this.favoriteUsers.add(user);
      }
      
+     /**
+      * Removes a user from the list of favorized users.
+      * @param user user which should be removed
+      */
+     public void removeFavoriteUser(User user){
+         this.favoriteUsers.remove(user);
+     }
      /**
       * Adds a user to the list of users who follow the user.
       * @param user new following user
       */
      public void addFollower(User user){
-         followers.add(user);
+         this.followers.add(user);
+     }
+     
+     /**
+      * Removes a user from the list of followers.
+      * @param user user which should be removed
+      */
+     public void removeFollower(User user){
+         this.followers.remove(user);
      }
      
      /**
@@ -166,11 +207,27 @@ public class User implements Lockable {
      }     
      
      /**
+      * Removes an application from the list of applications.
+      * @param app application which should be removed
+      */
+     public void removeApplication(Application app){
+         this.sentApplications.remove(app);
+     }
+     
+     /**
       * Adds a new medium to the list of mediums the user created.
       * @param medium new medium created by the user
       */
      public void addCreatedMedium(Medium medium){
          this.createdMediums.add(medium);
+     }
+     
+     /**
+      * Removes a medium from the list of created mediums.
+      * @param medium medium which should be removed
+      */
+     public void removeMedium(Medium medium){
+         this.createdMediums.remove(medium);
      }
      
      /**
@@ -181,6 +238,10 @@ public class User implements Lockable {
          this.createdPlaylists.add(list);
      }
      
+     /**
+      * Removes a playlist from the users list of created playlists.
+      * @param list playlist which should be removed
+      */
      public void removePlaylist(Playlist list){
          this.createdPlaylists.remove(list);
      }
