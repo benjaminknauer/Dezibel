@@ -1,6 +1,7 @@
 package de.dezibel;
 
 public enum ErrorCode {
-    SUCCESS
+    SUCCESS,
+    GENRE_NAME_DUPLICATE
     
 }

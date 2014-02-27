@@ -23,7 +23,7 @@ public class Database {
 
         /**
          * All of the system's data is stored in lists here in this order:
-         * [ 0  ,   1  ,    2  ,     3   ,   4  ,  5  ,    6   ,   7   ,      8     ,   9  ]
+         * [ 0  ,   1  ,    2  ,     3   ,   4  ,  5  ,    6   ,   7   ,      8     ,   9  ]<br>
          * [User, Label, Medium, Playlist, Album, News, Comment, Rating, Application, Genre]
          */
         private LinkedList[] data;
@@ -32,6 +32,7 @@ public class Database {
          */
         private int listCount = 10;
         
+        private String topGenreName = "topGenre";
         /**
          * Private constructor called by the first call of <code>getInstance()</code>.
          * This creates the <code>Database</code> object that holds and manages all data while
@@ -39,15 +40,12 @@ public class Database {
          * files.
          * If there is no saved data to import, it will create empty lists.
          */
-
 	private Database() {
             load();
             
             // No data loaded? Create empty lists.
             if(data == null){
-                data = new LinkedList[listCount];
-                for(int i = 0; i < listCount; i++)
-                    data[i] = new LinkedList();
+                initializeDatabase();
              }
 	}
 
@@ -110,5 +108,52 @@ public class Database {
 	public ErrorCode addMedium(String titel, User artist, String path) {
 		return null;
 	}
+        
+        /**
+         * Creates a new genre specified by <code>name</code> and <code>superGenre</code>.
+         * If <code>superGenre</code> is null, the new genre's super genre will be
+         * set to the top genre.
+         * @param name The name of the new genre. Must be unique.
+         * @param superGenre The super genre of the new genre. May be null.
+         * @return ErrorCode
+         * @pre There must not be a genre with the same name as <code>name</code>
+         * @post A new Genre object has been created and added to the database
+         */
+        public ErrorCode addGenre(String name, Genre superGenre){
+            // Does a genre with this name already exist?
+            for(Genre g : this.getGenres())
+                if(name.equals(g.getName()))
+                    return ErrorCode.GENRE_NAME_DUPLICATE;
+            
+            // No superGenre specified. Set superGenre to the topGenre.
+            if(superGenre == null)
+                // Special case for the initialization of the db and creating the topGenre.
+                if(!name.equals(topGenreName))
+                    superGenre = this.getGenres().get(0);
+            
+            this.getGenres().add(new Genre(name, superGenre));
+            
+            return ErrorCode.SUCCESS;
+        }
+        
+        private void initializeDatabase(){
+            for(int i = 0; i < this.listCount; i++)
+                this.data[i] = new LinkedList();
+            
+            // Create default administrator.
+            this.addUser("admin@dezibel.de", "admin", "admin", "admin");
+            this.getUser().get(0).promoteToAdmin();
+            
+            // Create topGenre
+            this.addGenre(topGenreName, null);
+        }
+        
+        public LinkedList<User> getUser(){
+            return this.data[0];
+        }
+        
+        public LinkedList<Genre> getGenres(){
+            return this.data[9];
+        }
 
 }

@@ -23,6 +23,8 @@ public class Genre {
     public Genre(String name, Genre superGenre) {
         this.name = name;
         this.superGenre = superGenre;
+        if(superGenre != null)
+            superGenre.addSubGenre(this);
     }
     
     /**
@@ -79,7 +81,7 @@ public class Genre {
   
     public void addSubGenre(Genre subGenre) {
         if (!hasSubGenre(subGenre)) {
-            addSubGenre(subGenre);
+            subGenres.add(subGenre);
         }
     }
 
@@ -143,6 +145,10 @@ public class Genre {
     
     public Genre getSuperGenre(){
         return this.superGenre;
+    }
+    
+    public String getName(){
+        return this.name;
     }
 
 }
