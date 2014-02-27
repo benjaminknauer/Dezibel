@@ -9,10 +9,14 @@ public class Playlist implements Commentable {
     private String titel;
     private LinkedList<Comment> comments;
     private LinkedList<Medium> mediumList;
-
-    public Playlist(Medium medium, String titel) {
+    private User user;
+            
+    public Playlist(Medium medium, String titel, User user) {
         this.titel = titel;
+        this.mediumList = new LinkedList<>();
         this.mediumList.add(medium);
+        this.user = user;
+        this.user.addPlaylist(this);
     }
 
     public void addMedium(Medium medium) {
@@ -60,6 +64,7 @@ public class Playlist implements Commentable {
     @Override
     public void comment(Comment comment) {
         comments.add(comment);
+        comment.setCommented(this);
     }
 
     /**
