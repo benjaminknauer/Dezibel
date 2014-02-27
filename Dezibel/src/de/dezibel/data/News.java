@@ -4,33 +4,49 @@ import java.util.Date;
 import java.util.LinkedList;
 
 /**
- * This class represents a 
- * @author Benny
+ * This class represents news.
+ * @author Alexander Trahe, Benjamin Knauer
+ * @inv either author or label is not null
  */
 public class News implements Commentable {
 
     private String text;
-    private String titel;
+    private String title;
     private Date creationDate;
     private LinkedList<Comment> comments;
     private User author;
     private Label label;
 
-    public News(String titel, String text, User author) {
-        this.titel = titel;
+    /**
+     * The constructor for a news written by a user.
+     * @param title title of the news
+     * @param text text of the news
+     * @param author author of the news
+     */
+    public News(String title, String text, User author) {
+        this.title = title;
         this.text = text;
         this.author = author;
         this.creationDate = new Date();
     }
 
-    public News(String titel, String text, Label author) {
-        this(titel, text, (User) null);
+    /**
+     * The constructor for a news written by a label.
+     * @param title title of the news
+     * @param text text of the news
+     * @param author author of the news
+     */
+    public News(String title, String text, Label author) {
+        this(title, text, (User) null);
         this.label = author;
     }
 
     /**
+     * This Method adds a comment to the news.
+     * @param comment commet to add
      * @see Commentable#comment(Comment)
      */
+    @Override
     public void comment(Comment comment) {
         this.comments.add(comment);
     }
@@ -38,6 +54,7 @@ public class News implements Commentable {
     /**
      * @see Commentable#getComments()
      */
+    @Override
     public LinkedList<Comment> getComments() {
         return (LinkedList<Comment>) comments.clone();
     }
@@ -46,8 +63,8 @@ public class News implements Commentable {
         return text;
     }
 
-    public String getTitel() {
-        return titel;
+    public String getTitle() {
+        return title;
     }
 
     public Date getCreationDate() {
@@ -62,6 +79,10 @@ public class News implements Commentable {
         return label;
     }
 
+    /**
+     * This method returns true if the author is a Label and false if the author is a user.
+     * @return true if author is label, else false
+     */
     public boolean isAuthorLabel() {
         if (author == null) {
             return true;
