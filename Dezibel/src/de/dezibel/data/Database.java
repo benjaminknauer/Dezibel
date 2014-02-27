@@ -135,7 +135,7 @@ public class Database {
             
             return ErrorCode.SUCCESS;
         }
-        
+//TODO Initialisierung vervollstaendigen?
         private void initializeDatabase(){
             for(int i = 0; i < this.listCount; i++)
                 this.data[i] = new LinkedList();
