@@ -1,7 +1,7 @@
 package de.dezibel.data;
 
 import java.util.Date;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class News implements Commentable {
 
@@ -33,7 +33,7 @@ public class News implements Commentable {
 	/**
 	 * @see Commentable#getComments()
 	 */
-	public ArrayList<Comment> getComments() {
+	public LinkedList<Comment> getComments() {
 		return null;
 	}
 

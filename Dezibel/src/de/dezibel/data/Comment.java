@@ -3,36 +3,53 @@ package de.dezibel.data;
 import java.util.Date;
 import java.util.ArrayList;
 
-public class Comment implements Commentable {
+/**
+ * This class represents the comments Users can post to Media, Albums etc.
+ *
+ * @author Henner
+ * @inv self.text != null && !self.text.equals("") && self.creationDate != null
+ * && self.commentable != null && self.authoer != null
+ */
+public class Comment {
 
-	private String text;
+    private String text;
 
-	private Date creationDate;
+    private Date creationDate;
 
-	private Commentable commentable;
+    private Commentable commentable;
 
-	public Comment(String text, Commentable commentable, User author) {
-            this.text = text;
-            this.commentable = commentable;
-            
-            
-            this.creationDate = new Date();
-	}
+    private User author;
 
+    /**
+     * Creates a new comment consisting of
+     * <code>text</code> written by <code>author</code> and posted to <code>commentable</code>.
+     * @param text The text of the comment. Must not be null or the empty String
+     * after being trimmed.
+     * @param commentable The commentable object this comment is being posted
+     * to.
+     * @param author The user who wrote the comment.
+     */
+    public Comment(String text, Commentable commentable, User author) {
+        this.text = text;
+        this.commentable = commentable;
 
-	/**
-	 * @see Commentable#comment(Comment)
-	 */
-	public void comment(Comment comment) {
+        this.creationDate = new Date();
+    }
 
-	}
+    public String getText() {
+        return text;
+    }
 
+    public Date getCreationDate() {
+        return creationDate;
+    }
 
-	/**
-	 * @see Commentable#getComments()
-	 */
-	public ArrayList<Comment> getComments() {
-		return null;
-	}
+    public Commentable getCommentable() {
+        return commentable;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
 
 }
