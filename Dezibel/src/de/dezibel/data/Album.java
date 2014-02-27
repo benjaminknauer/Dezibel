@@ -1,6 +1,7 @@
 package de.dezibel.data;
 
 import de.dezibel.io.ImageLoader;
+import java.awt.Image;
 // TODO: Eine Todo-Sache
 /**
  * This class represents an Album.
@@ -18,8 +19,8 @@ public class Album extends Playlist {
 	private static ImageLoader imageLoader;
 
         /**
-         * Creates a new non empty Album with the given <p>medium</p>, <p>title</p>.
-         * <p>user</p> is set as the creator (uploader) of the Album.
+         * Creates a new non empty Album with the given <code>medium</code>, <code>title</code>.
+         * <code>user</code> is set as the creator (uploader) of the Album.
          * @param medium The first Medium in the Album.
          * @param title The Album's title.
          * @param user The creator (uploader) of the Album.
@@ -33,11 +34,11 @@ public class Album extends Playlist {
          * set it as this Album's cover.
          * @param path The path to the desired image.
          * @return ErrorCode depending on the outcome of the method.
-         * @post The attribute coverPath is now set to <p>path</p>.
+         * @post The attribute coverPath is now set to <code>path</code>.
          */
 	public ErrorCode uploadCover(String path) {
-		return null;
-	}
+            return null;
+        }
 
         /**
          * Returns this Album's cover as an Image object if there is one.
@@ -47,7 +48,7 @@ public class Album extends Playlist {
          * @pre self.hasCover
          */
 	public Image getCover() {
-		return null;
+		return this.imageLoader.getImageFromFile(coverPath);
 	}
         
         /**

@@ -8,7 +8,7 @@ import java.util.LinkedList;
 public interface Commentable {
 
     /**
-     * Add the given <p>comment</p> to this object.
+     * Add the given <code>comment</code> to this object.
      * @param comment The comment to be added to this object.
      * @pre self.comment != null
      * @post true

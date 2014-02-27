@@ -22,7 +22,7 @@ public class Comment {
 
     /**
      * Creates a new comment consisting of
-     * <p>text</p> written by <p>author</p> and posted to <p>commentable</p>.
+     * <code>text</code> written by <code>author</code> and posted to <code>commentable</code>.
      * @param text The text of the comment. Must not be null or the empty String
      * after being trimmed.
      * @param commentable The commentable object this comment is being posted

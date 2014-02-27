@@ -21,7 +21,7 @@ public class Application {
 
     /**
      * Creates a new application object representing an application from an 
-     * artist for a label if <p>fromArtist</p> is set to true or the other way
+     * artist for a label if <code>fromArtist</code> is set to true or the other way
      * round if it's set to false.
      * @param fromArtist Set to true if the applicant is an artist, otherwise false.
      * @param text The message the recipient will be shown.
@@ -39,8 +39,6 @@ public class Application {
 
     /**
      * Accept the application.
-     * @pre 
-     * @post 
      */
     public void accept() {
         
@@ -48,8 +46,6 @@ public class Application {
 
     /**
      * Decline the application.
-     * @pre 
-     * @post 
      */
     public void decline() {
 
