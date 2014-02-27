@@ -7,7 +7,6 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.HashMap;
 
-
 /**
  * Stores information about a music file, which can be uploaded, played, deleted
  * and locked by fitting users.
@@ -25,8 +24,8 @@ public class Medium implements Commentable, Lockable {
     private User artist;
     private Genre genre;
     private Label label;
-    private boolean isDeleted;
-    private boolean isLocked;
+    private boolean deleted;
+    private boolean locked;
     private String lockText;
     private HashMap<Integer, Rating> ratingList;
     private LinkedList<Comment> commentList;
@@ -43,10 +42,14 @@ public class Medium implements Commentable, Lockable {
         this.title = title;
         this.artist = artist;
         this.path = path;
-        
-        this.ratingList = new HashMap<> ();
+
+        this.ratingList = new HashMap<>();
         this.commentList = new LinkedList<>();
         this.playlistList = new LinkedList<>();
+
+        if (mediumLoader == null) {
+            mediumLoader = new MediumLoader();
+        }
     }
 
     /**
@@ -59,19 +62,24 @@ public class Medium implements Commentable, Lockable {
     public Medium(String title, User artist) {
         this.title = title;
         this.artist = artist;
-        
-        this.ratingList = new HashMap<> ();
+
+        this.ratingList = new HashMap<>();
         this.commentList = new LinkedList<>();
         this.playlistList = new LinkedList<>();
+
+        if (mediumLoader == null) {
+            mediumLoader = new MediumLoader();
+        }
     }
 
     /**
      * Checks if the medium is playable.
+     *
      * @return <code>true</code> if the medium is playable, <code>false</code>
      * otherwise
      */
     public boolean isAvailable() {
-        return (!this.isLocked()) || (!isDeleted);
+        return (!this.isLocked()) || (!deleted);
     }
 
     /**
@@ -90,6 +98,20 @@ public class Medium implements Commentable, Lockable {
         this.path = this.mediumLoader.upload(path);
         return null;
         // TODO: ErrorCode
+    }
+
+    /**
+     * Adds a new rating/edits the existing one with points.
+     *
+     * @param points value how high it is rated
+     * @param rater user who rates the medium
+     */
+    public void rate(int points, User rater) {
+        if (this.ratingList.containsKey(rater.hashCode())) {
+            ratingList.get(rater.hashCode()).setPoints(points);
+        } else {
+            ratingList.put(rater.hashCode(), new Rating(points));
+        }
     }
 
     /**
@@ -127,16 +149,15 @@ public class Medium implements Commentable, Lockable {
      */
     @Override
     public void lock() {
-        this.isLocked = true;
+        this.locked = true;
     }
 
     /**
-     *
      * @see Lockable#lock(java.lang.String)
      */
     @Override
     public void lock(String text) {
-        this.isLocked = true;
+        this.locked = true;
         // TODO: Add sending of emails.
     }
 
@@ -146,7 +167,7 @@ public class Medium implements Commentable, Lockable {
      */
     @Override
     public void unlock() {
-        this.isLocked = false;
+        this.locked = false;
     }
 
     /**
@@ -154,9 +175,9 @@ public class Medium implements Commentable, Lockable {
      */
     @Override
     public LinkedList<Comment> getComments() {
-        return this.commentList;
+        return (LinkedList<Comment>) this.commentList.clone();
     }
-    
+
     /**
      * Returns if the medium is locked.
      *
@@ -165,11 +186,10 @@ public class Medium implements Commentable, Lockable {
      */
     @Override
     public boolean isLocked() {
-        return this.isLocked;
+        return this.locked;
     }
 
     /**
-     *
      * @see Lockable#getLockText()
      */
     @Override
@@ -195,10 +215,6 @@ public class Medium implements Commentable, Lockable {
 
     public double getAvgRating() {
         return avgRating;
-    }
-
-    public void setAvgRating(double avgRating) {
-        this.avgRating = avgRating;
     }
 
     public User getArtist() {
@@ -240,6 +256,5 @@ public class Medium implements Commentable, Lockable {
     public LinkedList<Playlist> getPlaylistList() {
         return playlistList;
     }
-    
-    
+
 }
