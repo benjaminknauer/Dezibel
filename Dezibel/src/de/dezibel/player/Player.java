@@ -240,9 +240,17 @@ public class Player {
         MediaPlayer tmpPlayer = new MediaPlayer(new Media(medium.getFile().toURI()
                 .toString()));
         if (this.player != null) {
+            this.player.setOnEndOfMedia(null);
             if (this.isPlaying()) tmpPlayer.play();
             tmpPlayer.setVolume(this.player.getVolume());
         }
+        
+        tmpPlayer.setOnEndOfMedia(new Runnable() {
+            @Override
+            public void run() {
+                Player.this.next();
+            }
+        });
         return tmpPlayer;
     }
 
