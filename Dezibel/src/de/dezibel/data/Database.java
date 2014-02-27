@@ -172,7 +172,7 @@ public class Database {
         }
 
         // Create default administrator.
-        this.addUser("admin@dezibel.de", "admin", "admin", "admin");
+        this.addUser("admin@dezibel.de", "admin", "admin", "admin", new Date(), null, null, (Math.random() < 0.5));
         this.getUsers().get(0).promoteToAdmin();
 
         // Create topGenre
