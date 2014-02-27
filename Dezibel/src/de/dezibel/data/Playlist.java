@@ -1,39 +1,72 @@
 package de.dezibel.data;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
+
+// TODO: Assoziationen
 
 public class Playlist implements Commentable {
 
-	private String titel;
+    private String titel;
+    private LinkedList<Comment> comments;
+    private LinkedList<Medium> mediumList;
 
-	private Comment comment;
+    public Playlist(Medium medium, String titel) {
+        this.titel = titel;
+        this.mediumList.add(medium);
+    }
 
-	public Playlist(Medium medium, String titel) {
+    public void addMedium(Medium medium) {
+        this.mediumList.add(medium);
+    }
 
-	}
+    public void removeMedium(int index) {
+        mediumList.remove(index);
+    }
 
-	public void move(int currentPos, int newPos) {
+    /**
+     * This method moves a mediaobject from it's current position to a new one.
+     * @param currentPos The current position of the mediaobject which is to be moved.
+     * @param newPos The position the mediaobject is supposed to be moved to.
+     */
+    public void move(int currentPos, int newPos) {
+        Medium temp = mediumList.get(currentPos);
+        mediumList.add(newPos, temp);
+        if (currentPos <= newPos) {
+            mediumList.remove(currentPos);
+        } else {
+            mediumList.remove(currentPos + 1);
+        }
+    }
 
-	}
+    public int size() {
+        return mediumList.size();
+    }
 
-	public int size() {
-		return 0;
-	}
+    public LinkedList<Medium> getList() {
+        return (LinkedList<Medium>) mediumList.clone();
+    }
 
+    public String getTitel() {
+        return titel;
+    }
 
-	/**
-	 * @see Commentable#comment(Comment)
-	 */
-	public void comment(Comment comment) {
+    public void setTitel(String titel) {
+        this.titel = titel;
+    }
 
-	}
+    /**
+     * @see Commentable#comment(Comment)
+     */
+    @Override
+    public void comment(Comment comment) {
+        comments.add(comment);
+    }
 
-
-	/**
-	 * @see Commentable#getComments()
-	 */
-	public ArrayList<Comment> getComments() {
-		return null;
-	}
-
+    /**
+     * @see Commentable#getComments()
+     */
+    @Override
+    public LinkedList<Comment> getComments() {
+        return (LinkedList<Comment>) comments.clone();
+    }
 }
