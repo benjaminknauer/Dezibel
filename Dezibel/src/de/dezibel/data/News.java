@@ -24,6 +24,8 @@ public class News implements Commentable {
      * @param author author of the news
      */
     public News(String title, String text, User author) {
+        this.comments = new LinkedList<>();
+        
         this.title = title;
         this.text = text;
         this.author = author;
