@@ -96,6 +96,7 @@ public class Database {
      * @param firstname The first name of the new User.
      * @param lastname The last name of the new User.
      * @param passwort The password of the new User.
+     * @param isMale True if user is male, false if female. No trannies here, sorry.
      * @return ErrorCode
      * @pre All the parameters must not be null or the empty String.
      * @post A new User object has been created and added to the database.
@@ -179,43 +180,43 @@ public class Database {
     }
 
     public LinkedList<User> getUsers() {
-        return this.data[0];
+        return (LinkedList<User>) this.data[0].clone();
     }
 
     public LinkedList<Label> getLabels() {
-        return this.data[1];
+        return (LinkedList<Label>) this.data[1].clone();
     }
 
     public LinkedList<Medium> getMedia() {
-        return this.data[2];
+        return (LinkedList<Medium>) this.data[2].clone();
     }
     
     public LinkedList<Playlist> getPlaylists() {
-        return this.data[3];
+        return (LinkedList<Playlist>) this.data[3].clone();
     }
     
     public LinkedList<Album> getAlbums() {
-        return this.data[4];
+        return (LinkedList<Album>) this.data[4].clone();
     }
     
     public LinkedList<News> getNews() {
-        return this.data[5];
+        return (LinkedList<News>) this.data[5].clone();
     }
     
     public LinkedList<Comment> getComments() {
-        return this.data[6];
+        return (LinkedList<Comment>) this.data[6].clone();
     }
     
     public LinkedList<Rating> getRatings() {
-        return this.data[7];
+        return (LinkedList<Rating>) this.data[7].clone();
     }
     
     public LinkedList<Application> getApplications() {
-        return this.data[8];
+        return (LinkedList<Application>) this.data[8].clone();
     }
 
     public LinkedList<Genre> getGenres() {
-        return this.data[9];
+        return (LinkedList<Genre>) this.data[9].clone();
     }
 
 }
