@@ -114,6 +114,21 @@ public class Database {
         this.getUsers().add(u);
         return ErrorCode.SUCCESS;
     }
+    public void removeLabel(Label aThis) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void removeNews(News currentNews) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void removeComment(Comment currentComment) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+   public  void removePlaylist(Playlist aThis) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
     /**
      * Makes the Database add a new Medium with the given information. The
@@ -218,5 +233,4 @@ public class Database {
     public LinkedList<Genre> getGenres() {
         return (LinkedList<Genre>) this.data[9].clone();
     }
-
 }
