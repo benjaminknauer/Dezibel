@@ -96,8 +96,10 @@ public class Medium implements Commentable, Lockable {
     public synchronized ErrorCode upload(String path) {
         this.uploadDate = new Date();
         this.path = this.mediumLoader.upload(path);
-        return null;
-        // TODO: ErrorCode
+        if(!path.isEmpty()) {
+            return ErrorCode.SUCCESS;
+        }
+        return ErrorCode.UPLOAD_ERROR;
     }
 
     /**
