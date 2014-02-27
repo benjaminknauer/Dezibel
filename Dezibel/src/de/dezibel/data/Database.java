@@ -2,6 +2,7 @@ package de.dezibel.data;
 
 import de.dezibel.ErrorCode;
 import de.dezibel.io.XStreamAdapter;
+import java.util.Date;
 import java.util.LinkedList;
 
 /**
@@ -99,8 +100,18 @@ public class Database {
      * @pre All the parameters must not be null or the empty String.
      * @post A new User object has been created and added to the database.
      */
-    public ErrorCode addUser(String email, String firstname, String lastname, String passwort) {
-        return null;
+    public ErrorCode addUser(String email, String firstname, String lastname, String passwort, Date birthdate, String city, String country, boolean isMale) {
+        for(User curUser : this.getUsers())
+            if(curUser.getEmail().equals(email))
+                return ErrorCode.EMAIL_ALREADY_IN_USE;
+        
+        User u = new User(email, firstname, lastname, passwort, isMale);
+        u.setBirthdate(birthdate);
+        u.setCity(city);
+        u.setCountry(country);
+       
+        this.getUsers().add(u);
+        return ErrorCode.SUCCESS;
     }
 
     /**
