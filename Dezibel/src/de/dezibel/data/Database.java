@@ -37,6 +37,17 @@ public class Database {
      */
     private int listCount = 10;
 
+    private LinkedList<User> users;
+    private LinkedList<Label> labels;
+    private LinkedList<Medium> media;
+    private LinkedList<Playlist> playlists;
+    private LinkedList<Album> albums;
+    private LinkedList<News> news;
+    private LinkedList<Comment> comments;
+    private LinkedList<Rating> ratings;
+    private LinkedList<Application> applications;
+    private LinkedList<Genre> genres;
+
     private String topGenreName = "topGenre";
 
     /**
@@ -48,8 +59,7 @@ public class Database {
      */
     private Database() {
         load();
-
-        // No data loaded? Create empty lists.
+        // No data loaded? Create empty lists and add the default stuff.
         if (data == null) {
             initializeDatabase();
         }
@@ -85,6 +95,19 @@ public class Database {
      */
     public void load() {
         data = xStreamer.load();
+        if (data == null) {
+            return;
+        }
+        users = data[0];
+        labels = data[1];
+        media = data[2];
+        playlists = data[3];
+        albums = data[4];
+        news = data[5];
+        comments = data[6];
+        ratings = data[7];
+        applications = data[8];
+        genres = data[9];
     }
 
     /**
@@ -96,24 +119,32 @@ public class Database {
      * @param firstname The first name of the new User.
      * @param lastname The last name of the new User.
      * @param passwort The password of the new User.
-     * @param isMale True if user is male, false if female. No trannies here, sorry.
+     * @param isMale True if user is male, false if female. No trannies here,
+     * sorry.
      * @return ErrorCode
      * @pre All the parameters must not be null or the empty String.
      * @post A new User object has been created and added to the database.
      */
     public ErrorCode addUser(String email, String firstname, String lastname, String passwort, Date birthdate, String city, String country, boolean isMale) {
-        for(User curUser : this.getUsers())
-            if(curUser.getEmail().equals(email))
+        for (User curUser : this.getUsers()) {
+            if (curUser.getEmail().equals(email)) {
                 return ErrorCode.EMAIL_ALREADY_IN_USE;
-        
+            }
+        }
+
         User u = new User(email, firstname, lastname, passwort, isMale);
         u.setBirthdate(birthdate);
         u.setCity(city);
         u.setCountry(country);
-       
-        this.getUsers().add(u);
+
+        users.add(u);
         return ErrorCode.SUCCESS;
     }
+
+    void removeApplication(Application application) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public void removeLabel(Label aThis) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -126,7 +157,7 @@ public class Database {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-   public  void removePlaylist(Playlist aThis) {
+    public void removePlaylist(Playlist aThis) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -182,9 +213,27 @@ public class Database {
 //TODO Initialisierung vervollstaendigen?
 
     private void initializeDatabase() {
-        for (int i = 0; i < this.listCount; i++) {
-            this.data[i] = new LinkedList();
-        }
+        data = new LinkedList[this.listCount];
+        users = new LinkedList<>();
+        data[0] = users;
+        labels = new LinkedList<>();
+        data[1] = labels;
+        media = new LinkedList<>();
+        data[2] = media;
+        playlists = new LinkedList<>();
+        data[3] = playlists;
+        albums = new LinkedList<>();
+        data[4] = albums;
+        news = new LinkedList<>();
+        data[5] = news;
+        comments = new LinkedList<>();
+        data[6] = comments;
+        ratings = new LinkedList<>();
+        data[7] = ratings;
+        applications = new LinkedList<>();
+        data[8] = applications;
+        genres = new LinkedList<>();
+        data[9] = genres;
 
         // Create default administrator.
         this.addUser("admin@dezibel.de", "admin", "admin", "admin", new Date(), null, null, (Math.random() < 0.5));
@@ -205,27 +254,27 @@ public class Database {
     public LinkedList<Medium> getMedia() {
         return (LinkedList<Medium>) this.data[2].clone();
     }
-    
+
     public LinkedList<Playlist> getPlaylists() {
         return (LinkedList<Playlist>) this.data[3].clone();
     }
-    
+
     public LinkedList<Album> getAlbums() {
         return (LinkedList<Album>) this.data[4].clone();
     }
-    
+
     public LinkedList<News> getNews() {
         return (LinkedList<News>) this.data[5].clone();
     }
-    
+
     public LinkedList<Comment> getComments() {
         return (LinkedList<Comment>) this.data[6].clone();
     }
-    
+
     public LinkedList<Rating> getRatings() {
         return (LinkedList<Rating>) this.data[7].clone();
     }
-    
+
     public LinkedList<Application> getApplications() {
         return (LinkedList<Application>) this.data[8].clone();
     }
