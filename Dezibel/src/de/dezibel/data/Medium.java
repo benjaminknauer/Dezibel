@@ -1,10 +1,12 @@
 package de.dezibel.data;
 
 import de.dezibel.io.MediumLoader;
+import de.dezibel.ErrorCode;
 import java.util.Date;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.HashMap;
+
 
 /**
  * Stores information about a music file, which can be uploaded, played, deleted
@@ -20,12 +22,11 @@ public class Medium implements Commentable, Lockable {
     private Album album;
     private Date uploadDate;
     private double avgRating;
-    private Comment comment;
     private User artist;
     private Genre genre;
     private Label label;
-    private Boolean isDeleted;
-    private Boolean isLocked;
+    private boolean isDeleted;
+    private boolean isLocked;
     private String lockText;
     private HashMap<Integer, Rating> ratingList;
     private LinkedList<Comment> commentList;
@@ -42,6 +43,10 @@ public class Medium implements Commentable, Lockable {
         this.title = title;
         this.artist = artist;
         this.path = path;
+        
+        this.ratingList = new HashMap<> ();
+        this.commentList = new LinkedList<>();
+        this.playlistList = new LinkedList<>();
     }
 
     /**
@@ -54,11 +59,14 @@ public class Medium implements Commentable, Lockable {
     public Medium(String title, User artist) {
         this.title = title;
         this.artist = artist;
+        
+        this.ratingList = new HashMap<> ();
+        this.commentList = new LinkedList<>();
+        this.playlistList = new LinkedList<>();
     }
 
     /**
      * Checks if the medium is playable.
-     *
      * @return <code>true</code> if the medium is playable, <code>false</code>
      * otherwise
      */
@@ -74,9 +82,14 @@ public class Medium implements Commentable, Lockable {
      * stored
      * @return returns an errorcode which shows if the upload worked fine or if
      * a problem occured and which kind of problem that was
+     * @pre path leads to a valid file
+     * @post medium is now playabale and upload-date is set to the current date
      */
-    public ErrorCode upload(String path) {
+    public synchronized ErrorCode upload(String path) {
+        this.uploadDate = new Date();
+        this.path = this.mediumLoader.upload(path);
         return null;
+        // TODO: ErrorCode
     }
 
     /**
@@ -86,7 +99,7 @@ public class Medium implements Commentable, Lockable {
      * <code>false</code> otherwise
      */
     public boolean isMediumSet() {
-        return ((this.path.equals("")) || (this.path != null));
+        return ((this.path != null) && !(this.path.equals("")));
     }
 
     /**
@@ -100,10 +113,7 @@ public class Medium implements Commentable, Lockable {
     }
 
     /**
-     * Adds a comment to the mediums list of comments.
      *
-     * @param comment comment object which stores a text, the creation date and
-     * its author
      * @see Commentable#comment(Comment)
      */
     @Override
@@ -112,18 +122,6 @@ public class Medium implements Commentable, Lockable {
     }
 
     /**
-     * Returns the mediums list of comments.
-     *
-     * @return a list of its comments
-     * @see Commentable#getComments()
-     */
-    @Override
-    public LinkedList<Comment> getComments() {
-        return this.commentList;
-    }
-
-    /**
-     * Locks the medium and makes it unavailable (not playable).
      *
      * @see Lockable#lock()
      */
@@ -133,10 +131,7 @@ public class Medium implements Commentable, Lockable {
     }
 
     /**
-     * Locks the medium, makes it unaivalable(not playable) and sends a short
-     * information to the authors email adress.
      *
-     * @param text contains the message which should be sent
      * @see Lockable#lock(java.lang.String)
      */
     @Override
@@ -146,8 +141,6 @@ public class Medium implements Commentable, Lockable {
     }
 
     /**
-     * Unlocks the medium so it gets availalable(playable) again and deletes its
-     * locktext (if there was any).
      *
      * @see Lockable#unlock()
      */
@@ -156,6 +149,14 @@ public class Medium implements Commentable, Lockable {
         this.isLocked = false;
     }
 
+    /**
+     * @see Commentable#getComments()
+     */
+    @Override
+    public LinkedList<Comment> getComments() {
+        return this.commentList;
+    }
+    
     /**
      * Returns if the medium is locked.
      *
@@ -168,13 +169,77 @@ public class Medium implements Commentable, Lockable {
     }
 
     /**
-     * Returns the lock information.
      *
-     * @return lock information text
      * @see Lockable#getLockText()
      */
     @Override
     public String getLockText() {
         return this.lockText;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Album getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(Album album) {
+        this.album = album;
+    }
+
+    public double getAvgRating() {
+        return avgRating;
+    }
+
+    public void setAvgRating(double avgRating) {
+        this.avgRating = avgRating;
+    }
+
+    public User getArtist() {
+        return artist;
+    }
+
+    public void setArtist(User artist) {
+        this.artist = artist;
+    }
+
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+
+    public Label getLabel() {
+        return label;
+    }
+
+    public void setLabel(Label label) {
+        this.label = label;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public Date getUploadDate() {
+        return uploadDate;
+    }
+
+    public HashMap<Integer, Rating> getRatingList() {
+        return ratingList;
+    }
+
+    public LinkedList<Playlist> getPlaylistList() {
+        return playlistList;
+    }
+    
+    
 }
