@@ -64,7 +64,6 @@ public class Playlist implements Commentable {
     @Override
     public void comment(Comment comment) {
         comments.add(comment);
-        comment.setCommented(this);
     }
 
     /**
