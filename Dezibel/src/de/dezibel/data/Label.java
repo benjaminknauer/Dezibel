@@ -131,7 +131,7 @@ public class Label implements Lockable {
                 currentArtist.removeArtistLabel(this);
             }
             for (User currentFollower : followers) {
-                currentFollower.removeFollowedLabel(this);
+                currentFollower.removeFavoriteLabel(this);
             }
             for (News currentNews : news) {
                 currentNews.deleteComments();
@@ -167,7 +167,7 @@ public class Label implements Lockable {
      */
     public void removeFollower(User fan) {
         this.followers.remove(fan);
-        fan.removeFollowedLabel(this);
+        fan.removeFavoriteLabel(this);
     }
 
     /**

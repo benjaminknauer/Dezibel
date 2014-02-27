@@ -10,15 +10,15 @@ import java.util.LinkedList;
  */
 public class User implements Lockable {
 
-    private boolean isArtist;
-    private boolean isLabelManager;
-    private boolean isAdmin;
+    private boolean artist;
+    private boolean labelManager;
+    private boolean admin;
     private String firstname;
     private String lastname;
     private Date birthdate;
     private String city;
     private String country;
-    private boolean isMale;
+    private boolean male;
     private boolean locked;
     private String email;
     private String password;
@@ -34,6 +34,8 @@ public class User implements Lockable {
     private LinkedList<Playlist> createdPlaylists;
     private LinkedList<Comment> createdComments;
 
+    // TODO: Flags in User einbauen!
+    
     /**
      * Class Constructor
      *
@@ -49,7 +51,7 @@ public class User implements Lockable {
         this.firstname = firstname;
         this.lastname = lastname;
         this.password = password;
-        this.isMale = isMale;
+        this.male = isMale;
 
         this.favoriteLabels = new LinkedList<Label>();
         this.favoriteUsers = new LinkedList<User>();
@@ -65,12 +67,15 @@ public class User implements Lockable {
         this.followers.add(fan);
     }
 
+    
+    // Notify Methoden:
+    // TODO: Klasse für Mails einbauen
     /**
      * Informs the user about a new news by a favorite.
      * @param news someone else's new news
      */
     public void notify(News news) {
-        // TODO: Wo notifyen?
+        
     }
 
     /**
@@ -115,6 +120,15 @@ public class User implements Lockable {
     public void addArtistLabel(Label label) {
         this.publishingLabels.add(label);
     }
+    
+    /**
+     * Removes a label from the list of labels under which the user publishes
+     * his mediums.
+     * @param label artist label which should be removed
+     */
+    public void removeArtistLabel(Label label){
+        this.publishingLabels.remove(label);
+    }
 
     /**
      * Adds a label to the list of labels the user has to manage.
@@ -126,27 +140,59 @@ public class User implements Lockable {
     }
 
     /**
+     * Removes a label from the list of labels which the user has to manage.
+     * @param label manager label which should be removed
+     */
+    public void removeManagerLabel(Label label){
+        this.managedLabels.remove(label);
+    }
+    
+           
+    /**
      * Adds a label to the list of labels the user has favorized.
      * @param label  new favorized label
      */
      public void addFavoriteLabel(Label label){
-        favoriteLabels.add(label);
+        this.favoriteLabels.add(label);
     }
+     
+     /**
+      * Removes a label from the list of labels which the user favorized.
+      * @param label favorized label which should be removed
+      */
+     public void removeFavoriteLabel(Label label){
+         this.favoriteLabels.remove(label);
+     }
      
     /**
      * Adds a user to the list of users the user has favorized.
      * @param user new favorized user
      */
      public void addFavoriteUser(User user){
-         favoriteUsers.add(user);
+         this.favoriteUsers.add(user);
      }
      
+     /**
+      * Removes a user from the list of favorized users.
+      * @param user user which should be removed
+      */
+     public void removeFavoriteUser(User user){
+         this.favoriteUsers.remove(user);
+     }
      /**
       * Adds a user to the list of users who follow the user.
       * @param user new following user
       */
      public void addFollower(User user){
-         followers.add(user);
+         this.followers.add(user);
+     }
+     
+     /**
+      * Removes a user from the list of followers.
+      * @param user user which should be removed
+      */
+     public void removeFollower(User user){
+         this.followers.remove(user);
      }
      
      /**
@@ -166,11 +212,27 @@ public class User implements Lockable {
      }     
      
      /**
+      * Removes an application from the list of applications.
+      * @param app application which should be removed
+      */
+     public void removeApplication(Application app){
+         this.sentApplications.remove(app);
+     }
+     
+     /**
       * Adds a new medium to the list of mediums the user created.
       * @param medium new medium created by the user
       */
      public void addCreatedMedium(Medium medium){
          this.createdMediums.add(medium);
+     }
+     
+     /**
+      * Removes a medium from the list of created mediums.
+      * @param medium medium which should be removed
+      */
+     public void removeMedium(Medium medium){
+         this.createdMediums.remove(medium);
      }
      
      /**
@@ -181,6 +243,10 @@ public class User implements Lockable {
          this.createdPlaylists.add(list);
      }
      
+     /**
+      * Removes a playlist from the users list of created playlists.
+      * @param list playlist which should be removed
+      */
      public void removePlaylist(Playlist list){
          this.createdPlaylists.remove(list);
      }
@@ -299,12 +365,12 @@ public class User implements Lockable {
         this.country = country;
     }
 
-    public boolean isIsMale() {
-        return isMale;
+    public boolean isMale() {
+        return male;
     }
 
     public void setIsMale(boolean isMale) {
-        this.isMale = isMale;
+        this.male = isMale;
     }
 
     public String getEmail() {
@@ -331,56 +397,56 @@ public class User implements Lockable {
         this.description = description;
     }
 
-    public boolean isIsArtist() {
-        return isArtist;
+    public boolean isArtist() {
+        return artist;
     }
 
-    public boolean isIsLabelManager() {
-        return isLabelManager;
+    public boolean isLabelManager() {
+        return labelManager;
     }
 
-    public boolean isIsAdmin() {
-        return isAdmin;
+    public boolean isAdmin() {
+        return admin;
     }
 
     public LinkedList<User> getFavoriteUsers() {
-        return favoriteUsers;
+        return (LinkedList<User>)favoriteUsers.clone();
     }
 
     public LinkedList<Label> getFavoriteLabels() {
-        return favoriteLabels;
+        return (LinkedList<Label>)favoriteLabels.clone();
     }
     
     public LinkedList<User> getFollowers() {
-        return followers;
+        return (LinkedList<User>)followers.clone();
     }
 
     public LinkedList<Label> getManagedLabels() {
-        return managedLabels;
+        return (LinkedList<Label>)managedLabels.clone();
     }
 
     public LinkedList<Label> getPublishingLabels() {
-        return publishingLabels;
+        return (LinkedList<Label>)publishingLabels.clone();
     }
 
     public LinkedList<News> getNews() {
-        return newsList;
+        return (LinkedList<News>)newsList.clone();
     }
 
-    public LinkedList<Application> getSentApplications() {
-        return sentApplications;
+    public LinkedList<Application> getApplications() {
+        return (LinkedList<Application>)sentApplications.clone();
     }
 
     public LinkedList<Medium> getCreatedMediums() {
-        return createdMediums;
+        return (LinkedList<Medium>)createdMediums.clone();
     }
 
     public LinkedList<Playlist> getCreatedPlaylists() {
-        return createdPlaylists;
+        return (LinkedList<Playlist>)createdPlaylists.clone();
     }
 
     public LinkedList<Comment> getCreatedComments() {
-        return createdComments;
+        return (LinkedList<Comment>)createdComments.clone();
     }
 
 }
