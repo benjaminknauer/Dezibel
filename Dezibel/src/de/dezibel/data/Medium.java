@@ -160,6 +160,7 @@ public class Medium implements Commentable, Lockable {
     @Override
     public void lock(String text) {
         this.locked = true;
+        this.lockText = text;
         // TODO: Add sending of emails.
     }
 
