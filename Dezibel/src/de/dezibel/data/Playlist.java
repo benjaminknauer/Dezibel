@@ -28,6 +28,7 @@ public class Playlist implements Commentable {
 
         this.titel = titel;
         this.mediumList.add(medium);
+        medium.addPlaylist(this);
         this.user = user;
         this.user.addCreatedPlaylist(this);
     }
