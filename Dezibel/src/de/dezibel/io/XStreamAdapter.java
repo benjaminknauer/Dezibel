@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.BufferedWriter;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -52,12 +53,12 @@ public class XStreamAdapter {
      * @return List[] which holds the data for the database or null,
      *          if the file doesnt exist
      */
-    public List[] load() {
+    public LinkedList[] load() {
         File f = new File("save.xml");
         if (f.exists()) {
             XStream xstream = new XStream(new DomDriver("Cp1252"));
             xstream.alias("List", List[].class);
-            return (List[]) xstream.fromXML(f);
+            return (LinkedList[]) xstream.fromXML(f);
         }
         return null;
     }
