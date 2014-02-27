@@ -23,7 +23,7 @@ public class Database {
      * The <code>XStreamAdapter</code> used to export and import the system's
      * data.
      */
-    private XStreamAdapter xStreamer;
+    private static XStreamAdapter xStreamer;
 
     /**
      * All of the system's data is stored in lists here in this order: [ 0 , 1 ,
@@ -58,6 +58,8 @@ public class Database {
      * import, it will create empty lists.
      */
     private Database() {
+        if(xStreamer == null)
+            xStreamer = new XStreamAdapter();
         load();
         // No data loaded? Create empty lists and add the default stuff.
         if (data == null) {
@@ -78,6 +80,38 @@ public class Database {
             instance = new Database();
         }
         return instance;
+    }
+
+    //TODO Initialisierung vervollstaendigen?
+    private void initializeDatabase() {
+        data = new LinkedList[this.listCount];
+        users = new LinkedList<>();
+        data[0] = users;
+        labels = new LinkedList<>();
+        data[1] = labels;
+        media = new LinkedList<>();
+        data[2] = media;
+        playlists = new LinkedList<>();
+        data[3] = playlists;
+        albums = new LinkedList<>();
+        data[4] = albums;
+        news = new LinkedList<>();
+        data[5] = news;
+        comments = new LinkedList<>();
+        data[6] = comments;
+        ratings = new LinkedList<>();
+        data[7] = ratings;
+        applications = new LinkedList<>();
+        data[8] = applications;
+        genres = new LinkedList<>();
+        data[9] = genres;
+
+        // Create default administrator.
+        this.addUser("admin@dezibel.de", "admin", "admin", "admin", new Date(), null, null, (Math.random() < 0.5));
+        this.getUsers().get(0).promoteToAdmin();
+
+        // Create topGenre
+        this.addGenre(topGenreName, null);
     }
 
     /**
@@ -119,10 +153,14 @@ public class Database {
      * @param firstname The first name of the new User.
      * @param lastname The last name of the new User.
      * @param passwort The password of the new User.
+     * @param birthdate The birthdate of the new User.
+     * @param city The city the new User lives in.
+     * @param country The country the new User lives in.
      * @param isMale True if user is male, false if female. No trannies here,
      * sorry.
      * @return ErrorCode
-     * @pre All the parameters must not be null or the empty String.
+     * @pre email, firstname, lastname, passwort must not be null or the empty
+     * String. email must not be associated with another User.
      * @post A new User object has been created and added to the database.
      */
     public ErrorCode addUser(String email, String firstname, String lastname, String passwort, Date birthdate, String city, String country, boolean isMale) {
@@ -141,12 +179,68 @@ public class Database {
         return ErrorCode.SUCCESS;
     }
 
-    void removeApplication(Application application) {
-         this.applications.remove(application);
+    /**
+     * Makes the Database add a new Application with the given information. This
+     * will fail if there already is an application process between
+     * <code>artist</code> and <code>label</code> and return an ErrorCode.
+     *
+     * @param fromArtist True if an artist applied for a label, false otherwise.
+     * @param text The application's text as a String.
+     * @param artist The artist associated with this application.
+     * @param label The label associated with this application.
+     * @return ErrorCode
+     * @pre <code>text</code>, <code>artist</code> and <code>label</code> must
+     * not be null. <code>text</code> must not be the empty String. There must
+     * not be an application associated with <code>artist</code> and
+     * <code>label</code> yet.
+     * @post A new Application object has been created and added to the
+     * database.
+     */
+    public ErrorCode addApplication(boolean fromArtist, String text, User artist, Label label) {
+        // Is there already an application process between the given artist and label?
+        for (Application currentApplication : (users.get(users.indexOf(artist))).getApplications()) {
+            if (currentApplication.getLabel().equals(label)) {
+                return ErrorCode.APPLICATION_ALREADY_IN_PROGRESS;
+            }
+        }
+
+        applications.add(new Application(fromArtist, text, artist, label));
+        return ErrorCode.SUCCESS;
+    }
+
+    /**
+     * Removes the given Application from the database. Does nothing if the
+     * Application didn't exist.
+     *
+     * @param application The application you want to remove.
+     * @post <code>application</code> is not in the database.
+     */
+    public void removeApplication(Application application) {
+        this.applications.remove(application);
+    }
+
+    /**
+     * Adds a new Label with the given information to the database. Will fail
+     * and return ErrorCode.LABEL_NAME_DUPLICATE if there already is a label
+     * with the given name.
+     *
+     * @param manager The user that will be the new label's manager.
+     * @param name
+     * @return
+     */
+    public ErrorCode addLabel(User manager, String name) {
+        for (Label currentLabel : this.labels) {
+            if (currentLabel.getName().equals(name)) {
+                return ErrorCode.LABEL_NAME_DUPLICATE;
+            }
+        }
+
+        labels.add(new Label(manager, name));
+        return ErrorCode.SUCCESS;
     }
 
     public void removeLabel(Label label) {
-         this.labels.remove(label);
+        this.labels.remove(label);
     }
 
     public void removeNews(News news) {
@@ -154,11 +248,11 @@ public class Database {
     }
 
     public void removeComment(Comment comment) {
-         this.comments.remove(comment);
+        this.comments.remove(comment);
     }
 
     public void removePlaylist(Playlist playlist) {
-         this.playlists.remove(playlist);
+        this.playlists.remove(playlist);
     }
 
     /**
@@ -209,38 +303,6 @@ public class Database {
         this.getGenres().add(new Genre(name, superGenre));
 
         return ErrorCode.SUCCESS;
-    }
-
-//TODO Initialisierung vervollstaendigen?
-    private void initializeDatabase() {
-        data = new LinkedList[this.listCount];
-        users = new LinkedList<>();
-        data[0] = users;
-        labels = new LinkedList<>();
-        data[1] = labels;
-        media = new LinkedList<>();
-        data[2] = media;
-        playlists = new LinkedList<>();
-        data[3] = playlists;
-        albums = new LinkedList<>();
-        data[4] = albums;
-        news = new LinkedList<>();
-        data[5] = news;
-        comments = new LinkedList<>();
-        data[6] = comments;
-        ratings = new LinkedList<>();
-        data[7] = ratings;
-        applications = new LinkedList<>();
-        data[8] = applications;
-        genres = new LinkedList<>();
-        data[9] = genres;
-
-        // Create default administrator.
-        this.addUser("admin@dezibel.de", "admin", "admin", "admin", new Date(), null, null, (Math.random() < 0.5));
-        this.getUsers().get(0).promoteToAdmin();
-
-        // Create topGenre
-        this.addGenre(topGenreName, null);
     }
 
     public LinkedList<User> getUsers() {

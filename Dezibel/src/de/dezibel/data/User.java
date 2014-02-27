@@ -428,7 +428,7 @@ public class User implements Lockable {
         return newsList;
     }
 
-    public LinkedList<Application> getSentApplications() {
+    public LinkedList<Application> getApplications() {
         return sentApplications;
     }
 
