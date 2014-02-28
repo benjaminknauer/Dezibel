@@ -7,15 +7,14 @@ package de.dezibel.data;
 import de.dezibel.ErrorCode;
 import java.io.File;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  *
@@ -58,9 +57,12 @@ public class MediumTest {
     @Test
     public void testIsAvailable() {
         System.out.println("isAvailable");
-        boolean expResult = true;
-        boolean result = instance.isAvailable();
-        assertEquals(expResult, result);
+        
+        assertTrue(instance.isAvailable());
+        
+        instance.lock();
+        
+        assertFalse(instance.isAvailable());
     }
 
     /**
@@ -298,7 +300,6 @@ public class MediumTest {
      * Test of getAvgRating method, of class Medium.
      */
     @Test
-    @Ignore
     public void testGetAvgRating() {
         System.out.println("getAvgRating");
         
@@ -354,26 +355,16 @@ public class MediumTest {
     }
 
     /**
-     * Test of getLabel method, of class Medium.
+     * Test of getLabel and set Label method, of class Medium.
      */
     @Test
-    public void testGetLabel() {
+    public void testSetAndGetLabel() {
         System.out.println("getLabel");
         
         Label testLabel = new Label(loggedUser, "myLabel");
         instance.setLabel(testLabel);
 
         assertEquals(testLabel, instance.getLabel());
-
-    }
-
-    /**
-     * Test of setLabel method, of class Medium.
-     */
-    @Test
-    @Ignore //Redundant?
-    public void testSetLabel() {
-        System.out.println("setLabel");
 
     }
 
