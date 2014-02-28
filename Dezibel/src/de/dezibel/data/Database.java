@@ -301,17 +301,23 @@ public class Database {
      * <code>path</code> may be null which will make the new Medium a
      * placeholder Medium.
      *
-     * @param titel The medium's title.
+     * @param title The medium's title.
      * @param artist The medium's artist.
      * @param path The path to the Medium's file that will be uploaded to the
      * Database. May be null to create a placeholder Medium.
+     * @param genre The medium's genre.
+     * @param label The medium's label. Set to null if you don't wish to set one.
      * @return ErrorCode
-     * @pre The <code>title</code> and <code>artist</code> must not be null or
-     * empty.
+     * @pre <code>title</code>, <code>artist</code>, <code>genre</code> must not be null.
      * @post A new Medium object has been created and added to the database.
      */
-    //TODO implementieren
-    public ErrorCode addMedium(String titel, User artist, String path) {
+    public ErrorCode addMedium(String title, User artist, String path, Genre genre, Label label) {
+        Medium m = new Medium(title, artist, path);
+        
+        if(genre == null)
+            return ErrorCode.NO_GENRE_SET;
+        m.setGenre(genre);
+        m.setLabel(label);
         return ErrorCode.SUCCESS;
     }
 
