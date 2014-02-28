@@ -134,7 +134,7 @@ public class Player {
         if (this.player == null) {
             return 0;
         } else {
-            return (int) Math.round(player.getVolume() * 100);
+            return (int) Math.round(this.player.getVolume() * 100);
         }
     }
 
