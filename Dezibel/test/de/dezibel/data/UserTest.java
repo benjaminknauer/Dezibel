@@ -1,7 +1,6 @@
 package de.dezibel.data;
 
 import java.util.Date;
-import java.util.LinkedList;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -62,10 +61,10 @@ public class UserTest {
         label1 = new Label(user2, "NTM");
         label2 = new Label(user2, "GeilRecords");
         
-        news1 = new News("Pizza!", "Bald gibt es Pizza", user1);
+        news1 = new News("Pizza!", "Bald gibt es Pizza", loggedUser);
         
         appl1 = new Application(true, "Ich kann tolle Musik erstellen", loggedUser, label1);
-        appl1 = new Application(false, "Deine Musik ist echt super. Komm zu uns!", loggedUser, label2);
+        appl2 = new Application(false, "Deine Musik ist echt super. Komm zu uns!", loggedUser, label2);
         
         med1 = new Medium("Super Hits", loggedUser, "c:\bla");
         med2 = new Medium("Crappy Hits", loggedUser, "c:\bli");
@@ -99,9 +98,8 @@ public class UserTest {
         loggedUser.addArtistLabel(label1);
         loggedUser.addArtistLabel(label2);
         loggedUser.removeArtistLabel(label1);
-        LinkedList<Label> testlabels = new LinkedList<>();
-        testlabels.add(label2);
-        assertEquals(loggedUser.getPublishingLabels(), testlabels);
+        assertTrue(loggedUser.getPublishingLabels().contains(label2));
+        assertFalse(loggedUser.getPublishingLabels().contains(label1));
         assertTrue(label2.getArtists().contains(loggedUser));
         assertFalse(label1.getArtists().contains(loggedUser));
     }
@@ -124,9 +122,8 @@ public class UserTest {
         loggedUser.addManagerLabel(label1);
         loggedUser.addManagerLabel(label2);
         loggedUser.removeManagerLabel(label1);
-        LinkedList<Label> testlabels = new LinkedList<>();
-        testlabels.add(label2);
-        assertEquals(loggedUser.getManagedLabels(), testlabels);
+        assertTrue(loggedUser.getManagedLabels().contains(label2));
+        assertFalse(loggedUser.getManagedLabels().contains(label1));
         assertTrue(label2.getLabelManagers().contains(loggedUser));
         assertFalse(label1.getLabelManagers().contains(loggedUser));
     }
@@ -149,9 +146,8 @@ public class UserTest {
         loggedUser.addFavoriteLabel(label1);
         loggedUser.addFavoriteLabel(label2);
         loggedUser.removeFavoriteLabel(label1);
-        LinkedList<Label> testlabels = new LinkedList<>();
-        testlabels.add(label2);
-        assertEquals(loggedUser.getFavoriteLabels(), testlabels);
+        assertTrue(loggedUser.getFavoriteLabels().contains(label2));
+        assertFalse(loggedUser.getFavoriteLabels().contains(label1));
         assertTrue(label2.getFollowers().contains(loggedUser));
         assertFalse(label1.getFollowers().contains(loggedUser));
     }
@@ -174,9 +170,8 @@ public class UserTest {
         loggedUser.addFavoriteUser(user1);
         loggedUser.addFavoriteUser(user2);
         loggedUser.removeFavoriteUser(user1);
-        LinkedList<Label> testlabels = new LinkedList<>();
-        testlabels.add(label2);
-        assertEquals(loggedUser.getFavoriteLabels(), testlabels);
+        assertTrue(loggedUser.getFavoriteUsers().contains(user2));
+        assertFalse(loggedUser.getFavoriteUsers().contains(user1));
         assertTrue(user2.getFollowers().contains(loggedUser));
         assertFalse(user1.getFollowers().contains(loggedUser));
     }
@@ -199,9 +194,8 @@ public class UserTest {
         loggedUser.addFollower(user1);
         loggedUser.addFollower(user2);
         loggedUser.removeFollower(user1);
-        LinkedList<User> testlist = new LinkedList<>();
-        testlist.add(user2);
-        assertEquals(loggedUser.getFollowers(), testlist);
+        assertTrue(loggedUser.getFollowers().contains(user2));
+        assertFalse(loggedUser.getFollowers().contains(user1));
         assertTrue(user2.getFavoriteUsers().contains(loggedUser));
         assertFalse(user1.getFavoriteUsers().contains(loggedUser));
     }
@@ -213,7 +207,7 @@ public class UserTest {
     public void testAddNews() {
         loggedUser.addNews(news1);
         assertTrue(loggedUser.getNews().contains(news1));
-        assertTrue(news1.getAuthor() == loggedUser);
+        assertEquals(loggedUser, news1.getAuthor());
     }
 
     /**
@@ -223,7 +217,7 @@ public class UserTest {
     public void testAddApplication() {
         loggedUser.addApplication(appl1);
         assertTrue(loggedUser.getApplications().contains(appl1));
-        assertTrue(appl1.getLabel() == label1);
+        assertEquals(appl1.getLabel(), label1);
     }
 
     /**
@@ -234,11 +228,9 @@ public class UserTest {
         loggedUser.addApplication(appl1);
         loggedUser.addApplication(appl2);
         loggedUser.removeApplication(appl1);
-        LinkedList<Application> testlist = new LinkedList<>();
-        testlist.add(appl2);
-        assertEquals(loggedUser.getApplications(), testlist);
+        assertTrue(loggedUser.getApplications().contains(appl2));
+        assertFalse(loggedUser.getApplications().contains(appl1));
         assertTrue(appl2.getLabel().getApplications().get(appl2.getLabel().getApplications().indexOf(appl2)).getUser() == loggedUser);
-        assertFalse(appl2.getLabel().getApplications().get(appl2.getLabel().getApplications().indexOf(appl2)).getUser() == loggedUser);
     }
 
     /**
@@ -259,11 +251,8 @@ public class UserTest {
         loggedUser.addCreatedMedium(med1);
         loggedUser.addCreatedMedium(med2);
         loggedUser.removeMedium(med1);
-        LinkedList<Medium> testlist = new LinkedList<>();
-        testlist.add(med2);
-        assertEquals(loggedUser.getCreatedMediums(), testlist);
-        assertTrue(med2.getArtist() == loggedUser);
-        assertFalse(med1.getArtist() == loggedUser);
+        assertTrue(loggedUser.getCreatedMediums().contains(med2));
+        assertFalse(med1.isAvailable());
     }
 
     /**
@@ -284,9 +273,8 @@ public class UserTest {
         loggedUser.addCreatedPlaylist(play1);
         loggedUser.addCreatedPlaylist(play2);
         loggedUser.removePlaylist(play1);
-        LinkedList<Playlist> testlist = new LinkedList<>();
-        testlist.add(play2);
-        assertEquals(loggedUser.getCreatedPlaylists(), testlist);
+        assertTrue(loggedUser.getCreatedPlaylists().contains(play2));
+        assertFalse(loggedUser.getCreatedPlaylists().contains(play1));
         assertTrue(play2.getCreator()== loggedUser);
         assertFalse(play1.getCreator() == loggedUser);
     }
@@ -309,9 +297,8 @@ public class UserTest {
         loggedUser.addCreatedComments(com1);
         loggedUser.addCreatedComments(com2);
         loggedUser.deleteComment(com1);
-        LinkedList<Comment> testlist = new LinkedList<>();
-        testlist.add(com2);
-        assertEquals(loggedUser.getCreatedComments(), testlist);
+        assertTrue(loggedUser.getCreatedComments().contains(com2));
+        assertFalse(loggedUser.getCreatedComments().contains(com1));
         assertTrue(com2.getAuthor() == loggedUser);
     }
 
