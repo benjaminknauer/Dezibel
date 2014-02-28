@@ -6,6 +6,7 @@ import java.util.Date;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * Stores information about a music file, which can be uploaded, played, deleted
@@ -114,7 +115,15 @@ public class Medium implements Commentable, Lockable {
         } else {
             ratingList.put(rater.hashCode(), new Rating(points));
         }
-            //TODO AverageRating errechnen
+        
+        // Re-calculate average rating.
+        int average = 0;
+        
+        while(this.ratingList.values().iterator().hasNext()){
+            average += this.ratingList.values().iterator().next().getPoints();
+        }
+        
+        this.avgRating = average/this.ratingList.size();
     }
 
     /**
