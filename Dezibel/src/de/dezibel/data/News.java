@@ -83,7 +83,7 @@ public class News implements Commentable {
             label.deleteNews(this);
         else
             author.deleteNews(this);
-        Database.getInstance().removeNews(this);
+        Database.getInstance().deleteNews(this);
     }
 
     /**

@@ -1,7 +1,7 @@
 package de.dezibel.gui;
 
 import de.dezibel.data.Medium;
-import de.dezibel.data.User;
+//import de.dezibel.data.User;    //only used for tests
 import de.dezibel.player.Player;
 import de.dezibel.player.PlayerObserver;
 import java.awt.event.ActionEvent;
@@ -24,7 +24,7 @@ import javax.swing.event.ChangeListener;
  */
 public class PlayerPanel extends DragablePanel {
 
-    private Player player;
+    private final Player player;
 
     /**
      * Test

@@ -167,7 +167,7 @@ public class MediumTest {
     }
 
     /**
-     * Test of removePlaylist method, of class Medium.
+     * Test of deletePlaylist method, of class Medium.
      */
     @Test
     public void testRemovePlaylist() {
