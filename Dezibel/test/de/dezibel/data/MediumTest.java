@@ -5,16 +5,10 @@
 package de.dezibel.data;
 
 import de.dezibel.ErrorCode;
-import de.dezibel.io.MediumLoader;
-import java.io.File;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
-import org.junit.After;
-import org.junit.AfterClass;
 import static org.junit.Assert.*;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
