@@ -93,6 +93,14 @@ public class Medium implements Commentable, Lockable {
     }
 
     /**
+     * Marks the medium as deleted so no user can access it in any way (except
+     * admins)
+     */
+    public void markAsDeleted(){
+        this.deleted = true;
+    }
+    
+    /**
      * Adds a new rating/edits the existing one with points.
      *
      * @param points value how high it is rated
