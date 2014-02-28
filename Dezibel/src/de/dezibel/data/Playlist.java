@@ -18,7 +18,7 @@ public class Playlist implements Commentable {
     // Bool to tell the database that this instance of Playlist may be deleted.
     // Only set to true if all associations are cleared!
     private boolean markedForDeletion = false;
-    
+
     /**
      * Constructor of the playlistclass
      *
@@ -59,12 +59,7 @@ public class Playlist implements Commentable {
             mediumList.get(index).removePlaylist(this);
             mediumList.remove(index);
             if (mediumList.isEmpty()) {
-                markedForDeletion = true;
-                Database.getInstance().removePlaylist(this);
-                user.removePlaylist(this);
-                for(Medium currentMedium : mediumList){
-                    currentMedium.removePlaylist(this);
-                }
+                delete();
             }
         }
     }
@@ -86,6 +81,20 @@ public class Playlist implements Commentable {
         } else {
             mediumList.remove(currentPos + 1);
         }
+    }
+
+    public void delete() {
+        markedForDeletion = true;
+        user.removePlaylist(this);
+        for (Medium currentMedium : mediumList) {
+            currentMedium.removePlaylist(this);
+        }
+        mediumList = null;
+        for(Comment currentComment : comments){
+            comments.remove(currentComment);
+            
+        }
+        Database.getInstance().removePlaylist(this);
     }
 
     /**
@@ -112,8 +121,8 @@ public class Playlist implements Commentable {
     public User getUser() {
         return user;
     }
-    
-    public boolean isMarkedForDeletion(){
+
+    public boolean isMarkedForDeletion() {
         return markedForDeletion;
     }
 
@@ -135,14 +144,16 @@ public class Playlist implements Commentable {
     public LinkedList<Comment> getComments() {
         return (LinkedList<Comment>) comments.clone();
     }
+
     /**
-     * 
-     * @see Commentable#deleteComment(Comment) 
+     *
+     * @see Commentable#deleteComment(Comment)
      */
     @Override
-    public void deleteComment(Comment comment){
+    public void deleteComment(Comment comment) {
         this.comments.remove(comment);
-        if(comment != null && !comment.isMarkedForDeletion())
+        if (comment != null && !comment.isMarkedForDeletion()) {
             comment.delete();
+        }
     }
 }

@@ -21,6 +21,7 @@ public class Album extends Playlist {
 
     private String coverPath;
     private Label label;
+    private User creator;
 
     /**
      * Creates a new non empty Album with the given

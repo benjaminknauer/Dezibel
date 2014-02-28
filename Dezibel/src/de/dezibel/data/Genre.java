@@ -25,6 +25,8 @@ public class Genre {
     public Genre(String name, Genre superGenre) {
         this.name = name;
         this.superGenre = superGenre;
+        subGenres = new LinkedList<>();
+        media = new LinkedList<>();
         if (superGenre != null) {
             superGenre.addSubGenre(this);
         }
