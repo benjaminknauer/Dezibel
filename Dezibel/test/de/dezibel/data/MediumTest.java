@@ -259,7 +259,7 @@ public class MediumTest {
         instance.setAlbum(album);
 
         assertEquals(album.getTitel(), instance.getAlbum().getTitel());
-        assertEquals(album.getUser(), instance.getAlbum().getUser());
+        assertEquals(album.getCreator(), instance.getAlbum().getCreator());
         assertEquals(album.getList(), instance.getAlbum().getList());
     }
 
