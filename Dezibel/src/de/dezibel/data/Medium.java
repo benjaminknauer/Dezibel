@@ -82,7 +82,7 @@ public class Medium implements Commentable, Lockable {
      * otherwise
      */
     public boolean isAvailable() {
-        if(!(this.isLocked()) && !(this.deleted)){
+        if(!(this.isLocked()) && !(this.deleted) && this.isMediumSet()){
             return true;
         }
         else return true;
