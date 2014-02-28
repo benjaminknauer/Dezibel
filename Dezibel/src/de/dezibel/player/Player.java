@@ -21,7 +21,7 @@ public class Player {
     private LinkedList<Medium> currentPlaylist;
     private int currentPosition;
     private MediaPlayer player;
-    private LinkedList<PlayerObserver> observer;
+    private final LinkedList<PlayerObserver> observer;
 
     /**
      * Constructor that creates the initial Player instance.
@@ -52,7 +52,7 @@ public class Player {
      */
     public void play() {
         if (this.player == null) {
-            createPlayer(this.currentPlaylist.get(currentPosition));
+            createPlayer(this.currentPlaylist.get(this.currentPosition));
         }
         this.player.play();
     }
@@ -134,7 +134,7 @@ public class Player {
         if (this.player == null) {
             return 0;
         } else {
-            return (int) Math.round(player.getVolume() * 100);
+            return (int) Math.round(this.player.getVolume() * 100);
         }
     }
 
@@ -185,7 +185,7 @@ public class Player {
      * @return true if the player is currently playing, else false
      */
     public boolean isPlaying() {
-        return (player != null && player.getStatus() == MediaPlayer.Status.PLAYING);
+        return (this.player != null && this.player.getStatus() == MediaPlayer.Status.PLAYING);
     }
 
     /**
@@ -198,6 +198,18 @@ public class Player {
             return null;
         } else {
             return this.currentPlaylist.get(this.currentPosition);
+        }
+    }
+    
+    /**
+     * Sets the currentMedia
+     *
+     * @param song The new currentMedia
+     */
+    public void setCurrentMedia(Medium song) {
+        if (song != null) {
+            this.currentPosition = this.currentPlaylist.indexOf(song);
+            this.createPlayer(song);
         }
     }
 
@@ -254,18 +266,6 @@ public class Player {
     public void clearPlaylist() {
         this.stop();
         this.currentPlaylist.clear();
-    }
-
-    /**
-     * Sets the currentMedia
-     *
-     * @param song The new currentMedia
-     */
-    public void setCurrentMedia(Medium song) {
-        if (song != null) {
-            this.currentPosition = this.currentPlaylist.indexOf(song);
-            this.createPlayer(song);
-        }
     }
 
     /**
