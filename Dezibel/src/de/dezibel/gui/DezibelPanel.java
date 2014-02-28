@@ -1,39 +1,22 @@
 package de.dezibel.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import com.javadocking.DockingManager;
-import com.javadocking.component.DefaultSwComponentFactory;
+import com.javadocking.dock.BorderDock;
 import com.javadocking.dock.LineDock;
 import com.javadocking.dock.Position;
-import com.javadocking.dock.SplitDock;
-import com.javadocking.dock.TabDock;
-import com.javadocking.dockable.ActionDockable;
+import com.javadocking.dock.SingleDock;
 import com.javadocking.dockable.DefaultDockable;
 import com.javadocking.dockable.Dockable;
 import com.javadocking.dockable.DockableState;
-import com.javadocking.dockable.DockingMode;
-import com.javadocking.dockable.DraggableContent;
 import com.javadocking.dockable.StateActionDockable;
 import com.javadocking.dockable.action.DefaultDockableStateActionFactory;
-import com.javadocking.dockable.action.DefaultPopupMenuFactory;
-import com.javadocking.drag.DragListener;
 import com.javadocking.model.FloatDockModel;
 import com.javadocking.visualizer.FloatExternalizer;
 import com.javadocking.visualizer.LineMinimizer;
@@ -71,7 +54,8 @@ public class DezibelPanel extends JPanel
 		Dockable dockable5 = new DefaultDockable("pnAds", 		pnAds, 		"Ads");
 		Dockable dockable6 = new DefaultDockable("pnMyList", 	pnMyList, 	"MyList");
 		Dockable dockable7 = new DefaultDockable("pnFavorites", pnFavorites,"Favorites");
-
+		
+		
 		// Add actions to the dockables.
 		dockable1 = addActions(dockable1);
 		dockable2 = addActions(dockable2);
@@ -84,41 +68,30 @@ public class DezibelPanel extends JPanel
 		// Create the child tab dock.
 		LineDock leftLineDock = new LineDock();
 		LineDock rightLineDock = new LineDock();
+		SingleDock centerDock = new SingleDock();
 		leftLineDock.setOrientation(LineDock.ORIENTATION_VERTICAL);
 		rightLineDock.setOrientation(LineDock.ORIENTATION_VERTICAL);
-//		TabDock leftTabDock = new TabDock();
-//		TabDock rightTabDock = new TabDock();
 		
-		// Add the dockables to the tab dock.
-//		leftTabDock.addDockable(dockable1, new Position(0));
-//		leftTabDock.addDockable(dockable2, new Position(1));
-//		rightTabDock.addDockable(dockable3, new Position(0));
-//		rightTabDock.addDockable(dockable4, new Position(1));
 		leftLineDock.addDockable(dockable1,new Position(0));
 		leftLineDock.addDockable(dockable2, new Position(1));
 		rightLineDock.addDockable(dockable3,new Position(0));
 		rightLineDock.addDockable(dockable4, new Position(1));
-
-		// Create the split dock.
-		//SplitDock splitDock = new SplitDock();
-		com.javadocking.dock.BorderDock splitDock = new com.javadocking.dock.BorderDock();
 		
-		// Add the child docks to the split dock at the left and right.
-		//splitDock.addChildDock(leftTabDock, new Position(Position.LEFT));
-		//splitDock.addChildDock(rightTabDock, new Position(Position.RIGHT));
-		splitDock.addChildDock(leftLineDock, new Position(Position.LEFT));
-		splitDock.addChildDock(rightLineDock, new Position(Position.RIGHT));
-		//splitDock.setDividerLocation(395);
+		BorderDock borderDock = new BorderDock();
+		
+		borderDock.addChildDock(leftLineDock, new Position(Position.LEFT));
+		borderDock.addChildDock(rightLineDock, new Position(Position.RIGHT));
+		borderDock.addChildDock(centerDock, new Position(Position.CENTER));
 
-		// Add the root dock to the dock model.
-		dockModel.addRootDock("splitDock", splitDock, frame);
+		
+		dockModel.addRootDock("borderDock", borderDock, frame);
 		
 		// Create an externalizer.
 		FloatExternalizer externalizer = new FloatExternalizer(frame);
 		dockModel.addVisualizer("externalizer", externalizer, frame);
 		
 		// Create a minimizer.
-		LineMinimizer minimizer = new LineMinimizer(splitDock);
+		LineMinimizer minimizer = new LineMinimizer(borderDock);
 		dockModel.addVisualizer("minimizer", minimizer, frame);
 		
 		// Create a maximizer.
