@@ -81,7 +81,9 @@ public class PlayerPanel extends DragablePanel {
                                 .addComponent(lblTitle, GroupLayout.Alignment.CENTER)
                                 .addGroup(layout.createSequentialGroup()
                                         .addComponent(lblElapsedTime)
+                                        .addGap(minHGap, prefHGap, maxHGap)
                                         .addComponent(slider)
+                                        .addGap(minHGap, prefHGap, maxHGap)
                                         .addComponent(lblTimeLeft))
                                 .addGroup(layout.createSequentialGroup()
                                         .addComponent(btnPrev)
@@ -170,6 +172,7 @@ public class PlayerPanel extends DragablePanel {
         
         // Slider-Thread
         new Thread(new Runnable() {
+            @Override
             public void run() {
                 while (true) {
                     if (player.isPlaying()) {
@@ -180,7 +183,16 @@ public class PlayerPanel extends DragablePanel {
                         seconds = (player.getTotalDuration() - player.getCurrentTime()) % 60;
                         minutes = (player.getTotalDuration() - player.getCurrentTime()) / 60;
                         lblTimeLeft.setText("-" + minutes + ":" + (seconds < 10?"0" + seconds:seconds));
+                        
+                        slider.setValue((int)(((double)player.getCurrentTime()/(double)player.getTotalDuration())*1000));
+                        System.out.println((int)(((double)player.getCurrentTime()/(double)player.getTotalDuration())*1000));
                     }
+                    try {
+                        Thread.sleep(500);
+                    }
+                    catch(InterruptedException e) {
+                        e.printStackTrace();
+                    }    
                 }
             }
         }).start();
