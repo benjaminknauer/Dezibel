@@ -3,7 +3,6 @@ package de.dezibel.data;
 import de.dezibel.ErrorCode;
 import java.io.File;
 import java.util.Date;
-import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -17,6 +16,7 @@ public class DatabaseTest {
 
     @Before
     public void setUp() {
+        Database.getInstance().initializeDatabase();
     }
 
     /**
@@ -25,10 +25,6 @@ public class DatabaseTest {
     @Test
     public void testSaveAndLoad() {
         System.out.println("save");
-        // Create old save file, if exists
-        File saveFile = new File("save.xml");
-        if (saveFile.exists()) saveFile.delete();
-        
         Database instance = Database.getInstance();
         instance.addUser("mail@mail.com", "Hans", "Peter", "123", new Date(),
                 "Ort", "Land", true);
@@ -46,6 +42,10 @@ public class DatabaseTest {
         assertEquals(user1.getLastname(), loadedUser.getLastname());
         // Test if associations get saved and loaded correctly
         assertEquals(1, user1.getCreatedMediums().size());
+        
+        // Delete save.xml for further tests
+        File saveFile = new File("save.xml");
+        saveFile.delete();
     }
 
     /**
@@ -56,14 +56,23 @@ public class DatabaseTest {
         System.out.println("addApplication");
         boolean fromArtist = true;
         String text = "Please add me to your label";
-        User artist = null;
-        Label label = null;
-        Database instance = null;
-        ErrorCode expResult = null;
-        ErrorCode result = instance.addApplication(fromArtist, text, artist, label);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Database instance = Database.getInstance();
+        instance.addUser("mail@mail.com", "Hans", "Peter", "123", new Date(),
+                "Ort", "Land", true);
+        User user = instance.getUsers().get(instance.getUsers().size() - 1);
+        instance.addUser("mail@mail.com", "Super", "Manager", "123", new Date(),
+                "Ort", "Land", true);
+        User manager = instance.getUsers().get(instance.getUsers().size() - 1);
+        instance.addLabel(manager, "Label1");
+        Label label = instance.getLabels().get(instance.getLabels().size() - 1);
+        instance.addApplication(fromArtist, text, user, label);
+        Application application = instance.getApplications().get(
+                instance.getApplications().size() - 1);
+        assertTrue(instance.getApplications().contains(application));
+        assertTrue(application.isFromArtist());
+        assertEquals(text, application.getText());
+        assertEquals(user, application.getUser());
+        assertEquals(label, application.getLabel());
     }
 
     /**
@@ -72,11 +81,22 @@ public class DatabaseTest {
     @Test
     public void testDeleteApplication() {
         System.out.println("deleteApplication");
-        Application application = null;
-        Database instance = null;
-        instance.deleteApplication(application);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        boolean fromArtist = true;
+        String text = "Please add me to your label";
+        Database instance = Database.getInstance();
+        instance.addUser("mail@mail.com", "Hans", "Peter", "123", new Date(),
+                "Ort", "Land", true);
+        User user = instance.getUsers().get(instance.getUsers().size() - 1);
+        instance.addUser("mail@mail.com", "Super", "Manager", "123", new Date(),
+                "Ort", "Land", true);
+        User manager = instance.getUsers().get(instance.getUsers().size() - 1);
+        instance.addLabel(manager, "Label1");
+        Label label = instance.getLabels().get(instance.getLabels().size() - 1);
+        instance.addApplication(fromArtist, text, user, label);
+        Application application = instance.getApplications().get(
+                instance.getApplications().size() - 1);
+        Database.getInstance().deleteApplication(application);
+        assertFalse(instance.getApplications().contains(application));
     }
 
     /**
@@ -144,14 +164,15 @@ public class DatabaseTest {
     @Test
     public void testAddLabel() {
         System.out.println("addLabel");
-        User manager = null;
-        String name = "";
-        Database instance = null;
-        ErrorCode expResult = null;
-        ErrorCode result = instance.addLabel(manager, name);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Database instance = Database.getInstance();
+        instance.addUser("mail@mail.com", "Super", "Manager", "123", new Date(),
+                "Ort", "Land", true);
+        User manager = instance.getUsers().get(instance.getUsers().size() - 1);
+        instance.addLabel(manager, "Label1");
+        Label label = instance.getLabels().get(instance.getLabels().size() - 1);
+        assertTrue(instance.getLabels().contains(label));
+        assertTrue(label.getLabelManagers().contains(manager));
+        assertEquals(label.getName(), "Label1");
     }
 
     /**
@@ -160,11 +181,14 @@ public class DatabaseTest {
     @Test
     public void testDeleteLabel() {
         System.out.println("deleteLabel");
-        Label label = null;
-        Database instance = null;
+        Database instance = Database.getInstance();
+        instance.addUser("mail@mail.com", "Super", "Manager", "123", new Date(),
+                "Ort", "Land", true);
+        User manager = instance.getUsers().get(instance.getUsers().size() - 1);
+        instance.addLabel(manager, "Label1");
+        Label label = instance.getLabels().get(instance.getLabels().size() - 1);
         instance.deleteLabel(label);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertFalse(instance.getLabels().contains(label));
     }
 
     /**
@@ -192,15 +216,16 @@ public class DatabaseTest {
     @Test
     public void testAddNews_3args_1() {
         System.out.println("addNews");
-        String title = "";
-        String text = "";
-        User author = null;
-        Database instance = null;
-        ErrorCode expResult = null;
-        ErrorCode result = instance.addNews(title, text, author);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Database instance = Database.getInstance();
+        instance.addUser("mail@mail.com", "Hans", "Peter", "123", new Date(),
+                "Ort", "Land", true);
+        User user = instance.getUsers().get(instance.getUsers().size() - 1);
+        instance.addNews("News-Title", "News-Text", user);
+        News news = instance.getNews().get(instance.getNews().size() - 1);
+        assertTrue(instance.getNews().contains(news));
+        assertEquals("News-Title", news.getTitle());
+        assertEquals("News-Text", news.getText());
+        assertEquals(user, news.getAuthor());
     }
 
     /**
@@ -269,174 +294,26 @@ public class DatabaseTest {
     @Test
     public void testAddUser() {
         System.out.println("addUser");
-        String email = "";
-        String firstname = "";
-        String lastname = "";
-        String passwort = "";
-        Date birthdate = null;
-        String city = "";
-        String country = "";
-        boolean isMale = false;
-        Database instance = null;
-        ErrorCode expResult = null;
-        ErrorCode result = instance.addUser(email, firstname, lastname, passwort, birthdate, city, country, isMale);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        String email = "mail@mail.com";
+        String firstname = "Hans";
+        String lastname = "Peter";
+        String passwort = "123";
+        Date birthdate = new Date();
+        String city = "Ort";
+        String country = "Land";
+        boolean isMale = true;
+        Database instance = Database.getInstance();
+        instance.addUser(email, firstname, lastname, passwort, birthdate, city,
+                country, isMale);
+        User user = instance.getUsers().get(instance.getUsers().size() - 1);
+        assertTrue(instance.getUsers().contains(user));
+        assertEquals(email, user.getEmail());
+        assertEquals(firstname, user.getFirstname());
+        assertEquals(lastname, user.getLastname());
+        assertEquals(passwort, user.getPassword());
+        assertEquals(birthdate, user.getBirthdate());
+        assertEquals(city, user.getCity());
+        assertEquals(country, user.getCountry());
+        assertEquals(isMale, user.isMale());
     }
-
-    /**
-     * Test of getUsers method, of class Database.
-     */
-    @Test
-    public void testGetUsers() {
-        System.out.println("getUsers");
-        Database instance = null;
-        LinkedList<User> expResult = null;
-        LinkedList<User> result = instance.getUsers();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getLabels method, of class Database.
-     */
-    @Test
-    public void testGetLabels() {
-        System.out.println("getLabels");
-        Database instance = null;
-        LinkedList<Label> expResult = null;
-        LinkedList<Label> result = instance.getLabels();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getMedia method, of class Database.
-     */
-    @Test
-    public void testGetMedia() {
-        System.out.println("getMedia");
-        Database instance = null;
-        LinkedList<Medium> expResult = null;
-        LinkedList<Medium> result = instance.getMedia();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getPlaylists method, of class Database.
-     */
-    @Test
-    public void testGetPlaylists() {
-        System.out.println("getPlaylists");
-        Database instance = null;
-        LinkedList<Playlist> expResult = null;
-        LinkedList<Playlist> result = instance.getPlaylists();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getAlbums method, of class Database.
-     */
-    @Test
-    public void testGetAlbums() {
-        System.out.println("getAlbums");
-        Database instance = null;
-        LinkedList<Album> expResult = null;
-        LinkedList<Album> result = instance.getAlbums();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getNews method, of class Database.
-     */
-    @Test
-    public void testGetNews() {
-        System.out.println("getNews");
-        Database instance = null;
-        LinkedList<News> expResult = null;
-        LinkedList<News> result = instance.getNews();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getComments method, of class Database.
-     */
-    @Test
-    public void testGetComments() {
-        System.out.println("getComments");
-        Database instance = null;
-        LinkedList<Comment> expResult = null;
-        LinkedList<Comment> result = instance.getComments();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getRatings method, of class Database.
-     */
-    @Test
-    public void testGetRatings() {
-        System.out.println("getRatings");
-        Database instance = null;
-        LinkedList<Rating> expResult = null;
-        LinkedList<Rating> result = instance.getRatings();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getApplications method, of class Database.
-     */
-    @Test
-    public void testGetApplications() {
-        System.out.println("getApplications");
-        Database instance = null;
-        LinkedList<Application> expResult = null;
-        LinkedList<Application> result = instance.getApplications();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getGenres method, of class Database.
-     */
-    @Test
-    public void testGetGenres() {
-        System.out.println("getGenres");
-        Database instance = null;
-        LinkedList<Genre> expResult = null;
-        LinkedList<Genre> result = instance.getGenres();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getTopGenre method, of class Database.
-     */
-    @Test
-    public void testGetTopGenre() {
-        System.out.println("getTopGenre");
-        Database instance = null;
-        Genre expResult = null;
-        Genre result = instance.getTopGenre();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
 }

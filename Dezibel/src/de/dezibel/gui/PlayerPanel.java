@@ -27,31 +27,11 @@ public class PlayerPanel extends DragablePanel {
     private final Player player;
 
     /**
-     * Test
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        JPanel panel = new PlayerPanel();
-        frame.add(panel);
-        frame.pack();
-        frame.setVisible(true);
-        
-        // Testdata
-        // User u = new User("Hans", "Peter", "Hans", "123", true);
-        // Medium m1 = new Medium("Alarm01", u, "C:\\Alarm01.wav");
-        // Medium m2 = new Medium("Tsunami", u, "C:\\DVBBS & Borgeous - Tsunami.mp3");
-        // player.addMedium(m1);
-        // player.addMedium(m2);
-    }
-
-    /**
      * Constructor
+     * @param parent The parent panel
      */
-    public PlayerPanel() {
-        super();
+    public PlayerPanel(DezibelPanel parent) {
+        super(parent);
         // Initialize Player
         player = Player.getInstance();
         init();
