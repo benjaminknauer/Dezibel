@@ -117,10 +117,11 @@ public class Medium implements Commentable, Lockable {
         }
         
         // Re-calculate average rating.
-        int average = 0;
+        double average = 0;
+        Iterator<Rating> iterator = this.ratingList.values().iterator();
         
-        while(this.ratingList.values().iterator().hasNext()){
-            average += this.ratingList.values().iterator().next().getPoints();
+        while(iterator.hasNext()){
+            average += (double) iterator.next().getPoints();
         }
         
         this.avgRating = average/this.ratingList.size();
