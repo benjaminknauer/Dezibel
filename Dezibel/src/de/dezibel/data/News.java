@@ -44,8 +44,12 @@ public class News implements Commentable {
      * @param author author of the news
      */
     public News(String title, String text, Label author) {
-        this(title, text, (User) null);
+        this.comments = new LinkedList<>();
+        
+        this.title = title;
+        this.text = text;
         this.label = author;
+        this.creationDate = new Date();
         
         author.addNews(this);
     }
