@@ -84,6 +84,8 @@ public class Playlist implements Commentable {
     }
 
     public void delete() {
+        if(markedForDeletion)
+            return;
         markedForDeletion = true;
         user.removePlaylist(this);
         for (Medium currentMedium : mediumList) {
@@ -92,8 +94,9 @@ public class Playlist implements Commentable {
         mediumList = null;
         for(Comment currentComment : comments){
             comments.remove(currentComment);
-            
+            deleteComment(currentComment);
         }
+        comments = null;
         Database.getInstance().removePlaylist(this);
     }
 
@@ -152,8 +155,7 @@ public class Playlist implements Commentable {
     @Override
     public void deleteComment(Comment comment) {
         this.comments.remove(comment);
-        if (comment != null && !comment.isMarkedForDeletion()) {
+        if (comment != null)
             comment.delete();
-        }
     }
 }

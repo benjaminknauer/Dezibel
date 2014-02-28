@@ -164,7 +164,7 @@ public class Database {
      */
     public ErrorCode addApplication(boolean fromArtist, String text, User artist, Label label) {
         // Is there already an application process between the given artist and label?
-        for (Application currentApplication : (users.get(users.indexOf(artist))).getApplications()) {
+        for (Application currentApplication : artist.getApplications()) {
             if (currentApplication.getLabel().equals(label)) {
                 return ErrorCode.APPLICATION_ALREADY_IN_PROGRESS;
             }
@@ -238,14 +238,11 @@ public class Database {
         }
 
         // No superGenre specified. Set superGenre to the topGenre.
-        if (superGenre == null) // Special case for the initialization of the db and creating the topGenre.
-        {
-            if (!name.equals(topGenreName)) {
-                superGenre = this.getGenres().get(0);
-            }
+        if (superGenre == null){
+            superGenre = this.getGenres().get(0);
         }
 
-        this.getGenres().add(new Genre(name, superGenre));
+        genres.add(new Genre(name, superGenre));
 
         return ErrorCode.SUCCESS;
     }

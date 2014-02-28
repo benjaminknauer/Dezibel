@@ -72,6 +72,8 @@ public class News implements Commentable {
      * This method deletes this instance of News and all associations from the database.
      */
     public void delete(){
+        if(markedForDeletion)
+            return;
         markedForDeletion = true;
         for(Comment currentComment : comments ){
             deleteComment(currentComment);
@@ -91,7 +93,7 @@ public class News implements Commentable {
     @Override
     public void deleteComment(Comment comment){
         this.comments.remove(comment);
-        if(comment != null && !comment.isMarkedForDeletion())
+        if(comment != null)
             comment.delete();
     }
     

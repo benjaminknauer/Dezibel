@@ -46,6 +46,8 @@ public class Comment {
      * its associations.
      */
     public void delete() {
+        if(markedForDeletion)
+            return;
         markedForDeletion = true;
         this.author.deleteComment(this);
         this.commentable.deleteComment(this);

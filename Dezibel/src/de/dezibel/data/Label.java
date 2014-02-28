@@ -93,9 +93,8 @@ public class Label implements Lockable {
      */
     public void deleteNews(News news) {
         this.news.remove(news);
-        if (!news.isMarkedForDeletion()) {
-            news.delete();
-        }
+        if(news != null)
+           news.delete();
     }
 
     /**
@@ -106,9 +105,8 @@ public class Label implements Lockable {
      */
     public void removeApplication(Application application) {
         this.applications.remove(application);
-        if (application != null && !application.isMarkedForDeletion()) {
+        if (application != null)
             application.delete();
-        }
     }
 
     /**
@@ -123,7 +121,7 @@ public class Label implements Lockable {
     }
 
     /**
-     * This method removes an album from the list of artists.
+     * This method removes an album from the list of albums.
      *
      * @param album album to be removed
      */
@@ -150,6 +148,8 @@ public class Label implements Lockable {
      * applications and comments associated with this label from the system!
      */
     public void delete() {
+        if(markedForDeletion)
+            return;
         markedForDeletion = true;
         for (User currentArtist : artists) {
             currentArtist.removeArtistLabel(this);
@@ -161,7 +161,6 @@ public class Label implements Lockable {
         followers = null;
         for (News currentNews : news) {
             currentNews.delete();
-            Database.getInstance().removeNews(currentNews);
         }
         news = null;
         for (Application currentApplication : applications) {
