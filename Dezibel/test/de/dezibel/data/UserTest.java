@@ -273,7 +273,7 @@ public class UserTest {
     public void testAddCreatedPlaylist() {
         loggedUser.addCreatedPlaylist(play1);
         assertTrue(loggedUser.getCreatedPlaylists().contains(play1));
-        assertTrue(play1.getUser() == loggedUser);
+        assertTrue(play1.getCreator() == loggedUser);
     }
 
     /**
@@ -287,8 +287,8 @@ public class UserTest {
         LinkedList<Playlist> testlist = new LinkedList<>();
         testlist.add(play2);
         assertEquals(loggedUser.getCreatedPlaylists(), testlist);
-        assertTrue(play2.getUser() == loggedUser);
-        assertFalse(play1.getUser() == loggedUser);
+        assertTrue(play2.getCreator()== loggedUser);
+        assertFalse(play1.getCreator() == loggedUser);
     }
 
     /**
