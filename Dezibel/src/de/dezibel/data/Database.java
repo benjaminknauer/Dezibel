@@ -84,7 +84,8 @@ public class Database {
     }
 
     //TODO Initialisierung vervollstaendigen?
-    private void initializeDatabase() {
+    //TODO Methode private machen. Im Moment public für Tests.
+    public void initializeDatabase() {
         data = new LinkedList[this.listCount];
         users = new LinkedList<>();
         data[0] = users;
@@ -128,6 +129,7 @@ public class Database {
      *
      * @post If there is no data to load then (self.data == null)
      */
+    //TODO Methode private machen. Im Moment public für Tests.
     public void load() {
         data = xStreamer.load();
         if (data == null) {

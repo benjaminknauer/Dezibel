@@ -64,15 +64,6 @@ public class User implements Lockable {
         createdComments = new LinkedList<Comment>();
     }
 
-    /**
-     * Adds a new follower to the list of followers.
-     *
-     * @param fan the user to be followed
-     */
-    public void follow(User fan) {
-        this.followers.add(fan);
-    }
-
     // Notify Methoden:
     // TODO: Klasse für Mails einbauen
     /**
@@ -141,7 +132,10 @@ public class User implements Lockable {
      * @param label artist label which should be removed
      */
     public void removeArtistLabel(Label label) {
-        this.publishingLabels.remove(label);
+        if(publishingLabels.contains(label)) {
+            this.publishingLabels.remove(label);
+            label.removeArtist(this);
+        }
     }
 
     /**
@@ -162,7 +156,10 @@ public class User implements Lockable {
      * @param label manager label which should be removed
      */
     public void removeManagerLabel(Label label) {
-        this.managedLabels.remove(label);
+        if(this.managedLabels.contains(label)){
+            this.managedLabels.remove(label);
+            label.removeManager(this);
+        }
     }
 
     /**
@@ -183,7 +180,10 @@ public class User implements Lockable {
      * @param label favorized label which should be removed
      */
     public void removeFavoriteLabel(Label label) {
-        this.favoriteLabels.remove(label);
+        if(this.favoriteLabels.contains(label)){
+            this.favoriteLabels.remove(label);
+            label.removeFollower(this);
+        }
     }
 
     /**
@@ -204,7 +204,10 @@ public class User implements Lockable {
      * @param user user which should be removed
      */
     public void removeFavoriteUser(User user) {
-        this.favoriteUsers.remove(user);
+        if(this.favoriteUsers.contains(user)){
+            this.favoriteUsers.remove(user);
+            user.removeFollower(this);
+        }
     }
 
     /**
@@ -225,7 +228,10 @@ public class User implements Lockable {
      * @param user user which should be removed
      */
     public void removeFollower(User user) {
-        this.followers.remove(user);
+        if(this.followers.contains(user)){
+            this.followers.remove(user);
+            user.removeFavoriteUser(this);
+        }
     }
 
     /**
@@ -282,12 +288,13 @@ public class User implements Lockable {
     }
 
     /**
-     * Removes a medium from the list of created mediums.
+     * Removes a medium from the list of created mediums, which is viewable
+     * by users (admins still see this intern list as usual).
      *
      * @param medium medium which should be removed
      */
     public void removeMedium(Medium medium) {
-        this.createdMediums.remove(medium);
+        medium.markAsDeleted();
     }
 
     /**
@@ -305,7 +312,9 @@ public class User implements Lockable {
      * @param list playlist which should be removed
      */
     public void removePlaylist(Playlist list) {
+        if(this.createdPlaylists.contains(list)){
         this.createdPlaylists.remove(list);
+        }
     }
 
     /**
@@ -334,21 +343,21 @@ public class User implements Lockable {
      * Sets a flag for the user to give him the artist functionality.
      */
     public void promoteToArtist() {
-
+        this.artist = true;
     }
 
     /**
      * Sets a flag for the user to give him the labelmanager functionality.
      */
     public void promoteToLabelManager() {
-
+        this.labelManager = true;
     }
 
     /**
      * Sets a flag for the user to give him the admin functionality.
      */
     public void promoteToAdmin() {
-
+        this.admin = true;
     }
 
     /**

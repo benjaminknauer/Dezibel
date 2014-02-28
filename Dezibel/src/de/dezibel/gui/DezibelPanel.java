@@ -3,6 +3,7 @@ package de.dezibel.gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -15,6 +16,7 @@ import com.javadocking.dock.SingleDock;
 import com.javadocking.dockable.DefaultDockable;
 import com.javadocking.dockable.Dockable;
 import com.javadocking.dockable.DockableState;
+import com.javadocking.dockable.DockingMode;
 import com.javadocking.dockable.StateActionDockable;
 import com.javadocking.dockable.action.DefaultDockableStateActionFactory;
 import com.javadocking.model.FloatDockModel;
@@ -25,7 +27,26 @@ import com.javadocking.visualizer.SingleMaximizer;
 public class DezibelPanel extends JPanel
 {
 	private static final long serialVersionUID = 1L;
-
+	private DragablePanel pnLogin;
+	private DragablePanel pnRegister;
+	//private DragablePanel pnPlayer;
+	private DragablePanel pnPlayer;
+	private DragablePanel pnNews;
+	private DragablePanel pnAds;
+	private DragablePanel pnMyList;
+	private DragablePanel pnFavorites;
+	private Dockable daLogin;
+	private Dockable daRegister;
+	private Dockable daNews;
+	private Dockable daAds;
+	private Dockable daMyLists;
+	private Dockable daFavorites;
+	private Dockable daPlayer;
+	
+	private LineDock leftLineDock;
+	private LineDock rightLineDock;
+	private SingleDock centerDock;
+	
 	public DezibelPanel(JFrame frame)
 	{
 		super(new BorderLayout());
@@ -38,44 +59,53 @@ public class DezibelPanel extends JPanel
 		DockingManager.setDockModel(dockModel);
 		
 		// Create the content components.
-		DragablePanel pnLogin 		= new DragablePanel();
-		DragablePanel pnRegister 	= new DragablePanel();
-		DragablePanel pnPlayer 		= new PlayerPanel();
-		DragablePanel pnNews 		= new DragablePanel();
-		DragablePanel pnAds 		= new DragablePanel();
-		DragablePanel pnMyList 		= new DragablePanel();
-		DragablePanel pnFavorites 	= new DragablePanel();
+		pnLogin 		= new LoginPanel(this);
+		pnRegister 		= new DragablePanel(this);
+		//pnPlayer 		= new PlayerPanel();
+		pnPlayer 		= new DragablePanel(this);
+		pnNews 			= new DragablePanel(this);
+		pnAds 			= new DragablePanel(this);
+		pnMyList 		= new DragablePanel(this);
+		pnFavorites 	= new DragablePanel(this);
 		
 		// Create the dockables around the content components.
-		Dockable dockable1 = new DefaultDockable("pnLogin", 	pnLogin, 	"Login");
-		Dockable dockable2 = new DefaultDockable("pnRegister", 	pnRegister, "Register");
-		Dockable dockable3 = new DefaultDockable("pnPlayer", 	pnPlayer, 	"Player");
-		Dockable dockable4 = new DefaultDockable("pnNews", 		pnNews, 	"News");
-		Dockable dockable5 = new DefaultDockable("pnAds", 		pnAds, 		"Ads");
-		Dockable dockable6 = new DefaultDockable("pnMyList", 	pnMyList, 	"MyList");
-		Dockable dockable7 = new DefaultDockable("pnFavorites", pnFavorites,"Favorites");
+		// MainPanles, that can only be displayed in the Center
+		daLogin 		= new DefaultDockable("pnLogin", 	pnLogin, 	"Login",	null,DockingMode.CENTER);
+		daRegister 	= new DefaultDockable("pnRegister", pnRegister, "Register",	null,DockingMode.CENTER);
 		
+		// Panels that can be docked at left/right border
+		daNews 		= new DefaultDockable("pnNews", 	pnNews, 	"News",		null,DockingMode.CENTER + DockingMode.LEFT + DockingMode.RIGHT + DockingMode.VERTICAL_LINE);
+		daAds 			= new DefaultDockable("pnAds", 		pnAds, 		"Ads",		null,DockingMode.CENTER + DockingMode.LEFT + DockingMode.RIGHT + DockingMode.VERTICAL_LINE);
+		daMyLists 		= new DefaultDockable("pnMyList", 	pnMyList, 	"MyLists",	null,DockingMode.CENTER + DockingMode.LEFT + DockingMode.RIGHT + DockingMode.VERTICAL_LINE);
+		daFavorites 	= new DefaultDockable("pnFavorites",pnFavorites,"Favorites",null,DockingMode.CENTER + DockingMode.LEFT + DockingMode.RIGHT + DockingMode.VERTICAL_LINE);
 		
+		// Panels that can be docked only at top/bottom and center
+		daPlayer 		= new DefaultDockable("pnPlayer", 	pnPlayer, 	"Player",	null,DockingMode.CENTER + DockingMode.SINGLE + DockingMode.FLOAT + DockingMode.BOTTOM + DockingMode.TOP);
+				
 		// Add actions to the dockables.
-		dockable1 = addActions(dockable1);
-		dockable2 = addActions(dockable2);
-		dockable3 = addActions(dockable3);
-		dockable4 = addActions(dockable4);
-		dockable5 = addActions(dockable5);
-		dockable6 = addActions(dockable6);
-		dockable7 = addActions(dockable7);
+		daLogin 	= addActions(daLogin);
+		daRegister 	= addActions(daRegister);
+		daPlayer 	= addActions(daPlayer);
+		daNews 		= addActions(daNews);
+		daAds 		= addActions(daAds);
+		daMyLists 	= addActions(daMyLists);
+		daFavorites = addActions(daFavorites);
 		
 		// Create the child tab dock.
-		LineDock leftLineDock = new LineDock();
-		LineDock rightLineDock = new LineDock();
-		SingleDock centerDock = new SingleDock();
+		leftLineDock = new LineDock();
+		rightLineDock = new LineDock();
+		centerDock = new SingleDock();
 		leftLineDock.setOrientation(LineDock.ORIENTATION_VERTICAL);
 		rightLineDock.setOrientation(LineDock.ORIENTATION_VERTICAL);
 		
-		leftLineDock.addDockable(dockable1,new Position(0));
-		leftLineDock.addDockable(dockable2, new Position(1));
-		rightLineDock.addDockable(dockable3,new Position(0));
-		rightLineDock.addDockable(dockable4, new Position(1));
+		//leftLineDock.addDockable(daLogin,new Position(0));
+		//leftLineDock.addDockable(daRegister, new Position(1));
+//		centerDock.addDockable(daLogin,new Position(0));
+//		leftLineDock.addDockable(daMyLists,new Position(0));
+//		leftLineDock.addDockable(daFavorites, new Position(1));
+//		
+//		rightLineDock.addDockable(daNews, new Position(0));
+//		rightLineDock.addDockable(daAds,new Position(1));
 		
 		BorderDock borderDock = new BorderDock();
 		
@@ -100,20 +130,37 @@ public class DezibelPanel extends JPanel
 		
 		// Add the maximizer to the panel.
 		this.add(maximizer, BorderLayout.CENTER);
+		this.showLogin();
+		this.showRegistration();
+		this.showLogin();
 	}
 	
-	/**
-	 * Decorates the given dockable with no state actions to prevent, minimizing,maximizing and closing.
-	 * 
-	 * @param dockable	The dockable to decorate.
-	 * @return			The wrapper around the given dockable, with actions.
-	 */
 	private Dockable addActions(Dockable dockable)
 	{
 		//int[] states = {DockableState.NORMAL, DockableState.MINIMIZED, DockableState.MAXIMIZED, DockableState.EXTERNALIZED};
-		int[] states = {DockableState.NORMAL};
+		int[] states = {DockableState.NORMAL, DockableState.MINIMIZED};
 		Dockable wrapper = new StateActionDockable(dockable, new DefaultDockableStateActionFactory(), states);
 		return wrapper;
+	}
+	
+	private void showSidebars(){
+		leftLineDock.addDockable(daMyLists,new Position(0));
+		leftLineDock.addDockable(daFavorites, new Position(1));
+		
+		rightLineDock.addDockable(daNews, new Position(0));
+		rightLineDock.addDockable(daAds,new Position(1));
+	}
+	
+	private void showLogin(){
+		if(this.centerDock.getDockableCount() > 0)
+			this.centerDock.removeDockable(this.centerDock.getDockable(this.centerDock.getDockableCount() -1));
+		
+		this.centerDock.addDockable(daLogin,new Position(0));
+	}
+	
+	private void showRegistration(){
+		this.centerDock.removeDockable(daLogin);
+		this.centerDock.addDockable(this.daRegister,new Position(0));
 	}
 	
 	public static void createAndShowGUI()

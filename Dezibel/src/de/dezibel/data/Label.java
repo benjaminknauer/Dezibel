@@ -60,8 +60,10 @@ public class Label implements Lockable {
      * @param artist artist to be removed
      */
     public void removeArtist(User artist) {
-        this.artists.remove(artist);
-        artist.removeArtistLabel(this);
+        if(this.artists.contains(artist)){
+            this.artists.remove(artist);
+            artist.removeArtistLabel(this);
+        }
     }
 
     /**
@@ -205,8 +207,10 @@ public class Label implements Lockable {
      * @param fan follower to be removed
      */
     public void removeFollower(User fan) {
-        this.followers.remove(fan);
-        fan.removeFavoriteLabel(this);
+        if(this.followers.contains(fan)){
+            this.followers.remove(fan);
+            fan.removeFavoriteLabel(this);
+        }
     }
 
     /**
