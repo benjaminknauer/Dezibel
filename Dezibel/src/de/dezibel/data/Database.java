@@ -318,6 +318,7 @@ public class Database {
             return ErrorCode.NO_GENRE_SET;
         m.setGenre(genre);
         m.setLabel(label);
+        this.media.add(m);
         return ErrorCode.SUCCESS;
     }
 
