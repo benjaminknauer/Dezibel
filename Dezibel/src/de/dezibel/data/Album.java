@@ -16,6 +16,7 @@ public class Album extends Playlist {
 
     private String coverPath;
     private Label label;
+    private User creator;
     /**
      * The ImageLoader all Album objects use to allow use of getCover().
      */
@@ -32,10 +33,19 @@ public class Album extends Playlist {
      * @param user The creator (uploader) of the Album.
      */
     public Album(Medium medium, String title, User user) {
-        super(medium, title, user);
-        if (imageLoader == null) {
+        super(medium, title, user); //TODO: Konstruktor von Playlist 
+        //verwaltet die Assoziationen, hier aber nicht gewollt
+        this.creator = user;
+        this.setTitel(title);
+        this.addMedium(medium);
+        
+         if (imageLoader == null) {
             imageLoader = new ImageLoader();
         }
+   
+        medium.setAlbum(this);
+       //TODO user.addCreatedAlbum(this);
+          
     }
 
     /**
