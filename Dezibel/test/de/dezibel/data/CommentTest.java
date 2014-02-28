@@ -18,7 +18,8 @@ import static org.junit.Assert.*;
 public class CommentTest {
     
     Comment testComment;
-    News testNews;
+    News testCommentable;
+    User testAuthor;
     
     public CommentTest() {
         
@@ -26,6 +27,9 @@ public class CommentTest {
     
     @Before
     public void setUp() {
+        testAuthor = new User("testmail", "Hans", "Müller", "123", true);
+        testCommentable = new News("Neue News", "Test Text", testAuthor);
+        testComment = new Comment("Test Kommentar", testCommentable, testAuthor);
     }
 
     /**
@@ -34,10 +38,13 @@ public class CommentTest {
     @Test
     public void testDelete() {
         System.out.println("delete");
-        Comment instance = null;
+        Comment instance = new Comment("Test Komment 2", testCommentable, testAuthor);
         instance.delete();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        assertFalse(testCommentable.getComments().contains(instance));
+        assertFalse(testAuthor.getCreatedComments().contains(instance));
+        assertTrue(instance.isMarkedForDeletion());
+        assertFalse(Database.getInstance().getComments().contains(instance));
     }
 
     /**
@@ -46,12 +53,8 @@ public class CommentTest {
     @Test
     public void testGetText() {
         System.out.println("getText");
-        Comment instance = null;
-        String expResult = "";
-        String result = instance.getText();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Comment instance = testComment;
+        assertTrue(testComment.getText().equals("Test Kommentar"));
     }
 
     /**
@@ -60,12 +63,10 @@ public class CommentTest {
     @Test
     public void testGetCreationDate() {
         System.out.println("getCreationDate");
-        Comment instance = null;
-        Date expResult = null;
+        Comment instance = new Comment("Test Komment 2", testCommentable, testAuthor);
+        Date expResult = new Date();
         Date result = instance.getCreationDate();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(expResult.getTime(), result.getTime());
     }
 
     /**
@@ -74,12 +75,10 @@ public class CommentTest {
     @Test
     public void testGetCommentable() {
         System.out.println("getCommentable");
-        Comment instance = null;
-        Commentable expResult = null;
+        Comment instance = testComment;
+        Commentable expResult = testCommentable;
         Commentable result = instance.getCommentable();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -88,12 +87,10 @@ public class CommentTest {
     @Test
     public void testGetAuthor() {
         System.out.println("getAuthor");
-        Comment instance = null;
-        User expResult = null;
+        Comment instance = testComment;
+        User expResult = testAuthor;
         User result = instance.getAuthor();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -102,12 +99,10 @@ public class CommentTest {
     @Test
     public void testIsMarkedForDeletion() {
         System.out.println("isMarkedForDeletion");
-        Comment instance = null;
+        Comment instance = testComment;
         boolean expResult = false;
         boolean result = instance.isMarkedForDeletion();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
     
 }

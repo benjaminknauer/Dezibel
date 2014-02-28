@@ -104,6 +104,7 @@ public class Genre {
      */
     public void removeMedium(Medium medium) {
         this.media.remove(medium);
+        medium.setGenre(null);
     }
 
     /**
@@ -153,6 +154,7 @@ public class Genre {
         subGenre.setSuperGenre(null);
     }
 
+    //TODO Löschen?!
     /**
      * Removes all genres in <code>subGenres</code> from the sub-genres of this
      * genre. If a genre wasn't a sub-genre in the first place, nothing will
