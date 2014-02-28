@@ -6,6 +6,9 @@ import de.dezibel.player.Player;
 import de.dezibel.player.PlayerObserver;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -155,6 +158,15 @@ public class PlayerPanel extends DragablePanel {
                 player.next();
             }
         });
+        
+        slider.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                slider.setValue((int) ((double) e.getX() / (double) slider.getWidth() * 1000.0));
+                player.jumpTo((int)((double)slider.getValue()/1000.0*(double)player.getTotalDuration()));
+            }
+        });
+        
         player.addObserver(new PlayerObserver() {
             @Override
             public void onTrackChanged(Medium newMedium) {
