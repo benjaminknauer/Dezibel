@@ -19,10 +19,12 @@ import javax.swing.JSlider;
 public class DragablePanel extends JPanel implements DraggableContent {
 
     private static final long serialVersionUID = 1L;
-
-    public DragablePanel() {
+    private DezibelPanel parent;
+    
+    public DragablePanel(DezibelPanel parent) {
         super(new FlowLayout());
-
+        
+        this.parent = parent;
         // The panel.
         setMinimumSize(new Dimension(80, 80));
         setPreferredSize(new Dimension(150, 150));
