@@ -43,24 +43,37 @@ public class Application {
     }
 
     /**
-     * Accept the application.
+     * Accept the application. (Notify both the label and the artist.)
      */
     public void accept() {
-        
+        this.label.addArtist(this.artist);
+        this.artist.addArtistLabel(this.label);
+        //TODO Arist und Label per Mail benachritigen?
+        delete();
     }
 
     /**
-     * Decline the application.
+     * Decline the application. (Notify the application's creator of this.)
      */
     public void decline() {
-
+        if(this.isFromArtist()){
+            //TODO Benachrichtige den Artist per Mail.
+        } else {
+            //TODO Benachrichtige das Label per Mail.
+        }
+        delete();
     }
     
+    /**
+     * Delete this application object and clear all of its associations.
+     */
     public void delete(){
+        if(markedForDeletion)
+            return;
         markedForDeletion = true;
         this.artist.removeApplication(this);
         this.artist = null;
-        this.label.removeApplication(this);
+        this.label.deleteApplication(this);
         this.label = null;
         Database.getInstance().deleteApplication(this);
     }

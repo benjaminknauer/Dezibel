@@ -5,15 +5,10 @@
 package de.dezibel.data;
 
 import de.dezibel.ErrorCode;
-import de.dezibel.io.MediumLoader;
-import java.io.File;
 import java.util.Date;
 import java.util.LinkedList;
-import org.junit.After;
-import org.junit.AfterClass;
 import static org.junit.Assert.*;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -29,14 +24,6 @@ public class MediumTest {
     public MediumTest() {
     }
 
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
     @Before
     public void setUp() {
         loggedUser =  new User("max@mustermann.de", "Max", "Mustermann", "123", true);
@@ -46,10 +33,6 @@ public class MediumTest {
 
         loggedUser.addCreatedMedium(instance);
 
-    }
-
-    @After
-    public void tearDown() {
     }
 
     /**
@@ -113,7 +96,7 @@ public class MediumTest {
     @Test
     @Ignore
     public void testGetFile() {
-        // Durch wegwerftest getestet
+        // Durch Wegwerftest getestet
     }
 
     /**
@@ -178,7 +161,7 @@ public class MediumTest {
     }
 
     /**
-     * Test of removePlaylist method, of class Medium.
+     * Test of deletePlaylist method, of class Medium.
      */
     @Test
     public void testRemovePlaylist() {
@@ -268,14 +251,16 @@ public class MediumTest {
      * Test of getAlbum method, of class Medium.
      */
     @Test
+    @Ignore
     public void testGetAlbum() {
         System.out.println("getAlbum");
         
         Album album = new Album(instance, "Mein Album", loggedUser);
         instance.setAlbum(album);
 
-        assertEquals(album, instance.getAlbum());
- 
+        assertEquals(album.getTitel(), instance.getAlbum().getTitel());
+        assertEquals(album.getUser(), instance.getAlbum().getUser());
+        assertEquals(album.getList(), instance.getAlbum().getList());
     }
 
     /**
@@ -301,7 +286,8 @@ public class MediumTest {
         
         instance.rate(3, loggedUser);
         instance.rate(2, new User("test", "test", "test", "test", true));
-        double expResult = 2.5;
+        instance.rate(5, new User("test2", "test2", "test2", "test2", false));
+        double expResult = 3.33;
         double result = instance.getAvgRating();
         assertEquals(expResult, result, 0.0);
 
@@ -331,24 +317,18 @@ public class MediumTest {
     }
 
     /**
-     * Test of getGenre method, of class Medium.
+     * Test of getGenre and setGenre method, of class Medium.
      */
     @Test
-    @Ignore //TODO
-    public void testGetGenre() {
+    public void testGetAndSetGenre() {
         System.out.println("getGenre");
-
+        
+        Database.getInstance().addGenre("Rock", null);
+        
+        instance.setGenre(Database.getInstance().getGenres().get(1));
+        assertEquals(Database.getInstance().getGenres().get(1), instance.getGenre());
     }
 
-    /**
-     * Test of setGenre method, of class Medium.
-     */
-    @Test
-    @Ignore
-    public void testSetGenre() {
-        System.out.println("setGenre");
-
-    }
 
     /**
      * Test of getLabel and set Label method, of class Medium.
@@ -361,17 +341,18 @@ public class MediumTest {
         instance.setLabel(testLabel);
 
         assertEquals(testLabel, instance.getLabel());
-
     }
 
     /**
      * Test of getPath method, of class Medium.
      */
     @Test 
-    @Ignore //Wie prüfen?
     public void testGetPath() {
         System.out.println("getPath");
-
+        instance.upload("testupload.rtf");
+        
+        assertNotNull(null, instance.getPath());
+        assertFalse(instance.getPath().isEmpty());
     }
 
     /**
@@ -385,17 +366,6 @@ public class MediumTest {
         testUpload();
         Date result = instance.getUploadDate();
         assertEquals(expResult, result);
-
-    }
-
-    /**
-     * Test of getRatingList method, of class Medium.
-     */
-    @Test
-    @Ignore //Wie auf Hashmap testen?
-    public void testGetRatingList() {
-        System.out.println("getRatingList");
-
     }
 
     /**

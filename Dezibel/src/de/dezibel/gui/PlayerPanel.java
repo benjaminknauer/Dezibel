@@ -24,7 +24,7 @@ import javax.swing.event.ChangeListener;
  */
 public class PlayerPanel extends DragablePanel {
 
-    private Player player;
+    private final Player player;
 
     /**
      * Test
