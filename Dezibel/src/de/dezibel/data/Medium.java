@@ -54,6 +54,9 @@ public class Medium implements Commentable, Lockable {
         }
         
         this.upload(path);
+        artist.addCreatedMedium(this);
+        
+        
     }
 
     /**
