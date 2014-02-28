@@ -105,15 +105,24 @@ public class DatabaseTest {
     @Test
     public void testAddComment() {
         System.out.println("addComment");
-        String text = "";
+        Database instance = Database.getInstance();
+        String text = "This is a comment.";
         Commentable commentable = null;
         User author = null;
-        Database instance = null;
-        ErrorCode expResult = null;
-        ErrorCode result = instance.addComment(text, commentable, author);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        instance.addUser("mail@mail.com", "Hans", "Peter", "123", new Date(),
+                "Ort", "Land", true);
+        author = instance.getUsers().get(instance.getUsers().size() - 1);
+        instance.addUser("mail@mail.com", "Artist", "Artist", "123", new Date(),
+                "Ort", "Land", true);
+        User artist = instance.getUsers().get(instance.getUsers().size() - 1);
+        instance.addMedium("Titel", artist, "", instance.getTopGenre(), null);
+        commentable = instance.getMedia().get(instance.getMedia().size() - 1);
+        instance.addComment(text, commentable, author);
+        Comment comment = instance.getComments().get(instance.getComments().size() - 1);
+        assertTrue(instance.getComments().contains(comment));
+        assertEquals(text, comment.getText());
+        assertEquals(commentable, comment.getCommentable());
+        assertEquals(author, comment.getAuthor());
     }
 
     /**
@@ -135,14 +144,14 @@ public class DatabaseTest {
     @Test
     public void testAddGenre() {
         System.out.println("addGenre");
-        String name = "";
-        Genre superGenre = null;
-        Database instance = null;
-        ErrorCode expResult = null;
-        ErrorCode result = instance.addGenre(name, superGenre);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Database instance = Database.getInstance();
+        String name = "Genre";
+        Genre superGenre = instance.getTopGenre();
+        instance.addGenre(name, superGenre);
+        Genre genre = instance.getGenres().get(instance.getGenres().size() - 1);
+        assertTrue(instance.getGenres().contains(genre));
+        assertEquals(name, genre.getName());
+        assertEquals(superGenre, genre.getSuperGenre());
     }
 
     /**
@@ -197,17 +206,28 @@ public class DatabaseTest {
     @Test
     public void testAddMedium() {
         System.out.println("addMedium");
-        String title = "";
+        Database instance = Database.getInstance();
+        String title = "Title";
         User artist = null;
         String path = "";
-        Genre genre = null;
+        Genre genre = instance.getTopGenre();
         Label label = null;
-        Database instance = null;
-        ErrorCode expResult = null;
-        ErrorCode result = instance.addMedium(title, artist, path, genre, label);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        instance.addUser("mail@mail.com", "Hans", "Peter", "123", new Date(),
+                "Ort", "Land", true);
+        artist = instance.getUsers().get(instance.getUsers().size() - 1);
+        instance.addUser("mail@mail.com", "Super", "Manager", "123", new Date(),
+                "Ort", "Land", true);
+        User manager = instance.getUsers().get(instance.getUsers().size() - 1);
+        instance.addLabel(manager, "Label1");
+        label = instance.getLabels().get(instance.getLabels().size() - 1);
+        instance.addMedium(title, artist, path, genre, label);
+        Medium medium = instance.getMedia().get(instance.getMedia().size() - 1);
+        assertTrue(instance.getMedia().contains(medium));
+        assertEquals(title, medium.getTitle());
+        assertEquals(artist, medium.getArtist());
+        assertEquals(path, medium.getPath());
+        assertEquals(genre, medium.getGenre());
+        assertEquals(label, medium.getLabel());
     }
 
     /**
