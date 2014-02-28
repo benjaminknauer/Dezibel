@@ -151,8 +151,10 @@ public class Medium implements Commentable, Lockable {
      * @return the mediums file
      */
     public File getFile() {
+        if (this.path != null) {
+            return Medium.mediumLoader.getFile(this.path);
+        }
         return null;
-        // TODO: MediumLoader
     }
 
     /**
