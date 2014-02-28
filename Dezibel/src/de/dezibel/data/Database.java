@@ -309,17 +309,19 @@ public class Database {
      * Database. May be null to create a placeholder Medium.
      * @param genre The medium's genre.
      * @param label The medium's label. Set to null if you don't wish to set one.
+     * @param album The medium's album. Should be null unless you know what you're doing.
      * @return ErrorCode
      * @pre <code>title</code>, <code>artist</code>, <code>genre</code> must not be null.
      * @post A new Medium object has been created and added to the database.
      */
-    public ErrorCode addMedium(String title, User artist, String path, Genre genre, Label label) {
+    public ErrorCode addMedium(String title, User artist, String path, Genre genre, Label label, Album album) {
         Medium m = new Medium(title, artist, path);
         
         if(genre == null)
             return ErrorCode.NO_GENRE_SET;
         m.setGenre(genre);
         m.setLabel(label);
+        m.setAlbum(album);
         this.media.add(m);
         return ErrorCode.SUCCESS;
     }

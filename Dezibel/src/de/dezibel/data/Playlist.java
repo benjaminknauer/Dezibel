@@ -34,9 +34,19 @@ public class Playlist implements Commentable {
         this.titel = titel;
         medium.addPlaylist(this);
         this.creator = user;
-        this.creator.addCreatedPlaylist(this);
+        if(this.addListToCreatorOnCreation())
+            this.creator.addCreatedPlaylist(this);
     }
-
+    
+    /**
+     * Method to tell the constructor (not) to add the new playlist object to its creator's playlists.
+     * Override this in subclasses to adjust the constructors behaviour.
+     * TEMPLATE DESIGN PATTERN
+     * @return true if constructor should add the newly created list to the creator's playlists. false otherwise
+     */
+    public boolean addListToCreatorOnCreation(){
+        return true;
+    }
     /**
      * This method adds a medium to the playlist.
      *

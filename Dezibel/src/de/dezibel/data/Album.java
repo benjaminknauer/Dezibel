@@ -3,7 +3,7 @@ package de.dezibel.data;
 import de.dezibel.ErrorCode;
 import de.dezibel.io.ImageLoader;
 import java.awt.Image;
-// TODO: Eine Todo-Sache
+// TODO: Album überarbeiten. Vererbung löschen? Stattdessen Assoziation? Wäre besser :D
 
 /**
  * This class represents an Album. An Album is a special kind of Playlist, being
@@ -30,11 +30,10 @@ public class Album extends Playlist {
      *
      * @param medium The first Medium in the Album.
      * @param title The Album's title.
-     * @param user The creator (uploader) of the Album.
+     * @param creator The creator (uploader) of the Album.
      */
     public Album(Medium medium, String title, User creator) {
-        super(medium, title, creator); //TODO: Konstruktor von Playlist 
-        //verwaltet die Assoziationen, hier aber nicht gewollt
+        super(medium, title, creator);
         this.setTitel(title);
         this.addMedium(medium);
         
@@ -42,11 +41,14 @@ public class Album extends Playlist {
             imageLoader = new ImageLoader();
         }
    
-        medium.setAlbum(this);
-       //TODO user.addCreatedAlbum(this);
-          
+        medium.setAlbum(this);          
     }
-
+    
+    @Override
+    public boolean addListToCreatorOnCreation(){
+        return false;
+    }
+    
     /**
      * Upload the image file specified by the path into the system and set it as
      * this Album's cover.
