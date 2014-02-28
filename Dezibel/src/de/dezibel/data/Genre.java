@@ -19,6 +19,8 @@ public class Genre {
     private LinkedList<Genre> subGenres;
 
     private LinkedList<Medium> media;
+    
+    private boolean markedForDeletion = false;
 
     public Genre(String name, Genre superGenre) {
         this.name = name;
@@ -41,6 +43,8 @@ public class Genre {
         if (this.equals(Database.getInstance().getTopGenre())) {
             return;
         }
+        
+        markedForDeletion = true;
 
         // Handle all sub-genres
         for (Genre currentGenre : subGenres) {
@@ -51,7 +55,7 @@ public class Genre {
         this.getSuperGenre().removeSubGenre(this);
 
         // Remove me from the database.
-        Database.getInstance().removeGenre(this);
+        Database.getInstance().deleteGenre(this);
     }
 
     /**
@@ -199,6 +203,10 @@ public class Genre {
 
     public String getName() {
         return this.name;
+    }
+    
+    public boolean isMarkedForDeletion(){
+        return markedForDeletion;
     }
 
 }

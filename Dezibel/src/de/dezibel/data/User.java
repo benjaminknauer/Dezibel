@@ -234,6 +234,8 @@ public class User implements Lockable {
       */
      public void removeApplication(Application app){
          this.sentApplications.remove(app);
+         if(app != null && !app.isMarkedForDeletion())
+             app.delete();
      }
      
      /**

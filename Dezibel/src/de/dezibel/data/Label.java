@@ -23,7 +23,7 @@ public class Label implements Lockable {
     // Bool to tell the database that this instance of Label may be deleted.
     // Only set to true if all associations are cleared!
     private boolean markedForDeletion = false;
-    
+
     /**
      * Class constructor.
      *
@@ -76,34 +76,39 @@ public class Label implements Lockable {
         }
     }
 
-     /**
+    /**
      * This method adds a news to the label.
      *
      * @param manager news to be added
      */
-    public void addNews(News news){
+    public void addNews(News news) {
         this.news.add(news);
     }
-    
+
     /**
-     * This method removes <code>news</code> from the Label's News and deletes it.
+     * This method removes <code>news</code> from the Label's News and deletes
+     * it.
+     *
      * @param news The News object to be removed and deleted.
      */
-    public void deleteNews(News news){
+    public void deleteNews(News news) {
         this.news.remove(news);
-        if(!news.isMarkedForDeletion())
+        if (!news.isMarkedForDeletion()) {
             news.delete();
+        }
     }
-    
+
     /**
-     * This method removes an application from the list of artists.
+     * This method removes an application from the list of applications and
+     * deletes it and all its associations!
      *
-     * @param application application to be removed
+     * @param application application to be removed and deleted
      */
     public void removeApplication(Application application) {
         this.applications.remove(application);
-        application.getUser().removeApplication(application);
-        Database.getInstance().deleteApplication(application);
+        if (application != null && !application.isMarkedForDeletion()) {
+            application.delete();
+        }
     }
 
     /**
@@ -140,6 +145,37 @@ public class Label implements Lockable {
     }
 
     /**
+     * Completely deletes this label from the database and clears all its
+     * associations. This will also automatically completely delete all news,
+     * applications and comments associated with this label from the system!
+     */
+    public void delete() {
+        markedForDeletion = true;
+        for (User currentArtist : artists) {
+            currentArtist.removeArtistLabel(this);
+        }
+        artists = null;
+        for (User currentFollower : followers) {
+            currentFollower.removeFavoriteLabel(this);
+        }
+        followers = null;
+        for (News currentNews : news) {
+            currentNews.delete();
+            Database.getInstance().removeNews(currentNews);
+        }
+        news = null;
+        for (Application currentApplication : applications) {
+            removeApplication(currentApplication);
+        }
+        applications = null;
+        for (Album currentAlbum : albums) {
+            removeAlbum(currentAlbum);
+        }
+        albums = null;
+        Database.getInstance().deleteLabel(this);
+    }
+
+    /**
      * This method removes a manager from the list of artists.
      *
      * @param manager manager to be removed
@@ -148,26 +184,7 @@ public class Label implements Lockable {
         this.labelManager.remove(manager);
         manager.removeManagerLabel(this);
         if (labelManager.size() == 0) {
-            markedForDeletion = true;
-            Database.getInstance().removeLabel(this);
-            for (User currentArtist : artists) {
-                currentArtist.removeArtistLabel(this);
-            }
-            for (User currentFollower : followers) {
-                currentFollower.removeFavoriteLabel(this);
-            }
-            for (News currentNews : news) {
-                currentNews.delete();
-                Database.getInstance().removeNews(currentNews);
-            }
-            for (Application currentApplication : applications) {
-                removeApplication(currentApplication);
-            }
-            for (Album currentAlbum : albums) {
-                removeAlbum(currentAlbum);
-            }
-            news = null;
-
+            delete();
         }
     }
 
@@ -185,7 +202,7 @@ public class Label implements Lockable {
 
     /**
      * This method removes a follower from the list of followers.
-     * 
+     *
      * @param fan follower to be removed
      */
     public void removeFollower(User fan) {
@@ -264,8 +281,8 @@ public class Label implements Lockable {
     public LinkedList<Album> getAlbums() {
         return (LinkedList<Album>) albums.clone();
     }
-    
-    public boolean isMarkedForDeletion(){
+
+    public boolean isMarkedForDeletion() {
         return markedForDeletion;
     }
 }

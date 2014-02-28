@@ -18,6 +18,8 @@ public class Application {
     private Label label;
 
     private User artist;
+    
+    private boolean markedForDeletion = false;
 
     /**
      * Creates a new application object representing an application from an 
@@ -53,6 +55,15 @@ public class Application {
     public void decline() {
 
     }
+    
+    public void delete(){
+        markedForDeletion = true;
+        this.artist.removeApplication(this);
+        this.artist = null;
+        this.label.removeApplication(this);
+        this.label = null;
+        Database.getInstance().deleteApplication(this);
+    }
 
     /**
      * Returns true if this application was written by an artist and false otherwise.
@@ -78,5 +89,9 @@ public class Application {
 
     public User getUser() {
         return this.artist;
+    }
+    
+    public boolean isMarkedForDeletion(){
+        return markedForDeletion;
     }
 }
