@@ -64,15 +64,6 @@ public class User implements Lockable {
         createdComments = new LinkedList<Comment>();
     }
 
-    /**
-     * Adds a new follower to the list of followers.
-     *
-     * @param fan the user to be followed
-     */
-    public void follow(User fan) {
-        this.followers.add(fan);
-    }
-
     // Notify Methoden:
     // TODO: Klasse für Mails einbauen
     /**
@@ -334,21 +325,21 @@ public class User implements Lockable {
      * Sets a flag for the user to give him the artist functionality.
      */
     public void promoteToArtist() {
-
+        this.artist = true;
     }
 
     /**
      * Sets a flag for the user to give him the labelmanager functionality.
      */
     public void promoteToLabelManager() {
-
+        this.labelManager = true;
     }
 
     /**
      * Sets a flag for the user to give him the admin functionality.
      */
     public void promoteToAdmin() {
-
+        this.admin = true;
     }
 
     /**
