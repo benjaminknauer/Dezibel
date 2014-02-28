@@ -51,6 +51,8 @@ public class Medium implements Commentable, Lockable {
         if (mediumLoader == null) {
             mediumLoader = new MediumLoader();
         }
+        
+        this.upload(path);
     }
 
     /**
@@ -80,10 +82,10 @@ public class Medium implements Commentable, Lockable {
      * otherwise
      */
     public boolean isAvailable() {
-        if(!(this.isLocked()) && !(this.deleted)){
+        if(!(this.isLocked()) && !(this.deleted) && this.isMediumSet()){
             return true;
         }
-        else return true;
+        else return false;
     }
 
     /**
@@ -149,8 +151,10 @@ public class Medium implements Commentable, Lockable {
      * @return the mediums file
      */
     public File getFile() {
+        if (this.path != null) {
+            return Medium.mediumLoader.getFile(this.path);
+        }
         return null;
-        // TODO: MediumLoader
     }
 
     /**

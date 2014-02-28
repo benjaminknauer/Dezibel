@@ -30,7 +30,8 @@ public class FileMover {
         try {
             File originFile = new File(origin);
             File destinationFile = new File(destination + new Long(System.currentTimeMillis()).toString());
-
+            destinationFile.getParentFile().mkdirs();
+            
             inStream = new FileInputStream(originFile);
             outStream = new FileOutputStream(destinationFile);
 

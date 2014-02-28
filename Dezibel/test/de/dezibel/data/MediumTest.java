@@ -5,6 +5,7 @@
 package de.dezibel.data;
 
 import de.dezibel.ErrorCode;
+import de.dezibel.io.MediumLoader;
 import java.io.File;
 import java.util.Date;
 import java.util.LinkedList;
@@ -57,7 +58,7 @@ public class MediumTest {
     @Test
     public void testIsAvailable() {
         System.out.println("isAvailable");
-        
+        instance.upload("testupload.rtf");
         assertTrue(instance.isAvailable());
         
         instance.lock();
@@ -106,18 +107,13 @@ public class MediumTest {
         assertEquals(expResult, result);   
     }
     
-    //TODO TEST!!!
     /**
      * Test of getFile method, of class Medium.
      */
     @Test
     @Ignore
     public void testGetFile() {
-        System.out.println("getFile");
-        File expResult = null;
-        File result = instance.getFile();
-        assertEquals(expResult, result);
-
+        // Durch wegwerftest getestet
     }
 
     /**
@@ -286,13 +282,13 @@ public class MediumTest {
      * Test of setAlbum method, of class Medium.
      */
     @Test
-    @Ignore //TODO
     public void testSetAlbum() {
         System.out.println("setAlbum");
-        Album album = null;
+        Album album = new Album(instance, "Mein Album", loggedUser);
         
         instance.setAlbum(album);
 
+        assertEquals(album, instance.getAlbum());
         
     }
 
