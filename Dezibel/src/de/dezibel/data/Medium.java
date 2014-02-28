@@ -6,6 +6,7 @@ import java.util.Date;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * Stores information about a music file, which can be uploaded, played, deleted
@@ -79,7 +80,10 @@ public class Medium implements Commentable, Lockable {
      * otherwise
      */
     public boolean isAvailable() {
-        return (!this.isLocked()) || (!deleted);
+        if(!(this.isLocked()) && !(this.deleted)){
+            return true;
+        }
+        else return true;
     }
 
     /**
@@ -96,8 +100,10 @@ public class Medium implements Commentable, Lockable {
     public synchronized ErrorCode upload(String path) {
         this.uploadDate = new Date();
         this.path = this.mediumLoader.upload(path);
-        return null;
-        // TODO: ErrorCode
+        if(!path.isEmpty()) {
+            return ErrorCode.SUCCESS;
+        }
+        return ErrorCode.UPLOAD_ERROR;
     }
 
     /**
@@ -112,6 +118,16 @@ public class Medium implements Commentable, Lockable {
         } else {
             ratingList.put(rater.hashCode(), new Rating(points));
         }
+        
+        // Re-calculate average rating.
+        double average = 0;
+        Iterator<Rating> iterator = this.ratingList.values().iterator();
+        
+        while(iterator.hasNext()){
+            average += (double) iterator.next().getPoints();
+        }
+        
+        this.avgRating = average/this.ratingList.size();
     }
 
     /**
@@ -121,7 +137,10 @@ public class Medium implements Commentable, Lockable {
      * <code>false</code> otherwise
      */
     public boolean isMediumSet() {
-        return ((this.path != null) && !(this.path.equals("")));
+        if(this.path != null && !(this.path.equals(""))){
+            return true;
+        }
+        else return false;
     }
 
     /**
@@ -158,6 +177,7 @@ public class Medium implements Commentable, Lockable {
     @Override
     public void lock(String text) {
         this.locked = true;
+        this.lockText = text;
         // TODO: Add sending of emails.
     }
 
