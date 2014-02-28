@@ -37,7 +37,7 @@ public class Player {
      *
      * @return The player instance
      */
-    public Player getInstance() {
+    public synchronized static Player getInstance() {
         if (instance == null) {
             instance = new Player();
         }
@@ -49,9 +49,10 @@ public class Player {
      * player is currently playing, nothing happens
      */
     public void play() {
-        if (this.player != null) {
-            this.player.play();
+        if (this.player == null) {
+            this.player = createPlayer(this.currentPlaylist.get(currentPosition));
         }
+        this.player.play();
     }
 
     /**
@@ -147,7 +148,7 @@ public class Player {
      * @return true if the player is currently playing, else false
      */
     public boolean isPlaying() {
-        return player.getStatus() == MediaPlayer.Status.PLAYING;
+        return (player != null && player.getStatus() == MediaPlayer.Status.PLAYING);
     }
 
     /**
