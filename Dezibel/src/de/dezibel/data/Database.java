@@ -112,7 +112,7 @@ public class Database {
         this.getUsers().get(0).promoteToAdmin();
 
         // Create topGenre
-        this.addGenre(topGenreName, null);
+        this.genres.add(new Genre(topGenreName, null));
     }
 
     /**
