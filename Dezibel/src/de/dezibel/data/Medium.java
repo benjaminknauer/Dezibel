@@ -27,6 +27,7 @@ public class Medium implements Commentable, Lockable {
     private Label label;
     private boolean deleted;
     private boolean locked;
+    private boolean addingPL;
     private String lockText;
     private HashMap<Integer, Rating> ratingList;
     private LinkedList<Comment> commentList;
@@ -129,7 +130,7 @@ public class Medium implements Commentable, Lockable {
             average += (double) iterator.next().getPoints();
         }
         
-        this.avgRating = average/this.ratingList.size();
+        this.avgRating = Math.round(average/this.ratingList.size() * 100.0) / 100.0;
     }
 
     /**
@@ -205,11 +206,27 @@ public class Medium implements Commentable, Lockable {
     }
 
     /**
-     * 
-     * @param list 
+     * Adds a playlist to the list of playlists which contain the medium
+     * @param list new playlist which should contain medium
      */
     public void addPlaylist(Playlist list){
+        this.addingPL = true;
         this.playlistList.add(list);
+        
+        if(list.isAddingMed() == false){
+            list.addMedium(this);
+        }
+        
+        this.addingPL = false;
+    }
+    
+    /**
+     * Checks if an adding process is currently running.
+     * @return <code>true</code> if medium and playlist are currently in an
+     * adding process
+     */
+    public boolean isAddingPL(){
+        return this.addingPL;
     }
     
     /**
