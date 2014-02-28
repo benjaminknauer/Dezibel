@@ -109,7 +109,7 @@ public class Database {
 
         // Create default administrator.
         this.addUser("admin@dezibel.de", "admin", "admin", "admin", new Date(), null, null, (Math.random() < 0.5));
-        this.getUsers().get(0).promoteToAdmin();
+        this.users.get(0).promoteToAdmin();
 
         // Create topGenre
         this.genres.add(new Genre(topGenreName, null));
@@ -170,7 +170,7 @@ public class Database {
             }
         }
 
-        applications.add(new Application(fromArtist, text, artist, label));
+        this.applications.add(new Application(fromArtist, text, artist, label));
         return ErrorCode.SUCCESS;
     }
 
@@ -183,7 +183,7 @@ public class Database {
      */
     void deleteApplication(Application application) {
         this.applications.remove(application);
-        if(application != null && !application.isMarkedForDeletion())
+        if(application != null)
             application.delete();
     }
 
@@ -201,7 +201,7 @@ public class Database {
      * and added to the database.
      */
     public ErrorCode addComment(String text, Commentable commentable, User author) {
-        comments.add(new Comment(text, commentable, author));
+        this.comments.add(new Comment(text, commentable, author));
         return ErrorCode.SUCCESS;
     }
 
@@ -214,7 +214,7 @@ public class Database {
      */
     void deleteComment(Comment comment) {
         this.comments.remove(comment);
-        if(comment != null && !comment.isMarkedForDeletion())
+        if(comment != null)
             comment.delete();
     }
 
@@ -256,7 +256,7 @@ public class Database {
      */
     void deleteGenre(Genre genre) {
         this.genres.remove(genre);
-        if(genre != null && !genre.isMarkedForDeletion())
+        if(genre != null)
             genre.delete();
     }
 
@@ -279,7 +279,7 @@ public class Database {
             }
         }
 
-        labels.add(new Label(manager, name));
+        this.labels.add(new Label(manager, name));
         return ErrorCode.SUCCESS;
     }
 
@@ -292,7 +292,7 @@ public class Database {
      */
     void deleteLabel(Label label) {
         this.labels.remove(label);
-        if(label != null && !label.isMarkedForDeletion())
+        if(label != null)
             label.delete();
     }
 
@@ -301,17 +301,23 @@ public class Database {
      * <code>path</code> may be null which will make the new Medium a
      * placeholder Medium.
      *
-     * @param titel The medium's title.
+     * @param title The medium's title.
      * @param artist The medium's artist.
      * @param path The path to the Medium's file that will be uploaded to the
      * Database. May be null to create a placeholder Medium.
+     * @param genre The medium's genre.
+     * @param label The medium's label. Set to null if you don't wish to set one.
      * @return ErrorCode
-     * @pre The <code>title</code> and <code>artist</code> must not be null or
-     * empty.
+     * @pre <code>title</code>, <code>artist</code>, <code>genre</code> must not be null.
      * @post A new Medium object has been created and added to the database.
      */
-    //TODO implementieren
-    public ErrorCode addMedium(String titel, User artist, String path) {
+    public ErrorCode addMedium(String title, User artist, String path, Genre genre, Label label) {
+        Medium m = new Medium(title, artist, path);
+        
+        if(genre == null)
+            return ErrorCode.NO_GENRE_SET;
+        m.setGenre(genre);
+        m.setLabel(label);
         return ErrorCode.SUCCESS;
     }
 
@@ -350,9 +356,9 @@ public class Database {
      * @param news The <code>News</code> object to be deleted.
      * @post <code>news</code> is not in the database.
      */
-    void removeNews(News news) {
+    void deleteNews(News news) {
         this.news.remove(news);
-        if(news != null && !news.isMarkedForDeletion())
+        if(news != null)
             news.delete();
     }
 
@@ -370,7 +376,7 @@ public class Database {
      * @post The new playlist is created and added to the database.
      */
     public ErrorCode addPlaylist(Medium medium, String title, User author) {
-        playlists.add(new Playlist(medium, title, author));
+        this.playlists.add(new Playlist(medium, title, author));
         return ErrorCode.SUCCESS;
     }
 
@@ -379,9 +385,9 @@ public class Database {
      * @param playlist The playlist to be deleted.
      * @post <code>playlist</code> is not in the database.
      */
-    void removePlaylist(Playlist playlist) {
+    void deletePlaylist(Playlist playlist) {
         this.playlists.remove(playlist);
-        if(playlist != null && !playlist.isMarkedForDeletion())
+        if(playlist != null)
             playlist.delete();
     }
 
@@ -416,7 +422,7 @@ public class Database {
         u.setCity(city);
         u.setCountry(country);
 
-        users.add(u);
+        this.users.add(u);
         return ErrorCode.SUCCESS;
     }
     

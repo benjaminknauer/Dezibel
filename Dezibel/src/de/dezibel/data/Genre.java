@@ -41,10 +41,9 @@ public class Genre {
      * sub-genres and its sub-genres' super-genre.
      */
     public void delete() {
-        // Can't delete the top-genre!
-        if (this.equals(Database.getInstance().getTopGenre())) {
+        // Already deleting? And: can't delete the top-genre
+        if (markedForDeletion || this.equals(Database.getInstance().getTopGenre()))
             return;
-        }
         
         markedForDeletion = true;
 
