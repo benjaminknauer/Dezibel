@@ -40,7 +40,7 @@ public class DezibelPanel extends JPanel
 		// Create the content components.
 		DragablePanel pnLogin 		= new DragablePanel();
 		DragablePanel pnRegister 	= new DragablePanel();
-		DragablePanel pnPlayer 		= new DragablePanel();
+		DragablePanel pnPlayer 		= new PlayerPanel();
 		DragablePanel pnNews 		= new DragablePanel();
 		DragablePanel pnAds 		= new DragablePanel();
 		DragablePanel pnMyList 		= new DragablePanel();
