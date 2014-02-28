@@ -1,7 +1,7 @@
 package de.dezibel.gui;
 
 import de.dezibel.data.Medium;
-import de.dezibel.data.User;
+//import de.dezibel.data.User;    //only used for tests
 import de.dezibel.player.Player;
 import de.dezibel.player.PlayerObserver;
 import java.awt.event.ActionEvent;
