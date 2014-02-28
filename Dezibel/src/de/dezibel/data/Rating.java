@@ -26,11 +26,10 @@ public class Rating {
      * @inv Points has value between 1 and 5
      */
     public void setPoints(int points) {
-        if (points >= 1 || points <= 5) {
+        if (points >= 1 && points <= 5) {
             this.points = points;
         } else {
             throw new IllegalArgumentException("points have to be in range of 1 to 5");
         }
     }
-
 }
