@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 import com.javadocking.dockable.DraggableContent;
 import com.javadocking.drag.DragListener;
+import javax.swing.JSlider;
 
 /**
  *
@@ -35,8 +36,10 @@ public class DragablePanel extends JPanel implements DraggableContent {
         addMouseListener(dragListener);
         addMouseMotionListener(dragListener);
         for (Component c : getComponents()) {
-            c.addMouseListener(dragListener);
-            c.addMouseMotionListener(dragListener);
+            if (!(c instanceof JSlider)) {
+                c.addMouseListener(dragListener);
+                c.addMouseMotionListener(dragListener);
+            }
         }
     }
 }

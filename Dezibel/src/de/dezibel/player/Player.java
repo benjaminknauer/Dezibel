@@ -21,6 +21,7 @@ public class Player {
     private LinkedList<Medium> currentPlaylist;
     private int currentPosition;
     private MediaPlayer player;
+    private LinkedList<PlayerObserver> observer;
 
     /**
      * Constructor that creates the initial Player instance.
@@ -30,6 +31,7 @@ public class Player {
         JFXPanel fxPanel = new JFXPanel();
         this.currentPosition = 0;
         this.currentPlaylist = new LinkedList<>();
+        this.observer = new LinkedList<>();
     }
 
     /**
@@ -50,7 +52,7 @@ public class Player {
      */
     public void play() {
         if (this.player == null) {
-            this.player = createPlayer(this.currentPlaylist.get(currentPosition));
+            createPlayer(this.currentPlaylist.get(currentPosition));
         }
         this.player.play();
     }
@@ -73,7 +75,7 @@ public class Player {
         if (this.player != null) {
             this.player.stop();
             this.currentPosition = 0;
-            this.player = this.createPlayer(this.currentPlaylist.get(this.currentPosition));
+            this.createPlayer(this.currentPlaylist.get(this.currentPosition));
         }
     }
 
@@ -96,11 +98,12 @@ public class Player {
         this.currentPosition = (++this.currentPosition) % this.currentPlaylist.size();
         Medium newMedium = this.currentPlaylist.get(this.currentPosition);
         if (newMedium.isAvailable()) {
-            this.player = this.createPlayer(newMedium);
+            this.createPlayer(newMedium);
         } else {
             // TODO - Sperrung bzw. Löschung für 3 Sekunden anzeigen
             // Eventuell durch eigene Sperr- bzw. Lösch-Medien realisieren.
         }
+        this.play();
     }
 
     /**
@@ -108,14 +111,18 @@ public class Player {
      * nothing happens.
      */
     public void previous() {
-        this.currentPosition = (--this.currentPosition) % this.currentPlaylist.size();
+        this.currentPosition = --this.currentPosition;
+        if (this.currentPosition < 0) {
+            this.currentPosition = this.currentPlaylist.size() - 1;
+        }
         Medium newMedium = this.currentPlaylist.get(this.currentPosition);
         if (newMedium.isAvailable()) {
-            this.player = this.createPlayer(newMedium);
+            this.createPlayer(newMedium);
         } else {
             // TODO - Sperrung bzw. Löschung für 3 Sekunden anzeigen
             // Eventuell durch eigene Sperr- bzw. Lösch-Medien realisieren.
         }
+        this.play();
     }
 
     /**
@@ -124,7 +131,11 @@ public class Player {
      * @return The volume
      */
     public int getVolume() {
-        return (int) Math.round(player.getVolume() * 100);
+        if (this.player == null) {
+            return 0;
+        } else {
+            return (int) Math.round(player.getVolume() * 100);
+        }
     }
 
     /**
@@ -134,12 +145,38 @@ public class Player {
      * [0, 100]
      */
     public void setVolume(int volume) {
-        if (volume > 100) {
-            volume = 100;
-        } else if (volume < 0) {
-            volume = 0;
+        if (this.player != null) {
+            if (volume > 100) {
+                volume = 100;
+            } else if (volume < 0) {
+                volume = 0;
+            }
+            this.player.setVolume(volume / 100.0);
         }
-        this.player.setVolume(volume / 100.0);
+    }
+    
+    /**
+     * Returns the total duration of the current song in seconds.
+     * @return The duration in seconds
+     */
+    public int getTotalDuration() {
+        if (this.player == null) {
+            return 0;
+        } else {
+            return (int) Math.round(this.player.getStopTime().toSeconds());
+        }
+    }
+    
+    /**
+     * Returns the already played time of the media in seconds.
+     * @return  The played time in seconds
+     */
+    public int getCurrentTime() {
+        if (this.player == null) {
+            return 0;
+        } else {
+            return (int) Math.round(this.player.getCurrentTime().toSeconds());
+        }
     }
 
     /**
@@ -227,32 +264,61 @@ public class Player {
     public void setCurrentMedia(Medium song) {
         if (song != null) {
             this.currentPosition = this.currentPlaylist.indexOf(song);
-            this.player = this.createPlayer(song);
+            this.createPlayer(song);
         }
     }
-    
+
+    /**
+     * Adds the submitted observer to the list of observers
+     *
+     * @param o The observer to add
+     */
+    public void addObserver(PlayerObserver o) {
+        if (o != null) {
+            this.observer.add(o);
+        }
+    }
+
+    /**
+     * Removes the submitted observer from the list of observers
+     *
+     * @param o The observer to remove
+     */
+    public void removeObserver(PlayerObserver o) {
+        this.observer.remove(o);
+    }
+
     /**
      * Creates a MediaPlayer object for the given medium.
+     *
      * @param medium The medium to create a player for
      * @return The created player
      * @pre medium != null
      */
-    private MediaPlayer createPlayer(Medium medium) {
+    private void createPlayer(Medium medium) {
         MediaPlayer tmpPlayer = new MediaPlayer(new Media(medium.getFile().toURI()
                 .toString()));
         if (this.player != null) {
             this.player.setOnEndOfMedia(null);
-            if (this.isPlaying()) tmpPlayer.play();
+            if (this.isPlaying()) {
+                tmpPlayer.play();
+            }
             tmpPlayer.setVolume(this.player.getVolume());
+            this.player.dispose();
         }
-        
+
         tmpPlayer.setOnEndOfMedia(new Runnable() {
             @Override
             public void run() {
                 Player.this.next();
             }
         });
-        return tmpPlayer;
+        this.player = tmpPlayer;
+        
+        // Notify observer
+        for (PlayerObserver o : observer) {
+            o.onTrackChanged(medium);
+        }
     }
 
 }
