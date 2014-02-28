@@ -32,5 +32,4 @@ public class Rating {
             throw new IllegalArgumentException("points have to be in range of 1 to 5");
         }
     }
-
 }
