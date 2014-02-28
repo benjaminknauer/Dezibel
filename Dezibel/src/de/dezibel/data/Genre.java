@@ -115,7 +115,7 @@ public class Genre {
      * @post self.hasSubGenre(subGenre)
      */
     public void addSubGenre(Genre subGenre) {
-        if (!hasSubGenre(subGenre)) {
+        if (!hasSubGenre(subGenre) && subGenre.getSuperGenre().equals(this)) {
             subGenres.add(subGenre);
         }
     }
@@ -150,6 +150,7 @@ public class Genre {
      */
     public void removeSubGenre(Genre subGenre) {
         this.subGenres.remove(subGenre);
+        subGenre.setSuperGenre(null);
     }
 
     /**
@@ -194,8 +195,9 @@ public class Genre {
         if (this.equals(Database.getInstance().getTopGenre())) {
             return;
         }
-
+        this.superGenre.removeSubGenre(this);
         this.superGenre = superGenre;
+        superGenre.addSubGenre(this);
     }
 
     public Genre getSuperGenre() {
