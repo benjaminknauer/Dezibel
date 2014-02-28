@@ -80,7 +80,10 @@ public class Medium implements Commentable, Lockable {
      * otherwise
      */
     public boolean isAvailable() {
-        return (!this.isLocked()) || (!deleted);
+        if(!(this.isLocked()) && !(this.deleted)){
+            return true;
+        }
+        else return true;
     }
 
     /**
@@ -134,7 +137,10 @@ public class Medium implements Commentable, Lockable {
      * <code>false</code> otherwise
      */
     public boolean isMediumSet() {
-        return ((this.path != null) && !(this.path.equals("")));
+        if(this.path != null && !(this.path.equals(""))){
+            return true;
+        }
+        else return false;
     }
 
     /**
