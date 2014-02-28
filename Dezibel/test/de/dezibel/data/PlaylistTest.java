@@ -25,9 +25,9 @@ public class PlaylistTest {
     @Before
     public void setUp() {
         user = new User("mail@mail.com", "Hans", "Peter", "123", true);
-        medium1 = new Medium("Medium1", user);
-        medium2 = new Medium("Medium1", user);
-        medium3 = new Medium("Medium1", user);
+        medium1 = new Medium("Medium1", user, "");
+        medium2 = new Medium("Medium1", user, "");
+        medium3 = new Medium("Medium1", user, "");
         playlist = new Playlist(medium1, "Playlist1", user);
     }
 
@@ -88,11 +88,11 @@ public class PlaylistTest {
     @Test
     public void testDelete() {
         System.out.println("delete");
-        
-        Playlist instance = playlist;
-        instance.delete();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Database.getInstance().addPlaylist(medium1, "Playlist1", user);
+        Playlist instance = Database.getInstance().getPlaylists()
+                .get(Database.getInstance().getPlaylists().size() - 1);
+        Database.getInstance().deletePlaylist(instance);
+        assertFalse(Database.getInstance().getPlaylists().contains(instance));
     }
 
     /**
