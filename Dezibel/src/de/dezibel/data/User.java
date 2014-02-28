@@ -130,6 +130,8 @@ public class User implements Lockable {
      * his mediums.
      *
      * @param label artist label which should be removed
+     * @pre publishingLabels is not empty
+     * @post publishingLabels size is reduced by 1
      */
     public void removeArtistLabel(Label label) {
         if(publishingLabels.contains(label)) {
@@ -154,6 +156,8 @@ public class User implements Lockable {
      * Removes a label from the list of labels which the user has to manage.
      *
      * @param label manager label which should be removed
+     * @pre managedLabels is not empty
+     * @post managedLabels size is reduced by 1
      */
     public void removeManagerLabel(Label label) {
         if(this.managedLabels.contains(label)){
@@ -178,6 +182,8 @@ public class User implements Lockable {
      * Removes a label from the list of labels which the user favorized.
      *
      * @param label favorized label which should be removed
+     * @pre favoriteLabels is not empty
+     * @post favoriteLabels size is reduced by 1
      */
     public void removeFavoriteLabel(Label label) {
         if(this.favoriteLabels.contains(label)){
@@ -202,6 +208,8 @@ public class User implements Lockable {
      * Removes a user from the list of favorized users.
      *
      * @param user user which should be removed
+     * @pre favoriteUsers is not empty
+     * @post favoriteUsers size is reduced by 1
      */
     public void removeFavoriteUser(User user) {
         if(this.favoriteUsers.contains(user)){
@@ -226,6 +234,8 @@ public class User implements Lockable {
      * Removes a user from the list of followers.
      *
      * @param user user which should be removed
+     * @pre followers is not empty
+     * @post followers size is reduced by 1
      */
     public void removeFollower(User user) {
         if(this.followers.contains(user)){
@@ -249,6 +259,8 @@ public class User implements Lockable {
      * Removes a news from the list of the news the user created and deletes it.
      *
      * @param news The news to be removed and deleted.
+     * @pre newsList is not empty
+     * @post newsList size is reduced by 1
      */
     public void deleteNews(News news) {
         this.newsList.remove(news);
@@ -270,6 +282,8 @@ public class User implements Lockable {
      * Removes an application from the list of applications.
      *
      * @param app application which should be removed
+     * @pre sentApplications is not empty
+     * @post sentApplications size is reduced by 1
      */
     public void removeApplication(Application app) {
         this.sentApplications.remove(app);
@@ -292,6 +306,8 @@ public class User implements Lockable {
      * by users (admins still see this intern list as usual).
      *
      * @param medium medium which should be removed
+     * @pre medium is not marked as deleted yet
+     * @post medium is marked as deleted
      */
     public void removeMedium(Medium medium) {
         medium.markAsDeleted();
@@ -310,6 +326,8 @@ public class User implements Lockable {
      * Removes a playlist from the users list of created playlists.
      *
      * @param list playlist which should be removed
+     * @pre createdPlaylists is not empty
+     * @post createdPlaylists size is reduced by 1
      */
     public void removePlaylist(Playlist list) {
         if(this.createdPlaylists.contains(list)){
@@ -331,6 +349,8 @@ public class User implements Lockable {
      * user and deletes it.
      *
      * @param comment comment which should be removed and deleted.
+     * @pre createdComments is not empty
+     * @post createdComments size is reduced by 1
      */
     public void deleteComment(Comment comment) {
         this.createdComments.remove(comment);
@@ -341,6 +361,8 @@ public class User implements Lockable {
 
     /**
      * Sets a flag for the user to give him the artist functionality.
+     * @pre user is not flagged as an artist yet
+     * @post user is flagged as an artist
      */
     public void promoteToArtist() {
         this.artist = true;
@@ -348,6 +370,8 @@ public class User implements Lockable {
 
     /**
      * Sets a flag for the user to give him the labelmanager functionality.
+     * @pre user is not flagged as a labelmanager yet
+     * @post user is flagged as a labelmanager
      */
     public void promoteToLabelManager() {
         this.labelManager = true;
@@ -355,6 +379,8 @@ public class User implements Lockable {
 
     /**
      * Sets a flag for the user to give him the admin functionality.
+     * @pre user is not flagged as an admin yet
+     * @post user is flagged as an admin
      */
     public void promoteToAdmin() {
         this.admin = true;

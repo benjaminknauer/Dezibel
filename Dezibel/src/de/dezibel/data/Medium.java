@@ -95,6 +95,8 @@ public class Medium implements Commentable, Lockable {
     /**
      * Marks the medium as deleted so no user can access it in any way (except
      * admins)
+     * 
+     * @post no user except the admin can access the medium
      */
     public void markAsDeleted(){
         this.deleted = true;
@@ -105,6 +107,8 @@ public class Medium implements Commentable, Lockable {
      *
      * @param points value how high it is rated
      * @param rater user who rates the medium
+     * @pre points is between 1 and 5
+     * @post medium has a rating 
      */
     public void rate(int points, User rater) {
         if (this.ratingList.containsKey(rater.hashCode())) {
@@ -221,11 +225,15 @@ public class Medium implements Commentable, Lockable {
     }
     
     /**
-     * 
-     * @param list 
+     * Removes list from the list of playlists which contain the medium
+     * @param list list which should be removed
+     * @pre playlistList is not empty
+     * @post playlistLists size is reduced by 1
      */
     public void removePlaylist(Playlist list){
+        if(!(list.getList().contains(this))){
         this.playlistList.remove(list);
+        }
     }
     
     /**
@@ -237,9 +245,6 @@ public class Medium implements Commentable, Lockable {
     }
 
     /**
-     * Returns if the medium is locked.
-     *
-     * @return <code>true</code> if its locked, <code>false</code> otherwise
      * @see Lockable#isLocked()
      */
     @Override
