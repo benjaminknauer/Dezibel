@@ -45,7 +45,7 @@ public class PlaylistTest {
     }
 
     /**
-     * Test of removeMedium method, of class Playlist.
+     * Test of removeMediumAt method, of class Playlist.
      */
     @Test
     public void testRemoveMedium() {
@@ -53,7 +53,7 @@ public class PlaylistTest {
         playlist.addMedium(medium2);
         int index = 1;
         Playlist instance = playlist;
-        instance.removeMedium(index);
+        instance.removeMediumAt(index);
         assertFalse(instance.getList().contains(medium2));
         assertFalse(medium2.getPlaylistList().contains(instance));
     }

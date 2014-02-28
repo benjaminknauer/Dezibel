@@ -78,7 +78,7 @@ public class News implements Commentable {
         for(Comment currentComment : comments ){
             deleteComment(currentComment);
         }
-        comments = null;
+        comments.clear();
         if(this.isAuthorLabel())
             label.deleteNews(this);
         else

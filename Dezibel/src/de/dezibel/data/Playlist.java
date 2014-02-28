@@ -65,7 +65,7 @@ public class Playlist implements Commentable {
      * @post The size of the list has been reduced by 1.
      * 
      */
-    public void removeMedium(int index) {
+    public void removeMediumAt(int index) {
         Medium m = this.mediumList.get(index);
         this.mediumList.remove(index);
         if(this.mediumList.indexOf(m) < 0)
@@ -102,12 +102,12 @@ public void move(int currentPos, int newPos) {
         for (Medium currentMedium : mediumList) {
             currentMedium.removePlaylist(this);
         }
-        mediumList = null;
+        mediumList.clear();
         for (Comment currentComment : comments) {
             comments.remove(currentComment);
             deleteComment(currentComment);
         }
-        comments = null;
+        comments.clear();
         Database.getInstance().deletePlaylist(this);
     }
 

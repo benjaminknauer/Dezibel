@@ -154,15 +154,15 @@ public class Label implements Lockable {
         for (User currentArtist : artists) {
             currentArtist.removeArtistLabel(this);
         }
-        artists = null;
+        artists.clear();
         for (User currentFollower : followers) {
             currentFollower.removeFavoriteLabel(this);
         }
-        followers = null;
+        followers.clear();
         for (News currentNews : news) {
             currentNews.delete();
         }
-        news = null;
+        news.clear();
         for (Application currentApplication : applications) {
             deleteApplication(currentApplication);
         }
@@ -170,7 +170,7 @@ public class Label implements Lockable {
         for (Album currentAlbum : albums) {
             removeAlbum(currentAlbum);
         }
-        albums = null;
+        albums.clear();
         Database.getInstance().deleteLabel(this);
     }
 
