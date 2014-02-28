@@ -1,7 +1,6 @@
 package de.dezibel.gui;
 
 import de.dezibel.data.Medium;
-//import de.dezibel.data.User;    //only used for tests
 import de.dezibel.player.Player;
 import de.dezibel.player.PlayerObserver;
 import java.awt.event.ActionEvent;
@@ -10,11 +9,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JSlider;
-import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -33,8 +29,8 @@ public class PlayerPanel extends DragablePanel {
     public PlayerPanel(DezibelPanel parent) {
         super(parent);
         // Initialize Player
-        player = Player.getInstance();
-        init();
+        this.player = Player.getInstance();
+        this.init();
     }
 
     /**
@@ -148,7 +144,7 @@ public class PlayerPanel extends DragablePanel {
             }
         });
         
-        player.addObserver(new PlayerObserver() {
+        this.player.addObserver(new PlayerObserver() {
             @Override
             public void onTrackChanged(Medium newMedium) {
                 lblTitle.setText(newMedium.getArtist().getFirstname() + " - "
