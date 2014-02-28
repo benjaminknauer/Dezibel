@@ -52,6 +52,8 @@ public class Medium implements Commentable, Lockable {
         if (mediumLoader == null) {
             mediumLoader = new MediumLoader();
         }
+        
+        artist.addCreatedMedium(this);
         if(path != null){
             this.upload(path);
         }
