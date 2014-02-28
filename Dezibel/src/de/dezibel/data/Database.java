@@ -257,8 +257,10 @@ public class Database {
      * @param genre The genre to be removed.
      * @post <code>genre</code> is not in the database.
      */
-    void removeGenre(Genre genre) {
+    void deleteGenre(Genre genre) {
         this.genres.remove(genre);
+        if(genre != null && !genre.isMarkedForDeletion())
+            genre.delete();
     }
 
     /**
@@ -291,8 +293,10 @@ public class Database {
      * @param label The label you want to remove.
      * @post <code>label</code> is not in the database.
      */
-    void removeLabel(Label label) {
+    void deleteLabel(Label label) {
         this.labels.remove(label);
+        if(label != null && !label.isMarkedForDeletion())
+            label.delete();
     }
 
     /**
@@ -351,6 +355,8 @@ public class Database {
      */
     void removeNews(News news) {
         this.news.remove(news);
+        if(news != null && !news.isMarkedForDeletion())
+            news.delete();
     }
 
     /**
@@ -378,6 +384,8 @@ public class Database {
      */
     void removePlaylist(Playlist playlist) {
         this.playlists.remove(playlist);
+        if(playlist != null && !playlist.isMarkedForDeletion())
+            playlist.delete();
     }
 
     /**
