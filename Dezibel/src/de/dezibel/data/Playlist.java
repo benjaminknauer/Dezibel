@@ -108,7 +108,7 @@ public class Playlist implements Commentable {
             deleteComment(currentComment);
         }
         comments = null;
-        Database.getInstance().removePlaylist(this);
+        Database.getInstance().deletePlaylist(this);
     }
 
     /**
