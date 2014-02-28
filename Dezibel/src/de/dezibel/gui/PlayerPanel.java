@@ -1,11 +1,13 @@
 package de.dezibel.gui;
 
 import de.dezibel.data.Medium;
-import de.dezibel.data.User;
+//import de.dezibel.data.User;    //only used for tests
 import de.dezibel.player.Player;
 import de.dezibel.player.PlayerObserver;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,7 +24,7 @@ import javax.swing.event.ChangeListener;
  */
 public class PlayerPanel extends DragablePanel {
 
-    private Player player;
+    private final Player player;
 
     /**
      * Test
@@ -36,6 +38,13 @@ public class PlayerPanel extends DragablePanel {
         frame.add(panel);
         frame.pack();
         frame.setVisible(true);
+        
+        // Testdata
+        // User u = new User("Hans", "Peter", "Hans", "123", true);
+        // Medium m1 = new Medium("Alarm01", u, "C:\\Alarm01.wav");
+        // Medium m2 = new Medium("Tsunami", u, "C:\\DVBBS & Borgeous - Tsunami.mp3");
+        // player.addMedium(m1);
+        // player.addMedium(m2);
     }
 
     /**
@@ -45,11 +54,6 @@ public class PlayerPanel extends DragablePanel {
         super();
         // Initialize Player
         player = Player.getInstance();
-        User u = new User("Hans", "Peter", "Hans", "123", true);
-        Medium m1 = new Medium("Alarm01", u, "C:\\Alarm01.wav");
-        Medium m2 = new Medium("Tsunami", u, "C:\\DVBBS & Borgeous - Tsunami.mp3");
-        player.addMedium(m1);
-        player.addMedium(m2);
         init();
     }
 
@@ -81,7 +85,9 @@ public class PlayerPanel extends DragablePanel {
                                 .addComponent(lblTitle, GroupLayout.Alignment.CENTER)
                                 .addGroup(layout.createSequentialGroup()
                                         .addComponent(lblElapsedTime)
+                                        .addGap(minHGap, prefHGap, maxHGap)
                                         .addComponent(slider)
+                                        .addGap(minHGap, prefHGap, maxHGap)
                                         .addComponent(lblTimeLeft))
                                 .addGroup(layout.createSequentialGroup()
                                         .addComponent(btnPrev)
@@ -153,6 +159,15 @@ public class PlayerPanel extends DragablePanel {
                 player.next();
             }
         });
+        
+        slider.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                slider.setValue((int) ((double) e.getX() / (double) slider.getWidth() * 1000.0));
+                player.jumpTo((int)((double)slider.getValue()/1000.0*(double)player.getTotalDuration()));
+            }
+        });
+        
         player.addObserver(new PlayerObserver() {
             @Override
             public void onTrackChanged(Medium newMedium) {
@@ -167,9 +182,17 @@ public class PlayerPanel extends DragablePanel {
                 player.setVolume(volume.getValue());
             }
         });
+        volume.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                volume.setValue((int) ((double) (volume.getHeight() - e.getY())
+                        / (double) volume.getHeight() * 100.0));
+            }
+        });
         
         // Slider-Thread
         new Thread(new Runnable() {
+            @Override
             public void run() {
                 while (true) {
                     if (player.isPlaying()) {
@@ -180,7 +203,16 @@ public class PlayerPanel extends DragablePanel {
                         seconds = (player.getTotalDuration() - player.getCurrentTime()) % 60;
                         minutes = (player.getTotalDuration() - player.getCurrentTime()) / 60;
                         lblTimeLeft.setText("-" + minutes + ":" + (seconds < 10?"0" + seconds:seconds));
+                        
+                        slider.setValue((int)(((double)player.getCurrentTime()/(double)player.getTotalDuration())*1000));
+                        System.out.println((int)(((double)player.getCurrentTime()/(double)player.getTotalDuration())*1000));
                     }
+                    try {
+                        Thread.sleep(500);
+                    }
+                    catch(InterruptedException e) {
+                        e.printStackTrace();
+                    }    
                 }
             }
         }).start();

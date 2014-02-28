@@ -25,6 +25,8 @@ public class Genre {
     public Genre(String name, Genre superGenre) {
         this.name = name;
         this.superGenre = superGenre;
+        subGenres = new LinkedList<>();
+        media = new LinkedList<>();
         if (superGenre != null) {
             superGenre.addSubGenre(this);
         }
@@ -39,10 +41,9 @@ public class Genre {
      * sub-genres and its sub-genres' super-genre.
      */
     public void delete() {
-        // Can't delete the top-genre!
-        if (this.equals(Database.getInstance().getTopGenre())) {
+        // Already deleting? And: can't delete the top-genre
+        if (markedForDeletion || this.equals(Database.getInstance().getTopGenre()))
             return;
-        }
         
         markedForDeletion = true;
 
@@ -114,7 +115,7 @@ public class Genre {
      * @post self.hasSubGenre(subGenre)
      */
     public void addSubGenre(Genre subGenre) {
-        if (!hasSubGenre(subGenre)) {
+        if (!hasSubGenre(subGenre) && subGenre.getSuperGenre().equals(this)) {
             subGenres.add(subGenre);
         }
     }
@@ -149,6 +150,7 @@ public class Genre {
      */
     public void removeSubGenre(Genre subGenre) {
         this.subGenres.remove(subGenre);
+        subGenre.setSuperGenre(null);
     }
 
     /**
@@ -193,8 +195,9 @@ public class Genre {
         if (this.equals(Database.getInstance().getTopGenre())) {
             return;
         }
-
+        this.superGenre.removeSubGenre(this);
         this.superGenre = superGenre;
+        superGenre.addSubGenre(this);
     }
 
     public Genre getSuperGenre() {

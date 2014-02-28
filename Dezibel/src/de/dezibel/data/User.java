@@ -35,7 +35,6 @@ public class User implements Lockable {
     private LinkedList<Comment> createdComments;
 
     // TODO: Flags in User einbauen!
-    
     /**
      * Class Constructor
      *
@@ -45,7 +44,7 @@ public class User implements Lockable {
      * @param password the users password
      * @param isMale the users gender
      */
-    public User(String email, String firstname, String lastname, 
+    public User(String email, String firstname, String lastname,
             String password, boolean isMale) {
         this.email = email;
         this.firstname = firstname;
@@ -65,28 +64,20 @@ public class User implements Lockable {
         createdComments = new LinkedList<Comment>();
     }
 
-    /**
-     * Adds a new follower to the list of followers.
-     *
-     * @param fan the user to be followed
-     */
-    public void follow(User fan) {
-        this.followers.add(fan);
-    }
-
-    
     // Notify Methoden:
     // TODO: Klasse für Mails einbauen
     /**
      * Informs the user about a new news by a favorite.
+     *
      * @param news someone else's new news
      */
     public void notify(News news) {
-        
+
     }
 
     /**
      * Informs the user about a new medium by a favorite.
+     *
      * @param medium someone else's new medium
      */
     public void notify(Medium medium) {
@@ -95,6 +86,7 @@ public class User implements Lockable {
 
     /**
      * Informs the user about a new album by a favorite.
+     *
      * @param album someone else's new album
      */
     public void notify(Album album) {
@@ -103,6 +95,7 @@ public class User implements Lockable {
 
     /**
      * Informs the user about a new playlist by a favorite.
+     *
      * @param playlist someone else's new playlist
      */
     public void notify(Playlist playlist) {
@@ -111,6 +104,7 @@ public class User implements Lockable {
 
     /**
      * Informs the user about a new artist of a favorized label.
+     *
      * @param label favorized label
      * @param artist new artist of favorized label
      */
@@ -119,195 +113,233 @@ public class User implements Lockable {
     }
 
     /**
-     * Adds a label to the list of labels under which the user publishes his 
+     * Adds a label to the list of labels under which the user publishes his
      * mediums.
-     * 
+     *
      * @param label new publishing label
      */
     public void addArtistLabel(Label label) {
-        this.publishingLabels.add(label);
+        if (!(this.publishingLabels.contains(label))) {
+            this.publishingLabels.add(label);
+            label.addArtist(this);
+        }
     }
-    
+
     /**
      * Removes a label from the list of labels under which the user publishes
      * his mediums.
+     *
      * @param label artist label which should be removed
      */
-    public void removeArtistLabel(Label label){
+    public void removeArtistLabel(Label label) {
         this.publishingLabels.remove(label);
     }
 
     /**
      * Adds a label to the list of labels the user has to manage.
-     * 
+     *
      * @param label new managed label
      */
     public void addManagerLabel(Label label) {
-        this.managedLabels.add(label);
+        if (!(this.managedLabels.contains(label))) {
+            this.managedLabels.add(label);
+            label.addManager(this);
+        }
     }
 
     /**
      * Removes a label from the list of labels which the user has to manage.
+     *
      * @param label manager label which should be removed
      */
-    public void removeManagerLabel(Label label){
+    public void removeManagerLabel(Label label) {
         this.managedLabels.remove(label);
     }
-    
-           
+
     /**
      * Adds a label to the list of labels the user has favorized.
-     * @param label  new favorized label
+     *
+     * @param label new favorized label
      */
-     public void addFavoriteLabel(Label label){
-        this.favoriteLabels.add(label);
+    public void addFavoriteLabel(Label label) {
+        if (!(this.favoriteLabels.contains(label))) {
+            this.favoriteLabels.add(label);
+            label.follow(this);
+        }
     }
-     
-     /**
-      * Removes a label from the list of labels which the user favorized.
-      * @param label favorized label which should be removed
-      */
-     public void removeFavoriteLabel(Label label){
-         this.favoriteLabels.remove(label);
-     }
-     
+
+    /**
+     * Removes a label from the list of labels which the user favorized.
+     *
+     * @param label favorized label which should be removed
+     */
+    public void removeFavoriteLabel(Label label) {
+        this.favoriteLabels.remove(label);
+    }
+
     /**
      * Adds a user to the list of users the user has favorized.
+     *
      * @param user new favorized user
      */
-     public void addFavoriteUser(User user){
-         this.favoriteUsers.add(user);
-     }
-     
-     /**
-      * Removes a user from the list of favorized users.
-      * @param user user which should be removed
-      */
-     public void removeFavoriteUser(User user){
-         this.favoriteUsers.remove(user);
-     }
-     /**
-      * Adds a user to the list of users who follow the user.
-      * @param user new following user
-      */
-     public void addFollower(User user){
-         this.followers.add(user);
-     }
-     
-     /**
-      * Removes a user from the list of followers.
-      * @param user user which should be removed
-      */
-     public void removeFollower(User user){
-         this.followers.remove(user);
-     }
-     
-     /**
-      * Adds a news to the list of news the user created.
-      * @param news new created news
-      */
-     public void addNews(News news){
-         this.newsList.add(news);
-     }
-     
-     /**
-      * Removes a news from the list of the news the user created and deletes it.
-      * @param news The news to be removed and deleted.
-      */
-     public void deleteNews(News news){
-         this.newsList.remove(news);
-         if(!news.isMarkedForDeletion())
-             news.delete();
-     }
-     
-     /**
-      * Adds a new application to the list of applications.
-      * @param app new application sent by the user
-      */
-     public void addApplication(Application app){
-         this.sentApplications.add(app);
-     }     
-     
-     /**
-      * Removes an application from the list of applications.
-      * @param app application which should be removed
-      */
-     public void removeApplication(Application app){
-         this.sentApplications.remove(app);
-         if(app != null && !app.isMarkedForDeletion())
-             app.delete();
-     }
-     
-     /**
-      * Adds a new medium to the list of mediums the user created.
-      * @param medium new medium created by the user
-      */
-     public void addCreatedMedium(Medium medium){
-         this.createdMediums.add(medium);
-     }
-     
-     /**
-      * Removes a medium from the list of created mediums.
-      * @param medium medium which should be removed
-      */
-     public void removeMedium(Medium medium){
-         this.createdMediums.remove(medium);
-     }
-     
-     /**
-      * Adds a new playlist to the list of playlists created by the user.
-      * @param list new playlist created by the user
-      */
-     public void addCreatedPlaylist(Playlist list){
-         this.createdPlaylists.add(list);
-     }
-     
-     /**
-      * Removes a playlist from the users list of created playlists.
-      * @param list playlist which should be removed
-      */
-     public void removePlaylist(Playlist list){
-         this.createdPlaylists.remove(list);
-     }
-     
-     /**
-      * Adds a new comment to the list of comments created by the user.
-      * @param comment new comment created by the user
-      */
-     public void addCreatedComments(Comment comment){
-         this.createdComments.add(comment);
-     }
-     
-     /**
+    public void addFavoriteUser(User user) {
+        if(!(this.favoriteUsers.contains(user))){
+            this.favoriteUsers.add(user);
+            user.addFollower(this);
+        }
+    }
+
+    /**
+     * Removes a user from the list of favorized users.
+     *
+     * @param user user which should be removed
+     */
+    public void removeFavoriteUser(User user) {
+        this.favoriteUsers.remove(user);
+    }
+
+    /**
+     * Adds a user to the list of users who follow the user.
+     *
+     * @param user new following user
+     */
+    public void addFollower(User user) {
+        if(!(this.followers.contains(user))){
+            this.followers.add(user);
+            user.addFavoriteUser(this);
+        }
+    }
+
+    /**
+     * Removes a user from the list of followers.
+     *
+     * @param user user which should be removed
+     */
+    public void removeFollower(User user) {
+        this.followers.remove(user);
+    }
+
+    /**
+     * Adds a news to the list of news the user created.
+     *
+     * @param news new created news
+     */
+    public void addNews(News news) {
+        if(!(this.newsList.contains(news))){
+        this.newsList.add(news);
+        }
+    }
+
+    /**
+     * Removes a news from the list of the news the user created and deletes it.
+     *
+     * @param news The news to be removed and deleted.
+     */
+    public void deleteNews(News news) {
+        this.newsList.remove(news);
+        if (!news.isMarkedForDeletion()) {
+            news.delete();
+        }
+    }
+
+    /**
+     * Adds a new application to the list of applications.
+     *
+     * @param app new application sent by the user
+     */
+    public void addApplication(Application app) {
+        this.sentApplications.add(app);
+    }
+
+    /**
+     * Removes an application from the list of applications.
+     *
+     * @param app application which should be removed
+     */
+    public void removeApplication(Application app) {
+        this.sentApplications.remove(app);
+        if (app != null && !app.isMarkedForDeletion()) {
+            app.delete();
+        }
+    }
+
+    /**
+     * Adds a new medium to the list of mediums the user created.
+     *
+     * @param medium new medium created by the user
+     */
+    public void addCreatedMedium(Medium medium) {
+        this.createdMediums.add(medium);
+    }
+
+    /**
+     * Removes a medium from the list of created mediums.
+     *
+     * @param medium medium which should be removed
+     */
+    public void removeMedium(Medium medium) {
+        this.createdMediums.remove(medium);
+    }
+
+    /**
+     * Adds a new playlist to the list of playlists created by the user.
+     *
+     * @param list new playlist created by the user
+     */
+    public void addCreatedPlaylist(Playlist list) {
+        this.createdPlaylists.add(list);
+    }
+
+    /**
+     * Removes a playlist from the users list of created playlists.
+     *
+     * @param list playlist which should be removed
+     */
+    public void removePlaylist(Playlist list) {
+        this.createdPlaylists.remove(list);
+    }
+
+    /**
+     * Adds a new comment to the list of comments created by the user.
+     *
+     * @param comment new comment created by the user
+     */
+    public void addCreatedComments(Comment comment) {
+        this.createdComments.add(comment);
+    }
+
+    /**
      * Removes a comment from the list of comments which were created by the
      * user and deletes it.
+     *
      * @param comment comment which should be removed and deleted.
      */
     public void deleteComment(Comment comment) {
         this.createdComments.remove(comment);
-        if(comment != null && !comment.isMarkedForDeletion())
+        if (comment != null && !comment.isMarkedForDeletion()) {
             comment.delete();
+        }
     }
 
     /**
      * Sets a flag for the user to give him the artist functionality.
      */
     public void promoteToArtist() {
-
+        this.artist = true;
     }
 
     /**
      * Sets a flag for the user to give him the labelmanager functionality.
      */
     public void promoteToLabelManager() {
-
+        this.labelManager = true;
     }
 
     /**
      * Sets a flag for the user to give him the admin functionality.
      */
     public void promoteToAdmin() {
-
+        this.admin = true;
     }
 
     /**
@@ -431,43 +463,43 @@ public class User implements Lockable {
     }
 
     public LinkedList<User> getFavoriteUsers() {
-        return (LinkedList<User>)favoriteUsers.clone();
+        return (LinkedList<User>) favoriteUsers.clone();
     }
 
     public LinkedList<Label> getFavoriteLabels() {
-        return (LinkedList<Label>)favoriteLabels.clone();
+        return (LinkedList<Label>) favoriteLabels.clone();
     }
-    
+
     public LinkedList<User> getFollowers() {
-        return (LinkedList<User>)followers.clone();
+        return (LinkedList<User>) followers.clone();
     }
 
     public LinkedList<Label> getManagedLabels() {
-        return (LinkedList<Label>)managedLabels.clone();
+        return (LinkedList<Label>) managedLabels.clone();
     }
 
     public LinkedList<Label> getPublishingLabels() {
-        return (LinkedList<Label>)publishingLabels.clone();
+        return (LinkedList<Label>) publishingLabels.clone();
     }
 
     public LinkedList<News> getNews() {
-        return (LinkedList<News>)newsList.clone();
+        return (LinkedList<News>) newsList.clone();
     }
 
     public LinkedList<Application> getApplications() {
-        return (LinkedList<Application>)sentApplications.clone();
+        return (LinkedList<Application>) sentApplications.clone();
     }
 
     public LinkedList<Medium> getCreatedMediums() {
-        return (LinkedList<Medium>)createdMediums.clone();
+        return (LinkedList<Medium>) createdMediums.clone();
     }
 
     public LinkedList<Playlist> getCreatedPlaylists() {
-        return (LinkedList<Playlist>)createdPlaylists.clone();
+        return (LinkedList<Playlist>) createdPlaylists.clone();
     }
 
     public LinkedList<Comment> getCreatedComments() {
-        return (LinkedList<Comment>)createdComments.clone();
+        return (LinkedList<Comment>) createdComments.clone();
     }
 
 }

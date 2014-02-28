@@ -93,9 +93,8 @@ public class Label implements Lockable {
      */
     public void deleteNews(News news) {
         this.news.remove(news);
-        if (!news.isMarkedForDeletion()) {
-            news.delete();
-        }
+        if(news != null)
+           news.delete();
     }
 
     /**
@@ -104,11 +103,10 @@ public class Label implements Lockable {
      *
      * @param application application to be removed and deleted
      */
-    public void removeApplication(Application application) {
+    public void deleteApplication(Application application) {
         this.applications.remove(application);
-        if (application != null && !application.isMarkedForDeletion()) {
+        if (application != null)
             application.delete();
-        }
     }
 
     /**
@@ -123,7 +121,7 @@ public class Label implements Lockable {
     }
 
     /**
-     * This method removes an album from the list of artists.
+     * This method removes an album from the list of albums.
      *
      * @param album album to be removed
      */
@@ -150,28 +148,29 @@ public class Label implements Lockable {
      * applications and comments associated with this label from the system!
      */
     public void delete() {
+        if(markedForDeletion)
+            return;
         markedForDeletion = true;
         for (User currentArtist : artists) {
             currentArtist.removeArtistLabel(this);
         }
-        artists = null;
+        artists.clear();
         for (User currentFollower : followers) {
             currentFollower.removeFavoriteLabel(this);
         }
-        followers = null;
+        followers.clear();
         for (News currentNews : news) {
             currentNews.delete();
-            Database.getInstance().removeNews(currentNews);
         }
-        news = null;
+        news.clear();
         for (Application currentApplication : applications) {
-            removeApplication(currentApplication);
+            deleteApplication(currentApplication);
         }
         applications = null;
         for (Album currentAlbum : albums) {
             removeAlbum(currentAlbum);
         }
-        albums = null;
+        albums.clear();
         Database.getInstance().deleteLabel(this);
     }
 

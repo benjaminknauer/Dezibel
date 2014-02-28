@@ -8,7 +8,6 @@ import java.io.File;
  * Loads Images and manages their uploads.
  * 
  * @author Tobias, Richard
- * @version 
  */
 public class ImageLoader
 {

@@ -3,7 +3,7 @@ package de.dezibel.data;
 import java.util.LinkedList;
 
 /**
- * This class represents a playlist, which can be created by a user.
+ * This class represents a playlist, which can be created by a creator.
  *
  * @author Alexander Trahe, Benjamin Knauer
  * @inv A playlist contains at least 1 medium.
@@ -13,12 +13,13 @@ public class Playlist implements Commentable {
     private String titel;
     private LinkedList<Comment> comments;
     private LinkedList<Medium> mediumList;
-    private User user;
+    private User creator;
+    private boolean addingMed;
 
     // Bool to tell the database that this instance of Playlist may be deleted.
     // Only set to true if all associations are cleared!
     private boolean markedForDeletion = false;
-    
+
     /**
      * Constructor of the playlistclass
      *
@@ -31,10 +32,9 @@ public class Playlist implements Commentable {
         this.comments = new LinkedList<>();
 
         this.titel = titel;
-        this.mediumList.add(medium);
         medium.addPlaylist(this);
-        this.user = user;
-        this.user.addCreatedPlaylist(this);
+        this.creator = user;
+        this.creator.addCreatedPlaylist(this);
     }
 
     /**
@@ -43,42 +43,47 @@ public class Playlist implements Commentable {
      * @param medium medium to add
      */
     public void addMedium(Medium medium) {
+        this.addingMed = true;
         this.mediumList.add(medium);
-        medium.addPlaylist(this);
+
+        if (medium.isAddingPL() == false) {
+            medium.addPlaylist(this);
+        }
+
+        this.addingMed = false;
+    }
+
+    public boolean isAddingMed() {
+        return this.addingMed;
     }
 
     /**
      * This method removes a medium from the playlist.
      *
      * @param index index of the medium in the list
-     * @pre list is not empty
+     * @pre list is not empty, 0 <= index < self.size() 
      * @post The size of the list has been reduced by 1.
+     * 
      */
-    public void removeMedium(int index) {
-        if (index != -1) { // is a medium selected?
-            mediumList.get(index).removePlaylist(this);
-            mediumList.remove(index);
-            if (mediumList.isEmpty()) {
-                markedForDeletion = true;
-                Database.getInstance().removePlaylist(this);
-                user.removePlaylist(this);
-                for(Medium currentMedium : mediumList){
-                    currentMedium.removePlaylist(this);
-                }
-            }
-        }
-    }
+    public void removeMediumAt(int index) {
+        Medium m = this.mediumList.get(index);
+        this.mediumList.remove(index);
+        if(this.mediumList.indexOf(m) < 0)
+            m.removePlaylist(this);
+        if (mediumList.isEmpty())
+            delete();
+}
 
-    /**
-     * This method moves a mediaobject from it's current position to a new one.
-     *
-     * @param currentPos The current position of the mediaobject which is to be
-     * moved.
-     * @param newPos The position the mediaobject is supposed to be moved to.
-     * @pre currentPos and newPos are in range of 0 to mediumList.size()-1
-     * @post the medium is at newPos in mediumList
-     */
-    public void move(int currentPos, int newPos) {
+/**
+ * This method moves a mediaobject from it's current position to a new one.
+ *
+ * @param currentPos The current position of the mediaobject which is to be
+ * moved.
+ * @param newPos The position the mediaobject is supposed to be moved to.
+ * @pre currentPos and newPos are in range of 0 to mediumList.size()-1
+ * @post the medium is at newPos in mediumList
+ */
+public void move(int currentPos, int newPos) {
         Medium temp = mediumList.get(currentPos);
         mediumList.add(newPos, temp);
         if (currentPos <= newPos) {
@@ -86,6 +91,24 @@ public class Playlist implements Commentable {
         } else {
             mediumList.remove(currentPos + 1);
         }
+    }
+
+    public void delete() {
+        if (markedForDeletion) {
+            return;
+        }
+        markedForDeletion = true;
+        creator.removePlaylist(this);
+        for (Medium currentMedium : mediumList) {
+            currentMedium.removePlaylist(this);
+        }
+        mediumList.clear();
+        for (Comment currentComment : comments) {
+            comments.remove(currentComment);
+            deleteComment(currentComment);
+        }
+        comments.clear();
+        Database.getInstance().deletePlaylist(this);
     }
 
     /**
@@ -109,11 +132,11 @@ public class Playlist implements Commentable {
         this.titel = titel;
     }
 
-    public User getUser() {
-        return user;
+    public User getCreator() {
+        return creator;
     }
-    
-    public boolean isMarkedForDeletion(){
+
+    public boolean isMarkedForDeletion() {
         return markedForDeletion;
     }
 
@@ -124,7 +147,7 @@ public class Playlist implements Commentable {
      * @param comment comment to add
      */
     @Override
-    public void comment(Comment comment) {
+        public void comment(Comment comment) {
         comments.add(comment);
     }
 
@@ -132,17 +155,19 @@ public class Playlist implements Commentable {
      * @see Commentable#getComments()
      */
     @Override
-    public LinkedList<Comment> getComments() {
+        public LinkedList<Comment> getComments() {
         return (LinkedList<Comment>) comments.clone();
     }
+
     /**
-     * 
-     * @see Commentable#deleteComment(Comment) 
+     *
+     * @see Commentable#deleteComment(Comment)
      */
     @Override
-    public void deleteComment(Comment comment){
+        public void deleteComment(Comment comment) {
         this.comments.remove(comment);
-        if(comment != null && !comment.isMarkedForDeletion())
+        if (comment != null) {
             comment.delete();
+        }
     }
 }

@@ -44,8 +44,12 @@ public class News implements Commentable {
      * @param author author of the news
      */
     public News(String title, String text, Label author) {
-        this(title, text, (User) null);
+        this.comments = new LinkedList<>();
+        
+        this.title = title;
+        this.text = text;
         this.label = author;
+        this.creationDate = new Date();
         
         author.addNews(this);
     }
@@ -72,16 +76,18 @@ public class News implements Commentable {
      * This method deletes this instance of News and all associations from the database.
      */
     public void delete(){
+        if(markedForDeletion)
+            return;
         markedForDeletion = true;
         for(Comment currentComment : comments ){
             deleteComment(currentComment);
         }
-        comments = null;
+        comments.clear();
         if(this.isAuthorLabel())
             label.deleteNews(this);
         else
             author.deleteNews(this);
-        Database.getInstance().removeNews(this);
+        Database.getInstance().deleteNews(this);
     }
 
     /**
@@ -91,7 +97,7 @@ public class News implements Commentable {
     @Override
     public void deleteComment(Comment comment){
         this.comments.remove(comment);
-        if(comment != null && !comment.isMarkedForDeletion())
+        if(comment != null)
             comment.delete();
     }
     

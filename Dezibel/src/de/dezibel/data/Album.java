@@ -32,10 +32,9 @@ public class Album extends Playlist {
      * @param title The Album's title.
      * @param user The creator (uploader) of the Album.
      */
-    public Album(Medium medium, String title, User user) {
-        super(medium, title, user); //TODO: Konstruktor von Playlist 
+    public Album(Medium medium, String title, User creator) {
+        super(medium, title, creator); //TODO: Konstruktor von Playlist 
         //verwaltet die Assoziationen, hier aber nicht gewollt
-        this.creator = user;
         this.setTitel(title);
         this.addMedium(medium);
         
