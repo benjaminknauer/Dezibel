@@ -51,6 +51,8 @@ public class Medium implements Commentable, Lockable {
         if (mediumLoader == null) {
             mediumLoader = new MediumLoader();
         }
+        
+        this.upload(path);
     }
 
     /**
