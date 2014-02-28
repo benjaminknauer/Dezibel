@@ -32,7 +32,6 @@ public class Playlist implements Commentable {
         this.comments = new LinkedList<>();
 
         this.titel = titel;
-        this.mediumList.add(medium);
         medium.addPlaylist(this);
         this.user = user;
         this.user.addCreatedPlaylist(this);
@@ -46,15 +45,15 @@ public class Playlist implements Commentable {
     public void addMedium(Medium medium) {
         this.addingMed = true;
         this.mediumList.add(medium);
-        
-        if(medium.isAddingPL() == false){
+
+        if (medium.isAddingPL() == false) {
             medium.addPlaylist(this);
         }
-        
+
         this.addingMed = false;
     }
-    
-        public boolean isAddingMed(){
+
+    public boolean isAddingMed() {
         return this.addingMed;
     }
 
@@ -95,15 +94,16 @@ public class Playlist implements Commentable {
     }
 
     public void delete() {
-        if(markedForDeletion)
+        if (markedForDeletion) {
             return;
+        }
         markedForDeletion = true;
         user.removePlaylist(this);
         for (Medium currentMedium : mediumList) {
             currentMedium.removePlaylist(this);
         }
         mediumList = null;
-        for(Comment currentComment : comments){
+        for (Comment currentComment : comments) {
             comments.remove(currentComment);
             deleteComment(currentComment);
         }
@@ -166,7 +166,8 @@ public class Playlist implements Commentable {
     @Override
     public void deleteComment(Comment comment) {
         this.comments.remove(comment);
-        if (comment != null)
+        if (comment != null) {
             comment.delete();
+        }
     }
 }

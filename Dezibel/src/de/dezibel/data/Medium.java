@@ -53,29 +53,9 @@ public class Medium implements Commentable, Lockable {
             mediumLoader = new MediumLoader();
         }
         
-        this.upload(path);
         artist.addCreatedMedium(this);
-        
-        
-    }
-
-    /**
-     * Class Constructor, which is used if its user doesn't choose a filepath. A
-     * placeholder gets created for loading its file once its ready for upload.
-     *
-     * @param title the title of the created medium
-     * @param artist the artist who made the medium
-     */
-    public Medium(String title, User artist) {
-        this.title = title;
-        this.artist = artist;
-
-        this.ratingList = new HashMap<>();
-        this.commentList = new LinkedList<>();
-        this.playlistList = new LinkedList<>();
-
-        if (mediumLoader == null) {
-            mediumLoader = new MediumLoader();
+        if(path != null){
+            this.upload(path);
         }
     }
 

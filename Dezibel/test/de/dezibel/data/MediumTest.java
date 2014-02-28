@@ -27,7 +27,7 @@ public class MediumTest {
     @Before
     public void setUp() {
         loggedUser =  new User("max@mustermann.de", "Max", "Mustermann", "123", true);
-        instance = new Medium("Mein Song", loggedUser);
+        instance = new Medium("Mein Song", loggedUser, "");
         Database.getInstance().addUser("max@mustermann.de", "Max", "Mustermann",
                 "123", new Date(1992, 11, 18), "Münster", "Deutschland", true);
 
