@@ -103,7 +103,7 @@ public class Label implements Lockable {
      *
      * @param application application to be removed and deleted
      */
-    public void removeApplication(Application application) {
+    public void deleteApplication(Application application) {
         this.applications.remove(application);
         if (application != null)
             application.delete();
@@ -164,7 +164,7 @@ public class Label implements Lockable {
         }
         news = null;
         for (Application currentApplication : applications) {
-            removeApplication(currentApplication);
+            deleteApplication(currentApplication);
         }
         applications = null;
         for (Album currentAlbum : albums) {
