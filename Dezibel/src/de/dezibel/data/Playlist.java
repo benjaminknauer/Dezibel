@@ -15,6 +15,10 @@ public class Playlist implements Commentable {
     private LinkedList<Medium> mediumList;
     private User user;
 
+    // Bool to tell the database that this instance of Playlist may be deleted.
+    // Only set to true if all associations are cleared!
+    private boolean markedForDeletion = false;
+    
     /**
      * Constructor of the playlistclass
      *
@@ -55,6 +59,7 @@ public class Playlist implements Commentable {
             mediumList.get(index).removePlaylist(this);
             mediumList.remove(index);
             if (mediumList.isEmpty()) {
+                markedForDeletion = true;
                 Database.getInstance().removePlaylist(this);
                 user.removePlaylist(this);
                 for(Medium currentMedium : mediumList){
@@ -107,6 +112,10 @@ public class Playlist implements Commentable {
     public User getUser() {
         return user;
     }
+    
+    public boolean isMarkedForDeletion(){
+        return markedForDeletion;
+    }
 
     /**
      * This Method adds a comment to the playlist
@@ -125,5 +134,15 @@ public class Playlist implements Commentable {
     @Override
     public LinkedList<Comment> getComments() {
         return (LinkedList<Comment>) comments.clone();
+    }
+    /**
+     * 
+     * @see Commentable#deleteComment(Comment) 
+     */
+    @Override
+    public void deleteComment(Comment comment){
+        this.comments.remove(comment);
+        if(comment != null && !comment.isMarkedForDeletion())
+            comment.delete();
     }
 }

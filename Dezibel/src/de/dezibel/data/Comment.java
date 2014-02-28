@@ -20,9 +20,14 @@ public class Comment {
 
     private User author;
 
+    // Bool to tell the database that this instance of Comment may be deleted.
+    // Only set to true if all associations are cleared!
+    private boolean markedForDeletion = false;
+
     /**
-     * Creates a new comment consisting of
-     * <code>text</code> written by <code>author</code> and posted to <code>commentable</code>.
+     * Creates a new comment consisting of <code>text</code> written by
+     * <code>author</code> and posted to <code>commentable</code>.
+     *
      * @param text The text of the comment. Must not be null or the empty String
      * after being trimmed.
      * @param commentable The commentable object this comment is being posted
@@ -34,6 +39,17 @@ public class Comment {
         this.commentable = commentable;
 
         this.creationDate = new Date();
+    }
+
+    /**
+     * This method completely deletes the comment from the database clears all
+     * its associations.
+     */
+    public void delete() {
+        markedForDeletion = true;
+        this.author.deleteComment(this);
+        this.commentable.deleteComment(this);
+        Database.getInstance().deleteComment(this);
     }
 
     public String getText() {
@@ -50,6 +66,10 @@ public class Comment {
 
     public User getAuthor() {
         return author;
+    }
+
+    public boolean isMarkedForDeletion() {
+        return markedForDeletion;
     }
 
 }

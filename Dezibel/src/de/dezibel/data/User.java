@@ -211,6 +211,16 @@ public class User implements Lockable {
      }
      
      /**
+      * Removes a news from the list of the news the user created and deletes it.
+      * @param news The news to be removed and deleted.
+      */
+     public void deleteNews(News news){
+         this.newsList.remove(news);
+         if(!news.isMarkedForDeletion())
+             news.delete();
+     }
+     
+     /**
       * Adds a new application to the list of applications.
       * @param app new application sent by the user
       */
@@ -268,11 +278,13 @@ public class User implements Lockable {
      
      /**
      * Removes a comment from the list of comments which were created by the
-     * user.
-     * @param comment comment which should be removed
+     * user and deletes it.
+     * @param comment comment which should be removed and deleted.
      */
-    public void removeComment(Comment comment) {
+    public void deleteComment(Comment comment) {
         this.createdComments.remove(comment);
+        if(comment != null && !comment.isMarkedForDeletion())
+            comment.delete();
     }
 
     /**

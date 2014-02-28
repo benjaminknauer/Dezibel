@@ -16,6 +16,9 @@ public class News implements Commentable {
     private LinkedList<Comment> comments;
     private User author;
     private Label label;
+    // Bool to tell the database that this instance of News may be deleted.
+    // Only set to true if all associations are cleared!
+    private boolean markedForDeletion = false;
 
     /**
      * The constructor for a news written by a user.
@@ -30,6 +33,8 @@ public class News implements Commentable {
         this.text = text;
         this.author = author;
         this.creationDate = new Date();
+        
+        author.addNews(this);
     }
 
     /**
@@ -41,6 +46,8 @@ public class News implements Commentable {
     public News(String title, String text, Label author) {
         this(title, text, (User) null);
         this.label = author;
+        
+        author.addNews(this);
     }
 
     /**
@@ -62,16 +69,32 @@ public class News implements Commentable {
     }
     
     /**
-     * This method delets all comments for this newsobject.
+     * This method deletes this instance of News and all associations from the database.
      */
-    public void deleteComments(){
+    public void delete(){
+        markedForDeletion = true;
         for(Comment currentComment : comments ){
-            currentComment.getAuthor().removeComment(currentComment);
-            Database.getInstance().removeComment(currentComment);   
+            deleteComment(currentComment);
         }
         comments = null;
+        if(this.isAuthorLabel())
+            label.deleteNews(this);
+        else
+            author.deleteNews(this);
+        Database.getInstance().removeNews(this);
     }
 
+    /**
+     * 
+     * @see Commentable#deleteComment(Comment)
+     */
+    @Override
+    public void deleteComment(Comment comment){
+        this.comments.remove(comment);
+        if(comment != null && !comment.isMarkedForDeletion())
+            comment.delete();
+    }
+    
     public String getText() {
         return text;
     }
@@ -92,6 +115,10 @@ public class News implements Commentable {
         return label;
     }
 
+    public boolean isMarkedForDeletion(){
+        return markedForDeletion;
+    }
+    
     /**
      * This method returns true if the author is a Label and false if the author is a user.
      * @return true if author is label, else false

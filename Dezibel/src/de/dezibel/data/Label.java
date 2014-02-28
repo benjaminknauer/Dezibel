@@ -20,6 +20,10 @@ public class Label implements Lockable {
     private boolean isLocked;
     private String lockText;
 
+    // Bool to tell the database that this instance of Label may be deleted.
+    // Only set to true if all associations are cleared!
+    private boolean markedForDeletion = false;
+    
     /**
      * Class constructor.
      *
@@ -72,6 +76,25 @@ public class Label implements Lockable {
         }
     }
 
+     /**
+     * This method adds a news to the label.
+     *
+     * @param manager news to be added
+     */
+    public void addNews(News news){
+        this.news.add(news);
+    }
+    
+    /**
+     * This method removes <code>news</code> from the Label's News and deletes it.
+     * @param news The News object to be removed and deleted.
+     */
+    public void deleteNews(News news){
+        this.news.remove(news);
+        if(!news.isMarkedForDeletion())
+            news.delete();
+    }
+    
     /**
      * This method removes an application from the list of artists.
      *
@@ -80,7 +103,7 @@ public class Label implements Lockable {
     public void removeApplication(Application application) {
         this.applications.remove(application);
         application.getUser().removeApplication(application);
-        Database.getInstance().removeApplication(application);
+        Database.getInstance().deleteApplication(application);
     }
 
     /**
@@ -125,7 +148,7 @@ public class Label implements Lockable {
         this.labelManager.remove(manager);
         manager.removeManagerLabel(this);
         if (labelManager.size() == 0) {
-            // TODO removeLabel bei Database einfügen
+            markedForDeletion = true;
             Database.getInstance().removeLabel(this);
             for (User currentArtist : artists) {
                 currentArtist.removeArtistLabel(this);
@@ -134,7 +157,7 @@ public class Label implements Lockable {
                 currentFollower.removeFavoriteLabel(this);
             }
             for (News currentNews : news) {
-                currentNews.deleteComments();
+                currentNews.delete();
                 Database.getInstance().removeNews(currentNews);
             }
             for (Application currentApplication : applications) {
@@ -240,5 +263,9 @@ public class Label implements Lockable {
 
     public LinkedList<Album> getAlbums() {
         return (LinkedList<Album>) albums.clone();
+    }
+    
+    public boolean isMarkedForDeletion(){
+        return markedForDeletion;
     }
 }

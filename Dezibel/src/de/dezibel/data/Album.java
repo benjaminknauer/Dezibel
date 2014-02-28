@@ -13,13 +13,14 @@ import java.awt.Image;
  * @inv Same as in Playlist.
  */
 public class Album extends Playlist {
-
-    private String coverPath;
-    private Label label;
+ 
     /**
      * The ImageLoader all Album objects use to allow use of getCover().
      */
     private static ImageLoader imageLoader;
+
+    private String coverPath;
+    private Label label;
 
     /**
      * Creates a new non empty Album with the given

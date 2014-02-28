@@ -181,8 +181,10 @@ public class Database {
      * @param application The application you want to remove.
      * @post <code>application</code> is not in the database.
      */
-    void removeApplication(Application application) {
+    void deleteApplication(Application application) {
         this.applications.remove(application);
+        if(application != null && !application.isMarkedForDeletion())
+            application.delete();
     }
 
     /**
@@ -210,8 +212,10 @@ public class Database {
      * @param comment The <code>Comment</code> object to be deleted.
      * @post <code>comment</code> is not in the database.
      */
-    void removeComment(Comment comment) {
+    void deleteComment(Comment comment) {
         this.comments.remove(comment);
+        if(comment != null && !comment.isMarkedForDeletion())
+            comment.delete();
     }
 
     /**
