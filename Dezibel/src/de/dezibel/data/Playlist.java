@@ -14,6 +14,7 @@ public class Playlist implements Commentable {
     private LinkedList<Comment> comments;
     private LinkedList<Medium> mediumList;
     private User user;
+    private boolean addingMed;
 
     // Bool to tell the database that this instance of Playlist may be deleted.
     // Only set to true if all associations are cleared!
@@ -43,8 +44,20 @@ public class Playlist implements Commentable {
      * @param medium medium to add
      */
     public void addMedium(Medium medium) {
+        this.addingMed = true;
+        
         this.mediumList.add(medium);
         medium.addPlaylist(this);
+        
+        if(medium.isAddingPL() == false){
+            medium.addPlaylist(this);
+        }
+        
+        this.addingMed = false;
+    }
+    
+        public boolean isAddingMed(){
+        return this.addingMed;
     }
 
     /**
