@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -39,6 +38,13 @@ public class PlayerPanel extends DragablePanel {
         frame.add(panel);
         frame.pack();
         frame.setVisible(true);
+        
+        // Testdata
+        // User u = new User("Hans", "Peter", "Hans", "123", true);
+        // Medium m1 = new Medium("Alarm01", u, "C:\\Alarm01.wav");
+        // Medium m2 = new Medium("Tsunami", u, "C:\\DVBBS & Borgeous - Tsunami.mp3");
+        // player.addMedium(m1);
+        // player.addMedium(m2);
     }
 
     /**
@@ -48,11 +54,6 @@ public class PlayerPanel extends DragablePanel {
         super();
         // Initialize Player
         player = Player.getInstance();
-        User u = new User("Hans", "Peter", "Hans", "123", true);
-        Medium m1 = new Medium("Alarm01", u, "C:\\Alarm01.wav");
-        Medium m2 = new Medium("Tsunami", u, "C:\\DVBBS & Borgeous - Tsunami.mp3");
-        player.addMedium(m1);
-        player.addMedium(m2);
         init();
     }
 
@@ -179,6 +180,13 @@ public class PlayerPanel extends DragablePanel {
             @Override
             public void stateChanged(ChangeEvent e) {
                 player.setVolume(volume.getValue());
+            }
+        });
+        volume.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                volume.setValue((int) ((double) (volume.getHeight() - e.getY())
+                        / (double) volume.getHeight() * 100.0));
             }
         });
         
