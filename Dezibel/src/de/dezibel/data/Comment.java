@@ -37,7 +37,7 @@ public class Comment {
     public Comment(String text, Commentable commentable, User author) {
         this.text = text;
         this.commentable = commentable;
-
+        this.author = author;
         this.creationDate = new Date();
     }
 
