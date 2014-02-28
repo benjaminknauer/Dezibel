@@ -23,28 +23,58 @@ public class Genre {
     public Genre(String name, Genre superGenre) {
         this.name = name;
         this.superGenre = superGenre;
-        if(superGenre != null)
+        if (superGenre != null) {
             superGenre.addSubGenre(this);
+        }
     }
-    
+
+    /**
+     * Completely removes this genre from the database and all associated
+     * genres. Will do nothing if this genre is the default top-genre.
+     *
+     * @pre This genre is not the default top-genre.
+     * @post This genre is deleted from the database, its super-genre's
+     * sub-genres and its sub-genres' super-genre.
+     */
+    public void delete() {
+        // Can't delete the top-genre!
+        if (this.equals(Database.getInstance().getTopGenre())) {
+            return;
+        }
+
+        // Handle all sub-genres
+        for (Genre currentGenre : subGenres) {
+            currentGenre.setSuperGenre(null);
+        }
+
+        // Handle the super-genre
+        this.getSuperGenre().removeSubGenre(this);
+
+        // Remove me from the database.
+        Database.getInstance().removeGenre(this);
+    }
+
     /**
      * Adds <code>medium</code> to the media of this genre. If
-     * <code>medium</code> already was associated with this genre, nothing will happen.
+     * <code>medium</code> already was associated with this genre, nothing will
+     * happen.
      *
      * @param medium The medium you wish to add to this genre.
      * @pre medium must is not null.
      * @post self.hasMedium(medium)
      */
     public void addMedium(Medium medium) {
-        if(!hasMedium(medium)){
+        if (!hasMedium(medium)) {
             this.media.add(medium);
         }
     }
 
-     /**
+    /**
      * Checks whether <code>medium</code> is associated with this genre.
+     *
      * @param medium The potentially associated medium.
-     * @return True if <code>medium</code> is associated with this genre, otherwise false.
+     * @return True if <code>medium</code> is associated with this genre,
+     * otherwise false.
      * @pre medium is not null
      */
     public boolean hasMedium(Medium medium) {
@@ -57,16 +87,17 @@ public class Genre {
         }
         return mediumFound;
     }
-    
+
     /**
      * Removes <code>medium</code> from the media of this genre. If
-     * <code>medium</code> wasn't associated with this genre in the first place, nothing will
-     * happen.
+     * <code>medium</code> wasn't associated with this genre in the first place,
+     * nothing will happen.
+     *
      * @param medium The medium to be removed from this genre's media.
      * @pre medium is not null
      * @post !self.hasMedium(medium)
-     */    
-    public void removeMedium(Medium medium){
+     */
+    public void removeMedium(Medium medium) {
         this.media.remove(medium);
     }
 
@@ -78,7 +109,6 @@ public class Genre {
      * @pre subGenre must is not null.
      * @post self.hasSubGenre(subGenre)
      */
-  
     public void addSubGenre(Genre subGenre) {
         if (!hasSubGenre(subGenre)) {
             subGenres.add(subGenre);
@@ -138,16 +168,36 @@ public class Genre {
     public LinkedList<Genre> getSubGenres() {
         return this.subGenres;
     }
-    
-    public void setSuperGenre(Genre superGenre){
+
+    /**
+     * Sets this genre's super-genre to <code>superGenre</code>. Will do nothing
+     * if this genre equals the default top-genre. If <code>superGenre</code>
+     * equals null the default top-genre from the database is chosen instead.
+     *
+     * @param superGenre This genre's new super genre.
+     * @pre This genre must not be the default top-genre.
+     * @post This genre's super-genre is now <code>superGenre</code> or the
+     * default top-genre.
+     */
+    public void setSuperGenre(Genre superGenre) {
+        // Set the default topGenre?
+        if (superGenre == null) {
+            superGenre = Database.getInstance().getTopGenre();
+        }
+
+        // The topGenre can't have a superGenre.
+        if (this.equals(Database.getInstance().getTopGenre())) {
+            return;
+        }
+
         this.superGenre = superGenre;
     }
-    
-    public Genre getSuperGenre(){
+
+    public Genre getSuperGenre() {
         return this.superGenre;
     }
-    
-    public String getName(){
+
+    public String getName() {
         return this.name;
     }
 

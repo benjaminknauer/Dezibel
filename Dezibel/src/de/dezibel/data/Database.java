@@ -58,8 +58,9 @@ public class Database {
      * import, it will create empty lists.
      */
     private Database() {
-        if(xStreamer == null)
+        if (xStreamer == null) {
             xStreamer = new XStreamAdapter();
+        }
         load();
         // No data loaded? Create empty lists and add the default stuff.
         if (data == null) {
@@ -145,41 +146,6 @@ public class Database {
     }
 
     /**
-     * Makes the Database add a new User with the given information. This will
-     * fail and return a proper ErrorCode if there already exists a User
-     * registered with the given e-mail address.
-     *
-     * @param email The e-mail the new User will be associated to.
-     * @param firstname The first name of the new User.
-     * @param lastname The last name of the new User.
-     * @param passwort The password of the new User.
-     * @param birthdate The birthdate of the new User.
-     * @param city The city the new User lives in.
-     * @param country The country the new User lives in.
-     * @param isMale True if user is male, false if female. No trannies here,
-     * sorry.
-     * @return ErrorCode
-     * @pre email, firstname, lastname, passwort must not be null or the empty
-     * String. email must not be associated with another User.
-     * @post A new User object has been created and added to the database.
-     */
-    public ErrorCode addUser(String email, String firstname, String lastname, String passwort, Date birthdate, String city, String country, boolean isMale) {
-        for (User curUser : this.getUsers()) {
-            if (curUser.getEmail().equals(email)) {
-                return ErrorCode.EMAIL_ALREADY_IN_USE;
-            }
-        }
-
-        User u = new User(email, firstname, lastname, passwort, isMale);
-        u.setBirthdate(birthdate);
-        u.setCity(city);
-        u.setCountry(country);
-
-        users.add(u);
-        return ErrorCode.SUCCESS;
-    }
-
-    /**
      * Makes the Database add a new Application with the given information. This
      * will fail if there already is an application process between
      * <code>artist</code> and <code>label</code> and return an ErrorCode.
@@ -215,72 +181,37 @@ public class Database {
      * @param application The application you want to remove.
      * @post <code>application</code> is not in the database.
      */
-    public void removeApplication(Application application) {
+    void removeApplication(Application application) {
         this.applications.remove(application);
     }
 
     /**
-     * Adds a new Label with the given information to the database. Will fail
-     * and return ErrorCode.LABEL_NAME_DUPLICATE if there already is a label
-     * with the given name.
+     * Adds a new Comment with <code>text</code> as content created by the User
+     * specified by <code>author</code>.
      *
-     * @param manager The user that will be the new label's manager.
-     * @param name The name of the new label.
+     * @param text The actual text of the comment.
+     * @param commentable The object the comment is posted to.
+     * @param author The user who created the comment.
      * @return ErrorCode
-     * @pre <code>manager</code> and <code>name</code> must not be null or the empty String.
-     * <code>name</code> must not be in use already.
-     * @post A new Label object is created and added to the database.
+     * @pre <code>text</code> must not be null or the empty String.
+     * <code>commentable</code> and <code>author</code> must not be null.
+     * @post A new <code>Comment</code> object is created with the given data
+     * and added to the database.
      */
-    public ErrorCode addLabel(User manager, String name) {
-        for (Label currentLabel : this.labels) {
-            if (currentLabel.getName().equals(name)) {
-                return ErrorCode.LABEL_NAME_DUPLICATE;
-            }
-        }
-
-        labels.add(new Label(manager, name));
+    public ErrorCode addComment(String text, Commentable commentable, User author) {
+        comments.add(new Comment(text, commentable, author));
         return ErrorCode.SUCCESS;
     }
+
     /**
-     * Removes the given Label from the database. Does nothing if the
-     * Label didn't exist.
+     * Removes <code>comment</code> from the database. Does nothing if
+     * <code>comment</code> was not in the database.
      *
-     * @param label The label you want to remove.
-     * @post <code>label</code> is not in the database.
+     * @param comment The <code>Comment</code> object to be deleted.
+     * @post <code>comment</code> is not in the database.
      */
-    public void removeLabel(Label label) {
-        this.labels.remove(label);
-    }
-
-    
-    public void removeNews(News news) {
-        this.news.remove(news);
-    }
-
-    public void removeComment(Comment comment) {
+    void removeComment(Comment comment) {
         this.comments.remove(comment);
-    }
-
-    public void removePlaylist(Playlist playlist) {
-        this.playlists.remove(playlist);
-    }
-
-    /**
-     * Makes the Database add a new Medium with the given information. The
-     * <code>path</code> may be null which will make the new Medium a
-     * placeholder Medium.
-     *
-     * @param titel The medium's title.
-     * @param artist The medium's artist.
-     * @param path The path to the Medium's file that will be uploaded to the
-     * Database. May be null to create a placeholder Medium.
-     * @return ErrorCode
-     * @pre The <code>title</code> and <code>artist</code> must not be null or
-     * empty.
-     * @post A new Medium object has been created and added to the database.
-     */
-    public ErrorCode addMedium(String titel, User artist, String path) {
-        return null;
     }
 
     /**
@@ -315,6 +246,171 @@ public class Database {
         return ErrorCode.SUCCESS;
     }
 
+    /**
+     * Removes the genre <code>genre</code> from the database. Does nothing if
+     * genre wasn't there anyway.
+     *
+     * @param genre The genre to be removed.
+     * @post <code>genre</code> is not in the database.
+     */
+    void removeGenre(Genre genre) {
+        this.genres.remove(genre);
+    }
+
+    /**
+     * Adds a new Label with the given information to the database. Will fail
+     * and return ErrorCode.LABEL_NAME_DUPLICATE if there already is a label
+     * with the given name.
+     *
+     * @param manager The user that will be the new label's manager.
+     * @param name The name of the new label.
+     * @return ErrorCode
+     * @pre <code>manager</code> and <code>name</code> must not be null or the
+     * empty String. <code>name</code> must not be in use already.
+     * @post A new Label object is created and added to the database.
+     */
+    public ErrorCode addLabel(User manager, String name) {
+        for (Label currentLabel : this.labels) {
+            if (currentLabel.getName().equals(name)) {
+                return ErrorCode.LABEL_NAME_DUPLICATE;
+            }
+        }
+
+        labels.add(new Label(manager, name));
+        return ErrorCode.SUCCESS;
+    }
+
+    /**
+     * Removes the given Label from the database. Does nothing if the Label
+     * didn't exist.
+     *
+     * @param label The label you want to remove.
+     * @post <code>label</code> is not in the database.
+     */
+    void removeLabel(Label label) {
+        this.labels.remove(label);
+    }
+
+    /**
+     * Makes the Database add a new Medium with the given information. The
+     * <code>path</code> may be null which will make the new Medium a
+     * placeholder Medium.
+     *
+     * @param titel The medium's title.
+     * @param artist The medium's artist.
+     * @param path The path to the Medium's file that will be uploaded to the
+     * Database. May be null to create a placeholder Medium.
+     * @return ErrorCode
+     * @pre The <code>title</code> and <code>artist</code> must not be null or
+     * empty.
+     * @post A new Medium object has been created and added to the database.
+     */
+    //TODO implementieren
+    public ErrorCode addMedium(String titel, User artist, String path) {
+        return ErrorCode.SUCCESS;
+    }
+
+    /**
+     * Adds a new News created by the User specified by <code>author</code>.
+     *
+     * @return ErrorCode
+     * @pre <code>title</code> and <code>text</code> must not be null or the
+     * empty String. <code>author</code> must not be null.
+     * @post A new <code>News</code> object is created with the given data and
+     * added to the database.
+     */
+    public ErrorCode addNews(String title, String text, User author) {
+        this.news.add(new News(title, text, author));
+        return ErrorCode.SUCCESS;
+    }
+
+    /**
+     * Adds a new News created by the Label specified by <code>author</code>.
+     *
+     * @return ErrorCode
+     * @pre <code>title</code> and <code>text</code> must not be null or the
+     * empty String. <code>author</code> must not be null.
+     * @post A new <code>News</code> object is created with the given data and
+     * added to the database.
+     */
+    public ErrorCode addNews(String title, String text, Label author) {
+        this.news.add(new News(title, text, author));
+        return ErrorCode.SUCCESS;
+    }
+
+    /**
+     * Removes <code>news</code> from the database. Does nothing if
+     * <code>news</code> was not in the database.
+     *
+     * @param news The <code>News</code> object to be deleted.
+     * @post <code>news</code> is not in the database.
+     */
+    void removeNews(News news) {
+        this.news.remove(news);
+    }
+
+    /**
+     * Adds a new <code>Playlist</code> object named <code>title</code> with
+     * <code>medium</code> as first medium and <code>author</code> as the owner
+     * to the database.
+     *
+     * @param medium The first medium added to the playlist.
+     * @param title The playlist's name.
+     * @param author The user who's associated with the playlist.
+     * @return ErrorCode
+     * @pre <code>medium</code>, <code>author</code> and <code>title</code> must
+     * not be null. The latter not the empty String either.
+     * @post The new playlist is created and added to the database.
+     */
+    public ErrorCode addPlaylist(Medium medium, String title, User author) {
+        playlists.add(new Playlist(medium, title, author));
+        return ErrorCode.SUCCESS;
+    }
+
+    /**
+     * Removes <code>playlist</code> from the database.
+     * @param playlist The playlist to be deleted.
+     * @post <code>playlist</code> is not in the database.
+     */
+    void removePlaylist(Playlist playlist) {
+        this.playlists.remove(playlist);
+    }
+
+    /**
+     * Makes the Database add a new User with the given information. This will
+     * fail and return a proper ErrorCode if there already exists a User
+     * registered with the given e-mail address.
+     *
+     * @param email The e-mail the new User will be associated to.
+     * @param firstname The first name of the new User.
+     * @param lastname The last name of the new User.
+     * @param passwort The password of the new User.
+     * @param birthdate The birthdate of the new User.
+     * @param city The city the new User lives in.
+     * @param country The country the new User lives in.
+     * @param isMale True if user is male, false if female. No trannies here,
+     * sorry.
+     * @return ErrorCode
+     * @pre email, firstname, lastname, passwort must not be null or the empty
+     * String. email must not be associated with another User.
+     * @post A new User object has been created and added to the database.
+     */
+    public ErrorCode addUser(String email, String firstname, String lastname, String passwort, Date birthdate, String city, String country, boolean isMale) {
+        for (User curUser : this.getUsers()) {
+            if (curUser.getEmail().equals(email)) {
+                return ErrorCode.EMAIL_ALREADY_IN_USE;
+            }
+        }
+
+        User u = new User(email, firstname, lastname, passwort, isMale);
+        u.setBirthdate(birthdate);
+        u.setCity(city);
+        u.setCountry(country);
+
+        users.add(u);
+        return ErrorCode.SUCCESS;
+    }
+    
     public LinkedList<User> getUsers() {
         return (LinkedList<User>) this.data[0].clone();
     }
@@ -353,5 +449,9 @@ public class Database {
 
     public LinkedList<Genre> getGenres() {
         return (LinkedList<Genre>) this.data[9].clone();
+    }
+    
+    public Genre getTopGenre(){
+        return this.genres.get(0);
     }
 }
