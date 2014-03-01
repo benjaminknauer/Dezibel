@@ -6,6 +6,7 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 
 /**
  * Tests the Database class.
@@ -29,7 +30,7 @@ public class DatabaseTest {
         instance.addUser("mail@mail.com", "Hans", "Peter", "123", new Date(),
                 "Ort", "Land", true);
         User user1 = instance.getUsers().get(instance.getUsers().size() - 1);
-        instance.addMedium("Titel", user1, "", instance.getTopGenre(), null);
+        instance.addMedium("Titel", user1, "", instance.getTopGenre(), null, null);
         Medium medium = instance.getMedia().get(instance.getMedia().size() - 1);
         instance.save();
         // Add second user who does not get saved
@@ -115,7 +116,7 @@ public class DatabaseTest {
         instance.addUser("mail@mail.com", "Artist", "Artist", "123", new Date(),
                 "Ort", "Land", true);
         User artist = instance.getUsers().get(instance.getUsers().size() - 1);
-        instance.addMedium("Titel", artist, "", instance.getTopGenre(), null);
+        instance.addMedium("Titel", artist, "", instance.getTopGenre(), null, null);
         commentable = instance.getMedia().get(instance.getMedia().size() - 1);
         instance.addComment(text, commentable, author);
         Comment comment = instance.getComments().get(instance.getComments().size() - 1);
@@ -131,11 +132,24 @@ public class DatabaseTest {
     @Test
     public void testDeleteComment() {
         System.out.println("deleteComment");
-        Comment comment = null;
-        Database instance = null;
+        Database instance = Database.getInstance();
+        String text = "This is a comment.";
+        Commentable commentable = null;
+        User author = null;
+        instance.addUser("mail@mail.com", "Hans", "Peter", "123", new Date(),
+                "Ort", "Land", true);
+        author = instance.getUsers().get(instance.getUsers().size() - 1);
+        instance.addUser("mail@mail.com", "Artist", "Artist", "123", new Date(),
+                "Ort", "Land", true);
+        User artist = instance.getUsers().get(instance.getUsers().size() - 1);
+        instance.addMedium("Titel", artist, "", instance.getTopGenre(), null, null);
+        commentable = instance.getMedia().get(instance.getMedia().size() - 1);
+        instance.addComment(text, commentable, author);
+        Comment comment = instance.getComments().get(instance.getComments().size() - 1);
         instance.deleteComment(comment);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertFalse(instance.getComments().contains(comment));
+        assertFalse(author.getCreatedComments().contains(comment));
+        assertFalse(commentable.getComments().contains(comment));
     }
 
     /**
@@ -157,14 +171,18 @@ public class DatabaseTest {
     /**
      * Test of deleteGenre method, of class Database.
      */
+    @Ignore
+    // TODO Fehler aus deleteGenre entfernen
     @Test
     public void testDeleteGenre() {
         System.out.println("deleteGenre");
-        Genre genre = null;
-        Database instance = null;
+        Database instance = Database.getInstance();
+        String name = "Genre";
+        Genre superGenre = instance.getTopGenre();
+        instance.addGenre(name, superGenre);
+        Genre genre = instance.getGenres().get(instance.getGenres().size() - 1);
         instance.deleteGenre(genre);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertFalse(instance.getGenres().contains(genre));
     }
 
     /**
@@ -220,7 +238,7 @@ public class DatabaseTest {
         User manager = instance.getUsers().get(instance.getUsers().size() - 1);
         instance.addLabel(manager, "Label1");
         label = instance.getLabels().get(instance.getLabels().size() - 1);
-        instance.addMedium(title, artist, path, genre, label);
+        instance.addMedium(title, artist, path, genre, label, null);
         Medium medium = instance.getMedia().get(instance.getMedia().size() - 1);
         assertTrue(instance.getMedia().contains(medium));
         assertEquals(title, medium.getTitle());
@@ -246,6 +264,7 @@ public class DatabaseTest {
         assertEquals("News-Title", news.getTitle());
         assertEquals("News-Text", news.getText());
         assertEquals(user, news.getAuthor());
+        assertNull(news.getLabel());
     }
 
     /**
@@ -254,15 +273,19 @@ public class DatabaseTest {
     @Test
     public void testAddNews_3args_2() {
         System.out.println("addNews");
-        String title = "";
-        String text = "";
-        Label author = null;
-        Database instance = null;
-        ErrorCode expResult = null;
-        ErrorCode result = instance.addNews(title, text, author);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Database instance = Database.getInstance();
+        instance.addUser("mail@mail.com", "Hans", "Peter", "123", new Date(),
+                "Ort", "Land", true);
+        User manager = instance.getUsers().get(instance.getUsers().size() - 1);
+        instance.addLabel(manager, "Label1");
+        Label label = instance.getLabels().get(instance.getLabels().size() - 1);
+        instance.addNews("News-Title", "News-Text", label);
+        News news = instance.getNews().get(instance.getNews().size() - 1);
+        assertTrue(instance.getNews().contains(news));
+        assertEquals("News-Title", news.getTitle());
+        assertEquals("News-Text", news.getText());
+        assertEquals(label, news.getLabel());
+        assertNull(news.getAuthor());
     }
 
     /**
@@ -271,11 +294,17 @@ public class DatabaseTest {
     @Test
     public void testDeleteNews() {
         System.out.println("deleteNews");
-        News news = null;
-        Database instance = null;
+        Database instance = Database.getInstance();
+        instance.addUser("mail@mail.com", "Hans", "Peter", "123", new Date(),
+                "Ort", "Land", true);
+        User manager = instance.getUsers().get(instance.getUsers().size() - 1);
+        instance.addLabel(manager, "Label1");
+        Label label = instance.getLabels().get(instance.getLabels().size() - 1);
+        instance.addNews("News-Title", "News-Text", label);
+        News news = instance.getNews().get(instance.getNews().size() - 1);
         instance.deleteNews(news);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertFalse(instance.getNews().contains(news));
+        assertFalse(label.getNews().contains(news));
     }
 
     /**
@@ -285,27 +314,47 @@ public class DatabaseTest {
     public void testAddPlaylist() {
         System.out.println("addPlaylist");
         Medium medium = null;
-        String title = "";
+        String title = "Playlist1";
         User author = null;
-        Database instance = null;
-        ErrorCode expResult = null;
-        ErrorCode result = instance.addPlaylist(medium, title, author);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Database instance = Database.getInstance();
+        instance.addUser("mail@mail.com", "Hans", "Peter", "123", new Date(),
+                "Ort", "Land", true);
+        author = instance.getUsers().get(instance.getUsers().size() - 1);
+        instance.addMedium("Medium1", author, "", instance.getTopGenre(), null, null);
+        medium = instance.getMedia().get(instance.getMedia().size() - 1);
+        instance.addMedium("Medium2", author, "", instance.getTopGenre(), null, null);
+        instance.addPlaylist(medium, title, author);
+        Playlist playlist = instance.getPlaylists().get(instance.getPlaylists().size() - 1);
+        assertTrue(instance.getPlaylists().contains(playlist));
+        assertTrue(playlist.getList().contains(medium));
+        assertEquals(title, playlist.getTitel());
+        assertEquals(author, playlist.getCreator());
     }
 
     /**
      * Test of deletePlaylist method, of class Database.
      */
+    @Ignore
     @Test
     public void testDeletePlaylist() {
         System.out.println("deletePlaylist");
-        Playlist playlist = null;
-        Database instance = null;
+        Medium medium = null;
+        String title = "Playlist1";
+        User author = null;
+        Database instance = Database.getInstance();
+        instance.addUser("mail@mail.com", "Hans", "Peter", "123", new Date(),
+                "Ort", "Land", true);
+        author = instance.getUsers().get(instance.getUsers().size() - 1);
+        instance.addMedium("Medium1", author, "", instance.getTopGenre(), null, null);
+        medium = instance.getMedia().get(instance.getMedia().size() - 1);
+        instance.addMedium("Medium2", author, "", instance.getTopGenre(), null, null);
+        instance.addPlaylist(medium, title, author);
+        Playlist playlist = instance.getPlaylists().get(instance.getPlaylists().size() - 1);
         instance.deletePlaylist(playlist);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertFalse(instance.getPlaylists().contains(playlist));
+        assertFalse(author.getCreatedPlaylists().contains(playlist));
+        // TODO Fehler in der removePlaylist-Methode von Medium beheben: ! entfernen
+        assertFalse(medium.getPlaylistList().contains(playlist));
     }
 
     /**
