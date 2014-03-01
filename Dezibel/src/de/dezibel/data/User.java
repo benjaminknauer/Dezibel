@@ -390,7 +390,8 @@ public class User implements Lockable {
      * @see Lockable#lock()
      */
     public void lock() {
-        this.locked = true;
+        this.lock("Ihr Account wurde gesperrt. Bitte wenden Sie sich "
+                + "für mehr Informationen an den Administartor.");
     }
 
     /**

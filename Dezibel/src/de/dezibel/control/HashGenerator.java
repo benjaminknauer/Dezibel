@@ -14,17 +14,17 @@ import java.security.NoSuchAlgorithmException;
 public class HashGenerator {
 
     //fixed salt, could be variable, maybe the email or name of the user
-    private static final String salt = "SoPra-Social-Media-Group3B-DEZIBEL!";
+    private final String salt = "SoPra-Social-Media-Group3B-DEZIBEL!";
 
     /**
      * Hashes and salts the given plaintext and returns it
      *
-     * @param s The plaintext string to hash
+     * @param plaintext The plaintext string to hash
      * @return The salted and hashed String, or if the hash function fails an
      * empty String
      */
-    public String hash(String s) {
-        String saltedPlaintext = s + salt;
+    public String hash(String plaintext) {
+        String saltedPlaintext = plaintext + salt;
         try {
              //init the algorithm using MD5
             MessageDigest md = MessageDigest.getInstance("MD5");

@@ -5,7 +5,7 @@ import java.util.LinkedList;
 /**
  * This class represents a Label.
  *
- * @author Alexander Trahe, Benjamin Knauer
+ * @author Alexander Trahe, Benjamin Knauer, Tobias
  */
 public class Label implements Lockable {
 
@@ -81,7 +81,7 @@ public class Label implements Lockable {
     /**
      * This method adds a news to the label.
      *
-     * @param manager news to be added
+     * @param news news to be added
      */
     public void addNews(News news) {
         this.news.add(news);

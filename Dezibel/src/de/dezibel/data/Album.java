@@ -9,11 +9,11 @@ import java.awt.Image;
  * This class represents an Album. An Album is a special kind of Playlist, being
  * able to have a cover.
  *
- * @author Henner
- * @inv Same as in Playlist.
+ * @author Henner, Tobias
+ * @inv An album contains at least 1 medium
  */
 public class Album extends Playlist {
- 
+
     /**
      * The ImageLoader all Album objects use to allow use of getCover().
      */
@@ -23,10 +23,9 @@ public class Album extends Playlist {
     private Label label;
 
     /**
-     * Creates a new non empty Album with the given
-     * <code>medium</code>,
-     * <code>title</code>.
-     * <code>user</code> is set as the creator (uploader) of the Album.
+     * Creates a new non empty Album with the given <code>medium</code>,
+     * <code>title</code>. <code>user</code> is set as the creator (uploader) of
+     * the Album.
      *
      * @param medium The first Medium in the Album.
      * @param title The Album's title.
@@ -36,19 +35,19 @@ public class Album extends Playlist {
         super(medium, title, creator);
         this.setTitel(title);
         this.addMedium(medium);
-        
-         if (imageLoader == null) {
-            imageLoader = new ImageLoader();
+
+        if (Album.imageLoader == null) {
+            Album.imageLoader = new ImageLoader();
         }
-   
-        medium.setAlbum(this);          
+
+        medium.setAlbum(this);
     }
-    
+
     @Override
-    public boolean addListToCreatorOnCreation(){
+    public boolean addListToCreatorOnCreation() {
         return false;
     }
-    
+
     /**
      * Upload the image file specified by the path into the system and set it as
      * this Album's cover.
@@ -74,7 +73,7 @@ public class Album extends Playlist {
      * @pre self.hasCover
      */
     public Image getCover() {
-        return this.imageLoader.getImage(coverPath);
+        return Album.imageLoader.getImage(coverPath);
     }
 
     /**
@@ -89,8 +88,8 @@ public class Album extends Playlist {
     public void setLabel(Label label) {
         this.label = label;
     }
-    
-    public Label getLabel(){
+
+    public Label getLabel() {
         return label;
     }
 }

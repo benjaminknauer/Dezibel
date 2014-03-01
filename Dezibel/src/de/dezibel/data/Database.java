@@ -23,7 +23,7 @@ public class Database {
      * The <code>XStreamAdapter</code> used to export and import the system's
      * data.
      */
-    private static XStreamAdapter xStreamer;
+    private XStreamAdapter xStreamer;
 
     /**
      * All of the system's data is stored in lists here in this order: [ 0 , 1 ,

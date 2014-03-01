@@ -12,7 +12,7 @@ import java.util.Iterator;
  * Stores information about a music file, which can be uploaded, played, deleted
  * and locked by fitting users.
  *
- * @author Pascal und Bastian
+ * @author Pascal, Bastian, Tobias
  */
 public class Medium implements Commentable, Lockable {
 
@@ -53,10 +53,10 @@ public class Medium implements Commentable, Lockable {
             mediumLoader = new MediumLoader();
         }
         
-        artist.addCreatedMedium(this);
         if(path != null){
             this.upload(path);
         }
+        artist.addCreatedMedium(this);
     }
 
     /**
@@ -66,10 +66,7 @@ public class Medium implements Commentable, Lockable {
      * otherwise
      */
     public boolean isAvailable() {
-        if(!(this.isLocked()) && !(this.deleted) && this.isMediumSet()){
-            return true;
-        }
-        else return false;
+        return !(this.isLocked()) && !(this.deleted) && this.isMediumSet();
     }
 
     /**
@@ -85,7 +82,7 @@ public class Medium implements Commentable, Lockable {
      */
     public synchronized ErrorCode upload(String path) {
         this.uploadDate = new Date();
-        this.path = this.mediumLoader.upload(path);
+        this.path = Medium.mediumLoader.upload(path);
         if(!path.isEmpty()) {
             return ErrorCode.SUCCESS;
         }
@@ -135,10 +132,7 @@ public class Medium implements Commentable, Lockable {
      * <code>false</code> otherwise
      */
     public boolean isMediumSet() {
-        if(this.path != null && !(this.path.equals(""))){
-            return true;
-        }
-        else return false;
+        return this.path != null && !(this.path.equals(""));
     }
 
     /**

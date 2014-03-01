@@ -1,7 +1,6 @@
 package de.dezibel.data;
 
 import java.util.Date;
-import java.util.ArrayList;
 
 /**
  * This class represents the comments Users can post to Media, Albums etc.
