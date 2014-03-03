@@ -225,8 +225,6 @@ public class UserTest {
      */
     @Test
     public void testRemoveApplication() {
-        loggedUser.addApplication(appl1);
-        loggedUser.addApplication(appl2);
         loggedUser.removeApplication(appl1);
         assertTrue(loggedUser.getApplications().contains(appl2));
         assertFalse(loggedUser.getApplications().contains(appl1));
@@ -248,8 +246,6 @@ public class UserTest {
      */
     @Test
     public void testRemoveMedium() {
-        loggedUser.addCreatedMedium(med1);
-        loggedUser.addCreatedMedium(med2);
         loggedUser.removeMedium(med1);
         assertTrue(loggedUser.getCreatedMediums().contains(med2));
         assertFalse(med1.isAvailable());
@@ -270,8 +266,6 @@ public class UserTest {
      */
     @Test
     public void testRemovePlaylist() {
-        loggedUser.addCreatedPlaylist(play1);
-        loggedUser.addCreatedPlaylist(play2);
         loggedUser.removePlaylist(play1);
         assertTrue(loggedUser.getCreatedPlaylists().contains(play2));
         assertFalse(loggedUser.getCreatedPlaylists().contains(play1));
@@ -343,7 +337,7 @@ public class UserTest {
     public void testLock_String() {
         loggedUser.lock("Du hast Mist gemacht!");
         assertTrue(loggedUser.isLocked());
-        assertEquals(loggedUser.getLockText(), "Du hast Mist gemacht!");
+        assertEquals("Du hast Mist gemacht!", loggedUser.getLockText());
     }
 
     /**
