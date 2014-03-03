@@ -275,8 +275,6 @@ public class UserTest {
         loggedUser.removePlaylist(play1);
         assertTrue(loggedUser.getCreatedPlaylists().contains(play2));
         assertFalse(loggedUser.getCreatedPlaylists().contains(play1));
-        assertTrue(play2.getCreator()== loggedUser);
-        assertFalse(play1.getCreator() == loggedUser);
     }
 
     /**
