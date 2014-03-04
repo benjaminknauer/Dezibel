@@ -89,15 +89,6 @@ public class MediumTest {
         result = instance.isMediumSet();
         assertEquals(expResult, result);   
     }
-    
-    /**
-     * Test of getFile method, of class Medium.
-     */
-    @Test
-    @Ignore
-    public void testGetFile() {
-        // Durch Wegwerftest getestet
-    }
 
     /**
      * Test of comment method, of class Medium.
