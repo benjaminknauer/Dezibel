@@ -47,4 +47,24 @@ public class DragablePanel extends JPanel implements DraggableContent{
             }
         }
     }
+    
+public void onBottom(){
+
+	}
+	
+	public void onTop(){
+		
+	}
+	
+	public void onLeft(){
+		
+	}
+	
+	public void onRight(){
+		
+	}
+	
+	public void onCenter(){
+		
+	} 
 }

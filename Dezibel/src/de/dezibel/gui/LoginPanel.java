@@ -26,6 +26,8 @@ public class LoginPanel extends DragablePanel {
 	private JTextField tfPassword;
 	private JButton bnLogin;
 	private JButton bnRegister;
+	// TODO: REMOVE!
+	private JButton bnUpload;
 
 	public LoginPanel(DezibelPanel parent) {
 		super(parent);
@@ -37,7 +39,19 @@ public class LoginPanel extends DragablePanel {
 		tfPassword 		= new JTextField();
 		bnLogin			 = new JButton("Login");
 		bnRegister 		= new JButton("Register");
-		
+		// TODO: REMOVE!
+		bnUpload = new JButton("Upload");
+		bnUpload.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				FileChooser choser = new FileChooser();
+				choser.getPathOfSelectedFile();
+				
+			}
+			
+		});
+		// TODO: REMOVE-END
 		
 		bnLogin.addActionListener(new ActionListener(){
 
@@ -80,7 +94,8 @@ public class LoginPanel extends DragablePanel {
 				.addGroup(
 						GroupLayout.Alignment.CENTER,
 						layout.createSequentialGroup().addGap(min, pref, max)
-								.addComponent(bnLogin).addComponent(bnRegister)));
+								.addComponent(bnLogin).addComponent(bnRegister)
+								.addComponent(bnUpload)));
 
 		layout.setVerticalGroup(layout.createParallelGroup(
 				GroupLayout.Alignment.CENTER, true)
@@ -105,7 +120,8 @@ public class LoginPanel extends DragablePanel {
 												GroupLayout.Alignment.TRAILING)
 												.addGap(10, 20, 30)
 												.addComponent(bnLogin)
-												.addComponent(bnRegister)))
+												.addComponent(bnRegister)
+												.addComponent(bnUpload)))
 
 		);
 		
@@ -121,7 +137,7 @@ public class LoginPanel extends DragablePanel {
 			JOptionPane.showMessageDialog(this, "Mail and Password can not be empty", 
 					"Type Error", JOptionPane.INFORMATION_MESSAGE);
 		}else{
-		// TODO: Verbinde mit Kontrollklasse, um Logindaten zu überprüfen und anschließend den user einzuloggen
+		// TODO: Verbinde mit Kontrollklasse, um Logindaten zu ï¿½berprï¿½fen und anschlieï¿½end den user einzuloggen
 		this.parent.showWorkspace();
 		}
 	}

@@ -49,13 +49,13 @@ public class DezibelPanel extends JPanel {
 	
 	// Javadocking uses Dockable, to enable dragging and docking for childpanels
 	// Any panel you want to drag and dock have to be in its own Dockable
-	private Dockable 		daLogin;
-	private Dockable 		daRegister;
-	private Dockable 		daNews;
-	private Dockable 		daAds;
-	private Dockable 		daMyLists;
-	private Dockable 		daFavorites;
-	private Dockable 		daPlayer;
+	private ChangeableDockable 		daLogin;
+	private ChangeableDockable 		daRegister;
+	private ChangeableDockable 		daNews;
+	private ChangeableDockable 		daAds;
+	private ChangeableDockable 		daMyLists;
+	private ChangeableDockable 		daFavorites;
+	private ChangeableDockable 		daPlayer;
 
 	// We uses a LineDock at the bottom,top,left and right where all panels can be docked to.
 	// Except some panels, like players where only can be docked at the bottom, center or top.
@@ -90,38 +90,38 @@ public class DezibelPanel extends JPanel {
 
 		// Create the dockables around the content components.
 		// MainPanles, that can only be displayed in the Center
-		daLogin = new DefaultDockable("pnLogin", pnLogin, "Login", null,
+		daLogin = new ChangeableDockable("pnLogin", pnLogin, "Login", null,
 				DockingMode.CENTER);
-		daRegister = new DefaultDockable("pnRegister", pnRegister, "Register",
+		daRegister = new ChangeableDockable("pnRegister", pnRegister, "Register",
 				null, DockingMode.CENTER);
 
 		// Panels that can be docked at left/right border
-		daNews = new DefaultDockable("pnNews", pnNews, "News", null,
+		daNews = new ChangeableDockable("pnNews", pnNews, "News", null,
 				DockingMode.CENTER + DockingMode.LEFT + DockingMode.RIGHT
 						+ DockingMode.VERTICAL_LINE);
-		daAds = new DefaultDockable("pnAds", pnAds, "Ads", null,
+		daAds = new ChangeableDockable("pnAds", pnAds, "Ads", null,
 				DockingMode.CENTER + DockingMode.LEFT + DockingMode.RIGHT
 						+ DockingMode.VERTICAL_LINE);
-		daMyLists = new DefaultDockable("pnMyList", pnMyList, "MyLists", null,
+		daMyLists = new ChangeableDockable("pnMyList", pnMyList, "MyLists", null,
 				DockingMode.CENTER + DockingMode.LEFT + DockingMode.RIGHT
 						+ DockingMode.VERTICAL_LINE);
-		daFavorites = new DefaultDockable("pnFavorites", pnFavorites,
+		daFavorites = new ChangeableDockable("pnFavorites", pnFavorites,
 				"Favorites", null, DockingMode.CENTER + DockingMode.LEFT
 						+ DockingMode.RIGHT + DockingMode.VERTICAL_LINE);
 
 		// Panels that can be docked only at top/bottom and center
-		daPlayer = new DefaultDockable("pnPlayer", pnPlayer, "Player", null,
+		daPlayer = new ChangeableDockable("pnPlayer", pnPlayer, "Player", null,
 				DockingMode.CENTER + DockingMode.SINGLE + DockingMode.FLOAT
 						+ DockingMode.BOTTOM + DockingMode.TOP);
 
 		// Add actions to the dockables.
-		daLogin = addActions(daLogin);
-		daRegister = addActions(daRegister);
-		daPlayer = addActions(daPlayer);
-		daNews = addActions(daNews);
-		daAds = addActions(daAds);
-		daMyLists = addActions(daMyLists);
-		daFavorites = addActions(daFavorites);
+//		daLogin = addActions(daLogin);
+//		daRegister = addActions(daRegister);
+//		daPlayer = addActions(daPlayer);
+//		daNews = addActions(daNews);
+//		daAds = addActions(daAds);
+//		daMyLists = addActions(daMyLists);
+//		daFavorites = addActions(daFavorites);
 		
 		daAds.addDockingListener(new DockingListener(){
 			
@@ -129,6 +129,10 @@ public class DezibelPanel extends JPanel {
 			public void dockingChanged(DockingEvent e) {
 				System.out.println(e.getDestinationDock().getClass().toString());
 				System.out.println("Ads wurde an etwas anderes angedockt!");
+				daAds.onBottom();
+//				switch(daAds.getState()){
+//				
+//				}
 			}
 
 			@Override
