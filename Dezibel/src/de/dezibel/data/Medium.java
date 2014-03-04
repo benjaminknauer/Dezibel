@@ -28,6 +28,7 @@ public class Medium implements Commentable, Lockable {
     private boolean deleted;
     private boolean locked;
     private boolean addingPL;
+    private boolean removingPL;
     private String lockText;
     private HashMap<Integer, Rating> ratingList;
     private LinkedList<Comment> commentList;
@@ -52,8 +53,8 @@ public class Medium implements Commentable, Lockable {
         if (mediumLoader == null) {
             mediumLoader = new MediumLoader();
         }
-        
-        if(path != null){
+
+        if (path != null) {
             this.upload(path);
         }
         artist.addCreatedMedium(this);
@@ -83,7 +84,7 @@ public class Medium implements Commentable, Lockable {
     public synchronized ErrorCode upload(String path) {
         this.uploadDate = new Date();
         this.path = Medium.mediumLoader.upload(path);
-        if(!path.isEmpty()) {
+        if (!path.isEmpty()) {
             return ErrorCode.SUCCESS;
         }
         return ErrorCode.UPLOAD_ERROR;
@@ -92,20 +93,20 @@ public class Medium implements Commentable, Lockable {
     /**
      * Marks the medium as deleted so no user can access it in any way (except
      * admins)
-     * 
+     *
      * @post no user except the admin can access the medium
      */
-    public void markAsDeleted(){
+    public void markAsDeleted() {
         this.deleted = true;
     }
-    
+
     /**
      * Adds a new rating/edits the existing one with points.
      *
      * @param points value how high it is rated
      * @param rater user who rates the medium
      * @pre points is between 1 and 5
-     * @post medium has a rating 
+     * @post medium has a rating
      */
     public void rate(int points, User rater) {
         if (this.ratingList.containsKey(rater.hashCode())) {
@@ -113,16 +114,16 @@ public class Medium implements Commentable, Lockable {
         } else {
             ratingList.put(rater.hashCode(), new Rating(points));
         }
-        
+
         // Re-calculate average rating.
         double average = 0;
         Iterator<Rating> iterator = this.ratingList.values().iterator();
-        
-        while(iterator.hasNext()){
+
+        while (iterator.hasNext()) {
             average += (double) iterator.next().getPoints();
         }
-        
-        this.avgRating = Math.round(average/this.ratingList.size() * 100.0) / 100.0;
+
+        this.avgRating = Math.round(average / this.ratingList.size() * 100.0) / 100.0;
     }
 
     /**
@@ -155,15 +156,16 @@ public class Medium implements Commentable, Lockable {
     public void comment(Comment comment) {
         this.commentList.add(comment);
     }
-    
+
     /**
-     * 
+     *
      * @see Commentable#comment(Comment)
      */
-    public void deleteComment(Comment comment){
+    public void deleteComment(Comment comment) {
         this.commentList.remove(comment);
-        if(comment != null && !comment.isMarkedForDeletion())
+        if (comment != null && !comment.isMarkedForDeletion()) {
             comment.delete();
+        }
     }
 
     /**
@@ -196,40 +198,49 @@ public class Medium implements Commentable, Lockable {
 
     /**
      * Adds a playlist to the list of playlists which contain the medium
+     *
      * @param list new playlist which should contain medium
      */
-    public void addPlaylist(Playlist list){
+    public void addPlaylist(Playlist list) {
         this.addingPL = true;
         this.playlistList.add(list);
-        
-        if(list.isAddingMed() == false){
+
+        if (list.isAddingMed() == false) {
             list.addMedium(this);
         }
-        
+
         this.addingPL = false;
     }
-    
+
     /**
      * Checks if an adding process is currently running.
+     *
      * @return <code>true</code> if medium and playlist are currently in an
      * adding process
      */
-    public boolean isAddingPL(){
+    public boolean isAddingPL() {
         return this.addingPL;
     }
-    
+
     /**
-     * Removes list from the list of playlists which contain the medium
+     * Removes list from the list of playlists which contain the medium and
+     * removes all occurences of this medium in <code>list</code>.
+     *
      * @param list list which should be removed
      * @pre playlistList is not empty
-     * @post playlistLists size is reduced by 1
+     * @post playlistLists size is reduced by 1 and list.contains(this) is false
      */
-    public void removePlaylist(Playlist list){
-        if(!(list.getList().contains(this))){
-        this.playlistList.remove(list);
+    public void removePlaylist(Playlist list) {
+        if(!removingPL){
+            removingPL = true;  
+            
+            this.playlistList.remove(list);
+            list.removeMedium(this);
+            
+            removingPL = false;
         }
     }
-    
+
     /**
      * @see Commentable#getComments()
      */
@@ -307,11 +318,11 @@ public class Medium implements Commentable, Lockable {
     }
 
     public HashMap<Integer, Rating> getRatingList() {
-        return (HashMap<Integer, Rating>)this.ratingList.clone();
+        return (HashMap<Integer, Rating>) this.ratingList.clone();
     }
 
     public LinkedList<Playlist> getPlaylistList() {
-        return (LinkedList<Playlist>)this.playlistList.clone();
+        return (LinkedList<Playlist>) this.playlistList.clone();
     }
 
 }
