@@ -46,9 +46,7 @@ public class Playlist implements Commentable {
         this.addingMed = true;
         this.mediumList.add(medium);
 
-        if (medium.isAddingPL() == false) {
-            medium.addPlaylist(this);
-        }
+        medium.addPlaylist(this);
 
         this.addingMed = false;
     }
