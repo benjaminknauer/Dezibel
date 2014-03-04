@@ -131,7 +131,11 @@ public class AlbumTest extends TestCase {
         System.out.println("delete");
         albumTest.delete();
 
-        assertTrue(albumTest.getMediaList() == null);
+        assertTrue(albumTest.getMediaList().isEmpty());
+        assertNull(medium1.getAlbum());
+        assertNull(albumTest.getArtist());
+        assertNull(albumTest.getLabel());
+        
 
 
     }

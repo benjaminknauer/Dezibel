@@ -585,4 +585,8 @@ public class User implements Lockable {
         return (LinkedList<Comment>) createdComments.clone();
     }
 
+    public LinkedList<Album> getCreatedAlbums() {
+        return (LinkedList<Album>) createdAlbums.clone();
+    }
+
 }
