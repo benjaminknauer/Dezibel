@@ -98,7 +98,7 @@ public class Album implements Commentable {
         }
         removingMed = true;
         this.mediaList.remove(medium);
-        medium.removeAlbum(this);
+        medium.removeAlbum();
         removingMed = false;
     }
 
@@ -138,7 +138,7 @@ public class Album implements Commentable {
         this.artist = null;
         
         for (Medium currentMedium : (LinkedList<Medium>) mediaList.clone()) {
-            currentMedium.removeAlbum(this);
+            currentMedium.removeAlbum();
         }
         this.mediaList.clear();
         

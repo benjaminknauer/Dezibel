@@ -156,7 +156,9 @@ public class LabelTest {
         
         assertTrue(testAlbum1.getLabel().equals(this.label));
         assertTrue(testAlbum2.getLabel().equals(this.label));
-        
+        assertTrue(this.label.getAlbums().contains(testAlbum1));
+        assertTrue(this.label.getAlbums().contains(testAlbum2));
+        assertEquals(2,this.label.getAlbums().size());
     }
 
     /**

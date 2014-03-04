@@ -35,7 +35,6 @@ public class Medium implements Commentable, Lockable {
     private HashMap<Integer, Rating> ratingList;
     private LinkedList<Comment> commentList;
     private LinkedList<Playlist> playlistList;
-    private LinkedList<Album> albumList;
 
     /**
      * Class Constructor, which is used if its user chooses a filepath.
@@ -52,7 +51,6 @@ public class Medium implements Commentable, Lockable {
         this.ratingList = new HashMap<>();
         this.commentList = new LinkedList<>();
         this.playlistList = new LinkedList<>();
-        this.albumList = new LinkedList<>();
 
         if (mediumLoader == null) {
             mediumLoader = new MediumLoader();
@@ -256,19 +254,19 @@ public class Medium implements Commentable, Lockable {
             return;
         
         this.addingAlbum = true;
-        this.albumList.add(album);
+        this.album = album;
         album.addMedium(this);
 
         this.addingAlbum = false;
     }    
     
-    public void removeAlbum(Album album) {
+    public void removeAlbum() {
         if(this.removingAlbum)
             return;
         
         this.removingAlbum = true;
         
-        this.albumList.remove(album);
+        this.album = null;
         album.removeMedium(this);
         
         this.removingAlbum = false;
@@ -356,10 +354,6 @@ public class Medium implements Commentable, Lockable {
 
     public LinkedList<Playlist> getPlaylistList() {
         return (LinkedList<Playlist>) this.playlistList.clone();
-    }
-    
-    public LinkedList<Album> getAlbumList() {
-        return (LinkedList<Album>) this.albumList.clone();
     }
     
 }
