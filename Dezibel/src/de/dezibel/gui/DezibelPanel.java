@@ -3,11 +3,9 @@ package de.dezibel.gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-
 import com.javadocking.DockingManager;
 import com.javadocking.dock.BorderDock;
 import com.javadocking.dock.LineDock;
@@ -37,6 +35,7 @@ import com.javadocking.visualizer.SingleMaximizer;
  *
  */
 public class DezibelPanel extends JPanel {
+	
 	private static final long serialVersionUID = 1L;
 	// Declares all panels the user can work with.
 	private DragablePanel pnLogin;
@@ -46,6 +45,8 @@ public class DezibelPanel extends JPanel {
 	private DragablePanel pnAds;
 	private DragablePanel pnMyList;
 	private DragablePanel pnFavorites;
+	private DragablePanel pnProfil;
+	private DragablePanel pnSearch;
 	
 	// Javadocking uses Dockable, to enable dragging and docking for childpanels
 	// Any panel you want to drag and dock have to be in its own Dockable
@@ -56,7 +57,9 @@ public class DezibelPanel extends JPanel {
 	private Dockable 		daMyLists;
 	private Dockable 		daFavorites;
 	private Dockable 		daPlayer;
-
+	private Dockable		daProfil;
+	private Dockable		daSearch;
+	
 	// We uses a LineDock at the bottom,top,left and right where all panels can be docked to.
 	// Except some panels, like players where only can be docked at the bottom, center or top.
 	// Any panel can be dragged to the center where the panel will be docked and shows extra information 
@@ -87,7 +90,9 @@ public class DezibelPanel extends JPanel {
 		pnAds = new DragablePanel(this);
 		pnMyList = new DragablePanel(this);
 		pnFavorites = new DragablePanel(this);
-
+		pnProfil = new ProfilPanel(this);
+		pnSearch = new SearchPanel(this);
+		
 		// Create the dockables around the content components.
 		// MainPanles, that can only be displayed in the Center
 		daLogin = new DefaultDockable("pnLogin", pnLogin, "Login", null,
@@ -112,8 +117,13 @@ public class DezibelPanel extends JPanel {
 		// Panels that can be docked only at top/bottom and center
 		daPlayer = new DefaultDockable("pnPlayer", pnPlayer, "Player", null,
 				DockingMode.CENTER + DockingMode.SINGLE + DockingMode.FLOAT
-						+ DockingMode.BOTTOM + DockingMode.TOP + DockingMode.SINGLE);
-
+						+ DockingMode.BOTTOM + DockingMode.TOP);
+		daProfil = new DefaultDockable("pnProfil",pnProfil,"Profil",null,
+				DockingMode.CENTER + DockingMode.SINGLE);
+		
+		daSearch = new DefaultDockable("pnSearch",pnSearch,"Search",null,
+				DockingMode.CENTER + DockingMode.SINGLE + DockingMode.BOTTOM + DockingMode.TOP);
+		
 		// Add actions to the dockables.
 		daLogin = addActions(daLogin);
 		daRegister = addActions(daRegister);
@@ -312,6 +322,8 @@ public class DezibelPanel extends JPanel {
 			this.centerDock.removeDockable(this.centerDock
 					.getDockable(this.centerDock.getDockableCount() - 1));
 		this.showSidebars();
+		//this.centerDock.addDockable(this.daProfil, new Position(0));
+		this.centerDock.addDockable(this.daSearch, new Position(0));
 	}
 	
 	/**
