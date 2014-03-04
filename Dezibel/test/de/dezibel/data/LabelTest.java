@@ -163,15 +163,22 @@ public class LabelTest {
         User labelmanager2 = new User("test3@test.de", "Timo", "Boll", "123", true);
         label.addManager(labelmanager2);
         
+        System.out.println("------ " + label.getLabelManagers());
+        System.out.println("------ " + labelmanager.getManagedLabels());
+        System.out.println("------ " + labelmanager2.getManagedLabels());
+        
         News news1 = new News("Hallo!!!", "Hallo, dies ist ein Test!", label);
         Application application1 = new Application(true, "Bewerbung", artist, label);
         
         User follower1 = new User("test4@test.de", "Silke", "Haller", "123", false);
         follower1.addFavoriteLabel(label);
         
-        
         label.delete();
 
+        System.out.println("------ " + label.getLabelManagers());
+        System.out.println("------ " + labelmanager.getManagedLabels());
+        System.out.println("------ " + labelmanager2.getManagedLabels());
+        
         assertFalse(artist.getPublishingLabels().contains(label));
         assertFalse(labelmanager.getManagedLabels().contains(label));
         System.out.println(labelmanager2.getManagedLabels());
