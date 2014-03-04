@@ -174,7 +174,8 @@ public class LabelTest {
 
         assertFalse(artist.getPublishingLabels().contains(label));
         assertFalse(labelmanager.getManagedLabels().contains(label));
-        assertFalse(labelmanager2.getManagedLabels().contains(label));
+        System.out.println(labelmanager2.getManagedLabels());
+        assertFalse(labelmanager2.getManagedLabels().contains(label)); // FEHLER!!!
         assertNull(news1.getLabel());
         assertNull(application1.getLabel());
         assertFalse(follower1.getFavoriteLabels().contains(label));
