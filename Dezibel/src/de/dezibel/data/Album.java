@@ -118,16 +118,20 @@ public class Album implements Commentable {
             return;
         }
         this.markedForDeletion = true;
-        if (this.isAuthorLabel()) {
+        
+        if(this.label != null)
             this.label.removeAlbum(this);
-        } else {
+        if(this.artist != null)
             this.artist.removeAlbum(this);
-        }
-        for (Medium currentMedium : mediaList) {
+        this.label = null;
+        this.artist = null;
+        
+        for (Medium currentMedium : (LinkedList<Medium>) mediaList.clone()) {
             currentMedium.removeAlbum(this);
         }
         this.mediaList.clear();
-        for (Comment currentComment : comments) {
+        
+        for (Comment currentComment : (LinkedList<Comment>) comments.clone()) {
             this.comments.remove(currentComment);
             this.deleteComment(currentComment);
         }
@@ -213,13 +217,5 @@ public class Album implements Commentable {
 
     public LinkedList<Medium> getMediaList() {
         return (LinkedList<Medium>) this.mediaList.clone();
-    }
-
-    public boolean isAddingMed() {
-        return this.addingMed;
-    }
-
-    public boolean isAuthorLabel() {
-        return label != null;
     }
 }
