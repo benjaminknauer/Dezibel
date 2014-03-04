@@ -251,14 +251,14 @@ public class Medium implements Commentable, Lockable {
      * @param album new playlist which should contain medium
      */
     public void addAlbum(Album album) {
+        if(this.addingAlbum)
+            return;
+        
         this.addingAlbum = true;
         this.albumList.add(album);
+        album.addMedium(this);
 
-        if (album.isAddingMed() == false) {
-            album.addMedium(this);
-        }
-
-        this.addingPL = false;
+        this.addingAlbum = false;
     }    
     
     public void removeAlbum(Album album) {

@@ -71,6 +71,9 @@ public class Album implements Commentable {
     }
 
     public void addMedium(Medium medium) {
+        if(this.addingMed)
+            return;
+        
         this.addingMed = true;
 
         if (this.mediaList.contains(medium)) {
@@ -78,9 +81,7 @@ public class Album implements Commentable {
         }
 
         this.mediaList.add(medium);
-        if (medium.isAddingAlbum() == false) {
-            medium.addAlbum(this);
-        }
+        medium.addAlbum(this);
 
         this.addingMed = false;
     }
