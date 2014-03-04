@@ -376,13 +376,9 @@ public class MediumTest {
         
         Playlist playlist1 = new Playlist(instance, "myPlaylist", loggedUser);
         Playlist playlist2 = new Playlist(instance, "myPlaylist2", loggedUser);
-
         
-        LinkedList<Playlist> testList = new LinkedList<>();
-        testList.add(playlist1);
-        testList.add(playlist2);
-
-        assertEquals(testList, instance.getPlaylistList());
+        assertTrue(instance.getPlaylistList().contains(playlist1));
+        assertTrue(instance.getPlaylistList().contains(playlist2));
 
     }
 }
