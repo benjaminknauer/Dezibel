@@ -170,7 +170,7 @@ public class MediumTest {
 
         
         instance.removePlaylist(testList);
-        assertEquals(-1, instance.getPlaylistList().indexOf(testList));
+        assertTrue(instance.getPlaylistList().indexOf(testList) < 0);
     }
 
     /**

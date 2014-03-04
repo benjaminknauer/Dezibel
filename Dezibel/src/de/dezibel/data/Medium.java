@@ -206,12 +206,13 @@ public class Medium implements Commentable, Lockable {
      * @param list new playlist which should contain medium
      */
     public void addPlaylist(Playlist list) {
+        if(addingPL)
+            return;
         this.addingPL = true;
         this.playlistList.add(list);
 
-        if (list.isAddingMed() == false) {
-            list.addMedium(this);
-        }
+
+        list.addMedium(this);
 
         this.addingPL = false;
     }

@@ -43,6 +43,8 @@ public class Playlist implements Commentable {
      * @param medium medium to add
      */
     public void addMedium(Medium medium) {
+        if(addingMed)
+            return;
         this.addingMed = true;
         this.mediumList.add(medium);
 
