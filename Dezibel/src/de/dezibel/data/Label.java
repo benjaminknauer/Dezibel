@@ -178,14 +178,9 @@ public class Label implements Lockable {
             //TODO delete Album           removeAlbum(currentAlbum);
         }
         this.albums.clear();
-        Iterator<User> managerIterator = this.labelManager.iterator();
-        while (managerIterator.hasNext()){
-            User manager = managerIterator.next();
-            removeManager(manager);
-        } 
-//        for (User currentManager : this.labelManager){
-//            removeManager(currentManager);
-//        }
+        for (User currentManager : (LinkedList<User>) this.labelManager.clone()){
+            removeManager(currentManager);
+        }
 
         for (User currentManager : this.labelManager) {
             removeManager(currentManager);
