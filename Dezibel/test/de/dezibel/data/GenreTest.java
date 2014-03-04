@@ -134,7 +134,7 @@ public class GenreTest {
     public void testRemoveSubGenre() {
         genre1.removeSubGenre(genre4);
         assertFalse(genre1.hasSubGenre(genre4));
-        assertEquals(null, genre4.getSuperGenre());
+        assertEquals(Database.getInstance().getTopGenre(), genre4.getSuperGenre());
     }
 
     /**
