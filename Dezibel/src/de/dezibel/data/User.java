@@ -6,7 +6,8 @@ import java.util.LinkedList;
 /**
  * Stores personal-, login- and role-informations about the users.
  *
- * @author Pascal und Bastian
+ * @author Pascal und Bastian, Tobias und Richard
+ * @inv pseudonym!=null implies artist=true
  */
 public class User implements Lockable {
 
@@ -15,6 +16,7 @@ public class User implements Lockable {
     private boolean admin;
     private String firstname;
     private String lastname;
+    private String pseudonym;
     private Date birthdate;
     private String city;
     private String country;
@@ -449,6 +451,14 @@ public class User implements Lockable {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+    
+    public String getPseudonym() {
+        return pseudonym;
+    }
+
+    public void setPseudonym(String pseudonym) {
+        this.pseudonym = pseudonym;
     }
 
     public Date getBirthdate() {
