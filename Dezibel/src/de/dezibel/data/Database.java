@@ -14,7 +14,6 @@ import java.util.LinkedList;
  * @author Henner
  * @inv self.xStreamer != null
  */
-//TODO Implementier mich!
 public class Database {
 
     private static Database instance = null;
