@@ -7,6 +7,8 @@
 package de.dezibel.data;
 import de.dezibel.ErrorCode;
 import java.util.Date;
+import junit.framework.TestCase;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,7 +16,7 @@ import org.junit.Test;
  *
  * @author Tristan
  */
-public class AlbumTest {
+public class AlbumTest extends TestCase {
     private String coverPathTest;
     private Album albumTest;
     private User loggedUser;
@@ -29,9 +31,16 @@ public class AlbumTest {
         medium1 = new Medium("Flippy Beats", loggedUser, coverPathTest);
         medium1 = new Medium("Funk Grooves", loggedUser, coverPathTest);
         albumTest = new Album(medium1, "First", publisher);
-        Database.getInstance().addUser("pet_mart@gmail.com", "Peter", "Martinez",
-                "777", new Date(1991, 8, 3), "Münster", "Deutschland", true);
-
+        publisher = new Label(loggedUser, "Regular Music Group");
+        Database.getInstance().addUser("pet_mart@gmail.com", "Peter", "Martinez","777", new Date(1991, 8, 3), "Münster", "Deutschland", true);
+    }
+    
+    @After
+    public void tearDown(){
+        loggedUser = null;
+        medium1 = null;
+        medium2 = null;
+        publisher = null;
     }
     
     /**
@@ -40,7 +49,7 @@ public class AlbumTest {
     @Test
     public void testUploadCover() {
         System.out.println("uploadCover");
-        String path = "/Users/Benny/DJ Musik/Alternative/123.mp3";
+        String path = "C:\\Users\\Tristan\\Music\\the sound you need\\Tourist.mp3";
         ErrorCode expResult = ErrorCode.SUCCESS;
         ErrorCode result = albumTest.uploadCover(path);
     }    
