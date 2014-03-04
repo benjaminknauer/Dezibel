@@ -6,6 +6,7 @@
 
 package de.dezibel.data;
 import de.dezibel.ErrorCode;
+import de.dezibel.io.ImageLoader;
 import java.util.Date;
 import junit.framework.TestCase;
 import org.junit.After;
@@ -20,6 +21,7 @@ public class AlbumTest extends TestCase {
     private String coverPathTest;
     private Album albumTest;
     private User loggedUser;
+    private ImageLoader imageloader;
     
     private Medium medium1;
     private Medium medium2;
@@ -30,8 +32,9 @@ public class AlbumTest extends TestCase {
         loggedUser =  new User("pet_mart@gmail.com", "Peter", "Martinez", "777", true);        
         medium1 = new Medium("Flippy Beats", loggedUser, coverPathTest);
         medium1 = new Medium("Funk Grooves", loggedUser, coverPathTest);
-        albumTest = new Album(medium1, "First", publisher);
         publisher = new Label(loggedUser, "Regular Music Group");
+        albumTest = new Album(medium1, "First", publisher);       
+        imageloader = new ImageLoader();
         Database.getInstance().addUser("pet_mart@gmail.com", "Peter", "Martinez","777", new Date(1991, 8, 3), "Münster", "Deutschland", true);
     }
     
@@ -41,6 +44,7 @@ public class AlbumTest extends TestCase {
         medium1 = null;
         medium2 = null;
         publisher = null;
+        imageloader = null;
     }
     
     /**
@@ -49,9 +53,10 @@ public class AlbumTest extends TestCase {
     @Test
     public void testUploadCover() {
         System.out.println("uploadCover");
-        String path = "C:\\Users\\Tristan\\Music\\the sound you need\\Tourist.mp3";
+        String path = "C:/Users/Tristan/Pictures/asdf.jpg";
         ErrorCode expResult = ErrorCode.SUCCESS;
         ErrorCode result = albumTest.uploadCover(path);
+        albumTest.getCover().equals(imageloader.getImage(path));
     }    
             
     /**
@@ -60,6 +65,7 @@ public class AlbumTest extends TestCase {
     @Test
     public void testGetCover() {
         System.out.println("getCover");
+        //TODO test getcover
     }
     
     /**
@@ -68,5 +74,8 @@ public class AlbumTest extends TestCase {
     @Test
     public void testHasCover() {
         System.out.println("hasCover");
+        String path = "First";
+        String path1 = albumTest.getCoverPath();
+        path.equals(path1);
     }
 }
