@@ -8,6 +8,7 @@ package de.dezibel.data;
 import de.dezibel.ErrorCode;
 import de.dezibel.io.ImageLoader;
 import java.util.Date;
+import java.util.LinkedList;
 import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
@@ -21,11 +22,11 @@ public class AlbumTest extends TestCase {
     private String coverPathTest;
     private Album albumTest;
     private User loggedUser;
-    private ImageLoader imageloader;
-    
+    private ImageLoader imageloader;    
     private Medium medium1;
     private Medium medium2;
     private Label publisher;
+    private LinkedList<Medium> mediaList;
     
     @Before
     public void setUp() {
@@ -35,6 +36,7 @@ public class AlbumTest extends TestCase {
         publisher = new Label(loggedUser, "Regular Music Group");
         albumTest = new Album(medium1, "First", publisher);       
         imageloader = new ImageLoader();
+        mediaList = new LinkedList<Medium>();
         Database.getInstance().addUser("pet_mart@gmail.com", "Peter", "Martinez","777", new Date(1991, 8, 3), "Münster", "Deutschland", true);
     }
     
@@ -45,6 +47,7 @@ public class AlbumTest extends TestCase {
         medium2 = null;
         publisher = null;
         imageloader = null;
+        mediaList = null;
     }
     
     /**
@@ -77,5 +80,26 @@ public class AlbumTest extends TestCase {
         String path = "First";
         String path1 = albumTest.getCoverPath();
         path.equals(path1);
+    }
+    
+    /**
+     * Test of addMedium method, of class control/Album.
+     */
+    @Test
+    public void testAddMedium() {
+        System.out.println("AddMedium");
+        albumTest.addMedium(medium1);
+        albumTest.getMediaList().getLast().equals(medium1);
+    }
+    
+    /**
+     * Test of removeMedium method, of class control/Album.
+     */
+    @Test
+    public void testRemoveMedium() {
+        System.out.println("RemoveMedium");
+        albumTest.addMedium(medium1);
+        albumTest.removeMedium(medium1);
+        albumTest.getMediaList().isEmpty();
     }
 }
