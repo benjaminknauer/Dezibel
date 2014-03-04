@@ -17,9 +17,9 @@ import java.util.TreeSet;
  */
 public class Search {
 
-    public final int alphabetical = 1;
-    public final int rating = 2;
-    public final int uploadDate = 3;
+    public final int alphabetical = 0;
+    public final int rating = 1;
+    public final int uploadDate = 2;
 
     /**
      * Search all media for the searchTerm and returns all sorted hits
