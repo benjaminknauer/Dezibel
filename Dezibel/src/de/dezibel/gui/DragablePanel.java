@@ -48,23 +48,16 @@ public class DragablePanel extends JPanel implements DraggableContent{
         }
     }
     
-public void onBottom(){
-
+public void onTopBottom(){
+		System.out.println("Methode onTopBottom() von DragablePanel");
 	}
 	
-	public void onTop(){
-		
-	}
 	
-	public void onLeft(){
-		
-	}
-	
-	public void onRight(){
-		
+	public void onLeftRight(){
+		System.out.println("Methode onLeftRight() von DragablePanel");
 	}
 	
 	public void onCenter(){
-		
+		System.out.println("Methode onCenter() von DragablePanel");
 	} 
 }
