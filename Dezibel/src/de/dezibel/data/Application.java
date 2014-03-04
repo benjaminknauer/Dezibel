@@ -104,6 +104,11 @@ public class Application {
         return this.artist;
     }
     
+    
+     /**
+     * Returns true if this application is marked for deletion, false otherwise.
+     * @return true if this application is marked for deletion else false
+     */
     public boolean isMarkedForDeletion(){
         return markedForDeletion;
     }
