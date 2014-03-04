@@ -79,7 +79,7 @@ public class News implements Commentable {
         if(markedForDeletion)
             return;
         markedForDeletion = true;
-        for(Comment currentComment : comments ){
+        for(Comment currentComment : (LinkedList<Comment>) comments.clone()){
             deleteComment(currentComment);
         }
         comments.clear();

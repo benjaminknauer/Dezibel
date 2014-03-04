@@ -4,16 +4,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import com.javadocking.dockable.Dockable;
 import com.javadocking.dockable.DraggableContent;
 import com.javadocking.drag.DragListener;
-import com.javadocking.event.DockingListener;
-
 import javax.swing.JSlider;
 
 /**
