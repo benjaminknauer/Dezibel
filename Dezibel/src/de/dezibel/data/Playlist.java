@@ -89,6 +89,13 @@ public class Playlist implements Commentable {
             this.delete();
         }
     }
+    
+    public void removeMedium(Medium medium) {
+        while(this.mediumList.contains(medium)){
+            this.mediumList.remove(medium);
+        }
+        medium.removePlaylist(this);
+    }
 
     /**
      * This method moves a mediaobject from it's current position to a new one.

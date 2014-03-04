@@ -151,7 +151,9 @@ public class Genre {
      */
     public void removeSubGenre(Genre subGenre) {
         this.subGenres.remove(subGenre);
-        subGenre.setSuperGenre(null);
+        if (subGenre.getSuperGenre() != Database.getInstance().getTopGenre()) {
+            subGenre.setSuperGenre(null);
+        }
     }
 
     //TODO Löschen?!

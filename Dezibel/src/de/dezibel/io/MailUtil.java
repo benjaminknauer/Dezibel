@@ -30,9 +30,9 @@ public abstract class MailUtil {
     public static ErrorCode sendMail(String subject, String text, String recipient) {
         try {
             // TODO Maildaten eintragen
-            String host = "smtp.gmail.com";
+            String host = "smtp.strato.de";
             int port = 465;
-            String user = "somthing@googlemail.com";
+            String user = "info@dezibel-music.de";
             String pass = "somthingsecret";
 
             Properties props = new Properties();
@@ -56,6 +56,7 @@ public abstract class MailUtil {
             
             return ErrorCode.SUCCESS;
         } catch (MessagingException ex) {
+            ex.printStackTrace();
             return ErrorCode.MAILING_ERROR;
         }
     }

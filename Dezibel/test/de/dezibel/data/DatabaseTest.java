@@ -1,12 +1,10 @@
 package de.dezibel.data;
 
-import de.dezibel.ErrorCode;
 import java.io.File;
 import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Ignore;
 
 /**
  * Tests the Database class.
@@ -108,8 +106,8 @@ public class DatabaseTest {
         System.out.println("addComment");
         Database instance = Database.getInstance();
         String text = "This is a comment.";
-        Commentable commentable = null;
-        User author = null;
+        Commentable commentable;
+        User author;
         instance.addUser("mail@mail.com", "Hans", "Peter", "123", new Date(),
                 "Ort", "Land", true);
         author = instance.getUsers().get(instance.getUsers().size() - 1);
@@ -134,8 +132,8 @@ public class DatabaseTest {
         System.out.println("deleteComment");
         Database instance = Database.getInstance();
         String text = "This is a comment.";
-        Commentable commentable = null;
-        User author = null;
+        Commentable commentable;
+        User author;
         instance.addUser("mail@mail.com", "Hans", "Peter", "123", new Date(),
                 "Ort", "Land", true);
         author = instance.getUsers().get(instance.getUsers().size() - 1);
@@ -171,7 +169,6 @@ public class DatabaseTest {
     /**
      * Test of deleteGenre method, of class Database.
      */
-    @Ignore
     // TODO Fehler aus deleteGenre entfernen
     @Test
     public void testDeleteGenre() {
@@ -226,10 +223,10 @@ public class DatabaseTest {
         System.out.println("addMedium");
         Database instance = Database.getInstance();
         String title = "Title";
-        User artist = null;
+        User artist;
         String path = "";
         Genre genre = instance.getTopGenre();
-        Label label = null;
+        Label label;
         instance.addUser("mail@mail.com", "Hans", "Peter", "123", new Date(),
                 "Ort", "Land", true);
         artist = instance.getUsers().get(instance.getUsers().size() - 1);
@@ -313,9 +310,9 @@ public class DatabaseTest {
     @Test
     public void testAddPlaylist() {
         System.out.println("addPlaylist");
-        Medium medium = null;
+        Medium medium;
         String title = "Playlist1";
-        User author = null;
+        User author;
         Database instance = Database.getInstance();
         instance.addUser("mail@mail.com", "Hans", "Peter", "123", new Date(),
                 "Ort", "Land", true);
@@ -334,13 +331,12 @@ public class DatabaseTest {
     /**
      * Test of deletePlaylist method, of class Database.
      */
-    @Ignore
     @Test
     public void testDeletePlaylist() {
         System.out.println("deletePlaylist");
-        Medium medium = null;
+        Medium medium;
         String title = "Playlist1";
-        User author = null;
+        User author;
         Database instance = Database.getInstance();
         instance.addUser("mail@mail.com", "Hans", "Peter", "123", new Date(),
                 "Ort", "Land", true);
@@ -353,7 +349,6 @@ public class DatabaseTest {
         instance.deletePlaylist(playlist);
         assertFalse(instance.getPlaylists().contains(playlist));
         assertFalse(author.getCreatedPlaylists().contains(playlist));
-        // TODO Fehler in der removePlaylist-Methode von Medium beheben: ! entfernen
         assertFalse(medium.getPlaylistList().contains(playlist));
     }
 
