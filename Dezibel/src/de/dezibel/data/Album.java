@@ -163,6 +163,7 @@ public class Album implements Commentable {
         if (uploadPath.isEmpty()) {
             return ErrorCode.UPLOAD_ERROR;
         }
+        this.coverPath = uploadPath;
         return ErrorCode.SUCCESS;
     }
 
