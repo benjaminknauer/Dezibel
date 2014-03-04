@@ -79,7 +79,6 @@ public class Playlist implements Commentable {
     }
 
     public void removeMedium(Medium medium) {
-        // TODO Testen
         while (this.mediumList.contains(medium)) {
             this.mediumList.remove(medium);
         }
