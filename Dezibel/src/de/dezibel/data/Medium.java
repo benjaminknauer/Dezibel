@@ -264,12 +264,13 @@ public class Medium implements Commentable, Lockable {
     public void removeAlbum(Album album) {
         if(this.removingAlbum)
             return;
-        removingAlbum = true;
+        
+        this.removingAlbum = true;
         
         this.albumList.remove(album);
         album.removeMedium(this);
         
-        removingAlbum = false;
+        this.removingAlbum = false;
     }
     
     /**
@@ -358,10 +359,6 @@ public class Medium implements Commentable, Lockable {
     
     public LinkedList<Album> getAlbumList() {
         return (LinkedList<Album>) this.albumList.clone();
-    }
-
-    public boolean isAddingAlbum(){
-        return this.addingAlbum;
     }
     
 }

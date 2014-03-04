@@ -28,6 +28,7 @@ public class Album implements Commentable {
     private boolean isAuthorLabel;
     private boolean addingMed;
     private boolean removingMed;
+    private boolean removingLabel;
 
     // Bool to tell the database that this instance of Playlist may be deleted.
     // Only set to true if all associations are cleared!
@@ -104,6 +105,10 @@ public class Album implements Commentable {
      * @param label The label to be removed from this album. Must be equal to this.getLabel() in order to work.
      */
     public void removeLabel(Label label) {
+        if(this.removingLabel)
+            return;
+        
+        this.removingLabel = true;
         if (this.label.equals(label) && label != null) {
             this.label = null;
             label.removeAlbum(this);
@@ -111,7 +116,8 @@ public class Album implements Commentable {
                 delete();
             }
         }
-
+        
+        this.removingLabel = false;
     }
 
     public void delete() {
