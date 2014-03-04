@@ -128,17 +128,36 @@ public class LabelTest {
         assertEquals(label, application1.getLabel());
     }
 
-    //TODO:
     /**
      * Test of removeAlbum method, of class Label.
      */
     @Test
     public void testRemoveAlbum() {
         System.out.println("removeAlbum");
+        Medium testMedium1, testMedium2;
+        testMedium1 = new Medium("TestMedium1", this.artist, "path");
+        testMedium2 = new Medium("TestMedium2", this.artist, "path2");
+        Album testAlbum1, testAlbum2;
+        testAlbum1 = new Album(testMedium1, "TestAlbum1", this.label);
+        testAlbum2 = new Album(testMedium2, "TestAlbum2", this.artist);       
         
-
+        this.label.addAlbum(testAlbum2);
+        this.label.removeAlbum(testAlbum1);
+        
+        // testAlbum1 should be marked for deletion now.
+        assertFalse(this.label.getAlbums().contains(testAlbum1));
+        assertTrue(testAlbum1.isMarkedForDeletion());
+        
+        this.label.removeAlbum(testAlbum2);
+        
+        // testAlbum2 should NOT be marked for deletion now (because the label wasn't the creator)
+        assertFalse(this.label.getAlbums().contains(testAlbum2));
+        assertFalse(testAlbum2.isMarkedForDeletion());
+        
+        assertTrue(this.label.getAlbums().isEmpty());
+        assertNull(testAlbum1.getLabel());
+        assertNull(testAlbum2.getLabel());
     }
-    //TODO:
     /**
      * Test of addAlbum method, of class Label.
      */
@@ -179,6 +198,9 @@ public class LabelTest {
         User follower1 = new User("test4@test.de", "Silke", "Haller", "123", false);
         follower1.addFavoriteLabel(label);
         
+        Medium medium1 = new Medium("Medium1", artist, "path");
+        Album album1 = new Album(medium1, "Album1", label);
+        
         label.delete();
 
         assertFalse(artist.getPublishingLabels().contains(label));
@@ -187,8 +209,8 @@ public class LabelTest {
         assertNull(news1.getLabel());
         assertNull(application1.getLabel());
         assertFalse(follower1.getFavoriteLabels().contains(label));
-        
-        //TODO Album testen
+        assertFalse(label.getAlbums().contains(album1));
+        assertTrue(album1.isMarkedForDeletion());
     }
 
     /**

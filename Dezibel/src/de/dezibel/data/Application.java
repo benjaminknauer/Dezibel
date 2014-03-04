@@ -24,11 +24,11 @@ public class Application {
     /**
      * Creates a new application object representing an application from an 
      * artist for a label if <code>fromArtist</code> is set to true or the other way
-     * round if it's set to false.
+     * around if it's set to false.
      * @param fromArtist Set to true if the applicant is an artist, otherwise false.
-     * @param text The message the recipient will be shown.
-     * @param artist The artist who applys or is applied for.
-     * @param label The label that applys or is applied for.
+     * @param text The message written by the applicant.
+     * @param artist The artist who applies or receives an application.
+     * @param label The label that applies or receives an application.
      */
     public Application(boolean fromArtist, String text, User artist, Label label) {
         this.fromArtist = fromArtist;
@@ -48,12 +48,12 @@ public class Application {
     public void accept() {
         this.label.addArtist(this.artist);
         this.artist.addArtistLabel(this.label);
-        //TODO Arist und Label per Mail benachritigen?
+        //TODO Artist und Label per Mail benachritigen?
         delete();
     }
 
     /**
-     * Decline the application. (Notify the application's creator of this.)
+     * Decline the application. (Notify the application's creator of declination.)
      */
     public void decline() {
         if(this.isFromArtist()){
@@ -104,6 +104,11 @@ public class Application {
         return this.artist;
     }
     
+    
+     /**
+     * Returns true if this application is marked for deletion, false otherwise.
+     * @return true if this application is marked for deletion else false
+     */
     public boolean isMarkedForDeletion(){
         return markedForDeletion;
     }

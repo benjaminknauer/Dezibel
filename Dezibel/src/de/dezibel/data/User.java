@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.LinkedList;
 
 /**
- * Stores personal-, login- and role-informations about the users.
+ * Stores personal-, login- and role-informations about the user.
  *
  * @author Pascal und Bastian, Tobias und Richard
  * @inv pseudonym!=null implies artist=true
@@ -38,9 +38,9 @@ public class User implements Lockable {
     private LinkedList<Comment> createdComments;
     private LinkedList<Album> createdAlbums;
 
-    // TODO: Flags in User einbauen!
     /**
-     * Class Constructor
+     * Class Constructor for user which creates a user with the minimum datas
+     * given by the parameters.
      *
      * @param email the users email adress
      * @param firstname the users firstname
@@ -69,8 +69,7 @@ public class User implements Lockable {
         createdAlbums = new LinkedList<>();
     }
 
-    // Notify Methoden:
-    // TODO: Klasse für Mails einbauen
+    // TODO: Mails in notify methoden versenden.
     /**
      * Informs the user about a new news by a favorite.
      *
@@ -117,13 +116,25 @@ public class User implements Lockable {
 
     }
 
+    /**
+     * Adds a new album to the artists list of created albums.
+     *
+     * @param album album which should be created
+     */
     public void addAlbum(Album album) {
         if (this.createdAlbums.contains(album)) {
             return;
         }
         this.createdAlbums.add(album);
     }
-    
+
+    /**
+     * Removes an album from the artists list of created albums.
+     *
+     * @param album album which should be removed
+     * @pre createdAlbums is not empty
+     * @post createdAlbums size is reduced by 1
+     */
     public void removeAlbum(Album album) {
         this.createdAlbums.remove(album);
     }

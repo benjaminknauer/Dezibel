@@ -3,7 +3,7 @@ package de.dezibel.data;
 import java.util.Date;
 
 /**
- * This class represents the comments Users can post to Media, Albums etc.
+ * This class represents the comments users can post to Media, Albums etc.
  *
  * @author Henner
  * @inv self.text != null && !self.text.equals("") && self.creationDate != null
@@ -19,7 +19,7 @@ public class Comment {
 
     private User author;
 
-    // Bool to tell the database that this instance of Comment may be deleted.
+    // Boolean to tell the database that this instance of Comment may be deleted.
     // Only set to true if all associations are cleared!
     private boolean markedForDeletion = false;
 
@@ -42,8 +42,8 @@ public class Comment {
     }
 
     /**
-     * This method completely deletes the comment from the database clears all
-     * its associations.
+     * This method completely deletes the comment from the database and clears
+     * all its associations.
      */
     public void delete() {
         if(markedForDeletion)
@@ -70,6 +70,10 @@ public class Comment {
         return author;
     }
 
+    /**
+     * Returns true if this comment is marked for deletion, false otherwise.
+     * @return true if this comment is marked for deletion else false
+     */
     public boolean isMarkedForDeletion() {
         return markedForDeletion;
     }

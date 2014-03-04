@@ -98,7 +98,6 @@ public class MediumTest {
         System.out.println("comment");
         Comment comment = new Comment("Dies ist ein Test", instance, loggedUser);
         instance.comment(comment);
-        //TODO getComment(Commentable , User)
         assertEquals("Dies ist ein Test", instance.getComments()
                 .get(instance.getComments().indexOf(comment)).getText());
     }

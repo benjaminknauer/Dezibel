@@ -169,7 +169,6 @@ public class DatabaseTest {
     /**
      * Test of deleteGenre method, of class Database.
      */
-    // TODO Fehler aus deleteGenre entfernen
     @Test
     public void testDeleteGenre() {
         System.out.println("deleteGenre");

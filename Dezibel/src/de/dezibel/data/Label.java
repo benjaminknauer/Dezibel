@@ -60,6 +60,8 @@ public class Label implements Lockable {
      * This method removes an artist from the list of artists.
      *
      * @param artist artist to be removed
+     * @pre artists is not empty
+     * @post artists size is reduced by 1
      */
     public void removeArtist(User artist) {
         if (this.artists.contains(artist)) {
@@ -90,10 +92,12 @@ public class Label implements Lockable {
     }
 
     /**
-     * This method removes <code>news</code> from the Label's News and deletes
+     * This method removes <code>news</code> from the Label's news and deletes
      * it.
      *
      * @param news The News object to be removed and deleted.
+     * @pre news is not empty
+     * @post news size is reduced by 1
      */
     public void deleteNews(News news) {
         this.news.remove(news);
@@ -104,9 +108,11 @@ public class Label implements Lockable {
 
     /**
      * This method removes an application from the list of applications and
-     * deletes it and all its associations!
+     * deletes it and all its associations.
      *
      * @param application application to be removed and deleted
+     * @pre applications is not empty
+     * @post applications is reduced by 1
      */
     public void deleteApplication(Application application) {
         this.applications.remove(application);
@@ -130,6 +136,8 @@ public class Label implements Lockable {
      * This method removes an album from the list of albums.
      *
      * @param album album to be removed
+     * @pre albums is not empty
+     * @post albums size is reduced by 1
      */
     public void removeAlbum(Album album) {
         this.albums.remove(album);
@@ -153,7 +161,7 @@ public class Label implements Lockable {
     /**
      * Completely deletes this label from the database and clears all its
      * associations. This will also automatically completely delete all news,
-     * applications and comments associated with this label from the system!
+     * applications and comments associated with this label from the system.
      */
     public void delete() {
         if (this.markedForDeletion) {
@@ -188,9 +196,11 @@ public class Label implements Lockable {
     }
 
     /**
-     * This method removes a manager from the list of artists.
+     * This method removes a manager from the list of managers.
      *
      * @param manager manager to be removed
+     * @pre labelManager is not empty
+     * @post labelManagers size is reuced by 1
      */
     public void removeManager(User manager) {
         this.labelManager.remove(manager);
@@ -216,6 +226,8 @@ public class Label implements Lockable {
      * This method removes a follower from the list of followers.
      *
      * @param fan follower to be removed
+     * @pre followers is not empty
+     * @post followers size is reduced by 1
      */
     public void removeFollower(User fan) {
         if (this.followers.contains(fan)) {

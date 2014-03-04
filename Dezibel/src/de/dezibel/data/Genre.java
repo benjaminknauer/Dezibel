@@ -8,22 +8,21 @@ import java.util.LinkedList;
  * but any amount of sub-genres.
  *
  * @author Henner
- * @inv
  */
 public class Genre {
 
     private String name;
-
     private Genre superGenre;
-
     private LinkedList<Genre> subGenres;
-
     private LinkedList<Medium> media;
-    
     private boolean markedForDeletion = false;
-    
     private boolean changingSubGenre  = false;
 
+    /**
+     * Class Constructor to create a genre with a name and super genre.
+     * @param name the genres name
+     * @param superGenre the genres super genre
+     */
     public Genre(String name, Genre superGenre) {
         this.name = name;
         this.superGenre = superGenre;

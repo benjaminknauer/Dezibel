@@ -151,7 +151,6 @@ public class Medium implements Commentable, Lockable {
     }
 
     /**
-     *
      * @see Commentable#comment(Comment)
      */
     @Override
@@ -160,7 +159,6 @@ public class Medium implements Commentable, Lockable {
     }
 
     /**
-     *
      * @see Commentable#comment(Comment)
      */
     public void deleteComment(Comment comment) {
@@ -171,7 +169,6 @@ public class Medium implements Commentable, Lockable {
     }
 
     /**
-     *
      * @see Lockable#lock()
      */
     @Override
@@ -190,7 +187,6 @@ public class Medium implements Commentable, Lockable {
     }
 
     /**
-     *
      * @see Lockable#unlock()
      */
     @Override
@@ -208,8 +204,7 @@ public class Medium implements Commentable, Lockable {
             return;
         this.addingPL = true;
         this.playlistList.add(list);
-
-
+        
         list.addMedium(this);
 
         this.addingPL = false;
@@ -219,7 +214,7 @@ public class Medium implements Commentable, Lockable {
      * Checks if an adding process is currently running.
      *
      * @return <code>true</code> if medium and playlist are currently in an
-     * adding process
+     * adding process, <code>false</code> otherwise
      */
     public boolean isAddingPL() {
         return this.addingPL;
@@ -260,6 +255,9 @@ public class Medium implements Commentable, Lockable {
         this.addingAlbum = false;
     }    
     
+    /**
+     * Removes association to the album the medium was associated with.
+     */
     public void removeAlbum() {
         if(album == null)
             return;

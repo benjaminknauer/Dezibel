@@ -2,6 +2,7 @@ package de.dezibel.data;
 
 /**
  * This class represents a rating of a mediaobject made by a user.
+ *
  * @author Alexander Trahe, Benjamin Knauer
  */
 public class Rating {
@@ -10,6 +11,7 @@ public class Rating {
 
     /**
      * Constructor of the class Rating.
+     *
      * @param points Ratingvalue: Has to be a value between 1 and 5.
      */
     public Rating(int points) {
@@ -19,9 +21,10 @@ public class Rating {
     public int getPoints() {
         return points;
     }
-    
+
     /**
      * Method to set the value of points.
+     *
      * @param points Ratingvalue: Has to be a value between 1 and 5.
      * @inv Points has value between 1 and 5
      */
