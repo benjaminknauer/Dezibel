@@ -324,7 +324,7 @@ public class DatabaseTest {
         Playlist playlist = instance.getPlaylists().get(instance.getPlaylists().size() - 1);
         assertTrue(instance.getPlaylists().contains(playlist));
         assertTrue(playlist.getList().contains(medium));
-        assertEquals(title, playlist.getTitel());
+        assertEquals(title, playlist.getTitle());
         assertEquals(author, playlist.getCreator());
     }
 

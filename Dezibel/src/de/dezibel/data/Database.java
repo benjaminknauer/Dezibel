@@ -146,6 +146,50 @@ public class Database {
         applications = data[8];
         genres = data[9];
     }
+    
+    /**
+     * Adds a new non empty Album to the database with the given non-null information.
+     * <code>coverPath</code> may be null. A cover won't be uploaded then.
+     * @param medium The first medium to be added to the album.
+     * @param title The album's title.
+     * @param creator The artist who created the album.
+     * @param coverPath Path to an Image file with the album's cover which then will be uploaded.
+     * @return ErrorCode
+     * @pre self.medium != null && self.title != null && self.creator != null
+     * @post The new Album object is in the database.
+     */
+    public ErrorCode addAlbum(Medium medium, String title, User creator, String coverPath){
+        Album a = new Album(medium, title, creator);
+        this.albums.add(a);
+        if(coverPath != null)
+            a.uploadCover(coverPath);
+        return ErrorCode.SUCCESS;
+    }
+    
+    /**
+     * Adds a new non empty Album to the database with the given information.
+     * <code>coverPath</code> may be null. A cover won't be uploaded then.
+     * @param medium The first medium to be added to the album.
+     * @param title The album's title.
+     * @param publisher The label that created and published the album.
+     * @param coverPath Path to an Image file with the album's cover which then will be uploaded.
+     * @return ErrorCode
+     * @pre self.medium != null && self.title != null && self.creator != null
+     * @post The new Album object is in the database.
+     */
+    public ErrorCode addAlbum(Medium medium, String title, Label publisher, String coverPath){
+        Album a = new Album(medium, title, publisher);
+        this.albums.add(a);
+        if(coverPath != null)
+           a.uploadCover(coverPath);
+        return ErrorCode.SUCCESS;
+    }
+    
+    void deleteAlbum(Album album){
+        this.albums.remove(album);
+        if(album != null)
+            album.delete();
+    }
 
     /**
      * Makes the Database add a new Application with the given information. This
