@@ -251,25 +251,26 @@ public class Medium implements Commentable, Lockable {
      * @param album new playlist which should contain medium
      */
     public void addAlbum(Album album) {
+        if(this.addingAlbum)
+            return;
+        
         this.addingAlbum = true;
         this.albumList.add(album);
+        album.addMedium(this);
 
-        if (album.isAddingMed() == false) {
-            album.addMedium(this);
-        }
-
-        this.addingPL = false;
+        this.addingAlbum = false;
     }    
     
     public void removeAlbum(Album album) {
         if(this.removingAlbum)
             return;
-        removingAlbum = true;
+        
+        this.removingAlbum = true;
         
         this.albumList.remove(album);
         album.removeMedium(this);
         
-        removingAlbum = false;
+        this.removingAlbum = false;
     }
     
     /**
@@ -358,10 +359,6 @@ public class Medium implements Commentable, Lockable {
     
     public LinkedList<Album> getAlbumList() {
         return (LinkedList<Album>) this.albumList.clone();
-    }
-
-    public boolean isAddingAlbum(){
-        return this.addingAlbum;
     }
     
 }
