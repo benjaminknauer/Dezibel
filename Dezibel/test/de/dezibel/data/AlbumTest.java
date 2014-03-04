@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import junit.framework.TestCase;
 import org.junit.After;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,6 +29,7 @@ public class AlbumTest extends TestCase {
     private Medium medium2;
     private Label publisher;
     private LinkedList<Medium> mediaList;
+    private Comment testComment1,testComment2;
     
     @Before
     public void setUp() {
@@ -37,6 +40,8 @@ public class AlbumTest extends TestCase {
         albumTest = new Album(medium1, "First", publisher);       
         imageloader = new ImageLoader();
         mediaList = new LinkedList<Medium>();
+        testComment1 = new Comment("Hey Hey", albumTest, loggedUser);
+        testComment2 = new Comment("Lalala", albumTest, loggedUser);
         Database.getInstance().addUser("pet_mart@gmail.com", "Peter", "Martinez","777", new Date(1991, 8, 3), "Münster", "Deutschland", true);
     }
     
@@ -88,10 +93,10 @@ public class AlbumTest extends TestCase {
     @Test
     public void testAddMedium() {
         System.out.println("AddMedium");
-        albumTest.addMedium(medium2);
-        albumTest.getMediaList().getLast().equals(medium2);
+        albumTest.addMedium(medium1);
+        albumTest.getMediaList().getLast().equals(medium1);
         
-        medium2.getAlbum().equals(albumTest);
+        medium1.getAlbum().equals(albumTest);
     }
     
     /**
@@ -99,9 +104,51 @@ public class AlbumTest extends TestCase {
      */
     @Test
     public void testRemoveMedium() {
-        System.out.println("RemoveMedium");
-        albumTest.addMedium(medium1);
-        albumTest.removeMedium(medium1);
-        albumTest.getMediaList().isEmpty();
+        System.out.println("RemoveMedium"); 
+        albumTest.removeMedium(medium1);        
+        albumTest.getMediaList().isEmpty();        
+        assertTrue(medium1.getAlbum() == null);
+    }
+    
+    /**
+     * Test of comment method, of class News.
+     */
+    @Test
+    public void testComment() {
+        System.out.println("comment");
+        albumTest.comment(testComment1);
+        albumTest.comment(testComment2);
+
+        assertTrue(albumTest.getComments().contains(testComment1));
+        assertTrue(albumTest.getComments().contains(testComment2));
+    }
+
+    /**
+     * Test of delete method, of class News.
+     */
+    @Test
+    public void testDelete() {
+        System.out.println("delete");
+        albumTest.delete();
+
+        assertTrue(albumTest.getMediaList() == null);
+
+
+    }
+
+    /**
+     * Test of deleteComment method, of class News.
+     */
+    @Test
+    public void testDeleteComment() {
+        System.out.println("deleteComment");
+
+        albumTest.comment(testComment1);
+        albumTest.comment(testComment2);
+
+        albumTest.deleteComment(testComment2);
+
+        assertTrue(albumTest.getComments().contains(testComment1));
+        assertFalse(albumTest.getComments().contains(testComment2));
     }
 }
