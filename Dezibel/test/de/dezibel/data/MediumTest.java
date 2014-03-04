@@ -251,16 +251,15 @@ public class MediumTest {
      * Test of getAlbum method, of class Medium.
      */
     @Test
-    @Ignore
     public void testGetAlbum() {
         System.out.println("getAlbum");
         
         Album album = new Album(instance, "Mein Album", loggedUser);
         instance.setAlbum(album);
 
-        assertEquals(album.getTitel(), instance.getAlbum().getTitel());
-        assertEquals(album.getCreator(), instance.getAlbum().getCreator());
-        assertEquals(album.getList(), instance.getAlbum().getList());
+        assertEquals(album.getTitle(), instance.getAlbum().getTitle());
+        assertEquals(album.getArtist(), instance.getAlbum().getArtist());
+        assertEquals(album.getMediaList(), instance.getAlbum().getMediaList());
     }
 
     /**
