@@ -129,12 +129,15 @@ public class AlbumTest extends TestCase {
     @Test
     public void testDelete() {
         System.out.println("delete");
+        albumTest.comment(testComment1);
         albumTest.delete();
 
         assertTrue(albumTest.getMediaList().isEmpty());
         assertNull(medium1.getAlbum());
         assertNull(albumTest.getArtist());
         assertNull(albumTest.getLabel());
+        assertFalse(loggedUser.getCreatedAlbums().contains(albumTest));
+        assertFalse(albumTest.getComments().contains(testComment1));
         
 
 
@@ -155,4 +158,15 @@ public class AlbumTest extends TestCase {
         assertTrue(albumTest.getComments().contains(testComment1));
         assertFalse(albumTest.getComments().contains(testComment2));
     }
+    
+    /**
+     * Test of removeLabel method, of class News.
+     */
+    @Test
+    public void testRemoveLabel() {
+        System.out.println("removeLabel");
+        albumTest.setLabel(publisher);
+        albumTest.removeLabel();
+        assertTrue(publisher.getAlbums().isEmpty());
+    }        
 }
