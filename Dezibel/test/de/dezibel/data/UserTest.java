@@ -284,7 +284,6 @@ public class UserTest {
      */
     @Test
     public void testAddCreatedComments() {
-        loggedUser.addCreatedComments(com1);
         user2.addCreatedComments(com1);
         assertTrue(loggedUser.getCreatedComments().contains(com1));
         assertTrue(com1.getAuthor() == loggedUser);
