@@ -225,7 +225,15 @@ public class Album implements Commentable {
     public User getArtist() {
         return this.artist;
     }
+    
+    public boolean isAuthorLabel(){
+        return this.isAuthorLabel;
+    }
 
+    public String getTitle(){
+        return this.title;
+    }
+    
     public LinkedList<Medium> getMediaList() {
         return (LinkedList<Medium>) this.mediaList.clone();
     }
