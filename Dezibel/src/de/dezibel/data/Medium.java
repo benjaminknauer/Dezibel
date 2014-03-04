@@ -261,15 +261,11 @@ public class Medium implements Commentable, Lockable {
     }    
     
     public void removeAlbum() {
-        if(this.removingAlbum)
+        if(album == null)
             return;
-        
-        this.removingAlbum = true;
-        
+        Album a = this.album;
         this.album = null;
-        album.removeMedium(this);
-        
-        this.removingAlbum = false;
+        a.removeMedium(this);        
     }
     
     /**

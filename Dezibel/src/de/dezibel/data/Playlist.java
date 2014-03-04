@@ -93,7 +93,6 @@ public class Playlist implements Commentable {
      * @post mediumLists size is reduced by 1
      */
     public void removeMedium(Medium medium) {
-        // TODO Testen
         while (this.mediumList.contains(medium)) {
             this.mediumList.remove(medium);
         }
