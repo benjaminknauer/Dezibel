@@ -121,7 +121,7 @@ public class Label implements Lockable {
      * @param application application to be added
      */
     public void addApplication(Application application) {
-        if (!labelManager.contains(application)) {
+        if (!applications.contains(application)) {
             this.applications.add(application);
         }
     }
@@ -158,31 +158,27 @@ public class Label implements Lockable {
             return;
         }
         this.markedForDeletion = true;
-        for (User currentArtist : this.artists) {
+        for (User currentArtist : (LinkedList<User>) this.artists.clone()) {
             currentArtist.removeArtistLabel(this);
         }
         this.artists.clear();
-        for (User currentFollower : this.followers) {
+        for (User currentFollower : (LinkedList<User>) this.followers.clone()) {
             currentFollower.removeFavoriteLabel(this);
         }
         this.followers.clear();
-        for (News currentNews : news) {
+        for (News currentNews : (LinkedList<News>) news.clone()) {
             currentNews.delete();
         }
         this.news.clear();
-        for (Application currentApplication : this.applications) {
+        for (Application currentApplication : (LinkedList<Application>) this.applications.clone()) {
             deleteApplication(currentApplication);
         }
         this.applications = null;
-        for (Album currentAlbum : this.albums) {
+        for (Album currentAlbum : (LinkedList<Album>) this.albums.clone()) {
             //TODO delete Album           removeAlbum(currentAlbum);
         }
         this.albums.clear();
         for (User currentManager : (LinkedList<User>) this.labelManager.clone()){
-            removeManager(currentManager);
-        }
-
-        for (User currentManager : this.labelManager) {
             removeManager(currentManager);
         }
         this.labelManager.clear();

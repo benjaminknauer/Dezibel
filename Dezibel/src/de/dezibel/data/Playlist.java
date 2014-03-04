@@ -75,6 +75,7 @@ public class Playlist implements Commentable {
     }
     
     public void removeMedium(Medium medium) {
+        // TODO Testen
         while(this.mediumList.contains(medium)){
             this.mediumList.remove(medium);
         }
@@ -106,11 +107,11 @@ public class Playlist implements Commentable {
         }
         this.markedForDeletion = true;
         this.creator.removePlaylist(this);
-        for (Medium currentMedium : mediumList) {
+        for (Medium currentMedium : (LinkedList<Medium>) mediumList.clone()) {
             currentMedium.removePlaylist(this);
         }
         this.mediumList.clear();
-        for (Comment currentComment : comments) {
+        for (Comment currentComment : (LinkedList<Comment>) comments.clone()) {
             this.comments.remove(currentComment);
             this.deleteComment(currentComment);
         }
