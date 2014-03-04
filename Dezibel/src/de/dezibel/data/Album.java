@@ -4,7 +4,6 @@ import de.dezibel.ErrorCode;
 import de.dezibel.io.ImageLoader;
 import java.awt.Image;
 import java.util.LinkedList;
-// TODO: Album überarbeiten. Vererbung löschen? Stattdessen Assoziation? Wäre besser :D
 
 /**
  * This class represents an Album.
@@ -28,7 +27,7 @@ public class Album implements Commentable {
     private boolean isAuthorLabel;
     private boolean addingMed;
     private boolean removingMed;
-    private boolean removingLabel;
+    private boolean settingLabel;
 
     // Bool to tell the database that this instance of Playlist may be deleted.
     // Only set to true if all associations are cleared!
@@ -44,8 +43,9 @@ public class Album implements Commentable {
      * @param publisher The label the Album is published under.
      */
     public Album(Medium medium, String title, Label publisher) {
-        if(Album.imageLoader == null)
+        if (Album.imageLoader == null) {
             Album.imageLoader = new ImageLoader();
+        }
         this.mediaList = new LinkedList<>();
         this.mediaList.add(medium);
         this.comments = new LinkedList<>();
@@ -65,8 +65,9 @@ public class Album implements Commentable {
      * @param creator The Artist who created the Album.
      */
     public Album(Medium medium, String title, User creator) {
-        if(Album.imageLoader == null)
-            Album.imageLoader = new ImageLoader();        
+        if (Album.imageLoader == null) {
+            Album.imageLoader = new ImageLoader();
+        }
         this.mediaList = new LinkedList<>();
         this.mediaList.add(medium);
         this.comments = new LinkedList<>();
@@ -77,9 +78,10 @@ public class Album implements Commentable {
     }
 
     public void addMedium(Medium medium) {
-        if(this.addingMed)
+        if (this.addingMed) {
             return;
-        
+        }
+
         this.addingMed = true;
 
         if (this.mediaList.contains(medium)) {
@@ -103,25 +105,36 @@ public class Album implements Commentable {
     }
 
     /**
-     * Removes the label associated with this Album.
-     * If the label was the creator of the album, the album will be deleted.
+     * Removes the label associated with this Album. If the label was the
+     * creator of the album and we're currently not just changing the label, the
+     * album will be deleted.
      */
     public void removeLabel() {
-        if(this.label == null)
+        if (this.label == null) {
             return;
+        }
         Label l = this.label;
         this.label = null;
         l.removeAlbum(this);
-        
+
+        if (!settingLabel && this.isAuthorLabel()) {
+            this.delete();
+        }
     }
-    
+
     public void setLabel(Label label) {
         // Remove the old label.
-        if(this.label != null && this.label.equals(label))
+        if (this.label != null && this.label.equals(label)) {
             return;
-        removeLabel();        
+        }
+        this.settingLabel = true;
+        
+        removeLabel();
+
         this.label = label;
-        label.addAlbum(this);       
+        label.addAlbum(this);
+
+        this.settingLabel = false;
     }
 
     public void delete() {
@@ -129,19 +142,21 @@ public class Album implements Commentable {
             return;
         }
         this.markedForDeletion = true;
-        
-        if(this.label != null)
+
+        if (this.label != null) {
             this.label.removeAlbum(this);
-        if(this.artist != null)
+        }
+        if (this.artist != null) {
             this.artist.removeAlbum(this);
+        }
         this.label = null;
         this.artist = null;
-        
+
         for (Medium currentMedium : (LinkedList<Medium>) mediaList.clone()) {
             currentMedium.removeAlbum();
         }
         this.mediaList.clear();
-        
+
         for (Comment currentComment : (LinkedList<Comment>) comments.clone()) {
             this.comments.remove(currentComment);
             this.deleteComment(currentComment);
@@ -226,20 +241,24 @@ public class Album implements Commentable {
     public User getArtist() {
         return this.artist;
     }
-    
-    public boolean isAuthorLabel(){
+
+    public boolean isAuthorLabel() {
         return this.isAuthorLabel;
     }
 
-    public String getTitle(){
+    public String getTitle() {
         return this.title;
     }
-    
+
     public LinkedList<Medium> getMediaList() {
         return (LinkedList<Medium>) this.mediaList.clone();
     }
 
     public String getCoverPath() {
-        return coverPath;
+        return this.coverPath;
+    }
+
+    public boolean isMarkedForDeletion() {
+        return this.markedForDeletion;
     }
 }
