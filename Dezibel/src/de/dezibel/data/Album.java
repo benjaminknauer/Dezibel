@@ -101,6 +101,10 @@ public class Album implements Commentable {
         removingMed = true;
         this.mediaList.remove(medium);
         medium.removeAlbum();
+        
+        if(this.mediaList.isEmpty())
+            delete();
+        
         removingMed = false;
     }
 
