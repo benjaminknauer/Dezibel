@@ -21,6 +21,8 @@ public class Genre {
     private LinkedList<Medium> media;
     
     private boolean markedForDeletion = false;
+    
+    private boolean changingSubGenre  = false;
 
     public Genre(String name, Genre superGenre) {
         this.name = name;
@@ -150,25 +152,14 @@ public class Genre {
      * @post !self.hasSubGenre(subGenre)
      */
     public void removeSubGenre(Genre subGenre) {
+        if(this.changingSubGenre)
+            return;
+        changingSubGenre = true;
         this.subGenres.remove(subGenre);
         if (subGenre.getSuperGenre() != Database.getInstance().getTopGenre()) {
             subGenre.setSuperGenre(null);
         }
-    }
-
-    //TODO Löschen?!
-    /**
-     * Removes all genres in <code>subGenres</code> from the sub-genres of this
-     * genre. If a genre wasn't a sub-genre in the first place, nothing will
-     * happen.
-     *
-     * @param subGenres The list of genres to be removed from this genre's
-     * sub-genres.
-     * @pre subGenres is not null
-     * @post for all genres g in <code>subGenres</code> : !hasSubGenre(g)
-     */
-    public void removeSubGenres(LinkedList<Genre> subGenres) {
-        this.subGenres.removeAll(subGenres);
+        changingSubGenre = false;
     }
 
     public LinkedList<Medium> getMedia() {

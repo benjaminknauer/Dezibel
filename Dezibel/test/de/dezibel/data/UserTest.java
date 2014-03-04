@@ -206,8 +206,10 @@ public class UserTest {
     @Test
     public void testAddNews() {
         loggedUser.addNews(news1);
+        user2.addNews(news1);
         assertTrue(loggedUser.getNews().contains(news1));
         assertEquals(loggedUser, news1.getAuthor());
+        assertFalse(user2.getNews().contains(news1));
     }
 
     /**
@@ -216,8 +218,10 @@ public class UserTest {
     @Test
     public void testAddApplication() {
         loggedUser.addApplication(appl1);
+        user2.addApplication(appl1);
         assertTrue(loggedUser.getApplications().contains(appl1));
         assertEquals(appl1.getLabel(), label1);
+        assertFalse(user2.getApplications().contains(appl1));
     }
 
     /**
@@ -237,8 +241,10 @@ public class UserTest {
     @Test
     public void testAddCreatedMedium() {
         loggedUser.addCreatedMedium(med1);
+        user2.addCreatedMedium(med1);
         assertTrue(loggedUser.getCreatedMediums().contains(med1));
         assertTrue(med1.getArtist() == loggedUser);
+        assertFalse(user2.getCreatedMediums().contains(med1));
     }
 
     /**
@@ -257,8 +263,10 @@ public class UserTest {
     @Test
     public void testAddCreatedPlaylist() {
         loggedUser.addCreatedPlaylist(play1);
+        user2.addCreatedPlaylist(play1);
         assertTrue(loggedUser.getCreatedPlaylists().contains(play1));
         assertTrue(play1.getCreator() == loggedUser);
+        assertFalse(user2.getCreatedPlaylists().contains(play1));
     }
 
     /**
@@ -277,8 +285,10 @@ public class UserTest {
     @Test
     public void testAddCreatedComments() {
         loggedUser.addCreatedComments(com1);
+        user2.addCreatedComments(com1);
         assertTrue(loggedUser.getCreatedComments().contains(com1));
         assertTrue(com1.getAuthor() == loggedUser);
+        assertFalse(user2.getCreatedComments().contains(com1));
     }
 
     /**
@@ -286,8 +296,6 @@ public class UserTest {
      */
     @Test
     public void testDeleteComment() {
-        loggedUser.addCreatedComments(com1);
-        loggedUser.addCreatedComments(com2);
         loggedUser.deleteComment(com1);
         assertTrue(loggedUser.getCreatedComments().contains(com2));
         assertFalse(loggedUser.getCreatedComments().contains(com1));

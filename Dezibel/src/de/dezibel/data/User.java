@@ -251,8 +251,10 @@ public class User implements Lockable {
      * @param news new created news
      */
     public void addNews(News news) {
-        if(!(this.newsList.contains(news))){
-        this.newsList.add(news);
+        if(news.getAuthor() == this){
+            if(!(this.newsList.contains(news))){
+            this.newsList.add(news);
+            }
         }
     }
 
@@ -276,7 +278,9 @@ public class User implements Lockable {
      * @param app new application sent by the user
      */
     public void addApplication(Application app) {
-        this.sentApplications.add(app);
+        if(app.getUser() == this){
+            this.sentApplications.add(app);
+        }
     }
 
     /**
@@ -299,7 +303,9 @@ public class User implements Lockable {
      * @param medium new medium created by the user
      */
     public void addCreatedMedium(Medium medium) {
-        this.createdMediums.add(medium);
+        if(medium.getArtist() == this){
+            this.createdMediums.add(medium);
+        }
     }
 
     /**
@@ -320,7 +326,9 @@ public class User implements Lockable {
      * @param list new playlist created by the user
      */
     public void addCreatedPlaylist(Playlist list) {
-        this.createdPlaylists.add(list);
+        if(list.getCreator() == this){
+            this.createdPlaylists.add(list);
+        }
     }
 
     /**
@@ -342,7 +350,9 @@ public class User implements Lockable {
      * @param comment new comment created by the user
      */
     public void addCreatedComments(Comment comment) {
-        this.createdComments.add(comment);
+        if(comment.getAuthor() == this){
+            this.createdComments.add(comment);
+        }
     }
 
     /**
