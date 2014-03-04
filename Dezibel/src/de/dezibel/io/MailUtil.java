@@ -29,11 +29,10 @@ public abstract class MailUtil {
      */
     public static ErrorCode sendMail(String subject, String text, String recipient) {
         try {
-            // TODO Maildaten eintragen
             String host = "smtp.strato.de";
             int port = 465;
             String user = "info@dezibel-music.de";
-            String pass = "somthingsecret";
+            String pass = "dezibel2014";
 
             Properties props = new Properties();
             props.put("mail.smtp.auth", "true");
@@ -49,7 +48,7 @@ public abstract class MailUtil {
             message.setFrom(new InternetAddress(user));
             message.setRecipients(Message.RecipientType.TO, addresses);
             message.setSubject(subject);
-            message.setText("text/plain " + text);
+            message.setText(text);
             
             transport.sendMessage(message, addresses);
             transport.close();
