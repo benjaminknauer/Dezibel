@@ -110,15 +110,16 @@ public class Album implements Commentable {
         if(this.label == null)
             return;
         Label l = this.label;
-        
-        this.label.removeAlbum(this);
+        this.label = null;
+        l.removeAlbum(this);
         
     }
     
     public void setLabel(Label label) {
         // Remove the old label.
-        removeLabel();
-        
+        if(this.label != null && this.label.equals(label))
+            return;
+        removeLabel();        
         this.label = label;
         label.addAlbum(this);       
     }

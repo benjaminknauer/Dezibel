@@ -148,7 +148,6 @@ public class Label implements Lockable {
             if(album != null)
                 album.setLabel(this);
         }
-
     }
     
     /**
