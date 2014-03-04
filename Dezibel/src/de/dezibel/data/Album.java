@@ -77,16 +77,24 @@ public class Album implements Commentable {
         creator.addAlbum(this);
     }
 
+    /**
+     * Adds the given medium to this album.
+     * Won't have an effect if the medium is already in this album.
+     * @param medium The medium to be added to this album.
+     * @post The medium is in the album.
+     */
     public void addMedium(Medium medium) {
         if (this.addingMed) {
             return;
         }
-
-        this.addingMed = true;
-
+        
         if (this.mediaList.contains(medium)) {
             return;
         }
+        
+        this.addingMed = true;
+
+
 
         this.mediaList.add(medium);
         medium.addAlbum(this);
@@ -94,6 +102,12 @@ public class Album implements Commentable {
         this.addingMed = false;
     }
 
+    /**
+     * Removes the given medium from this album.
+     * If it was the last in this album, the album will be deleted.
+     * @param medium The medium to be deleted.
+     * @post self.mediaList.contains(medium) != true
+     */
     public void removeMedium(Medium medium) {
         if (this.removingMed) {
             return;
@@ -126,6 +140,11 @@ public class Album implements Commentable {
         }
     }
 
+    /**
+     * Sets this album's label to the given one.
+     * @param label The new label.
+     * @post The album's label is now the given one.
+     */
     public void setLabel(Label label) {
         // Remove the old label.
         if (this.label != null && this.label.equals(label)) {
@@ -141,6 +160,9 @@ public class Album implements Commentable {
         this.settingLabel = false;
     }
 
+    /**
+     * Prepares this object for deletion, clearing all associations and so on.
+     */
     public void delete() {
         if (this.markedForDeletion) {
             return;
