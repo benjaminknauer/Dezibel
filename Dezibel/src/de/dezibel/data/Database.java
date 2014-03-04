@@ -8,7 +8,7 @@ import java.util.LinkedList;
 /**
  * This singleton class represents the Database. It holds references to all
  * objects of all classes of <code>de.dezibel.data</code> and manages the
- * creation of such. It saves this data using the <code>XStreamAdaapter</code>
+ * creation of such. It saves this data using the <code>XStreamAdapter</code>
  * class to XML files.
  *
  * @author Henner
@@ -31,6 +31,7 @@ public class Database {
      * Application, Genre]
      */
     private LinkedList[] data;
+    
     /**
      * The amount of Lists in data.
      */
@@ -84,6 +85,10 @@ public class Database {
 
     //TODO Initialisierung vervollstaendigen?
     //TODO Methode private machen. Im Moment public für Tests.
+    
+    /**
+     * Initialisizes the database with all the entity data it stores.
+     */
     public void initializeDatabase() {
         data = new LinkedList[this.listCount];
         users = new LinkedList<>();
@@ -149,6 +154,7 @@ public class Database {
     /**
      * Adds a new non empty Album to the database with the given non-null information.
      * <code>coverPath</code> may be null. A cover won't be uploaded then.
+     * 
      * @param medium The first medium to be added to the album.
      * @param title The album's title.
      * @param creator The artist who created the album.
@@ -168,6 +174,7 @@ public class Database {
     /**
      * Adds a new non empty Album to the database with the given information.
      * <code>coverPath</code> may be null. A cover won't be uploaded then.
+     * 
      * @param medium The first medium to be added to the album.
      * @param title The album's title.
      * @param publisher The label that created and published the album.
@@ -184,6 +191,12 @@ public class Database {
         return ErrorCode.SUCCESS;
     }
     
+    /**
+     * Removes the given album from the database. Does nothing if the album 
+     * didn't exist.
+     * 
+     * @param album album which should be removed
+     */
     void deleteAlbum(Album album){
         this.albums.remove(album);
         if(album != null)
