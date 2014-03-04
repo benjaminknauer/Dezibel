@@ -10,7 +10,7 @@ import java.util.LinkedList;
  */
 public class Playlist implements Commentable {
 
-    private String titel;
+    private String title;
     private LinkedList<Comment> comments;
     private LinkedList<Medium> mediumList;
     private User creator;
@@ -24,14 +24,14 @@ public class Playlist implements Commentable {
      * Constructor of the playlistclass
      *
      * @param medium first Medium in the playlist
-     * @param titel title of the playlist
+     * @param title title of the playlist
      * @param user owner of the playlist
      */
-    public Playlist(Medium medium, String titel, User user) {
+    public Playlist(Medium medium, String title, User user) {
         this.mediumList = new LinkedList<>();
         this.comments = new LinkedList<>();
 
-        this.titel = titel;
+        this.title = title;
         medium.addPlaylist(this);
         this.creator = user;
         this.creator.addCreatedPlaylist(this);
@@ -133,12 +133,12 @@ public class Playlist implements Commentable {
         return (LinkedList<Medium>) this.mediumList.clone();
     }
 
-    public String getTitel() {
-        return this.titel;
+    public String getTitle() {
+        return this.title;
     }
 
-    public void setTitel(String titel) {
-        this.titel = titel;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public User getCreator() {

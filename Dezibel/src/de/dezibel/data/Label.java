@@ -62,7 +62,7 @@ public class Label implements Lockable {
      * @param artist artist to be removed
      */
     public void removeArtist(User artist) {
-        if(this.artists.contains(artist)){
+        if (this.artists.contains(artist)) {
             this.artists.remove(artist);
             artist.removeArtistLabel(this);
         }
@@ -97,8 +97,9 @@ public class Label implements Lockable {
      */
     public void deleteNews(News news) {
         this.news.remove(news);
-        if(news != null)
-           news.delete();
+        if (news != null) {
+            news.delete();
+        }
     }
 
     /**
@@ -109,8 +110,9 @@ public class Label implements Lockable {
      */
     public void deleteApplication(Application application) {
         this.applications.remove(application);
-        if (application != null)
+        if (application != null) {
             application.delete();
+        }
     }
 
     /**
@@ -129,24 +131,32 @@ public class Label implements Lockable {
      *
      * @param album album to be removed
      */
-//TODO removeAlbum implementieren
+    public void removeAlbum(Album album) {
+        this.albums.add(album);
+        if(album != null)
+            album.removeLabel(this);
+    }
 
     /**
      * This method adds an album to the label.
      *
      * @param album album to be added
      */
-   
-//TODO addAlbum implementieren
-
+    public void addAlbum(Album album){
+        if(!this.albums.contains(album)){
+            albums.add(album);
+        }
+    }
+    
     /**
      * Completely deletes this label from the database and clears all its
      * associations. This will also automatically completely delete all news,
      * applications and comments associated with this label from the system!
      */
     public void delete() {
-        if(this.markedForDeletion)
+        if (this.markedForDeletion) {
             return;
+        }
         this.markedForDeletion = true;
         for (User currentArtist : this.artists) {
             currentArtist.removeArtistLabel(this);
@@ -165,9 +175,10 @@ public class Label implements Lockable {
         }
         this.applications = null;
         for (Album currentAlbum : this.albums) {
- //TODO delete Album           removeAlbum(currentAlbum);
+            //TODO delete Album           removeAlbum(currentAlbum);
         }
         this.albums.clear();
+<<<<<<< HEAD
         Iterator<User> managerIterator = this.labelManager.iterator();
         while (managerIterator.hasNext()){
             User manager = managerIterator.next();
@@ -176,6 +187,11 @@ public class Label implements Lockable {
 //        for (User currentManager : this.labelManager){
 //            removeManager(currentManager);
 //        }
+=======
+        for (User currentManager : this.labelManager) {
+            removeManager(currentManager);
+        }
+>>>>>>> FETCH_HEAD
         this.labelManager.clear();
         Database.getInstance().deleteLabel(this);
     }
@@ -211,7 +227,7 @@ public class Label implements Lockable {
      * @param fan follower to be removed
      */
     public void removeFollower(User fan) {
-        if(this.followers.contains(fan)){
+        if (this.followers.contains(fan)) {
             this.followers.remove(fan);
             fan.removeFavoriteLabel(this);
         }

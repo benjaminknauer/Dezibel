@@ -29,10 +29,13 @@ public class Medium implements Commentable, Lockable {
     private boolean locked;
     private boolean addingPL;
     private boolean removingPL;
+    private boolean addingAlbum;
+    private boolean removingAlbum;
     private String lockText;
     private HashMap<Integer, Rating> ratingList;
     private LinkedList<Comment> commentList;
     private LinkedList<Playlist> playlistList;
+    private LinkedList<Album> albumList;
 
     /**
      * Class Constructor, which is used if its user chooses a filepath.
@@ -49,6 +52,7 @@ public class Medium implements Commentable, Lockable {
         this.ratingList = new HashMap<>();
         this.commentList = new LinkedList<>();
         this.playlistList = new LinkedList<>();
+        this.albumList = new LinkedList<>();
 
         if (mediumLoader == null) {
             mediumLoader = new MediumLoader();
@@ -242,6 +246,33 @@ public class Medium implements Commentable, Lockable {
     }
 
     /**
+     * Adds an album to the list of albums which contain the medium
+     *
+     * @param album new playlist which should contain medium
+     */
+    public void addAlbum(Album album) {
+        this.addingAlbum = true;
+        this.albumList.add(album);
+
+        if (album.isAddingMed() == false) {
+            album.addMedium(this);
+        }
+
+        this.addingPL = false;
+    }    
+    
+    public void removeAlbum(Album album) {
+        if(this.removingAlbum)
+            return;
+        removingAlbum = true;
+        
+        this.albumList.remove(album);
+        album.removeMedium(this);
+        
+        removingAlbum = false;
+    }
+    
+    /**
      * @see Commentable#getComments()
      */
     @Override
@@ -324,5 +355,13 @@ public class Medium implements Commentable, Lockable {
     public LinkedList<Playlist> getPlaylistList() {
         return (LinkedList<Playlist>) this.playlistList.clone();
     }
+    
+    public LinkedList<Album> getAlbumList() {
+        return (LinkedList<Album>) this.albumList.clone();
+    }
 
+    public boolean isAddingAlbum(){
+        return this.addingAlbum;
+    }
+    
 }
