@@ -20,6 +20,7 @@ public class User implements Lockable {
     private String country;
     private boolean male;
     private boolean locked;
+    private String lockText;
     private String email;
     private String password;
     private String description;
@@ -399,7 +400,8 @@ public class User implements Lockable {
      */
     public void lock(String text) {
         this.locked = true;
-        // TODO: Add sending of emails.
+        this.lockText = text;
+        // TODO: Senden von E-Mails hinzufügen.
     }
 
     /**
@@ -420,7 +422,7 @@ public class User implements Lockable {
      * @see Lockable#getLockText()
      */
     public String getLockText() {
-        return null;
+        return this.lockText;
     }
 
     public String getFirstname() {
