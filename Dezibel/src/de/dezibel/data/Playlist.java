@@ -43,8 +43,9 @@ public class Playlist implements Commentable {
      * @param medium medium to add
      */
     public void addMedium(Medium medium) {
-        if(addingMed)
+        if (addingMed) {
             return;
+        }
         this.addingMed = true;
         this.mediumList.add(medium);
 
@@ -61,8 +62,9 @@ public class Playlist implements Commentable {
      * This method removes a medium from the playlist.
      *
      * @param index index of the medium in the list
-     * @pre list is not empty, 0 <= index < self.size() @post
-     * The size of the list has been reduced by 1.
+     * @pre list is not empty, 0 <= index < self.size() 
+     * @post The size of the
+     * list has been reduced by 1.
      *
      */
     public void removeMediumAt(int index) {
@@ -75,10 +77,10 @@ public class Playlist implements Commentable {
             this.delete();
         }
     }
-    
+
     public void removeMedium(Medium medium) {
         // TODO Testen
-        while(this.mediumList.contains(medium)){
+        while (this.mediumList.contains(medium)) {
             this.mediumList.remove(medium);
         }
         medium.removePlaylist(this);

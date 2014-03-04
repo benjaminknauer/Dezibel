@@ -133,10 +133,9 @@ public class LabelTest {
      * Test of removeAlbum method, of class Label.
      */
     @Test
-    @Ignore
     public void testRemoveAlbum() {
         System.out.println("removeAlbum");
-
+        
 
     }
     //TODO:
@@ -144,11 +143,20 @@ public class LabelTest {
      * Test of addAlbum method, of class Label.
      */
     @Test
-    @Ignore
     public void testAddAlbum() {
         System.out.println("addAlbum");
-
-
+        Medium testMedium1, testMedium2;
+        testMedium1 = new Medium("TestMedium1", this.artist, "path");
+        testMedium2 = new Medium("TestMedium2", this.artist, "path2");
+        Album testAlbum1, testAlbum2;
+        testAlbum1 = new Album(testMedium1, "TestAlbum1", this.label);
+        testAlbum2 = new Album(testMedium2, "TestAlbum2", this.artist);
+        
+        this.label.addAlbum(testAlbum2);
+        
+        assertTrue(testAlbum1.getLabel().equals(this.label));
+        assertTrue(testAlbum2.getLabel().equals(this.label));
+        
     }
 
     /**

@@ -132,9 +132,9 @@ public class Label implements Lockable {
      * @param album album to be removed
      */
     public void removeAlbum(Album album) {
-        this.albums.add(album);
+        this.albums.remove(album);
         if(album != null)
-            album.removeLabel(this);
+            album.removeLabel();
     }
 
     /**
@@ -145,7 +145,10 @@ public class Label implements Lockable {
     public void addAlbum(Album album){
         if(!this.albums.contains(album)){
             albums.add(album);
+            if(album != null)
+                album.setLabel(this);
         }
+
     }
     
     /**
@@ -175,7 +178,7 @@ public class Label implements Lockable {
         }
         this.applications = null;
         for (Album currentAlbum : (LinkedList<Album>) this.albums.clone()) {
-            //TODO delete Album           removeAlbum(currentAlbum);
+            removeAlbum(currentAlbum);
         }
         this.albums.clear();
         for (User currentManager : (LinkedList<User>) this.labelManager.clone()){

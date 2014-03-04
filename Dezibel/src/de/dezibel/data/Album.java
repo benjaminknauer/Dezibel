@@ -53,6 +53,7 @@ public class Album implements Commentable {
         this.label = publisher;
         isAuthorLabel = true;
         publisher.addAlbum(this);
+        medium.addAlbum(this);
     }
 
     /**
@@ -102,26 +103,24 @@ public class Album implements Commentable {
     }
 
     /**
-     * Removes the label associated with this Album if and only if
-     * <code>label</code> equals this.getLabel(). If this label was the creator
-     * of the album, the album will be deleted.
-     *
-     * @param label The label to be removed from this album. Must be equal to this.getLabel() in order to work.
+     * Removes the label associated with this Album.
+     * If the label was the creator of the album, the album will be deleted.
      */
-    public void removeLabel(Label label) {
-        if(this.removingLabel)
+    public void removeLabel() {
+        if(this.label == null)
             return;
+        Label l = this.label;
         
-        this.removingLabel = true;
-        if (this.label.equals(label) && label != null) {
-            this.label = null;
-            label.removeAlbum(this);
-            if (isAuthorLabel) {
-                delete();
-            }
-        }
+        this.label.removeAlbum(this);
         
-        this.removingLabel = false;
+    }
+    
+    public void setLabel(Label label) {
+        // Remove the old label.
+        removeLabel();
+        
+        this.label = label;
+        label.addAlbum(this);       
     }
 
     public void delete() {
