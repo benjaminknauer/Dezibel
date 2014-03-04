@@ -40,6 +40,7 @@ public class Label implements Lockable {
 
         this.name = name;
         this.labelManager.add(manager);
+        manager.addManagerLabel(this);
     }
 
     /**
@@ -127,22 +128,15 @@ public class Label implements Lockable {
      *
      * @param album album to be removed
      */
-    public void removeAlbum(Album album) {
-        this.albums.remove(album);
-        album.setLabel(null);
-    }
+//TODO removeAlbum implementieren
 
     /**
      * This method adds an album to the label.
      *
      * @param album album to be added
      */
-    public void addAlbum(Album album) {
-        if (!albums.contains(album)) {
-            this.albums.add(album);
-            album.setLabel(this);
-        }
-    }
+   
+//TODO addAlbum implementieren
 
     /**
      * Completely deletes this label from the database and clears all its
@@ -150,29 +144,33 @@ public class Label implements Lockable {
      * applications and comments associated with this label from the system!
      */
     public void delete() {
-        if(markedForDeletion)
+        if(this.markedForDeletion)
             return;
-        markedForDeletion = true;
-        for (User currentArtist : artists) {
+        this.markedForDeletion = true;
+        for (User currentArtist : this.artists) {
             currentArtist.removeArtistLabel(this);
         }
-        artists.clear();
-        for (User currentFollower : followers) {
+        this.artists.clear();
+        for (User currentFollower : this.followers) {
             currentFollower.removeFavoriteLabel(this);
         }
-        followers.clear();
+        this.followers.clear();
         for (News currentNews : news) {
             currentNews.delete();
         }
-        news.clear();
-        for (Application currentApplication : applications) {
+        this.news.clear();
+        for (Application currentApplication : this.applications) {
             deleteApplication(currentApplication);
         }
-        applications = null;
-        for (Album currentAlbum : albums) {
-            removeAlbum(currentAlbum);
+        this.applications = null;
+        for (Album currentAlbum : this.albums) {
+ //TODO delete Album           removeAlbum(currentAlbum);
         }
-        albums.clear();
+        this.albums.clear();
+        for (User currentManager : this.labelManager){
+            removeManager(currentManager);
+        }
+        this.labelManager.clear();
         Database.getInstance().deleteLabel(this);
     }
 

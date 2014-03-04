@@ -3,16 +3,16 @@ package de.dezibel.data;
 import de.dezibel.ErrorCode;
 import de.dezibel.io.ImageLoader;
 import java.awt.Image;
+import java.util.LinkedList;
 // TODO: Album überarbeiten. Vererbung löschen? Stattdessen Assoziation? Wäre besser :D
 
 /**
- * This class represents an Album. An Album is a special kind of Playlist, being
- * able to have a cover.
+ * This class represents an Album.
  *
  * @author Henner, Tobias
  * @inv An album contains at least 1 medium
  */
-public class Album extends Playlist {
+public class Album {
 
     /**
      * The ImageLoader all Album objects use to allow use of getCover().
@@ -20,34 +20,43 @@ public class Album extends Playlist {
     private static ImageLoader imageLoader;
 
     private String coverPath;
+    private String title;
     private Label label;
+    private User artist;
+    private LinkedList<Medium> mediaList;
 
     /**
      * Creates a new non empty Album with the given <code>medium</code>,
-     * <code>title</code>. <code>user</code> is set as the creator (uploader) of
+     * <code>title</code>. <code>label</code> is set as the publisher of
      * the Album.
      *
      * @param medium The first Medium in the Album.
      * @param title The Album's title.
-     * @param creator The creator (uploader) of the Album.
+     * @param publisher The label the Album is published under.
+     */
+    public Album(Medium medium, String title, Label publisher) {
+        this.mediaList = new LinkedList<>();
+        this.mediaList.add(medium);
+        this.title = title;
+        this.label = publisher;
+    }
+
+    /**
+     * Creates a new non empty Album with the given <code>medium</code>,
+     * <code>title</code>. <code>user</code> is set as the creator of
+     * the Album.
+     *
+     * @param medium The first Medium in the Album.
+     * @param title The Album's title.
+     * @param creator The Artist who created the Album.
      */
     public Album(Medium medium, String title, User creator) {
-        super(medium, title, creator);
-        this.setTitel(title);
-        this.addMedium(medium);
-
-        if (Album.imageLoader == null) {
-            Album.imageLoader = new ImageLoader();
-        }
-
-        medium.setAlbum(this);
-    }
-
-    @Override
-    public boolean addListToCreatorOnCreation() {
-        return false;
-    }
-
+        this.mediaList = new LinkedList<>();
+        this.mediaList.add(medium);
+        this.title = title;
+        this.artist = creator;
+    }    
+    
     /**
      * Upload the image file specified by the path into the system and set it as
      * this Album's cover.
@@ -85,11 +94,11 @@ public class Album extends Playlist {
         return coverPath != null;
     }
 
-    public void setLabel(Label label) {
-        this.label = label;
+    public Label getLabel(){
+        return this.label;
     }
-
-    public Label getLabel() {
-        return label;
+    
+    public User getArtist(){
+        return this.artist;
     }
 }
