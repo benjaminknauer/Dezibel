@@ -54,6 +54,13 @@ public class Playlist implements Commentable {
         this.addingMed = false;
     }
 
+    /**
+     * Checks if the playlist is currently in the process of adding a medium.
+     * (used to avoid infinite loops in the addMedium method)
+     *
+     * @return <code>true</code> if playlist is currently in a medium-adding
+     * process, <code>false</code> otherwise
+     */
     public boolean isAddingMed() {
         return this.addingMed;
     }
@@ -62,9 +69,8 @@ public class Playlist implements Commentable {
      * This method removes a medium from the playlist.
      *
      * @param index index of the medium in the list
-     * @pre list is not empty, 0 <= index < self.size() 
-     * @post The size of the
-     * list has been reduced by 1.
+     * @pre list is not empty, 0 <= index < self.size() @post
+     * The size of the list has been reduced by 1.
      *
      */
     public void removeMediumAt(int index) {
@@ -78,6 +84,14 @@ public class Playlist implements Commentable {
         }
     }
 
+    /**
+     * Completely removes a medium from the playlist. (meaning also multiple
+     * existing ones)
+     *
+     * @param medium medium which should be completely removed from the playlist
+     * @pre mediumList is not empty
+     * @post mediumLists size is reduced by 1
+     */
     public void removeMedium(Medium medium) {
         // TODO Testen
         while (this.mediumList.contains(medium)) {
@@ -105,6 +119,10 @@ public class Playlist implements Commentable {
         }
     }
 
+    /**
+     * Completely deletes the playlist and takes care of all its associations,
+     * which have to be resolved.
+     */
     public void delete() {
         if (this.markedForDeletion) {
             return;
@@ -153,10 +171,7 @@ public class Playlist implements Commentable {
     }
 
     /**
-     * This Method adds a comment to the playlist
-     *
      * @see Commentable#comment(Comment)
-     * @param comment comment to add
      */
     @Override
     public void comment(Comment comment) {
@@ -172,7 +187,6 @@ public class Playlist implements Commentable {
     }
 
     /**
-     *
      * @see Commentable#deleteComment(Comment)
      */
     @Override
