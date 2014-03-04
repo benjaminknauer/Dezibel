@@ -27,8 +27,8 @@ public class PlaylistNameComparator implements Comparator<Playlist> {
             return -1;
         else if(list2 == null)
             return 1;
-        if(list1.getName().compareTo(list2.getName()) == 0)
-            return list1.getName().compareTo(list2.getName());
-        return list1.getName().compareTo(list2.getName());
+        if(list1.getTitle().compareTo(list2.getTitle()) == 0)
+            return list1.getTitle().compareTo(list2.getTitle());
+        return list1.getTitle().compareTo(list2.getTitle());
     }
 }

@@ -176,7 +176,7 @@ public class Search {
         Iterator<Playlist> it = playlists.iterator();
         while (it.hasNext()) {
             Playlist tmp = it.next();
-            if(tmp.getTile().toLowerCase().contains(searchTerm))
+            if(tmp.getTitle().toLowerCase().contains(searchTerm))
                 result.add(tmp);
         }
         return result;
