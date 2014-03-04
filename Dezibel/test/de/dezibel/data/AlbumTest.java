@@ -32,7 +32,7 @@ public class AlbumTest extends TestCase {
     public void setUp() {
         loggedUser =  new User("pet_mart@gmail.com", "Peter", "Martinez", "777", true);        
         medium1 = new Medium("Flippy Beats", loggedUser, coverPathTest);
-        medium1 = new Medium("Funk Grooves", loggedUser, coverPathTest);
+        medium2 = new Medium("Funk Grooves", loggedUser, coverPathTest);
         publisher = new Label(loggedUser, "Regular Music Group");
         albumTest = new Album(medium1, "First", publisher);       
         imageloader = new ImageLoader();
@@ -88,8 +88,10 @@ public class AlbumTest extends TestCase {
     @Test
     public void testAddMedium() {
         System.out.println("AddMedium");
-        albumTest.addMedium(medium1);
-        albumTest.getMediaList().getLast().equals(medium1);
+        albumTest.addMedium(medium2);
+        albumTest.getMediaList().getLast().equals(medium2);
+        
+        medium2.getAlbum().equals(albumTest);
     }
     
     /**
