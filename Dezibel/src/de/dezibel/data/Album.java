@@ -132,7 +132,7 @@ public class Album implements Commentable {
             this.deleteComment(currentComment);
         }
         this.comments.clear();
-        Database.getInstance().deletePlaylist(this);
+        Database.getInstance().deleteAlbum(this);
     }
 
     /**

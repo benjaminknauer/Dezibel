@@ -36,6 +36,7 @@ public class User implements Lockable {
     private LinkedList<Medium> createdMediums;
     private LinkedList<Playlist> createdPlaylists;
     private LinkedList<Comment> createdComments;
+    private LinkedList<Album> createdAlbums;
 
     // TODO: Flags in User einbauen!
     /**
@@ -65,6 +66,7 @@ public class User implements Lockable {
         createdMediums = new LinkedList<Medium>();
         createdPlaylists = new LinkedList<Playlist>();
         createdComments = new LinkedList<Comment>();
+        createdAlbums = new LinkedList<>();
     }
 
     // Notify Methoden:
@@ -115,6 +117,17 @@ public class User implements Lockable {
 
     }
 
+    public void addAlbum(Album album) {
+        if (this.createdAlbums.contains(album)) {
+            return;
+        }
+        this.createdAlbums.add(album);
+    }
+    
+    public void removeAlbum(Album album) {
+        this.createdAlbums.remove(album);
+    }
+
     /**
      * Adds a label to the list of labels under which the user publishes his
      * mediums.
@@ -137,7 +150,7 @@ public class User implements Lockable {
      * @post publishingLabels size is reduced by 1
      */
     public void removeArtistLabel(Label label) {
-        if(publishingLabels.contains(label)) {
+        if (publishingLabels.contains(label)) {
             this.publishingLabels.remove(label);
             label.removeArtist(this);
         }
@@ -163,7 +176,7 @@ public class User implements Lockable {
      * @post managedLabels size is reduced by 1
      */
     public void removeManagerLabel(Label label) {
-        if(this.managedLabels.contains(label)){
+        if (this.managedLabels.contains(label)) {
             this.managedLabels.remove(label);
             label.removeManager(this);
         }
@@ -189,7 +202,7 @@ public class User implements Lockable {
      * @post favoriteLabels size is reduced by 1
      */
     public void removeFavoriteLabel(Label label) {
-        if(this.favoriteLabels.contains(label)){
+        if (this.favoriteLabels.contains(label)) {
             this.favoriteLabels.remove(label);
             label.removeFollower(this);
         }
@@ -201,7 +214,7 @@ public class User implements Lockable {
      * @param user new favorized user
      */
     public void addFavoriteUser(User user) {
-        if(!(this.favoriteUsers.contains(user))){
+        if (!(this.favoriteUsers.contains(user))) {
             this.favoriteUsers.add(user);
             user.addFollower(this);
         }
@@ -215,7 +228,7 @@ public class User implements Lockable {
      * @post favoriteUsers size is reduced by 1
      */
     public void removeFavoriteUser(User user) {
-        if(this.favoriteUsers.contains(user)){
+        if (this.favoriteUsers.contains(user)) {
             this.favoriteUsers.remove(user);
             user.removeFollower(this);
         }
@@ -227,7 +240,7 @@ public class User implements Lockable {
      * @param user new following user
      */
     public void addFollower(User user) {
-        if(!(this.followers.contains(user))){
+        if (!(this.followers.contains(user))) {
             this.followers.add(user);
             user.addFavoriteUser(this);
         }
@@ -241,7 +254,7 @@ public class User implements Lockable {
      * @post followers size is reduced by 1
      */
     public void removeFollower(User user) {
-        if(this.followers.contains(user)){
+        if (this.followers.contains(user)) {
             this.followers.remove(user);
             user.removeFavoriteUser(this);
         }
@@ -253,9 +266,9 @@ public class User implements Lockable {
      * @param news new created news
      */
     public void addNews(News news) {
-        if(news.getAuthor() == this){
-            if(!(this.newsList.contains(news))){
-            this.newsList.add(news);
+        if (news.getAuthor() == this) {
+            if (!(this.newsList.contains(news))) {
+                this.newsList.add(news);
             }
         }
     }
@@ -280,7 +293,7 @@ public class User implements Lockable {
      * @param app new application sent by the user
      */
     public void addApplication(Application app) {
-        if(app.getUser() == this){
+        if (app.getUser() == this) {
             this.sentApplications.add(app);
         }
     }
@@ -305,14 +318,14 @@ public class User implements Lockable {
      * @param medium new medium created by the user
      */
     public void addCreatedMedium(Medium medium) {
-        if(medium.getArtist() == this){
+        if (medium.getArtist() == this) {
             this.createdMediums.add(medium);
         }
     }
 
     /**
-     * Removes a medium from the list of created mediums, which is viewable
-     * by users (admins still see this intern list as usual).
+     * Removes a medium from the list of created mediums, which is viewable by
+     * users (admins still see this intern list as usual).
      *
      * @param medium medium which should be removed
      * @pre medium is not marked as deleted yet
@@ -328,7 +341,7 @@ public class User implements Lockable {
      * @param list new playlist created by the user
      */
     public void addCreatedPlaylist(Playlist list) {
-        if(list.getCreator() == this){
+        if (list.getCreator() == this) {
             this.createdPlaylists.add(list);
         }
     }
@@ -341,8 +354,8 @@ public class User implements Lockable {
      * @post createdPlaylists size is reduced by 1
      */
     public void removePlaylist(Playlist list) {
-        if(this.createdPlaylists.contains(list)){
-        this.createdPlaylists.remove(list);
+        if (this.createdPlaylists.contains(list)) {
+            this.createdPlaylists.remove(list);
         }
     }
 
@@ -352,7 +365,7 @@ public class User implements Lockable {
      * @param comment new comment created by the user
      */
     public void addCreatedComments(Comment comment) {
-        if(comment.getAuthor() == this){
+        if (comment.getAuthor() == this) {
             this.createdComments.add(comment);
         }
     }
@@ -374,6 +387,7 @@ public class User implements Lockable {
 
     /**
      * Sets a flag for the user to give him the artist functionality.
+     *
      * @pre user is not flagged as an artist yet
      * @post user is flagged as an artist
      */
@@ -383,6 +397,7 @@ public class User implements Lockable {
 
     /**
      * Sets a flag for the user to give him the labelmanager functionality.
+     *
      * @pre user is not flagged as a labelmanager yet
      * @post user is flagged as a labelmanager
      */
@@ -392,6 +407,7 @@ public class User implements Lockable {
 
     /**
      * Sets a flag for the user to give him the admin functionality.
+     *
      * @pre user is not flagged as an admin yet
      * @post user is flagged as an admin
      */
@@ -452,7 +468,7 @@ public class User implements Lockable {
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
-    
+
     public String getPseudonym() {
         return pseudonym;
     }
