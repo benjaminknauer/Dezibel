@@ -44,6 +44,8 @@ public class Album implements Commentable {
      * @param publisher The label the Album is published under.
      */
     public Album(Medium medium, String title, Label publisher) {
+        if(this.imageLoader == null)
+            this.imageLoader = new ImageLoader();
         this.mediaList = new LinkedList<>();
         this.mediaList.add(medium);
         this.comments = new LinkedList<>();
@@ -62,6 +64,8 @@ public class Album implements Commentable {
      * @param creator The Artist who created the Album.
      */
     public Album(Medium medium, String title, User creator) {
+        if(this.imageLoader == null)
+            this.imageLoader = new ImageLoader();        
         this.mediaList = new LinkedList<>();
         this.mediaList.add(medium);
         this.comments = new LinkedList<>();
