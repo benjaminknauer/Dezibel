@@ -238,4 +238,8 @@ public class Album implements Commentable {
     public LinkedList<Medium> getMediaList() {
         return (LinkedList<Medium>) this.mediaList.clone();
     }
+
+    public String getCoverPath() {
+        return coverPath;
+    }
 }
