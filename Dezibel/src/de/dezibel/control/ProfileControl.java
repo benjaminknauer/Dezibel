@@ -32,38 +32,70 @@ public class ProfileControl {
         return Database.getInstance().getLoggedInUser();
     }
     
-    // Display and edit profile data
-    
     /**
      * Checks if the logged in user and the user who belongs to the displayed
      * profile is the same.
-     * @param user
-     * @return 
+     * @param user user the profile belongs to
+     * @return <code>true</code> if the profile belongs to the given user,
+     * <code>false</code> otherwise
      */
     public boolean belongsToLoggedUser(User user){
         return Database.getInstance().getLoggedInUser().equals(user);
     }
     
+    
+    // Control for profile tab
+    
+    /**
+     * Returns the first name of the given user.
+     * 
+     * @param user user the profile belongs to
+     * @return users first name
+     */
     public String getFirstName(User user){
         return user.getFirstname();
     }
     
+    /**
+     * Changes the given users first name to the one given by the parameter.
+     * 
+     * @param user user the profile belongs to
+     * @param firstName new first name
+     */
     public void setFirstName(User user, String firstName){
         if(belongsToLoggedUser(user)){
             user.setFirstname(firstName);
         }
     }
     
+    /**
+     * Returns the last name of the given user.
+     * 
+     * @param user user the profile belongs to
+     * @return users last name
+     */
     public String getLastName(User user){
         return user.getLastname();
     }
     
+    /**
+     * Changes the given users last name to the one given by the parameter.
+     * 
+     * @param user user the profile belongs to
+     * @param lastName users new last name
+     */
     public void setLastName(User user, String lastName){
         if(belongsToLoggedUser(user)){
             user.setLastname(lastName);
         }
     }
     
+    /**
+     * Returns the roles of the given user.
+     * 
+     * @param user user the profile belongs to
+     * @return users roles
+     */
     public String getRole(User user){
         String role;
         
@@ -97,16 +129,35 @@ public class ProfileControl {
         return role;
     }
     
+    /**
+     * Returns the pesudonym of the given user.
+     * 
+     * @param user user the profile belongs to
+     * @return users pseudonym
+     */
     public String getPseudonym(User user){
         return user.getPseudonym();
     }
     
+    /**
+     * Changes the pseudonym of the given user to the one given by the
+     * parameter.
+     * 
+     * @param user user the profile belongs to
+     * @param pseudonym users new pseudonym
+     */
     public void setPseudonym(User user, String pseudonym){
         if(belongsToLoggedUser(user)){
             user.setPseudonym(pseudonym);
         }
     }
     
+    /**
+     * Returns the gender of the given user.
+     * 
+     * @param user user the profile belongs to
+     * @return users gender
+     */
     public String getGender(User user){
         String gender;
         
@@ -120,6 +171,12 @@ public class ProfileControl {
         return gender;
     }
     
+    /**
+     * Changes the gender of the given user to the one given by the parameter.
+     * 
+     * @param user user the profile belongs to
+     * @param gender users new gender
+     */
     public void setGender(User user, String gender){
         if(belongsToLoggedUser(user)){
             if(gender.equals("männlich")){
@@ -134,20 +191,45 @@ public class ProfileControl {
         }
     }
     
+    /**
+     * Returns the email adress of the given user.
+     * 
+     * @param user user the profile belongs to
+     * @return users email adress
+     */
     public String getEmail(User user){
         return user.getEmail();
     }
     
+    /**
+     * Changes the email adress of the given user to the one given by the
+     * parameter.
+     * 
+     * @param user user the profile belongs to
+     * @param eMail users new email adress
+     */
     public void setEmail(User user, String eMail){
         if(belongsToLoggedUser(user)){
             user.setEmail(eMail);
         }
     }
     
+    /**
+     * Returns the birthdate of the given user.
+     * 
+     * @param user user the profile belongs to
+     * @return users birthdate
+     */
     public String getBirthDate(User user){
         return user.getBirthdate().toString();
     }
     
+    /**
+     * Changes the given users birthdate to the one given by the parameter.
+     * 
+     * @param user user the profile belongs to
+     * @param bDate users new birthdate
+     */
     public void setBirthDate(User user, String bDate){
         if(belongsToLoggedUser(user)){
             Date birthDate;
@@ -162,75 +244,273 @@ public class ProfileControl {
         }
     }
     
+    /**
+     * Returns the city of the given user.
+     * 
+     * @param user user the profile belongs to
+     * @return users city
+     */
     public String getCity(User user){
         return user.getCity();
     }
     
+    /**
+     * Changes the given users city to the one given by the parameter.
+     * 
+     * @param user user the profile belongs to
+     * @param city users new city
+     */
     public void setCity(User user, String city){
         if(belongsToLoggedUser(user)){
             user.setCity(city);
         }
     }
     
+    /**
+     * Returns the country of the given user.
+     * 
+     * @param user user the profile belongs to
+     * @return users country
+     */
     public String getCountry(User user){
         return user.getCountry();
     }
     
+    /**
+     * Changes the given users country to the one given by the paramter.
+     * 
+     * @param user user the profile belongs to
+     * @param country users new country
+     */
     public void setCountry(User user, String country){
         if(belongsToLoggedUser(user)){
             user.setCountry(country);
         }
     }
     
+    /**
+     * Returns the about-me text of the given user.
+     * 
+     * @param user user the profile belongs to
+     * @return users about-me text
+     */
     public String getAboutMe(User user){
         return user.getDescription();
     }
     
+    /**
+     * Changes the given users about-me text to the one given by the parameter.
+     * 
+     * @param user user the profile belongs to
+     * @param aboutMe users new about-me text
+     */
     public void setAboutMe(User user, String aboutMe){
         if(belongsToLoggedUser(user)){
             user.setDescription(aboutMe);
         }
     }
-    // Display and Edit Followers
     
+    
+    // Control for follower tab
+    
+    /**
+     * Returns the given users list of followers.
+     * 
+     * @param user user the profile belongs to
+     * @return users list of followers
+     */
     public LinkedList<User> getFollowers(User user){
         return user.getFollowers();
     }
     
+    
+    // Control for news tab
+    
+    /**
+     * Returns the given users list of news.
+     * 
+     * @param user user the profile belongs to
+     * @return users list of news
+     */
     public LinkedList<News> getNews(User user){
         return user.getNews();
     }
     
+
+    // Control comment tab
+    
+    /**
+     * Returns the given users list of comments
+     * 
+     * @param user user the profile belongs to
+     * @return users list of comments
+     */
     public LinkedList<Comment> getCreatedComments(User user){
         return user.getCreatedComments();
     }
     
+   
+    // Control for upload tab
+    
+    /**
+     * Returns the given users list of created playlists.
+     * 
+     * @param user user the profile belongs to
+     * @return users list of created playlists
+     */
     public LinkedList<Playlist> getCreatedPlaylists(User user){
         return user.getCreatedPlaylists();
     }
     
+    /**
+     * Removes the given playlist from the given users list of created
+     * playlists.
+     * 
+     * @param user user the profile belongs to
+     * @param pList playlist which should be removed
+     */
+    public void removeCreatedPlaylist(User user, Playlist pList){
+        if(belongsToLoggedUser(user)){
+            user.removeCreatedPlaylist(pList);
+        }
+    }
+    
+    /**
+     * Renames the given users given playlist to the given title.
+     * 
+     * @param user user the profile belongs to
+     * @param pList playlist which should be renamed
+     * @param title new title for the playlist
+     */
+    public void renameCreatedPlaylist(User user, Playlist pList, String title){
+        if(belongsToLoggedUser(user)){
+            pList.setTitle(title);
+        }
+    }
+    
+    /**
+     * Returns the given users list of created mediums.
+     * 
+     * @param user user the profile belongs to
+     * @return users list of created mediums
+     */
     public LinkedList<Medium> getCreatedMediums(User user){
         return user.getCreatedMediums();
     }
     
+    /**
+     * Removes the given medium from the given users list of created mediums.
+     * 
+     * @param user user the profile belongs to
+     * @param medium medium which should be removed from users created mediums
+     */
+    public void removeCreatedMedium(User user, Medium medium){
+        if(belongsToLoggedUser(user)){
+            user.removeCreatedMedium(medium);
+        }
+    }
+    
+    /**
+     * Returns the given users list of created albums.
+     * 
+     * @param user user the profile belongs to
+     * @return users list of created albums
+     */
     public LinkedList<Album> getCreatedAlbums(User user){
         return user.getCreatedAlbums();
     }
     
+    /**
+     * Removes the given album from the given users list of created albums.
+     * 
+     * @param user user the profile belongs to
+     * @param medium medium which should be removed from users created albums
+     */
+    public void removeCreatedAlbum(User user, Medium medium){
+        if(belongsToLoggedUser(user)){
+            user.removeCreatedMedium(medium);
+        }
+    }
+    
+    
+    // Control for favorits tab
+    
+    /**
+     * Returns the given users list of favorized users.
+     * 
+     * @param user user the profile belongs to
+     * @return users list of favorite users
+     */
     public LinkedList<User> getFavorizedUsers(User user){
         return user.getFavoriteUsers();
     }
     
+    /**
+     * Returns the given users list of favorized playlists.
+     * 
+     * @param user user the profile belongs to
+     * @return users list of favorite playlists
+     */
     public LinkedList<Playlist> getFavorizedPlaylists(User user){
-        return null;
+        return user.getFavoritePlaylists();
     }
     
+    /**
+     * Removes the given playlist from the given users list of favorized
+     * playlists.
+     * 
+     * @param user user the profile belongs to
+     * @param pList playlist which should be removed from favorite playlists
+     */
+    public void removeFavorizedPlaylist(User user, Playlist pList){
+        if(belongsToLoggedUser(user)){
+            user.removeFavoritePlaylist(pList);
+        }
+    }
+    
+    /**
+     * Returns the given users list of favorized albums.
+     * 
+     * @param user user the profile belongs to
+     * @return users list of favorite albums
+     */
     public LinkedList<Album> getFavorizedAlbums(User user){
-        return null;
+        return user.getFavoriteAlbums();
     }
     
+    /**
+     * Removes the given album from the given users list of favorized
+     * albums.
+     * 
+     * @param user user the profile belongs to
+     * @param album album which should be removed from users favorite albums
+     */
+    public void removeFavorizedAlbum(User user, Album album){
+        if(belongsToLoggedUser(user)){
+            user.removeFavoriteAlbum(album);
+        }
+    }
+    
+    /**
+     * Returns the given users list of favorized mediums.
+     * 
+     * @param user user the profile belongs to
+     * @return users list of favorite mediums
+     */
     public LinkedList<Medium> getFavorizedMediums(User user){
-        return null;
+        return user.getFavoriteMediums();
     }
     
+    /**
+     * Removes the given medium from the given users list of favorized
+     * mediums.
+     * 
+     * @param user user the profile belongs to
+     * @param medium medium which should be removed from users favorite mediums
+     */
+    public void removeFavorizedMedium(User user, Medium medium){
+        if(belongsToLoggedUser(user)){
+            user.removeFavoriteMedium(medium);
+        }
+    }
 }
