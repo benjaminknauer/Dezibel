@@ -17,11 +17,22 @@ import java.util.logging.Logger;
  */
 public class ProfileControl {
     
+    /**
+     * Returns the currently logged in User.
+     * 
+     * @return user who is logged in 
+     */
     public User getLoggedInUser(){
         return Database.getInstance().getLoggedInUser();
     }
     
     // Display and edit profile data
+    
+    /**
+     * Checks if 
+     * @param user
+     * @return 
+     */
     public boolean belongsToLoggedUser(User user){
         return Database.getInstance().getLoggedInUser().equals(user);
     }
@@ -164,9 +175,18 @@ public class ProfileControl {
         }
     }
     
+    public String getAboutMe(User user){
+        return user.getDescription();
+    }
+    
+    public void setAboutMe(User user, String aboutMe){
+        if(belongsToLoggedUser(user)){
+            user.setDescription(aboutMe);
+        }
+    }
     // Display and Edit Followers
     
-    public LinkedList<String> getFollowers(User user){
-        return null;
+    public LinkedList<User> getFollowers(User user){
+        return user.getFollowers();
     }
 }
