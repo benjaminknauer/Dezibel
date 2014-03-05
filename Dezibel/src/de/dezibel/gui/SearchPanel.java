@@ -11,9 +11,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeListener;
 import java.util.LinkedList;
-import javax.swing.Action;
 
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
@@ -167,7 +165,7 @@ public class SearchPanel extends DragablePanel {
         tableModelLabel = new LabelTableModel();
         tableModelAlbum = new AlbumTableModel();
         
-        mediumPopupMenu = new JPopupMenu("Medium");
+        mediumPopupMenu = new JPopupMenu();
         JMenuItem menuItemPlay = new JMenuItem("Abspielen");
         menuItemPlay.addActionListener(new ActionListener() {
             @Override
@@ -176,10 +174,41 @@ public class SearchPanel extends DragablePanel {
                         tableResults.getSelectedRow(), -1);
                 if (m != null) {
                     Player.getInstance().addMedium(m);
+                    Player.getInstance().play();
                 }
             }
         });
         mediumPopupMenu.add(menuItemPlay);
+        
+        userPopupMenu = new JPopupMenu();
+        JMenuItem menuItemShowUser = new JMenuItem("Anzeigen");
+        menuItemPlay.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO Beuntzerprofil des ausgewählten Benutzers anzeigen
+            }
+        });
+        userPopupMenu.add(menuItemShowUser);
+        
+        labelPopupMenu = new JPopupMenu();
+        JMenuItem menuItemShowLabel = new JMenuItem("Anzeigen");
+        menuItemPlay.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO Labelprofil des ausgewählten Labels anzeigen
+            }
+        });
+        labelPopupMenu.add(menuItemShowLabel);
+        
+        albumPopupMenu = new JPopupMenu();
+        JMenuItem menuItem = new JMenuItem("Abspielen");
+        menuItemPlay.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO Gewähltes Album abspielen
+            }
+        });
+        albumPopupMenu.add(menuItem);
     }
 
     private void createLayout() {

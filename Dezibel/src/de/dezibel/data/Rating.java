@@ -26,7 +26,8 @@ public class Rating {
      * Method to set the value of points.
      *
      * @param points Ratingvalue: Has to be a value between 1 and 5.
-     * @inv Points has value between 1 and 5
+     * @pre points has value between 1 and 5
+     * @post self.points has a value between 1 and 5
      */
     public void setPoints(int points) {
         if (points >= 1 && points <= 5) {
