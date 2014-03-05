@@ -23,6 +23,9 @@ import com.javadocking.model.FloatDockModel;
 import com.javadocking.visualizer.FloatExternalizer;
 import com.javadocking.visualizer.LineMinimizer;
 import com.javadocking.visualizer.SingleMaximizer;
+import de.dezibel.control.SaveControl;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * This is the main class of our UI. It uses a docking library, called "Sanaware
@@ -76,6 +79,16 @@ public class DezibelPanel extends JPanel {
     public DezibelPanel(JFrame frame) {
         super(new BorderLayout());
 
+        frame.addWindowListener(new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                SaveControl saveControl = new SaveControl();
+                saveControl.save();
+            }
+            });
+        
+        
         // Create the dock model for the docks.
         FloatDockModel dockModel = new FloatDockModel();
         dockModel.addOwner("dezibel", frame);
@@ -166,7 +179,8 @@ public class DezibelPanel extends JPanel {
 
         // Add the maximizer to the panel.
         this.add(maximizer, BorderLayout.CENTER);
-        this.showLogin();
+        //this.showLogin();
+        this.showWorkspace();
     }
 
     /**
@@ -335,8 +349,8 @@ public class DezibelPanel extends JPanel {
                     .getDockable(this.centerDock.getDockableCount() - 1));
         }
         this.showSidebars();
-        //this.centerDock.addDockable(this.daProfil, new Position(0));
-        this.centerDock.addDockable(this.daSearch, new Position(0));
+        this.centerDock.addDockable(this.daProfil, new Position(0));
+        //this.centerDock.addDockable(this.daSearch, new Position(0));
     }
 
     /**
