@@ -387,7 +387,7 @@ public class User implements Lockable {
      * @pre sentApplications is not empty
      * @post sentApplications size is reduced by 1
      */
-    public void removeApplication(Application app) {
+    public void deleteApplication(Application app) {
         this.sentApplications.remove(app);
         if (app != null && !app.isMarkedForDeletion()) {
             app.delete();
@@ -413,7 +413,7 @@ public class User implements Lockable {
      * @pre medium is not marked as deleted yet
      * @post medium is marked as deleted
      */
-    public void removeMedium(Medium medium) {
+    public void removeCreatedMedium(Medium medium) {
         medium.markAsDeleted();
     }
 
@@ -435,7 +435,7 @@ public class User implements Lockable {
      * @pre createdPlaylists is not empty
      * @post createdPlaylists size is reduced by 1
      */
-    public void removePlaylist(Playlist list) {
+    public void removeCreatedPlaylist(Playlist list) {
         if (this.createdPlaylists.contains(list)) {
             this.createdPlaylists.remove(list);
         }

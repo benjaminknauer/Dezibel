@@ -127,7 +127,7 @@ public class Playlist implements Commentable {
             return;
         }
         this.markedForDeletion = true;
-        this.creator.removePlaylist(this);
+        this.creator.removeCreatedPlaylist(this);
         for (Medium currentMedium : (LinkedList<Medium>) mediumList.clone()) {
             currentMedium.removePlaylist(this);
         }
