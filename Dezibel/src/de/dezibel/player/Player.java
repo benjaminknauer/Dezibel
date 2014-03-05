@@ -3,6 +3,7 @@ package de.dezibel.player;
 import java.util.LinkedList;
 import de.dezibel.data.Medium;
 import de.dezibel.data.Playlist;
+import java.io.File;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -296,8 +297,9 @@ public class Player {
      * @pre medium != null
      */
     private void createPlayer(Medium medium) {
-        MediaPlayer tmpPlayer = new MediaPlayer(new Media(medium.getFile().toURI()
-                .toString()));
+        File f = medium.getFile();
+        Media m = new Media(f.toURI().toString());
+        MediaPlayer tmpPlayer = new MediaPlayer(m);
         if (this.player != null) {
             this.player.setOnEndOfMedia(null);
             if (this.isPlaying()) {

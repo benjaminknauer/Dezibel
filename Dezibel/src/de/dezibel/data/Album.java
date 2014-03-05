@@ -16,7 +16,7 @@ public class Album implements Commentable {
     /**
      * The ImageLoader all Album objects use to allow use of getCover().
      */
-    private static ImageLoader imageLoader;
+    private static ImageLoader imageLoader = new ImageLoader();
 
     private String coverPath;
     private String title;
@@ -43,9 +43,6 @@ public class Album implements Commentable {
      * @param publisher The label the Album is published under.
      */
     public Album(Medium medium, String title, Label publisher) {
-        if (Album.imageLoader == null) {
-            Album.imageLoader = new ImageLoader();
-        }
         this.mediaList = new LinkedList<>();
         this.mediaList.add(medium);
         this.comments = new LinkedList<>();

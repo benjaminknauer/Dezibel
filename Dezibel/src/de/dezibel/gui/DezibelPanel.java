@@ -67,6 +67,7 @@ public class DezibelPanel extends JPanel {
     // We uses a LineDock at the bottom,top,left and right where all panels can be docked to.
     // Except some panels, like players where only can be docked at the bottom, center or top.
     // Any panel can be dragged to the center where the panel will be docked and shows extra information 
+    private BorderDock borderDock;
     private LineDock leftLineDock;
     private LineDock rightLineDock;
     private SingleDock centerDock;
@@ -99,8 +100,7 @@ public class DezibelPanel extends JPanel {
         // Create the content components.
         pnLogin = new LoginPanel(this);
         pnRegister = new RegistrationPanel(this);
-        // pnPlayer = new PlayerPanel();
-        pnPlayer = new DragablePanel(this);
+        pnPlayer = new PlayerPanel(this);
         pnNews = new DragablePanel(this);
         pnAds = new DragablePanel(this);
         pnMyList = new DragablePanel(this);
@@ -158,7 +158,7 @@ public class DezibelPanel extends JPanel {
         this.addSideCenterListener();
         this.addTopBottomCenterListener();
 
-        BorderDock borderDock = new BorderDock();
+        borderDock = new BorderDock();
         borderDock.addChildDock(leftLineDock, new Position(Position.LEFT));
         borderDock.addChildDock(rightLineDock, new Position(Position.RIGHT));
         borderDock.addChildDock(centerDock, new Position(Position.CENTER));
@@ -351,6 +351,10 @@ public class DezibelPanel extends JPanel {
         this.showSidebars();
         //this.centerDock.addDockable(this.daProfil, new Position(0));
         this.centerDock.addDockable(this.daSearch, new Position(0));
+        LineDock bottomDock = new LineDock();
+        bottomDock.setOrientation(LineDock.ORIENTATION_HORIZONTAL);
+        bottomDock.addDockable(this.daPlayer, new Position(0));
+        this.borderDock.addChildDock(bottomDock, new Position(Position.BOTTOM));
     }
 
     /**

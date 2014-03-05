@@ -47,6 +47,8 @@ public class MediaTableModel extends DefaultTableModel {
         if (data != null && row >= 0 && row < data.length) {
             Medium m = data[row];
             switch (col) {
+                case -1:
+                    return m;
                 case 0:
                     return m.getArtist().getPseudonym();
                 case 1:
