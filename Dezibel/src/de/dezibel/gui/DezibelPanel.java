@@ -4,11 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
-import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
 import com.javadocking.DockingManager;
@@ -31,6 +32,9 @@ import com.javadocking.visualizer.SingleMaximizer;
 
 import de.dezibel.control.SaveControl;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -48,8 +52,8 @@ import java.awt.event.WindowEvent;
 public class DezibelPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
-    
-    private JToolBar toolbar;
+    private JFrame frame;
+    private JMenuBar menuBar;
     // Declares all panels the user can work with.
     private DragablePanel pnLogin;
     private DragablePanel pnRegister;
@@ -88,7 +92,7 @@ public class DezibelPanel extends JPanel {
      */
     public DezibelPanel(JFrame frame) {
         super(new BorderLayout());
-
+        this.frame = frame;
         frame.addWindowListener(new WindowAdapter() {
 
             @Override
@@ -98,9 +102,48 @@ public class DezibelPanel extends JPanel {
             }
             });
         
-        JMenuBar bar = new JMenuBar();
+        JMenu menuShow;
+        JMenuItem itemLogout;
+        JCheckBoxMenuItem cbMenuItem;
+        menuBar = new JMenuBar();
+        JMenu menuLogout = new JMenu("Logout");
         
-        frame.setJMenuBar(new JMenuBar());
+        menuBar.add(menuLogout);
+        menuShow = new JMenu("Show");
+        menuBar.add(menuShow);
+        itemLogout = new JMenuItem("Logout");
+        menuLogout.add(itemLogout);
+        itemLogout.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+					System.out.println("Hallo");
+					removeMenubar();	
+			}
+        });
+        
+        cbMenuItem = new JCheckBoxMenuItem("A check box menu item");
+        cbMenuItem.setMnemonic(KeyEvent.VK_C);
+        menuShow.add(cbMenuItem);
+        cbMenuItem = new JCheckBoxMenuItem("Another one");
+        cbMenuItem.setMnemonic(KeyEvent.VK_H);
+        menuShow.add(cbMenuItem);
+        
+        JMenu menuUpload = new JMenu("Upload");
+        JMenuItem itemUpload = new JMenuItem("Upload");
+        menuUpload.add(itemUpload);
+        
+        menuUpload.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				onUpload();
+			}
+        });
+        
+        menuBar.add(menuShow);
+        menuBar.add(menuUpload);
+        frame.setJMenuBar(menuBar);
+       
+        
         // Create the dock model for the docks.
         FloatDockModel dockModel = new FloatDockModel();
         dockModel.addOwner("dezibel", frame);
@@ -169,9 +212,6 @@ public class DezibelPanel extends JPanel {
         this.addTopBottomCenterListener();
 
         borderDock = new BorderDock();
-//        borderDock.addChildDock(leftLineDock, new Position(Position.LEFT));
-//        borderDock.addChildDock(rightLineDock, new Position(Position.RIGHT));
-//        borderDock.addChildDock(centerDock, new Position(Position.CENTER));
         borderDock.setDock(leftLineDock, Position.LEFT);
         borderDock.setDock(rightLineDock,Position.RIGHT);
         borderDock.setDock(centerDock,Position.CENTER);
@@ -192,8 +232,87 @@ public class DezibelPanel extends JPanel {
 
         // Add the maximizer to the panel.
         this.add(maximizer, BorderLayout.CENTER);
-        //this.showLogin();
-        this.showWorkspace();
+        this.showLogin();
+        //this.showWorkspace();
+    }
+    /**
+     * Shows the login-panel docked in the center with no other panels on the
+     * frame Any panel docked in the center will be removed.
+     */
+    public void showLogin() {
+        if (this.centerDock.getDockableCount() > 0) {
+            this.centerDock.removeDockable(this.centerDock
+                    .getDockable(this.centerDock.getDockableCount() - 1));
+        }
+
+        this.centerDock.addDockable(daLogin, new Position(0));
+    }
+
+    /**
+     * Shows the registration-panel docked in the center with no other panels on
+     * the frame Any panel docked in the center will be removed.
+     */
+    public void showRegistration() {
+        this.centerDock.removeDockable(daLogin);
+        this.centerDock.addDockable(this.daRegister, new Position(0));
+    }
+
+    /**
+     * Creates the typical workspace, with sidebards on the right and left, the
+     * player-panel docked at the bottom and a profil-panel at the center.
+     */
+    public void showWorkspace() {
+        if (this.centerDock.getDockableCount() > 0) {
+            this.centerDock.removeDockable(this.centerDock
+                    .getDockable(this.centerDock.getDockableCount() - 1));
+        }
+        this.showSidebars();
+        //this.centerDock.addDockable(this.daProfil, new Position(0));
+        this.centerDock.addDockable(this.daSearch, new Position(0));
+        LineDock bottomDock = new LineDock();
+        bottomDock.setOrientation(LineDock.ORIENTATION_HORIZONTAL);
+        bottomDock.addDockable(this.daPlayer, new Position(0));
+        this.borderDock.addChildDock(bottomDock, new Position(Position.BOTTOM));
+    }
+
+    /**
+     * This function is only called in the main-function and only once. It
+     * creates a <code>JFrame</code> with a <code>DezibelPanel</code> and some
+     * docking-features.
+     */
+    public static void createAndShowGUI() {
+
+        // Create the frame.
+        JFrame frame = new JFrame("Dezibel");
+
+        // Set the frame properties and show it.
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setLocation((screenSize.width - 600) / 2,
+                (screenSize.height - 800) / 2);
+        frame.setSize(800, 600);
+
+        // Create the panel and add it to the frame.
+        DezibelPanel panel = new DezibelPanel(frame);
+        frame.getContentPane().add(panel);
+
+        // Show.
+        frame.setVisible(true);
+        frame.setMinimumSize(new Dimension(800, 600));
+    }
+
+    /**
+     * Main-Function, it creates a the typical UI
+     *
+     * @param args startup-arguments (will be ignored!)
+     */
+    public static void main(String args[]) {
+        Runnable doCreateAndShowGUI = new Runnable() {
+            public void run() {
+                createAndShowGUI();
+            }
+        };
+        SwingUtilities.invokeLater(doCreateAndShowGUI);
     }
 
     /**
@@ -329,8 +448,12 @@ public class DezibelPanel extends JPanel {
 
             @Override
             public void dockingWillChange(DockingEvent e) {
-                // TODO Auto-generated method stub
-
+                if(e.getDestinationDock() == centerDock){
+                	if (centerDock.getDockableCount() > 0) {
+                        centerDock.removeDockable(centerDock
+                                .getDockable(centerDock.getDockableCount() - 1));
+                    }
+                }
             }
 
         });
@@ -347,84 +470,13 @@ public class DezibelPanel extends JPanel {
         rightLineDock.addDockable(daNews, new Position(0));
         rightLineDock.addDockable(daAds, new Position(1));
     }
-
-    /**
-     * Shows the login-panel docked in the center with no other panels on the
-     * frame Any panel docked in the center will be removed.
-     */
-    public void showLogin() {
-        if (this.centerDock.getDockableCount() > 0) {
-            this.centerDock.removeDockable(this.centerDock
-                    .getDockable(this.centerDock.getDockableCount() - 1));
-        }
-
-        this.centerDock.addDockable(daLogin, new Position(0));
+    
+    private void removeMenubar(){
+    	menuBar.removeAll();
+    	frame.remove(menuBar);
     }
-
-    /**
-     * Shows the registration-panel docked in the center with no other panels on
-     * the frame Any panel docked in the center will be removed.
-     */
-    public void showRegistration() {
-        this.centerDock.removeDockable(daLogin);
-        this.centerDock.addDockable(this.daRegister, new Position(0));
-    }
-
-    /**
-     * Creates the typical workspace, with sidebards on the right and left, the
-     * player-panel docked at the bottom and a profil-panel at the center.
-     */
-    public void showWorkspace() {
-        if (this.centerDock.getDockableCount() > 0) {
-            this.centerDock.removeDockable(this.centerDock
-                    .getDockable(this.centerDock.getDockableCount() - 1));
-        }
-        this.showSidebars();
-        //this.centerDock.addDockable(this.daProfil, new Position(0));
-        this.centerDock.addDockable(this.daSearch, new Position(0));
-        LineDock bottomDock = new LineDock();
-        bottomDock.setOrientation(LineDock.ORIENTATION_HORIZONTAL);
-        bottomDock.addDockable(this.daPlayer, new Position(0));
-        this.borderDock.addChildDock(bottomDock, new Position(Position.BOTTOM));
-    }
-
-    /**
-     * This function is only called in the main-function and only once. It
-     * creates a <code>JFrame</code> with a <code>DezibelPanel</code> and some
-     * docking-features.
-     */
-    public static void createAndShowGUI() {
-
-        // Create the frame.
-        JFrame frame = new JFrame("Dezibel");
-
-        // Set the frame properties and show it.
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation((screenSize.width - 600) / 2,
-                (screenSize.height - 800) / 2);
-        frame.setSize(800, 600);
-
-        // Create the panel and add it to the frame.
-        DezibelPanel panel = new DezibelPanel(frame);
-        frame.getContentPane().add(panel);
-
-        // Show.
-        frame.setVisible(true);
-        frame.setMinimumSize(new Dimension(800, 600));
-    }
-
-    /**
-     * Main-Function, it creates a the typical UI
-     *
-     * @param args startup-arguments (will be ignored!)
-     */
-    public static void main(String args[]) {
-        Runnable doCreateAndShowGUI = new Runnable() {
-            public void run() {
-                createAndShowGUI();
-            }
-        };
-        SwingUtilities.invokeLater(doCreateAndShowGUI);
+    
+    private void onUpload(){
+    	
     }
 }

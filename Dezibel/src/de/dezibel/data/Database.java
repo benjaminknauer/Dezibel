@@ -123,9 +123,8 @@ public class Database {
         this.genres.add(new Genre(topGenreName, null));
         
         // TODO Entfernen: Testdaten (Tobias, Richard)
-        // TODO Umlaute werden nicht richtig gespeichert
 //        this.addUser("richard-schulze@online.de", "Richard", "Schulze",
-//                new HashGenerator().hash("1"), new Date(), "Muenster", "Deutschland", true);
+//                new HashGenerator().hash("1"), new Date(), "Münster", "Deutschland", true);
 //        User u = this.getUsers().get(this.getUsers().size() - 1);
 //        u.setPseudonym("DVBBS & Borgeous");
 //        this.addMedium("Tsunami", u, "C:\\DVBBS & Borgeous - Tsunami.mp3", this.getTopGenre(), null, null);
