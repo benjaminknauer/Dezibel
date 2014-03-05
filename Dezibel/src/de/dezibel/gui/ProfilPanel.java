@@ -12,10 +12,14 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JTable;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.tree.DefaultTreeCellEditor;
@@ -46,6 +50,12 @@ public class ProfilPanel extends DragablePanel {
     private JTextField tfCity;
     private JTextField tfCountry;
     private JTextField tfAboutMe;
+    
+    private JTable tFollower;
+    private FollowerTableModel fModell;
+    private JTable tComments;
+    private CommentTableModel cModell;
+    private JScrollPane tablePanel;
     
     /**
      * Constructor of the ProfilPanel class.
@@ -105,8 +115,10 @@ public class ProfilPanel extends DragablePanel {
         this.pnFavorites = new JPanel();
         tabPanel.addTab("Favoriten", null, pnFavorites);
         this.pnFollower = new JPanel();
+        this.createFollowerComponents();
         tabPanel.addTab("Follower", null, pnFollower);
         this.pnComments = new JPanel();
+        this.createCommentsComponents();
         tabPanel.addTab("Kommentare", null, pnComments);
         this.pnNews = new JPanel();
         tabPanel.addTab("Neuigkeiten", null, pnNews);
@@ -134,7 +146,7 @@ public class ProfilPanel extends DragablePanel {
         tfLastName = new JTextField(25);       
         tfRole = new JTextField(25);       
         tfPseudonym = new JTextField(25);       
-        String[] items = {"männlich", "weiblich"}; 
+        String[] items = {"mï¿½nnlich", "weiblich"}; 
         tfGender = new JComboBox<>(items);
         tfEmail = new JTextField(25);       
         tfBirthDate = new JTextField(25);       
@@ -235,5 +247,39 @@ public class ProfilPanel extends DragablePanel {
         gbc.gridy = y;
         gbl.setConstraints(comp, gbc);
         cont.add(comp);
+    }
+    
+        private void createFollowerComponents() {
+        ProfileControl pc = new ProfileControl();
+        fModell = new FollowerTableModel();
+        fModell.setData(pc.getFollowers(pc.getLoggedInUser()));
+        tFollower = new JTable(fModell);
+
+        tFollower.addMouseListener(new MouseAdapter() {
+            public void mouseDoubleClicked(MouseEvent e) {
+                setUser(fModell.getUserAt(tFollower.getSelectedRow()));
+            }
+        });
+
+        tablePanel = new JScrollPane(tFollower);
+        BorderLayout fLayout = new BorderLayout();
+        pnFollower.setLayout(fLayout);
+        pnFollower.add(tablePanel, BorderLayout.CENTER);
+
+        addComponent(pnFollower, gbl, tFollower, 0, 0);
+    }
+
+    private void createCommentsComponents() {
+        ProfileControl pc = new ProfileControl();
+        cModell = new CommentTableModel();
+        cModell.setData(pc.getCreatedComments(pc.getLoggedInUser()));
+        tComments = new JTable(cModell);
+
+        tablePanel = new JScrollPane(tComments);
+        BorderLayout fLayout = new BorderLayout();
+        pnComments.setLayout(fLayout);
+        pnComments.add(tComments, BorderLayout.CENTER);
+
+        addComponent(pnComments, gbl, tComments, 0, 0);
     }
 }
