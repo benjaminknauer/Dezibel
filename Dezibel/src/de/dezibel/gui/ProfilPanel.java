@@ -56,6 +56,12 @@ public class ProfilPanel extends DragablePanel {
     private JTable tComments;
     private CommentTableModel cModell;
     private JScrollPane tablePanel;
+    private JLabel lbPlaylist;
+    private JTable tPlaylists;
+    private JLabel lbMedia;
+    private JTable tMedia;
+    private JLabel lbAlbums;
+    private JTable tAlbums;
     
     /**
      * Constructor of the ProfilPanel class.
@@ -111,6 +117,7 @@ public class ProfilPanel extends DragablePanel {
         tabPanel.addTab("Profil", null, pnProfile);
 
         this.pnUploads = new JPanel();
+        this.createUploadsComponents();
         tabPanel.addTab("Uploads", null, pnUploads);
         this.pnFavorites = new JPanel();
         tabPanel.addTab("Favoriten", null, pnFavorites);
@@ -281,5 +288,54 @@ public class ProfilPanel extends DragablePanel {
         pnComments.add(tComments, BorderLayout.CENTER);
 
         addComponent(pnComments, gbl, tComments, 0, 0);
+    }
+
+    private void createUploadsComponents() {
+        lbPlaylist = new JLabel("Wiedergabe Listen");
+        lbPlaylist.setHorizontalAlignment(JLabel.LEADING);
+        lbPlaylist.setBounds(0,0, 200,30);        
+        tPlaylists = new JTable(10,1);
+//        tPlaylists.isCellEditable(10,1);
+        //tPlaylists.setEditable(false);
+        tPlaylists.getTableHeader().setVisible(false);        
+        JScrollPane spPlaylists = new JScrollPane(tPlaylists);       
+      //  tableModelPlaylist = new PlaylistTableModel();        
+        tPlaylists.setBounds(110,0,400,100);
+        pnUploads.add(tPlaylists);           
+       // JScrollPane spPlaylists = new JScrollPane(tPlaylists);
+        spPlaylists.setBounds(110, -5, 400, 100);
+        spPlaylists.getViewport().setView(tPlaylists);        
+        pnUploads.add(spPlaylists); 
+        pnUploads.add(lbPlaylist);
+        
+        
+        
+        lbMedia = new JLabel("Media");
+        lbMedia.setHorizontalAlignment(JLabel.LEADING);
+        lbMedia.setBounds(0,150, 200,30);       
+        tMedia = new JTable(10,1);
+        tMedia.setEnabled(false);
+        tMedia.getTableHeader().setVisible(false);  
+        JScrollPane spMedia = new JScrollPane(tMedia);
+        tMedia.setBounds(110,150,400,100);
+        pnUploads.add(tMedia);
+        spMedia.setBounds(110,150,400,100);
+        spMedia.getViewport().setView(tMedia);      
+        pnUploads.add(spMedia);
+        pnUploads.add(lbMedia); 
+        
+        lbAlbums = new JLabel("Alben");
+        lbAlbums.setHorizontalAlignment(JLabel.LEADING);
+        lbAlbums.setBounds(0,300, 200,30);
+        tAlbums = new JTable(10,1);
+        tAlbums.getTableHeader().setVisible(false);  
+        tAlbums.setBounds(110,300,400,100);
+        pnUploads.add(tAlbums);        
+        tAlbums.setEnabled(false);
+        JScrollPane spAlbums = new JScrollPane();
+        spAlbums.setBounds(110,300,400,100);
+        spAlbums.getViewport().setView(tAlbums);
+        pnUploads.add(spAlbums);
+        pnUploads.add(lbAlbums);
     }
 }

@@ -1,5 +1,0 @@
-- Arraylist mit LinkedList tauschen
-- isDeleted bei Medium hinzugefügt als boolean
-- Kardinalitäten von Medium zu ihren anderen Assoziationen fehlen
-- Koordinaterklasse Rating kommt weg und wird in Hashmap in User gespeichert, dabei ist Medium der Key.
-- 
