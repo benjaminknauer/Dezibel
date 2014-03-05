@@ -134,7 +134,7 @@ public class UserTest {
     @Test
     public void testAddFavoriteLabel() {
         loggedUser.addFavoriteLabel(label1);
-        assertTrue(loggedUser.getFavoriteLabels().contains(label1));
+        assertTrue(loggedUser.getFavorizedLabels().contains(label1));
         assertTrue(label1.getFollowers().contains(loggedUser));
     }
 
@@ -146,8 +146,8 @@ public class UserTest {
         loggedUser.addFavoriteLabel(label1);
         loggedUser.addFavoriteLabel(label2);
         loggedUser.removeFavoriteLabel(label1);
-        assertTrue(loggedUser.getFavoriteLabels().contains(label2));
-        assertFalse(loggedUser.getFavoriteLabels().contains(label1));
+        assertTrue(loggedUser.getFavorizedLabels().contains(label2));
+        assertFalse(loggedUser.getFavorizedLabels().contains(label1));
         assertTrue(label2.getFollowers().contains(loggedUser));
         assertFalse(label1.getFollowers().contains(loggedUser));
     }
@@ -158,7 +158,7 @@ public class UserTest {
     @Test
     public void testAddFavoriteUser() {
         loggedUser.addFavoriteUser(user1);
-        assertTrue(loggedUser.getFavoriteUsers().contains(user1));
+        assertTrue(loggedUser.getFavorizedUsers().contains(user1));
         assertTrue(user1.getFollowers().contains(loggedUser));
     }
 
@@ -170,8 +170,8 @@ public class UserTest {
         loggedUser.addFavoriteUser(user1);
         loggedUser.addFavoriteUser(user2);
         loggedUser.removeFavoriteUser(user1);
-        assertTrue(loggedUser.getFavoriteUsers().contains(user2));
-        assertFalse(loggedUser.getFavoriteUsers().contains(user1));
+        assertTrue(loggedUser.getFavorizedUsers().contains(user2));
+        assertFalse(loggedUser.getFavorizedUsers().contains(user1));
         assertTrue(user2.getFollowers().contains(loggedUser));
         assertFalse(user1.getFollowers().contains(loggedUser));
     }
@@ -183,7 +183,7 @@ public class UserTest {
     public void testAddFollower() {
         loggedUser.addFollower(user1);
         assertTrue(loggedUser.getFollowers().contains(user1));
-        assertTrue(user1.getFavoriteUsers().contains(loggedUser));
+        assertTrue(user1.getFavorizedUsers().contains(loggedUser));
     }
 
     /**
@@ -196,8 +196,8 @@ public class UserTest {
         loggedUser.removeFollower(user1);
         assertTrue(loggedUser.getFollowers().contains(user2));
         assertFalse(loggedUser.getFollowers().contains(user1));
-        assertTrue(user2.getFavoriteUsers().contains(loggedUser));
-        assertFalse(user1.getFavoriteUsers().contains(loggedUser));
+        assertTrue(user2.getFavorizedUsers().contains(loggedUser));
+        assertFalse(user1.getFavorizedUsers().contains(loggedUser));
     }
 
     /**

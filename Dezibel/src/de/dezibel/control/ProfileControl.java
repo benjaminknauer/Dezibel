@@ -442,7 +442,7 @@ public class ProfileControl {
      * @return users list of favorite users
      */
     public LinkedList<User> getFavorizedUsers(User user){
-        return user.getFavoriteUsers();
+        return user.getFavorizedUsers();
     }
     
     /**
