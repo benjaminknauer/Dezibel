@@ -2,6 +2,12 @@ package de.dezibel.control;
 
 import de.dezibel.data.Database;
 import de.dezibel.data.User;
+import de.dezibel.data.Comment;
+import de.dezibel.data.Playlist;
+import de.dezibel.data.Medium;
+import de.dezibel.data.Album;
+import de.dezibel.data.News;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,7 +35,8 @@ public class ProfileControl {
     // Display and edit profile data
     
     /**
-     * Checks if 
+     * Checks if the logged in user and the user who belongs to the displayed
+     * profile is the same.
      * @param user
      * @return 
      */
@@ -189,4 +196,41 @@ public class ProfileControl {
     public LinkedList<User> getFollowers(User user){
         return user.getFollowers();
     }
+    
+    public LinkedList<News> getNews(User user){
+        return user.getNews();
+    }
+    
+    public LinkedList<Comment> getCreatedComments(User user){
+        return user.getCreatedComments();
+    }
+    
+    public LinkedList<Playlist> getCreatedPlaylists(User user){
+        return user.getCreatedPlaylists();
+    }
+    
+    public LinkedList<Medium> getCreatedMediums(User user){
+        return user.getCreatedMediums();
+    }
+    
+    public LinkedList<Album> getCreatedAlbums(User user){
+        return user.getCreatedAlbums();
+    }
+    
+    public LinkedList<User> getFavorizedUsers(User user){
+        return user.getFavoriteUsers();
+    }
+    
+    public LinkedList<Playlist> getFavorizedPlaylists(User user){
+        return null;
+    }
+    
+    public LinkedList<Album> getFavorizedAlbums(User user){
+        return null;
+    }
+    
+    public LinkedList<Medium> getFavorizedMediums(User user){
+        return null;
+    }
+    
 }
