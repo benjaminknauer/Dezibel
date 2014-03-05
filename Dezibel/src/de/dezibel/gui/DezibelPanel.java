@@ -169,7 +169,7 @@ public class DezibelPanel extends JPanel {
         menuBar.add(menuShow);
         menuBar.add(menuUpload);
         menuBar.add(menuGoTo);
-        frame.setJMenuBar(menuBar);
+        
 
 
         // Create the dock model for the docks.
@@ -291,6 +291,7 @@ public class DezibelPanel extends JPanel {
      * player-panel docked at the bottom and a profil-panel at the center.
      */
     public void showWorkspace() {
+        frame.setJMenuBar(menuBar);
         if (this.centerDock.getDockableCount() > 0) {
             this.centerDock.removeDockable(this.centerDock
                     .getDockable(this.centerDock.getDockableCount() - 1));
