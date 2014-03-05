@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 /**
@@ -24,7 +25,7 @@ public class LoginPanel extends DragablePanel {
     private JLabel labelMail;
     private JLabel labelPassword;
     private JTextField tfMail;
-    private JTextField tfPassword;
+    private JPasswordField tfPassword;
     private JButton bnLogin;
     private JButton bnRegister;
     
@@ -37,7 +38,7 @@ public class LoginPanel extends DragablePanel {
         labelMail = new JLabel("Mail:");
         labelPassword = new JLabel("Passwort:");
         tfMail = new JTextField();
-        tfPassword = new JTextField();
+        tfPassword = new JPasswordField();
         bnLogin = new JButton("Login");
         bnRegister = new JButton("Register");
         

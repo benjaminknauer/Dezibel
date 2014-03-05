@@ -1,6 +1,7 @@
 package de.dezibel.gui;
 
 import de.dezibel.control.RegistrationControl;
+import de.dezibel.io.MailUtil;
 import java.awt.Component;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -29,8 +30,8 @@ public class RegistrationPanel extends DragablePanel {
     private JLabel lbLastname;
 
     private JTextField tfMail;
-    private JTextField tfPassword;
-    private JTextField tfPasswordRecap;
+    private JPasswordField tfPassword;
+    private JPasswordField tfPasswordRecap;
     private JTextField tfFirstname;
     private JTextField tfLastname;
 
@@ -73,8 +74,8 @@ public class RegistrationPanel extends DragablePanel {
 
         this.tfMail = new JTextField();
         this.tfPassword = new JPasswordField();
-        this.tfPassword = new JTextField();
-        this.tfPasswordRecap = new JTextField();
+        this.tfPassword = new JPasswordField();
+        this.tfPasswordRecap = new JPasswordField();
         this.tfFirstname = new JTextField();
         this.tfLastname = new JTextField();
     }
@@ -161,6 +162,10 @@ public class RegistrationPanel extends DragablePanel {
             if (this.tfPassword.getText().equals(this.tfPasswordRecap.getText())) {
                 this.regControl.addUser(this.tfPassword.getText(),
                         this.tfMail.getText(),this.tfFirstname.getText(),this.tfLastname.getText());
+                MailUtil.sendMail("Registrierung auf Dezibel",
+                        "Hallo " + this.tfFirstname.getText() + ",\n\n"
+                                + "deine Registrierung war erfolgreich.",
+                        this.tfMail.getText());
                 JOptionPane.showMessageDialog(this, "User succesfully created",
                         "Type Error", JOptionPane.INFORMATION_MESSAGE);
                 this.onBack();
