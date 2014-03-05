@@ -53,8 +53,9 @@ public class ProfilPanel extends DragablePanel {
      */
     public ProfilPanel(DezibelPanel parent) {
         super(parent);
-        this.createComponents();
+        this.currentUser = null;
         
+        this.createComponents();
         // Create Layout
         BorderLayout layout = new BorderLayout();
         this.setLayout(layout);
@@ -64,6 +65,28 @@ public class ProfilPanel extends DragablePanel {
         this.currentUser = controler.getLoggedInUser();
     }
 
+    public void setUser(User newUser){
+    	this.currentUser = newUser;
+    	this.refresh();
+    }
+    
+    public User getUser(){
+    	return this.currentUser;
+    }
+    
+    public void refresh(){
+    	this.tfFirstName.setText(controler.getFirstName(currentUser));
+    	this.tfLastName.setText(controler.getLastName(currentUser)); 
+    	this.tfRole.setText(controler.getRole(currentUser));
+    	this.tfPseudonym.setText(controler.getPseudonym(currentUser));
+    	//this.tfGender.setText(controler.getGender(currentUser));
+    	this.tfEmail.setText(controler.getEmail(currentUser));
+    	this.tfBirthDate.setText(controler.getBirthDate(currentUser));
+    	this.tfCity.setText(controler.getCity(currentUser));
+    	this.tfCountry.setText(controler.getCountry(currentUser));
+    	this.tfAboutMe.setText(controler.getAboutMe(currentUser));
+    }
+    
     /**
      * Method to create tabs.
      */
@@ -106,43 +129,34 @@ public class ProfilPanel extends DragablePanel {
         JLabel lbCountry = new JLabel("Land:");
         JLabel lbAboutMe = new JLabel("Über mich:");
         
+        
         tfFirstName = new JTextField(25);
-        // tfFirstName.setText(controler.getFirstName(currentUser));
         tfLastName = new JTextField(25);       
-        // tfLastName.setText(controler.getLastName(currentUser));  
         tfRole = new JTextField(25);       
-        //tfRole.setText(controler.getRole(currentUser));
         tfPseudonym = new JTextField(25);       
-        //tfPseudonym.setText(controler.getPseudonym(currentUser));
-        String[] items = {"männlich", "weiblich"}; 
+        String[] items = {"m�nnlich", "weiblich"}; 
         tfGender = new JComboBox<>(items);
-        //tfGender.setText(controler.getGender(currentUser));
         tfEmail = new JTextField(25);       
-        //tfEmail.setText(controler.getEmail(currentUser));
         tfBirthDate = new JTextField(25);       
-        //tfBirthDate.setText(controler.getBirthDate(currentUser));
         tfCity = new JTextField(25);       
-        //tfCity.setText(controler.getCity(currentUser));
         tfCountry = new JTextField(25);       
-        //tfCountry.setText(controler.getCountry(currentUser));
         tfAboutMe = new JTextField(25);
-        //tfAboutMe.setText(controler.getAboutMe(currentUser));
         
         JButton btnEdit = new JButton("Bearbeiten");
         btnEdit.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(tfFirstName.isEnabled()){
-//                controler.setFirstName(currentUser, tfFirstName.getText());
-//                controler.setLastName(currentUser, tfLastName.getText());
-//                controler.setPseudonym(currentUser, tfPseudonym.getText());
-//                controler.setGender(currentUser, tfGender.getSelectedItem().toString());
-//                controler.setEmail(currentUser, tfEmail.getText());
-//                controler.setBirthDate(currentUser, tfBirthDate.getText());
-//                controler.setCity(currentUser, tfCity.getText());
-//                controler.setCountry(currentUser, tfCountry.getText());
-//                controler.setAboutMe(currentUser, tfAboutMe.getText());
+                if(tfFirstName.isEnabled() && currentUser != null){
+                controler.setFirstName(currentUser, tfFirstName.getText());
+                controler.setLastName(currentUser, tfLastName.getText());
+                controler.setPseudonym(currentUser, tfPseudonym.getText());
+                controler.setGender(currentUser, tfGender.getSelectedItem().toString());
+                controler.setEmail(currentUser, tfEmail.getText());
+                controler.setBirthDate(currentUser, tfBirthDate.getText());
+                controler.setCity(currentUser, tfCity.getText());
+                controler.setCountry(currentUser, tfCountry.getText());
+                controler.setAboutMe(currentUser, tfAboutMe.getText());
                 setProfileTextfieldsEditable(false);
                 } else{
                     setProfileTextfieldsEditable(true);

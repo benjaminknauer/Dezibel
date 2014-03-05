@@ -206,7 +206,7 @@ public class DezibelPanel extends JPanel {
     
     private Dockable addActionsWithCloseExt(Dockable dockable) {
         //int[] states = { DockableState.NORMAL, DockableState.MINIMIZED };
-        int[] states = {DockableState.NORMAL,DockableState.CLOSED,DockableState.EXTERNALIZED};
+        int[] states = {DockableState.NORMAL,DockableState.CLOSED,DockableState.MINIMIZED,DockableState.EXTERNALIZED};
         Dockable wrapper = new StateActionDockable(dockable, new DefaultDockableStateActionFactory(), states);
         return wrapper;
     }
