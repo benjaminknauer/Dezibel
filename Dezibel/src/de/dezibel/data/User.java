@@ -26,9 +26,9 @@ public class User implements Lockable {
     private String email;
     private String password;
     private String description;
-    private LinkedList<User> favoriteUsers;
+    private LinkedList<User> favorizedUsers;
     private LinkedList<User> followers;
-    private LinkedList<Label> favoriteLabels;
+    private LinkedList<Label> favorizedLabels;
     private LinkedList<Label> managedLabels;
     private LinkedList<Label> publishingLabels;
     private LinkedList<News> newsList;
@@ -59,20 +59,20 @@ public class User implements Lockable {
         this.password = password;
         this.male = isMale;
 
-        favoriteUsers = new LinkedList<User>();
-        followers = new LinkedList<User>();
-        favoriteLabels = new LinkedList<Label>();
-        managedLabels = new LinkedList<Label>();
-        publishingLabels = new LinkedList<Label>();
-        newsList = new LinkedList<News>();
-        sentApplications = new LinkedList<Application>();
-        createdMediums = new LinkedList<Medium>();
-        favorizedMediums = new LinkedList<Medium>();
-        createdPlaylists = new LinkedList<Playlist>();
-        favorizedPlaylists = new LinkedList<Playlist>();
-        createdComments = new LinkedList<Comment>();
-        createdAlbums = new LinkedList<Album>();
-        favorizedAlbums = new LinkedList<Album>();
+        favorizedUsers = new LinkedList<>();
+        followers = new LinkedList<>();
+        favorizedLabels = new LinkedList<>();
+        managedLabels = new LinkedList<>();
+        publishingLabels = new LinkedList<>();
+        newsList = new LinkedList<>();
+        sentApplications = new LinkedList<>();
+        createdMediums = new LinkedList<>();
+        favorizedMediums = new LinkedList<>();
+        createdPlaylists = new LinkedList<>();
+        favorizedPlaylists = new LinkedList<>();
+        createdComments = new LinkedList<>();
+        createdAlbums = new LinkedList<>();
+        favorizedAlbums = new LinkedList<>();
     }
 
     // TODO: Mails in notify methoden versenden.
@@ -205,8 +205,8 @@ public class User implements Lockable {
      * @param label new favorized label
      */
     public void addFavoriteLabel(Label label) {
-        if (!(this.favoriteLabels.contains(label))) {
-            this.favoriteLabels.add(label);
+        if (!(this.favorizedLabels.contains(label))) {
+            this.favorizedLabels.add(label);
             label.follow(this);
         }
     }
@@ -219,8 +219,8 @@ public class User implements Lockable {
      * @post favoriteLabels size is reduced by 1
      */
     public void removeFavoriteLabel(Label label) {
-        if (this.favoriteLabels.contains(label)) {
-            this.favoriteLabels.remove(label);
+        if (this.favorizedLabels.contains(label)) {
+            this.favorizedLabels.remove(label);
             label.removeFollower(this);
         }
     }
@@ -231,8 +231,8 @@ public class User implements Lockable {
      * @param user new favorized user
      */
     public void addFavoriteUser(User user) {
-        if (!(this.favoriteUsers.contains(user))) {
-            this.favoriteUsers.add(user);
+        if (!(this.favorizedUsers.contains(user))) {
+            this.favorizedUsers.add(user);
             user.addFollower(this);
         }
     }
@@ -245,8 +245,8 @@ public class User implements Lockable {
      * @post favoriteUsers size is reduced by 1
      */
     public void removeFavoriteUser(User user) {
-        if (this.favoriteUsers.contains(user)) {
-            this.favoriteUsers.remove(user);
+        if (this.favorizedUsers.contains(user)) {
+            this.favorizedUsers.remove(user);
             user.removeFollower(this);
         }
     }
@@ -627,12 +627,12 @@ public class User implements Lockable {
         return admin;
     }
 
-    public LinkedList<User> getFavoriteUsers() {
-        return (LinkedList<User>) this.favoriteUsers.clone();
+    public LinkedList<User> getFavorizedUsers() {
+        return (LinkedList<User>) this.favorizedUsers.clone();
     }
 
-    public LinkedList<Label> getFavoriteLabels() {
-        return (LinkedList<Label>) this.favoriteLabels.clone();
+    public LinkedList<Label> getFavorizedLabels() {
+        return (LinkedList<Label>) this.favorizedLabels.clone();
     }
 
     public LinkedList<User> getFollowers() {

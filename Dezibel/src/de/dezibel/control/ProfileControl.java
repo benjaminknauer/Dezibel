@@ -218,7 +218,7 @@ public class ProfileControl {
     }
     
     public LinkedList<User> getFavorizedUsers(User user){
-        return user.getFavoriteUsers();
+        return user.getFavorizedUsers();
     }
     
     public LinkedList<Playlist> getFavorizedPlaylists(User user){
