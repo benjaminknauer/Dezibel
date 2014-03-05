@@ -3,9 +3,14 @@ package de.dezibel.gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
+
 import com.javadocking.DockingManager;
 import com.javadocking.dock.BorderDock;
 import com.javadocking.dock.LineDock;
@@ -23,7 +28,9 @@ import com.javadocking.model.FloatDockModel;
 import com.javadocking.visualizer.FloatExternalizer;
 import com.javadocking.visualizer.LineMinimizer;
 import com.javadocking.visualizer.SingleMaximizer;
+
 import de.dezibel.control.SaveControl;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -41,6 +48,8 @@ import java.awt.event.WindowEvent;
 public class DezibelPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
+    
+    private JToolBar toolbar;
     // Declares all panels the user can work with.
     private DragablePanel pnLogin;
     private DragablePanel pnRegister;
@@ -89,7 +98,9 @@ public class DezibelPanel extends JPanel {
             }
             });
         
+        JMenuBar bar = new JMenuBar();
         
+        frame.setJMenuBar(new JMenuBar());
         // Create the dock model for the docks.
         FloatDockModel dockModel = new FloatDockModel();
         dockModel.addOwner("dezibel", frame);
@@ -158,9 +169,12 @@ public class DezibelPanel extends JPanel {
         this.addTopBottomCenterListener();
 
         borderDock = new BorderDock();
-        borderDock.addChildDock(leftLineDock, new Position(Position.LEFT));
-        borderDock.addChildDock(rightLineDock, new Position(Position.RIGHT));
-        borderDock.addChildDock(centerDock, new Position(Position.CENTER));
+//        borderDock.addChildDock(leftLineDock, new Position(Position.LEFT));
+//        borderDock.addChildDock(rightLineDock, new Position(Position.RIGHT));
+//        borderDock.addChildDock(centerDock, new Position(Position.CENTER));
+        borderDock.setDock(leftLineDock, Position.LEFT);
+        borderDock.setDock(rightLineDock,Position.RIGHT);
+        borderDock.setDock(centerDock,Position.CENTER);
 
         dockModel.addRootDock("borderDock", borderDock, frame);
 
@@ -304,7 +318,11 @@ public class DezibelPanel extends JPanel {
                 DragablePanel pn = (DragablePanel) daPlayer.getContent();
                 if (e.getDestinationDock() == centerDock) {
                     pn.onCenter();
-                } else {
+                } 
+                else if (e.getDestinationDock() == null) {
+                	pn.onExternalized();
+                }
+                else{
                     pn.onTopBottom();
                 }
             }

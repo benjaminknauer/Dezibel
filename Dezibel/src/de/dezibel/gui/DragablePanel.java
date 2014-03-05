@@ -52,4 +52,8 @@ public class DragablePanel extends JPanel implements DraggableContent {
     public void onCenter() {
         System.out.println("Methode onCenter() von DragablePanel");
     }
+    
+    public void onExternalized(){
+    	System.out.println("Methode onExternalized8) von DragablePanel");
+    }
 }
