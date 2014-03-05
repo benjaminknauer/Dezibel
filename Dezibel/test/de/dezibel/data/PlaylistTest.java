@@ -45,7 +45,7 @@ public class PlaylistTest {
     }
 
     /**
-     * Test of removeMediumAt method, of class Playlist.
+     * Test of removeCreatedMediumAt method, of class Playlist.
      */
     @Test
     public void testRemoveMedium() {

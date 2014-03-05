@@ -131,8 +131,7 @@ public class DezibelPanel extends JPanel {
 
         // Panels that can be docked only at top/bottom and center
         daPlayer = new DefaultDockable("pnPlayer", pnPlayer, "Player", null,
-                DockingMode.CENTER + DockingMode.SINGLE + DockingMode.FLOAT
-                + DockingMode.BOTTOM + DockingMode.TOP);
+                DockingMode.CENTER + DockingMode.SINGLE + DockingMode.BOTTOM + DockingMode.TOP +DockingMode.HORIZONTAL_LINE);
         daProfil = new DefaultDockable("pnProfil", pnProfil, "Profil", null,
                 DockingMode.CENTER + DockingMode.SINGLE);
 

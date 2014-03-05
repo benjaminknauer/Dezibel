@@ -71,7 +71,7 @@ public class Application {
         if(markedForDeletion)
             return;
         markedForDeletion = true;
-        this.artist.removeApplication(this);
+        this.artist.deleteApplication(this);
         this.artist = null;
         this.label.deleteApplication(this);
         this.label = null;
