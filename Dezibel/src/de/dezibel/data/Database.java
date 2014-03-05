@@ -120,6 +120,14 @@ public class Database {
 
         // Create topGenre
         this.genres.add(new Genre(topGenreName, null));
+        
+        // TODO Entfernen: Testdaten (Tobias, Richard)
+//        this.addUser("richard-schulze@online.de", "Richard", "Schulze",
+//                new HashGenerator().hash("1"), new Date(), "Münster", "Deutschland", true);
+//        User u = this.getUsers().get(this.getUsers().size() - 1);
+//        u.setPseudonym("DVBBS & Borgeous");
+//        this.addMedium("Tsunami", u, "C:\\DVBBS & Borgeous - Tsunami.mp3", this.getTopGenre(), null, null);
+//        this.addMedium("Alarm01", u, "C:\\Alarm01.wav", this.getTopGenre(), null, null);
     }
 
     /**
@@ -374,6 +382,7 @@ public class Database {
      * @pre <code>title</code>, <code>artist</code>, <code>genre</code> must not be null.
      * @post A new Medium object has been created and added to the database.
      */
+    // TODO Fehler beseitigen: Medium wird nicht in die Liste aufgenommen, wenn genre=null (Richard, Tobias)
     public ErrorCode addMedium(String title, User artist, String path, Genre genre, Label label, Album album) {
         Medium m = new Medium(title, artist, path);
         

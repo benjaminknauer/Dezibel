@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.TreeSet;
+import java.util.LinkedList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
@@ -21,8 +21,8 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
- * @author Tobias, Pascal
+ * The panel that displays the search components and results.
+ * @author Tobias, Pascal, Richard
  */
 public class SearchPanel extends DragablePanel {
 
@@ -35,20 +35,20 @@ public class SearchPanel extends DragablePanel {
     private JRadioButton rbUploadDate;
     private JRadioButton rbUserAlphabetical;
     private JRadioButton rbLabelAlphabetical;
-    private JRadioButton rbPlaylistAlphabetical;
+    private JRadioButton rbAlbumAlphabetical;
     private JPanel pnSorting;
     private JTable tableResults;
-    private DefaultTableModel tableModelSong;
-    private DefaultTableModel tableModelUser;
-    private DefaultTableModel tableModelLabel;
-    private DefaultTableModel tableModelPlaylist;
+    private MediaTableModel tableModelSong;
+    private UserTableModel tableModelUser;
+    private LabelTableModel tableModelLabel;
+    private AlbumTableModel tableModelAlbum;
     private JScrollPane tablePanel;
     private GroupLayout layout;
 
     private JPanel pnSortingMedium;
     private JPanel pnSortingUser;
     private JPanel pnSortingLabel;
-    private JPanel pnSortingPlaylist;
+    private JPanel pnSortingAlbum;
 
     public SearchPanel(DezibelPanel parent) {
         super(parent);
@@ -58,7 +58,7 @@ public class SearchPanel extends DragablePanel {
     }
 
     private void createComponents() {
-        String[] choices = {"Song", "User", "Label", "Playlist"};
+        String[] choices = {"Song", "User", "Label", "Album"};
 
         tfSearch = new JTextField("Search...");
         cbFilter = new JComboBox<>(choices);
@@ -66,7 +66,7 @@ public class SearchPanel extends DragablePanel {
         rbSongAlphabetical = new JRadioButton("Alphabetical");
         rbUserAlphabetical = new JRadioButton("Alphabetical");
         rbLabelAlphabetical = new JRadioButton("Alphabetical");
-        rbPlaylistAlphabetical = new JRadioButton("Alphabetical");
+        rbAlbumAlphabetical = new JRadioButton("Alphabetical");
         rbRating = new JRadioButton("Rating");
         rbUploadDate = new JRadioButton("Upload-Date");
         tableResults = new JTable();
@@ -76,30 +76,30 @@ public class SearchPanel extends DragablePanel {
         ButtonGroup bnGroupMedium = new ButtonGroup();
         ButtonGroup bnGroupUser = new ButtonGroup();
         ButtonGroup bnGroupLabel = new ButtonGroup();
-        ButtonGroup bnGroupPlaylist = new ButtonGroup();
+        ButtonGroup bnGroupAlbum = new ButtonGroup();
 
         bnGroupMedium.add(rbSongAlphabetical);
         bnGroupMedium.add(rbRating);
         bnGroupMedium.add(rbUploadDate);
         bnGroupUser.add(rbUserAlphabetical);
         bnGroupLabel.add(rbLabelAlphabetical);
-        bnGroupPlaylist.add(rbPlaylistAlphabetical);
+        bnGroupAlbum.add(rbAlbumAlphabetical);
 
         rbSongAlphabetical.setSelected(true);
         rbUserAlphabetical.setSelected(true);
         rbLabelAlphabetical.setSelected(true);
-        rbPlaylistAlphabetical.setSelected(true);
+        rbAlbumAlphabetical.setSelected(true);
 
         pnSorting = new JPanel(new CardLayout());
         pnSortingMedium = new JPanel();
         pnSortingUser = new JPanel();
         pnSortingLabel = new JPanel();
-        pnSortingPlaylist = new JPanel();
+        pnSortingAlbum = new JPanel();
 
         pnSorting.add(pnSortingMedium, "Song");
         pnSorting.add(pnSortingUser, "User");
         pnSorting.add(pnSortingLabel, "Label");
-        pnSorting.add(pnSortingPlaylist, "Playlist");
+        pnSorting.add(pnSortingAlbum, "Album");
 
         GroupLayout layoutMedium = new GroupLayout(pnSortingMedium);
         layoutMedium.setAutoCreateGaps(true);
@@ -124,68 +124,20 @@ public class SearchPanel extends DragablePanel {
         layoutLabel.setVerticalGroup(layoutLabel.createParallelGroup().addGroup(layoutLabel.createParallelGroup().addComponent(rbLabelAlphabetical)));
         pnSortingLabel.setLayout(layoutLabel);
 
-        GroupLayout layoutPlaylist = new GroupLayout(pnSortingPlaylist);
+        GroupLayout layoutPlaylist = new GroupLayout(pnSortingAlbum);
         layoutPlaylist.setAutoCreateContainerGaps(true);
         layoutPlaylist.setAutoCreateGaps(true);
-        layoutPlaylist.setHorizontalGroup(layoutPlaylist.createParallelGroup().addGroup(layoutPlaylist.createSequentialGroup().addComponent(rbPlaylistAlphabetical)));
-        layoutPlaylist.setVerticalGroup(layoutPlaylist.createParallelGroup().addGroup(layoutPlaylist.createParallelGroup().addComponent(rbPlaylistAlphabetical)));
-        pnSortingPlaylist.setLayout(layoutPlaylist);
+        layoutPlaylist.setHorizontalGroup(layoutPlaylist.createParallelGroup().addGroup(layoutPlaylist.createSequentialGroup().addComponent(rbAlbumAlphabetical)));
+        layoutPlaylist.setVerticalGroup(layoutPlaylist.createParallelGroup().addGroup(layoutPlaylist.createParallelGroup().addComponent(rbAlbumAlphabetical)));
+        pnSortingAlbum.setLayout(layoutPlaylist);
 
-        tableModelSong = new DefaultTableModel(
-                new Object[][]{},
-                new String[]{"Title", "Artist", "Albm", "Genre"
-                }) {
-                    private static final long serialVersionUID = 1L;
-                    boolean[] canEdit = new boolean[]{
-                        false, false, false, false
-                    };
+        tableModelSong = new MediaTableModel();
 
-                    public boolean isCellEditable(int rowindex, int columnIndex) {
-                        return canEdit[columnIndex];
-                    }
-                };
+        tableModelUser = new UserTableModel();
 
-        tableModelUser = new DefaultTableModel(
-                new Object[][]{},
-                new String[]{"Firstname", "Lastname", "Pseudonym", "City", "Country", "Mail"
-                }) {
-                    private static final long serialVersionUID = 1L;
-                    boolean[] canEdit = new boolean[]{
-                        false, false, false, false, false, false
-                    };
+        tableModelLabel = new LabelTableModel();
 
-                    public boolean isCellEditable(int rowindex, int columnIndex) {
-                        return canEdit[columnIndex];
-                    }
-                };
-
-        tableModelLabel = new DefaultTableModel(
-                new Object[][]{},
-                new String[]{"Name"
-                }) {
-                    private static final long serialVersionUID = 1L;
-                    boolean[] canEdit = new boolean[]{
-                        false
-                    };
-
-                    public boolean isCellEditable(int rowindex, int columnIndex) {
-                        return canEdit[columnIndex];
-                    }
-                };
-
-        tableModelPlaylist = new DefaultTableModel(
-                new Object[][]{},
-                new String[]{"Title"
-                }) {
-                    private static final long serialVersionUID = 1L;
-                    boolean[] canEdit = new boolean[]{
-                        false
-                    };
-
-                    public boolean isCellEditable(int rowindex, int columnIndex) {
-                        return canEdit[columnIndex];
-                    }
-                };
+        tableModelAlbum = new AlbumTableModel();
     }
 
     private void createLayout() {
@@ -228,8 +180,8 @@ public class SearchPanel extends DragablePanel {
                     case "Label":
                         tableResults.setModel(tableModelLabel);
                         break;
-                    case "Playlist":
-                        tableResults.setModel(tableModelPlaylist);
+                    case "Album":
+                        tableResults.setModel(tableModelAlbum);
                         break;
                 }
             }
@@ -241,15 +193,13 @@ public class SearchPanel extends DragablePanel {
             public void actionPerformed(ActionEvent arg0) {
 
                 Search searchcontrol = new Search();
-                TreeSet result;
+                LinkedList result = null;
                 DefaultTableModel model = null;
                 int sortation = 0;
-                String[] columnIdentifier;
 
                 switch (cbFilter.getSelectedItem().toString()) {
                     case "Song":
                         model = tableModelSong;
-                        columnIdentifier = new String[]{"Title", "Artist", "Albm", "Genre"};
                         if (rbSongAlphabetical.isSelected()) {
                             sortation = 0;
                         }
@@ -261,31 +211,26 @@ public class SearchPanel extends DragablePanel {
                         }
 
                         result = searchcontrol.searchForMedia(tfSearch.getText(), sortation);
+                        tableModelSong.setData(result);
                         break;
                     case "User":
                         model = tableModelUser;
-                        columnIdentifier = new String[]{"Firstname", "Lastname", "Pseudonym", "City", "Country", "Mail"};
                         result = searchcontrol.searchForUsers(tfSearch.getText(), 0);
+                        tableModelUser.setData(result);
                         break;
                     case "Label":
                         model = tableModelLabel;
-                        columnIdentifier = new String[]{"Name"};
                         result = searchcontrol.searchForLabels(tfSearch.getText(), 0);
+                        tableModelLabel.setData(result);
                         break;
-                    case "Playlist":
-                        model = tableModelPlaylist;
-                        columnIdentifier = new String[]{"Title"};
-                        result = searchcontrol.searchForPlaylists(tfSearch.getText(), 0);
+                    case "Album":
+                        model = tableModelAlbum;
+                        result = searchcontrol.searchForAlbums(tfSearch.getText(), 0);
+                        tableModelAlbum.setData(result);
                         break;
                 }
                 
-                /*                if(model != null) {
-                model.getDataVector().clear();
-                    
-                    
-                }*/
-                
-
+                tableResults.setModel(model);
             }
         });
     }

@@ -35,7 +35,7 @@ import java.awt.event.WindowEvent;
  * for the music. If it is docked to the center there will be displayed a
  * playlist.
  *
- * @author Pascal
+ * @author Pascal, Tobias, Richard
  *
  */
 public class DezibelPanel extends JPanel {
@@ -179,8 +179,8 @@ public class DezibelPanel extends JPanel {
 
         // Add the maximizer to the panel.
         this.add(maximizer, BorderLayout.CENTER);
-        //this.showLogin();
-        this.showWorkspace();
+        this.showLogin();
+        //this.showWorkspace();
     }
 
     /**
@@ -349,8 +349,8 @@ public class DezibelPanel extends JPanel {
                     .getDockable(this.centerDock.getDockableCount() - 1));
         }
         this.showSidebars();
-        this.centerDock.addDockable(this.daProfil, new Position(0));
-        //this.centerDock.addDockable(this.daSearch, new Position(0));
+        //this.centerDock.addDockable(this.daProfil, new Position(0));
+        this.centerDock.addDockable(this.daSearch, new Position(0));
     }
 
     /**

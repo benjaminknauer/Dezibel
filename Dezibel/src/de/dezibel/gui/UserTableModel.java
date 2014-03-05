@@ -1,22 +1,21 @@
 package de.dezibel.gui;
 
-import de.dezibel.data.Medium;
-import java.util.Date;
+import de.dezibel.data.User;
 import java.util.LinkedList;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Shows the information of media in the searchpanel.
+ * Shows the information of users in the searchpanel.
  * @author Richard, Tobias
  */
-public class MediaTableModel extends DefaultTableModel {
+public class UserTableModel extends DefaultTableModel {
 
-    private String[] headlines = new String[]{"Künstler", "Titel", "Album", 
-        "Genre", "Uploaddatum", "Bewertung"};
+    private String[] headlines = new String[]{"Vorname", "Nachname", "Künstlername", 
+        "Stadt", "Land", "Email"};
     private Class<?>[] columnTypes = new Class<?>[]{String.class, String.class,
-        String.class, String.class, Date.class, Double.class};
+        String.class, String.class, String.class, String.class};
 
-    private Medium[] data;
+    private User[] data;
 
     @Override
     public int getColumnCount() {
@@ -45,23 +44,24 @@ public class MediaTableModel extends DefaultTableModel {
     @Override
     public Object getValueAt(int row, int col) {
         if (data != null && row >= 0 && row < data.length) {
-            Medium m = data[row];
+            User u = data[row];
             switch (col) {
                 case 0:
-                    return m.getArtist().getPseudonym();
+                    return u.getFirstname();
                 case 1:
-                    return m.getTitle();
+                    return u.getLastname();
                 case 2:
-                    if (m.getAlbum() != null) return m.getAlbum().getTitle();
+                    if (u.getPseudonym() != null) return u.getPseudonym();
                     else return "";
                 case 3:
-                    if (m.getGenre() != null) return m.getGenre().getName();
+                    if (u.getCity() != null) return u.getCity();
                     else return "";
                 case 4:
-                    return m.getUploadDate();
+                    if (u.getCountry() != null) return u.getCountry();
+                    else return "";
                 case 5:
-                    // Round to 2 digits
-                    return Math.round(m.getAvgRating() * 100) / 100;
+                    if (u.getEmail() != null) return u.getEmail();
+                    else return "";
             }
         }
 	return null;
@@ -76,11 +76,11 @@ public class MediaTableModel extends DefaultTableModel {
      * Sets the data of this model.
      * @param data The data to display
      */
-    public void setData(LinkedList<Medium> data) {
+    public void setData(LinkedList<User> data) {
         if (data == null) {
             this.data = null;
         } else {
-            this.data = new Medium[data.size()];
+            this.data = new User[data.size()];
             data.toArray(this.data);
         }
         fireTableDataChanged();
