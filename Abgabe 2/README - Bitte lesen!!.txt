@@ -1,0 +1,11 @@
+Vorschlag für Aufruf der Funktionen:
+	- Registrierung mit EMail-Bestätigung
+	- Anschließend Login mit den entsprechenden Daten
+	- Dann Upload über das Menü oben
+	- Datei auswählen und Titel angeben
+	- Upload-Button drücken
+	- Beliebige weitere Dateien hochladen
+	- Suche ohne Suchbegriff liefert alle Medien
+	- Rechtsklick auf Suchergebnisse und "Abspielen" fügt die Lieder zur Playlist hinzu
+	- Das SearchPanel muss erst nach oben gezogen werden, damit der Player in die Mitte gezogen werden kann
+	- Ist der Player in der Mitte, so wird die Playlist des Players angezeigt
