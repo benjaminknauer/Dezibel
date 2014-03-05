@@ -62,7 +62,7 @@ public class DezibelPanel extends JPanel {
     private DragablePanel pnAds;
     private DragablePanel pnMyList;
     private DragablePanel pnFavorites;
-    private DragablePanel pnProfil;
+    //private DragablePanel pnProfil;
     private DragablePanel pnSearch;
 
     // Javadocking uses Dockable, to enable dragging and docking for childpanels
@@ -74,7 +74,7 @@ public class DezibelPanel extends JPanel {
     private Dockable daMyLists;
     private Dockable daFavorites;
     private Dockable daPlayer;
-    private Dockable daProfil;
+    //private Dockable daProfil;
     private Dockable daSearch;
 
     // We uses a LineDock at the bottom,top,left and right where all panels can be docked to.
@@ -132,7 +132,7 @@ public class DezibelPanel extends JPanel {
         JMenuItem itemUpload = new JMenuItem("Upload");
         menuUpload.add(itemUpload);
         
-        menuUpload.addActionListener(new ActionListener(){
+        itemUpload.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				onUpload();
@@ -159,7 +159,7 @@ public class DezibelPanel extends JPanel {
         pnAds = new DragablePanel(this);
         pnMyList = new DragablePanel(this);
         pnFavorites = new DragablePanel(this);
-        pnProfil = new ProfilPanel(this);
+        //pnProfil = new ProfilPanel(this);
         pnSearch = new SearchPanel(this);
 
         // Create the dockables around the content components.
@@ -186,8 +186,8 @@ public class DezibelPanel extends JPanel {
         // Panels that can be docked only at top/bottom and center
         daPlayer = new DefaultDockable("pnPlayer", pnPlayer, "Player", null,
                 DockingMode.CENTER + DockingMode.SINGLE + DockingMode.BOTTOM + DockingMode.TOP +DockingMode.HORIZONTAL_LINE);
-        daProfil = new DefaultDockable("pnProfil", pnProfil, "Profil", null,
-                DockingMode.CENTER + DockingMode.SINGLE);
+       // daProfil = new DefaultDockable("pnProfil", pnProfil, "Profil", null,
+       //         DockingMode.CENTER + DockingMode.SINGLE);
 
         daSearch = new DefaultDockable("pnSearch", pnSearch, "Search", null,
                 DockingMode.CENTER + DockingMode.SINGLE + DockingMode.BOTTOM + DockingMode.TOP);
@@ -477,6 +477,9 @@ public class DezibelPanel extends JPanel {
     }
     
     private void onUpload(){
-    	
+        System.out.println("asdf");
+    	UploadDialog ud = new UploadDialog(frame);
+        ud.setVisible(true);
+        
     }
 }
