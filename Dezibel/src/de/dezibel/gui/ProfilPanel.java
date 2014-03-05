@@ -295,7 +295,7 @@ public class ProfilPanel extends DragablePanel {
         lbPlaylist.setHorizontalAlignment(JLabel.LEADING);
         lbPlaylist.setBounds(0,0, 200,30);        
         tPlaylists = new JTable(10,1);
-        tPlaylists.isCellEditable(10,1);
+//        tPlaylists.isCellEditable(10,1);
         //tPlaylists.setEditable(false);
         tPlaylists.getTableHeader().setVisible(false);        
         JScrollPane spPlaylists = new JScrollPane(tPlaylists);       
