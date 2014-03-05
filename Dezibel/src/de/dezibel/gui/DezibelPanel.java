@@ -142,11 +142,11 @@ public class DezibelPanel extends JPanel {
         // Add actions to the dockables.
         daLogin = addActions(daLogin);
         daRegister = addActions(daRegister);
-        daPlayer = addActions(daPlayer);
-        daNews = addActions(daNews);
-        daAds = addActions(daAds);
-        daMyLists = addActions(daMyLists);
-        daFavorites = addActions(daFavorites);
+        daPlayer = addActionsWithCloseExt(daPlayer);
+        daNews = addActionsWithClose(daNews);
+        daAds = addActionsWithClose(daAds);
+        daMyLists = addActionsWithClose(daMyLists);
+        daFavorites = addActionsWithClose(daFavorites);
 
         // Create the child tab dock.
         leftLineDock = new LineDock();
@@ -179,8 +179,8 @@ public class DezibelPanel extends JPanel {
 
         // Add the maximizer to the panel.
         this.add(maximizer, BorderLayout.CENTER);
-        this.showLogin();
-        //this.showWorkspace();
+        //this.showLogin();
+        this.showWorkspace();
     }
 
     /**
@@ -194,6 +194,20 @@ public class DezibelPanel extends JPanel {
     private Dockable addActions(Dockable dockable) {
         //int[] states = { DockableState.NORMAL, DockableState.MINIMIZED };
         int[] states = {DockableState.NORMAL};
+        Dockable wrapper = new StateActionDockable(dockable, new DefaultDockableStateActionFactory(), states);
+        return wrapper;
+    }
+    
+    private Dockable addActionsWithClose(Dockable dockable) {
+        //int[] states = { DockableState.NORMAL, DockableState.MINIMIZED };
+        int[] states = {DockableState.NORMAL,DockableState.CLOSED};
+        Dockable wrapper = new StateActionDockable(dockable, new DefaultDockableStateActionFactory(), states);
+        return wrapper;
+    }
+    
+    private Dockable addActionsWithCloseExt(Dockable dockable) {
+        //int[] states = { DockableState.NORMAL, DockableState.MINIMIZED };
+        int[] states = {DockableState.NORMAL,DockableState.CLOSED,DockableState.EXTERNALIZED};
         Dockable wrapper = new StateActionDockable(dockable, new DefaultDockableStateActionFactory(), states);
         return wrapper;
     }
