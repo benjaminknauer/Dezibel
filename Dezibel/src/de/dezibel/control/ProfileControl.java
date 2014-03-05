@@ -62,7 +62,10 @@ public class ProfileControl {
      * @return users first name
      */
     public String getFirstName(User user){
+        if(user.getFirstname() != null){
         return user.getFirstname();
+        }
+        else return "";
     }
     
     /**
@@ -84,7 +87,10 @@ public class ProfileControl {
      * @return users last name
      */
     public String getLastName(User user){
+        if(user.getLastname() != null){
         return user.getLastname();
+        }
+        else return null;
     }
     
     /**
@@ -145,7 +151,10 @@ public class ProfileControl {
      * @return users pseudonym
      */
     public String getPseudonym(User user){
+        if(user.getPseudonym() != null){
         return user.getPseudonym();
+        } 
+        else return null;
     }
     
     /**
@@ -156,7 +165,7 @@ public class ProfileControl {
      * @param pseudonym users new pseudonym
      */
     public void setPseudonym(User user, String pseudonym){
-        if(belongsToLoggedUser(user)){
+        if(belongsToLoggedUser(user) && user.isArtist()){
             user.setPseudonym(pseudonym);
         }
     }
@@ -207,7 +216,10 @@ public class ProfileControl {
      * @return users email adress
      */
     public String getEmail(User user){
+        if(user.getEmail() != null){
         return user.getEmail();
+        }
+        else return "";
     }
     
     /**
@@ -230,7 +242,10 @@ public class ProfileControl {
      * @return users birthdate
      */
     public String getBirthDate(User user){
+        if(user.getBirthdate() != null){
         return user.getBirthdate().toString();
+        }
+        else return "";
     }
     
     /**
@@ -260,7 +275,10 @@ public class ProfileControl {
      * @return users city
      */
     public String getCity(User user){
+        if(user.getCity() != null){
         return user.getCity();
+        }
+        else return "";
     }
     
     /**
@@ -282,7 +300,10 @@ public class ProfileControl {
      * @return users country
      */
     public String getCountry(User user){
+        if(user.getCountry() != null){
         return user.getCountry();
+        }
+        else return "";
     }
     
     /**
@@ -304,7 +325,10 @@ public class ProfileControl {
      * @return users about-me text
      */
     public String getAboutMe(User user){
+        if(user.getDescription() != null){
         return user.getDescription();
+        }
+        else return "";
     }
     
     /**
