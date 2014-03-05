@@ -255,16 +255,18 @@ public class ProfileControl {
      * @param bDate users new birthdate
      */
     public void setBirthDate(User user, String bDate){
+        if(bDate != ""){
         if(belongsToLoggedUser(user)){
             Date birthDate;
             try {
-                birthDate = new SimpleDateFormat("d MMMM, yyyy", 
+                birthDate = new SimpleDateFormat("dd.MM.yyyy", 
                         Locale.GERMAN).parse(bDate);
                 user.setBirthdate(birthDate);
             } catch (ParseException ex) {
                 Logger.getLogger(ProfileControl.class.getName()).log(Level.SEVERE,
                         null, ex);
             }
+        }
         }
     }
     
