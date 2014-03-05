@@ -192,8 +192,8 @@ public class DezibelPanel extends JPanel {
 
         // Add the maximizer to the panel.
         this.add(maximizer, BorderLayout.CENTER);
-        //this.showLogin();
-        this.showWorkspace();
+        this.showLogin();
+        //this.showWorkspace();
     }
 
     /**

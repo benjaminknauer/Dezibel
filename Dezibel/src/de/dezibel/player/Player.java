@@ -15,6 +15,7 @@ import javafx.util.Duration;
  *
  * @author Richard, Tobias
  */
+// TODO Auf null prüfen
 public class Player {
 
     private static Player instance = null;
@@ -335,6 +336,15 @@ public class Player {
         for (PlayerObserver o : observer) {
             o.onStateChanged(medium);
         }
+    }
+    
+    
+    public LinkedList<Medium> getPlaylist() {
+        return this.currentPlaylist;
+    }
+    
+    public int getCurrentIndex() {
+        return currentPosition;
     }
 
 }
