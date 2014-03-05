@@ -5,6 +5,7 @@ import de.dezibel.data.Medium;
 import de.dezibel.player.Player;
 
 import java.awt.CardLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -28,6 +29,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  * The panel that displays the search components and results.
+ *
  * @author Tobias, Pascal, Richard
  */
 public class SearchPanel extends DragablePanel {
@@ -55,7 +57,7 @@ public class SearchPanel extends DragablePanel {
     private JPanel pnSortingUser;
     private JPanel pnSortingLabel;
     private JPanel pnSortingAlbum;
-    
+
     private JPopupMenu mediumPopupMenu;
     private JPopupMenu userPopupMenu;
     private JPopupMenu albumPopupMenu;
@@ -89,13 +91,18 @@ public class SearchPanel extends DragablePanel {
                     showPopup(me);
                 }
             }
+
             @Override
             public void mouseReleased(MouseEvent me) {
                 if (me.isPopupTrigger()) {
                     showPopup(me);
                 }
             }
+
             private void showPopup(MouseEvent me) {
+                Point p = me.getPoint();
+                int rowNumber = tableResults.rowAtPoint(p);
+                tableResults.getSelectionModel().setSelectionInterval(rowNumber, rowNumber);
                 currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
             }
         });
@@ -164,7 +171,7 @@ public class SearchPanel extends DragablePanel {
         tableModelUser = new UserTableModel();
         tableModelLabel = new LabelTableModel();
         tableModelAlbum = new AlbumTableModel();
-        
+
         mediumPopupMenu = new JPopupMenu();
         JMenuItem menuItemPlay = new JMenuItem("Abspielen");
         menuItemPlay.addActionListener(new ActionListener() {
@@ -179,7 +186,7 @@ public class SearchPanel extends DragablePanel {
             }
         });
         mediumPopupMenu.add(menuItemPlay);
-        
+
         userPopupMenu = new JPopupMenu();
         JMenuItem menuItemShowUser = new JMenuItem("Anzeigen");
         menuItemPlay.addActionListener(new ActionListener() {
@@ -189,7 +196,7 @@ public class SearchPanel extends DragablePanel {
             }
         });
         userPopupMenu.add(menuItemShowUser);
-        
+
         labelPopupMenu = new JPopupMenu();
         JMenuItem menuItemShowLabel = new JMenuItem("Anzeigen");
         menuItemPlay.addActionListener(new ActionListener() {
@@ -199,7 +206,7 @@ public class SearchPanel extends DragablePanel {
             }
         });
         labelPopupMenu.add(menuItemShowLabel);
-        
+
         albumPopupMenu = new JPopupMenu();
         JMenuItem menuItem = new JMenuItem("Abspielen");
         menuItemPlay.addActionListener(new ActionListener() {
@@ -229,8 +236,8 @@ public class SearchPanel extends DragablePanel {
                                 .addComponent(tfSearch, 32, 32, 32)
                                 .addComponent(cbFilter, 32, 32, 32)
                                 .addComponent(bnSearch, 32, 32, 32))
-                                .addComponent(pnSorting)
-                                .addComponent(tablePanel))
+                        .addComponent(pnSorting)
+                        .addComponent(tablePanel))
         );
         this.setLayout(layout);
     }
@@ -304,7 +311,7 @@ public class SearchPanel extends DragablePanel {
                         currentPopupMenu = albumPopupMenu;
                         break;
                 }
-                
+
                 tableResults.setModel(model);
             }
         });
