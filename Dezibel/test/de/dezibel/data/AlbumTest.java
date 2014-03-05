@@ -102,7 +102,7 @@ public class AlbumTest{
     }
     
     /**
-     * Test of removeMedium method, of class control/Album.
+     * Test of removeCreatedMedium method, of class control/Album.
      */
     @Test
     public void testRemoveMedium() {

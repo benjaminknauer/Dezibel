@@ -225,11 +225,11 @@ public class UserTest {
     }
 
     /**
-     * Test of removeApplication method, of class User.
+     * Test of deleteApplication method, of class User.
      */
     @Test
     public void testRemoveApplication() {
-        loggedUser.removeApplication(appl1);
+        loggedUser.deleteApplication(appl1);
         assertTrue(loggedUser.getApplications().contains(appl2));
         assertFalse(loggedUser.getApplications().contains(appl1));
         assertTrue(appl2.getLabel().getApplications().get(appl2.getLabel().getApplications().indexOf(appl2)).getUser() == loggedUser);
@@ -248,11 +248,11 @@ public class UserTest {
     }
 
     /**
-     * Test of removeMedium method, of class User.
+     * Test of removeCreatedMedium method, of class User.
      */
     @Test
     public void testRemoveMedium() {
-        loggedUser.removeMedium(med1);
+        loggedUser.removeCreatedMedium(med1);
         assertTrue(loggedUser.getCreatedMediums().contains(med2));
         assertFalse(med1.isAvailable());
     }
@@ -270,11 +270,11 @@ public class UserTest {
     }
 
     /**
-     * Test of removePlaylist method, of class User.
+     * Test of removeCreatedPlaylist method, of class User.
      */
     @Test
     public void testRemovePlaylist() {
-        loggedUser.removePlaylist(play1);
+        loggedUser.removeCreatedPlaylist(play1);
         assertTrue(loggedUser.getCreatedPlaylists().contains(play2));
         assertFalse(loggedUser.getCreatedPlaylists().contains(play1));
     }

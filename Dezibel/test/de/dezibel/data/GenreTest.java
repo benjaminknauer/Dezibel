@@ -96,7 +96,7 @@ public class GenreTest {
     }
 
     /**
-     * Test of removeMedium method, of class Genre.
+     * Test of removeCreatedMedium method, of class Genre.
      */
     @Test
     public void testRemoveMedium() {

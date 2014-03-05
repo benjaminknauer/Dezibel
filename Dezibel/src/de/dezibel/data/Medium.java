@@ -161,6 +161,7 @@ public class Medium implements Commentable, Lockable {
     /**
      * @see Commentable#comment(Comment)
      */
+    @Override
     public void deleteComment(Comment comment) {
         this.commentList.remove(comment);
         if (comment != null && !comment.isMarkedForDeletion()) {
