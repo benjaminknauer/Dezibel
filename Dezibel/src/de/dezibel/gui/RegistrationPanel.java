@@ -1,8 +1,6 @@
 package de.dezibel.gui;
 
-import de.dezibel.ErrorCode;
-import de.dezibel.control.Register;
-import de.dezibel.io.MailUtil;
+import de.dezibel.control.RegistrationControl;
 import java.awt.Component;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -16,15 +14,10 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 /**
- *
- * @author Pascal
- *
+ * 
+ * @author Richard, Tobias, Pascal
  */
 public class RegistrationPanel extends DragablePanel {
-
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
     private JPanel pnMain;
     private JButton bnRegister;
@@ -36,10 +29,13 @@ public class RegistrationPanel extends DragablePanel {
     private JLabel lbLastname;
 
     private JTextField tfMail;
-    private JPasswordField tfPassword;
+    private JTextField tfPassword;
+    private JTextField tfPasswordRecap;
     private JTextField tfFirstname;
     private JTextField tfLastname;
 
+    private RegistrationControl regControl;
+    
     public RegistrationPanel(DezibelPanel parent) {
         super(parent);
 
@@ -47,6 +43,7 @@ public class RegistrationPanel extends DragablePanel {
         this.pnMain.setLayout(this.createLayout());
         this.setLayout(new GridBagLayout());
         this.add(pnMain);
+        this.regControl = new RegistrationControl();
     }
 
     private void createComponents() {
@@ -76,6 +73,8 @@ public class RegistrationPanel extends DragablePanel {
 
         this.tfMail = new JTextField();
         this.tfPassword = new JPasswordField();
+        this.tfPassword = new JTextField();
+        this.tfPasswordRecap = new JTextField();
         this.tfFirstname = new JTextField();
         this.tfLastname = new JTextField();
     }
@@ -95,6 +94,10 @@ public class RegistrationPanel extends DragablePanel {
                         layout.createSequentialGroup()
                         .addComponent(lbPassword, 128, 128, 128)
                         .addComponent(tfPassword, 128, 128, 128))
+                .addGroup(GroupLayout.Alignment.LEADING,
+                        layout.createSequentialGroup()
+                        .addComponent(lbPassword, 128, 128, 128)
+                        .addComponent(tfPasswordRecap, 128, 128, 128))
                 .addGroup(GroupLayout.Alignment.LEADING,
                         layout.createSequentialGroup()
                         .addComponent(lbFirstname, 128, 128, 128)
@@ -124,6 +127,10 @@ public class RegistrationPanel extends DragablePanel {
                                 .addComponent(tfPassword, 32, 32, 32))
                         .addGroup(
                                 layout.createParallelGroup()
+                                .addComponent(lbPassword, 32, 32, 32)
+                                .addComponent(tfPasswordRecap, 32, 32, 32))
+                        .addGroup(
+                                layout.createParallelGroup()
                                 .addComponent(lbFirstname, 32, 32, 32)
                                 .addComponent(tfFirstname, 32, 32, 32))
                         .addGroup(
@@ -142,26 +149,30 @@ public class RegistrationPanel extends DragablePanel {
     }
 
     private void onRegister() {
-        ErrorCode result = new Register().register(tfMail.getText(), tfPassword.getText(),
-                tfFirstname.getText(), tfLastname.getText());
-        if (result == ErrorCode.SUCCESS) {
-            MailUtil.sendMail("Registrierung bei Dezibel", 
-                    "Hallo " + tfFirstname.getText() + ",\n\n"
-                            + "dein Konto wurde erfolgreich registriert!",
-                    tfMail.getText());
-            JOptionPane.showConfirmDialog(this, 
-                    "Benutzer erfolgreich registriert!", 
-                    "Registrierung erfolgreich", 
-                    JOptionPane.DEFAULT_OPTION, 
-                    JOptionPane.INFORMATION_MESSAGE);
-            onBack();
-        } else if (result == ErrorCode.EMAIL_ALREADY_IN_USE) {
-            JOptionPane.showConfirmDialog(this, 
-                    "Die angegebene Email-Adresse wird bereits benutzt.\n"
-                            + "Bitte gib eine andere Adresse an.", 
-                    "Mail bereits vergeben", 
-                    JOptionPane.DEFAULT_OPTION, 
-                    JOptionPane.ERROR_MESSAGE);
+        if (this.tfMail.getText().isEmpty()
+                || this.tfPassword.getText().isEmpty()
+                || this.tfPasswordRecap.getText().isEmpty()
+                || this.tfFirstname.getText().isEmpty()
+                || this.tfLastname.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Mandatory field not filled, please fill every field",
+                    "Type Error", JOptionPane.INFORMATION_MESSAGE);
+        } 
+        else if (!this.regControl.checkIfMailAlreadyInUse(this.tfMail.getText())) {
+            if (this.tfPassword.getText().equals(this.tfPasswordRecap.getText())) {
+                this.regControl.addUser(this.tfPassword.getText(),
+                        this.tfMail.getText(),this.tfFirstname.getText(),this.tfLastname.getText());
+                JOptionPane.showMessageDialog(this, "User succesfully created",
+                        "Type Error", JOptionPane.INFORMATION_MESSAGE);
+                this.onBack();
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "The password differs",
+                        "Type Error", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } 
+        else {
+            JOptionPane.showMessageDialog(this, "Mail already in use",
+                    "Type Error", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
