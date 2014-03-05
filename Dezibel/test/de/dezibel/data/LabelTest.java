@@ -208,7 +208,7 @@ public class LabelTest {
         assertFalse(labelmanager2.getManagedLabels().contains(label));
         assertNull(news1.getLabel());
         assertNull(application1.getLabel());
-        assertFalse(follower1.getFavoriteLabels().contains(label));
+        assertFalse(follower1.getFavorizedLabels().contains(label));
         assertFalse(label.getAlbums().contains(album1));
         assertTrue(album1.isMarkedForDeletion());
     }
@@ -239,7 +239,7 @@ public class LabelTest {
         label.follow(follower1);
         
         assertTrue(label.getFollowers().contains(follower1));
-        assertTrue(follower1.getFavoriteLabels().contains(label));
+        assertTrue(follower1.getFavorizedLabels().contains(label));
 
         
     }
@@ -257,7 +257,7 @@ public class LabelTest {
         label.removeFollower(follower1);
         
         assertFalse(label.getFollowers().contains(follower1));
-        assertFalse(follower1.getFavoriteLabels().contains(label));
+        assertFalse(follower1.getFavorizedLabels().contains(label));
     }
 
     /**
