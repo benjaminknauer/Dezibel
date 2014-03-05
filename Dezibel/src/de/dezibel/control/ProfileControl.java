@@ -243,7 +243,8 @@ public class ProfileControl {
      */
     public String getBirthDate(User user){
         if(user.getBirthdate() != null){
-        return user.getBirthdate().toString();
+        SimpleDateFormat dFormat = new SimpleDateFormat("dd.MM.yyyy");
+        return dFormat.format(user.getBirthdate());
         }
         else return "";
     }
