@@ -11,7 +11,7 @@ import java.util.LinkedList;
  * creation of such. It saves this data using the <code>XStreamAdapter</code>
  * class to XML files.
  *
- * @author Henner, Tobias
+ * @author Henner
  * @inv self.xStreamer != null
  */
 public class Database {
@@ -50,8 +50,6 @@ public class Database {
 
     private String topGenreName = "topGenre";
 
-    private User loggedInUser;
-    
     /**
      * Private constructor called by the first call of
      * <code>getInstance()</code>. This creates the <code>Database</code> object
@@ -63,7 +61,7 @@ public class Database {
         if (xStreamer == null) {
             xStreamer = new XStreamAdapter();
         }
-        this.load();
+        load();
         // No data loaded? Create empty lists and add the default stuff.
         if (data == null) {
             initializeDatabase();
@@ -126,7 +124,6 @@ public class Database {
      * Save and export all current data using <code>XStreamAdapter</code>.
      */
     public void save() {
-        System.out.println("saving");
         xStreamer.save(data);
     }
 
@@ -152,7 +149,6 @@ public class Database {
         ratings = data[7];
         applications = data[8];
         genres = data[9];
-        System.out.println("loading");
     }
     
     /**
@@ -533,13 +529,5 @@ public class Database {
     
     public Genre getTopGenre(){
         return this.genres.get(0);
-    }
-   
-    public User getLoggedInUser() {
-        return this.loggedInUser;
-    }
-    
-    public void setLoggedInUser(User user) {
-        this.loggedInUser = user;
     }
 }

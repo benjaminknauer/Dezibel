@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.TreeSet;
+import java.util.Vector;
 
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
@@ -206,8 +207,11 @@ public class SearchPanel extends DragablePanel {
                                 .addComponent(tfSearch, 32, 32, 32)
                                 .addComponent(cbFilter, 32, 32, 32)
                                 .addComponent(bnSearch, 32, 32, 32))
+                        .addGroup(layout.createParallelGroup()
                                 .addComponent(pnSorting)
-                                .addComponent(tablePanel))
+                                .addGap(128, 128, 128)))
+                .addGroup(layout.createParallelGroup()
+                        .addComponent(tablePanel))
         );
         this.setLayout(layout);
     }
@@ -277,13 +281,12 @@ public class SearchPanel extends DragablePanel {
                         columnIdentifier = new String[]{"Title"};
                         result = searchcontrol.searchForPlaylists(tfSearch.getText(), 0);
                         break;
+                };
+                if(model != null) {
+                    model.getDataVector().clear();
+                    
+                    
                 }
-                
-                /*                if(model != null) {
-                model.getDataVector().clear();
-                    
-                    
-                }*/
                 
 
             }
