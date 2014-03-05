@@ -7,9 +7,9 @@
 package de.dezibel.data;
 
 import java.util.LinkedList;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *

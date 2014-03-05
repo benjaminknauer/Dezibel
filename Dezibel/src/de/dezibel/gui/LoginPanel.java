@@ -49,15 +49,8 @@ public class LoginPanel extends DragablePanel {
 
     public LoginPanel(DezibelPanel parent) {
         super(parent);
-        ImageIcon logoIcon;
-        File logoFile;
-        try {
-            Image logoImage = ImageIO.read(this.getClass().getResourceAsStream("/img/logo.png"));
-            logoIcon = new ImageIcon(logoImage);
-        } catch (IOException ex) {
-            logoIcon = null;
-            System.out.println("error during logoloading");
-        }
+        ImageIcon logoIcon = new ImageIcon(this.getClass().getResource("/img/logo.png"));
+
         labelLogo = new JLabel(logoIcon);
         pnLoginPanel = new JPanel();
         labelMail = new JLabel("Mail:");

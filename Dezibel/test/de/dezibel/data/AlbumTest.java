@@ -10,7 +10,6 @@ import de.dezibel.io.ImageLoader;
 import java.util.Date;
 import java.util.LinkedList;
 import org.junit.After;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -41,7 +40,7 @@ public class AlbumTest{
         publisher = new Label(loggedUser, "Regular Music Group");
         albumTest = new Album(medium1, "First", publisher);       
         imageloader = new ImageLoader();
-        mediaList = new LinkedList<Medium>();
+        mediaList = new LinkedList<>();
         testComment1 = new Comment("Hey Hey", albumTest, loggedUser);
         testComment2 = new Comment("Lalala", albumTest, loggedUser);
         Database.getInstance().addUser("pet_mart@gmail.com", "Peter", "Martinez","777", new Date(1991, 8, 3), "Münster", "Deutschland", true);
@@ -64,7 +63,7 @@ public class AlbumTest{
     @Test
     public void testUploadCover() {
         System.out.println("uploadCover");
-        String path = "C:/Users/Tristan/Pictures/asdf.jpg";
+        String path = this.getClass().getResource("img/testcover.jpg").toString();
         ErrorCode expResult = ErrorCode.SUCCESS;
         ErrorCode result = albumTest.uploadCover(path);
         albumTest.getCover().equals(imageloader.getImage(path));

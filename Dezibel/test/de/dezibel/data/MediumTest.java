@@ -55,7 +55,7 @@ public class MediumTest {
     @Test
     public void testUpload() {
         System.out.println("upload");
-        String path = "/Users/Benny/DJ Musik/Alternative/123.mp3";
+        String path = this.getClass().getResource("mp3/testmp3.mp3").toString();
         ErrorCode expResult = ErrorCode.SUCCESS;
         ErrorCode result = instance.upload(path);
         assertEquals(expResult, result);
@@ -84,7 +84,7 @@ public class MediumTest {
         boolean result = instance.isMediumSet();
         assertEquals(expResult, result);
         
-        instance.upload("/Users/Benny/DJ Musik/Alternative/123.mp3");
+        instance.upload(this.getClass().getResource("mp3/testmp3.mp3").toString());
         expResult = true;
         result = instance.isMediumSet();
         assertEquals(expResult, result);   

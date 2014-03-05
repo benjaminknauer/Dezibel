@@ -2,9 +2,9 @@ package de.dezibel.data;
 
 import java.io.File;
 import java.util.Date;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * Tests the Database class.
