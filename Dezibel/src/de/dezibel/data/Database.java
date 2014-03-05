@@ -1,6 +1,7 @@
 package de.dezibel.data;
 
 import de.dezibel.ErrorCode;
+import de.dezibel.control.HashGenerator;
 import de.dezibel.io.XStreamAdapter;
 import java.util.Date;
 import java.util.LinkedList;
@@ -123,7 +124,7 @@ public class Database {
         
         // TODO Entfernen: Testdaten (Tobias, Richard)
 //        this.addUser("richard-schulze@online.de", "Richard", "Schulze",
-//                new HashGenerator().hash("1"), new Date(), "Münster", "Deutschland", true);
+//                new HashGenerator().hash("1"), new Date(), "Muenster", "Deutschland", true);
 //        User u = this.getUsers().get(this.getUsers().size() - 1);
 //        u.setPseudonym("DVBBS & Borgeous");
 //        this.addMedium("Tsunami", u, "C:\\DVBBS & Borgeous - Tsunami.mp3", this.getTopGenre(), null, null);

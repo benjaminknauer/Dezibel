@@ -10,8 +10,8 @@ import de.dezibel.data.Medium;
 public interface PlayerObserver {
 
     /**
-     * Gets called if the track changes
+     * Gets called if the state changes
      * @param newMedium The new medium that plays
      */
-    public void onTrackChanged(Medium newMedium);
+    public void onStateChanged(Medium newMedium);
 }
