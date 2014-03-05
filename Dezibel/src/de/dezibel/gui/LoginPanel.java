@@ -1,11 +1,26 @@
 package de.dezibel.gui;
 
+import com.sun.corba.se.spi.orbutil.fsm.Input;
 import de.dezibel.control.LoginControl;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -22,6 +37,7 @@ public class LoginPanel extends DragablePanel {
 
     private static final long serialVersionUID = 1L;
     private JPanel pnLoginPanel;
+    private JLabel labelLogo;
     private JLabel labelMail;
     private JLabel labelPassword;
     private JTextField tfMail;
@@ -33,7 +49,16 @@ public class LoginPanel extends DragablePanel {
 
     public LoginPanel(DezibelPanel parent) {
         super(parent);
-
+        ImageIcon logoIcon;
+        File logoFile;
+        try {
+            Image logoImage = ImageIO.read(this.getClass().getResourceAsStream("/img/logo.png"));
+            logoIcon = new ImageIcon(logoImage);
+        } catch (IOException ex) {
+            logoIcon = null;
+            System.out.println("error during logoloading");
+        }
+        labelLogo = new JLabel(logoIcon);
         pnLoginPanel = new JPanel();
         labelMail = new JLabel("Mail:");
         labelPassword = new JLabel("Passwort:");
@@ -107,8 +132,19 @@ public class LoginPanel extends DragablePanel {
         layout.setAutoCreateContainerGaps(true);
         layout.setAutoCreateGaps(true);
         pnLoginPanel.setLayout(layout);
+        pnLoginPanel.setOpaque(false);
         this.setLayout(new GridBagLayout());
-        this.add(pnLoginPanel);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.ipady = 100;
+        this.add(labelLogo, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        this.add(pnLoginPanel, gbc);
+        
+        this.setBackground(new Color(239, 239, 239));
+        this.setBorder(null);
     }
 
     private void onLogin() {
