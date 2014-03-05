@@ -5,6 +5,7 @@ import de.dezibel.data.User;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,11 +17,13 @@ import java.util.logging.Logger;
  */
 public class ProfileControl {
     
-    Database db;
+    public User getLoggedInUser(){
+        return Database.getInstance().getLoggedInUser();
+    }
     
     // Display and edit profile data
     public boolean belongsToLoggedUser(User user){
-        return db.getLoggedInUser().equals(user);
+        return Database.getInstance().getLoggedInUser().equals(user);
     }
     
     public String getFirstName(User user){
@@ -161,5 +164,9 @@ public class ProfileControl {
         }
     }
     
+    // Display and Edit Followers
     
+    public LinkedList<String> getFollowers(User user){
+        return null;
+    }
 }
