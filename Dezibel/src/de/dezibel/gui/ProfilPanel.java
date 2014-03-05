@@ -13,6 +13,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -39,7 +40,7 @@ public class ProfilPanel extends DragablePanel {
     private JTextField tfLastName;
     private JTextField tfRole;
     private JTextField tfPseudonym;
-    private JTextField tfGender;
+    private JComboBox<String> tfGender;
     private JTextField tfEmail;
     private JTextField tfBirthDate;
     private JTextField tfCity;
@@ -113,7 +114,8 @@ public class ProfilPanel extends DragablePanel {
         //tfRole.setText(controler.getRole(currentUser));
         tfPseudonym = new JTextField(25);       
         //tfPseudonym.setText(controler.getPseudonym(currentUser));
-        tfGender = new JTextField(25);       
+        String[] items = {"männlich", "weiblich"}; 
+        tfGender = new JComboBox<>(items);
         //tfGender.setText(controler.getGender(currentUser));
         tfEmail = new JTextField(25);       
         //tfEmail.setText(controler.getEmail(currentUser));
@@ -132,6 +134,15 @@ public class ProfilPanel extends DragablePanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(tfFirstName.isEnabled()){
+//                controler.setFirstName(currentUser, tfFirstName.getText());
+//                controler.setLastName(currentUser, tfLastName.getText());
+//                controler.setPseudonym(currentUser, tfPseudonym.getText());
+//                controler.setGender(currentUser, tfGender.getSelectedItem().toString());
+//                controler.setEmail(currentUser, tfEmail.getText());
+//                controler.setBirthDate(currentUser, tfBirthDate.getText());
+//                controler.setCity(currentUser, tfCity.getText());
+//                controler.setCountry(currentUser, tfCountry.getText());
+//                controler.setAboutMe(currentUser, tfAboutMe.getText());
                 setProfileTextfieldsEditable(false);
                 } else{
                     setProfileTextfieldsEditable(true);
@@ -182,7 +193,7 @@ public class ProfilPanel extends DragablePanel {
     private void setProfileTextfieldsEditable(boolean enabled){
         tfFirstName.setEnabled(enabled);     
         tfLastName.setEnabled(enabled);       
-        tfRole.setEnabled(enabled);         
+        tfRole.setEnabled(false);  // Role is not editable        
         tfPseudonym.setEnabled(enabled);        
         tfGender.setEnabled(enabled);         
         tfEmail.setEnabled(enabled);      

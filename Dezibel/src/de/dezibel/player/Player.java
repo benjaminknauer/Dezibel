@@ -56,6 +56,7 @@ public class Player {
             createPlayer(this.currentPlaylist.get(this.currentPosition));
         }
         this.player.play();
+        notifyObserver(this.currentPlaylist.get(this.currentPosition));
     }
 
     /**
@@ -65,6 +66,7 @@ public class Player {
     public void pause() {
         if (this.player != null) {
             this.player.pause();
+            notifyObserver(this.currentPlaylist.get(this.currentPosition));
         }
     }
 
@@ -77,6 +79,7 @@ public class Player {
             this.player.stop();
             this.currentPosition = 0;
             this.createPlayer(this.currentPlaylist.get(this.currentPosition));
+            notifyObserver(this.currentPlaylist.get(this.currentPosition));
         }
     }
 
@@ -155,9 +158,10 @@ public class Player {
             this.player.setVolume(volume / 100.0);
         }
     }
-    
+
     /**
      * Returns the total duration of the current song in seconds.
+     *
      * @return The duration in seconds
      */
     public int getTotalDuration() {
@@ -167,10 +171,11 @@ public class Player {
             return (int) Math.round(this.player.getStopTime().toSeconds());
         }
     }
-    
+
     /**
      * Returns the already played time of the media in seconds.
-     * @return  The played time in seconds
+     *
+     * @return The played time in seconds
      */
     public int getCurrentTime() {
         if (this.player == null) {
@@ -201,7 +206,7 @@ public class Player {
             return this.currentPlaylist.get(this.currentPosition);
         }
     }
-    
+
     /**
      * Sets the currentMedia
      *
@@ -316,10 +321,19 @@ public class Player {
             }
         });
         this.player = tmpPlayer;
-        
+
+        notifyObserver(medium);
+    }
+
+    /**
+     * Notifies all observers.
+     *
+     * @param medium The currently playing medium
+     */
+    private void notifyObserver(Medium medium) {
         // Notify observer
         for (PlayerObserver o : observer) {
-            o.onTrackChanged(medium);
+            o.onStateChanged(medium);
         }
     }
 

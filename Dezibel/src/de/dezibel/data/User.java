@@ -34,9 +34,12 @@ public class User implements Lockable {
     private LinkedList<News> newsList;
     private LinkedList<Application> sentApplications;
     private LinkedList<Medium> createdMediums;
+    private LinkedList<Medium> favorizedMediums;
     private LinkedList<Playlist> createdPlaylists;
+    private LinkedList<Playlist> favorizedPlaylists;
     private LinkedList<Comment> createdComments;
     private LinkedList<Album> createdAlbums;
+    private LinkedList<Album> favorizedAlbums;
 
     /**
      * Class Constructor for user which creates a user with the minimum datas
@@ -64,9 +67,12 @@ public class User implements Lockable {
         newsList = new LinkedList<News>();
         sentApplications = new LinkedList<Application>();
         createdMediums = new LinkedList<Medium>();
+        favorizedMediums = new LinkedList<Medium>();
         createdPlaylists = new LinkedList<Playlist>();
+        favorizedPlaylists = new LinkedList<Playlist>();
         createdComments = new LinkedList<Comment>();
-        createdAlbums = new LinkedList<>();
+        createdAlbums = new LinkedList<Album>();
+        favorizedAlbums = new LinkedList<Album>();
     }
 
     // TODO: Mails in notify methoden versenden.
@@ -271,6 +277,71 @@ public class User implements Lockable {
         }
     }
 
+    /**
+     * Adds a new favorized playlist to the users list of favorite playlists.
+     * 
+     * @param favPL new favorized playlist
+     */
+    public void addFavoritePlaylist(Playlist favPL) {
+        if(!(this.favorizedPlaylists.contains(favPL))){
+            this.favorizedPlaylists.add(favPL);
+        }
+    }
+    
+    /**
+     * Removes playlist from the users list of favorite playlists.
+     * 
+     * @param favPL favorized playlist
+     */
+    public void removeFavoritePlaylist(Playlist favPL){
+        if (this.favorizedPlaylists.contains(favPL)){
+            this.favorizedPlaylists.remove(favPL);
+        }
+    }
+    
+    /**
+     * Adds a new favorized album to the users list of favorite albums.
+     * 
+     * @param favAlbum new favorized album
+     */
+    public void addFavoriteAlbum(Album favAlbum){
+        if(!(this.favorizedAlbums.contains(favAlbum))){
+            this.favorizedAlbums.add(favAlbum);
+        }
+    }
+    
+    /**
+     * Removes album from the users list of favorite albums.
+     * 
+     * @param favAlbum favorized album
+     */
+    public void removeFavoriteAlbum(Album favAlbum){
+        if(this.favorizedAlbums.contains(favAlbum)){
+            this.favorizedAlbums.remove(favAlbum);
+        }
+    }
+    
+    /**
+     * Adds a new favorized medium to the users list of favorite mediums.
+     * 
+     * @param favMedium new favorized medium
+     */
+    public void addFavoriteMedium(Medium favMedium){
+        if(!(this.favorizedMediums.contains(favMedium))){
+            this.favorizedMediums.add(favMedium);
+        }
+    }
+    
+    /**
+     * Removes medium from the users list of favorite mediums.
+     * 
+     * @param favMedium favorized medium
+     */
+    public void removeFavoriteMedium(Medium favMedium){
+        if(this.favorizedMediums.contains(favMedium)){
+            this.favorizedMediums.remove(favMedium);
+        }
+    }
     /**
      * Adds a news to the list of news the user created.
      *
@@ -557,47 +628,58 @@ public class User implements Lockable {
     }
 
     public LinkedList<User> getFavoriteUsers() {
-        return (LinkedList<User>) favoriteUsers.clone();
+        return (LinkedList<User>) this.favoriteUsers.clone();
     }
 
     public LinkedList<Label> getFavoriteLabels() {
-        return (LinkedList<Label>) favoriteLabels.clone();
+        return (LinkedList<Label>) this.favoriteLabels.clone();
     }
 
     public LinkedList<User> getFollowers() {
-        return (LinkedList<User>) followers.clone();
+        return (LinkedList<User>) this.followers.clone();
     }
 
     public LinkedList<Label> getManagedLabels() {
-        return (LinkedList<Label>) managedLabels.clone();
+        return (LinkedList<Label>) this.managedLabels.clone();
     }
 
     public LinkedList<Label> getPublishingLabels() {
-        return (LinkedList<Label>) publishingLabels.clone();
+        return (LinkedList<Label>) this.publishingLabels.clone();
     }
 
     public LinkedList<News> getNews() {
-        return (LinkedList<News>) newsList.clone();
+        return (LinkedList<News>) this.newsList.clone();
     }
 
     public LinkedList<Application> getApplications() {
-        return (LinkedList<Application>) sentApplications.clone();
+        return (LinkedList<Application>) this.sentApplications.clone();
     }
 
     public LinkedList<Medium> getCreatedMediums() {
-        return (LinkedList<Medium>) createdMediums.clone();
+        return (LinkedList<Medium>) this.createdMediums.clone();
     }
 
     public LinkedList<Playlist> getCreatedPlaylists() {
-        return (LinkedList<Playlist>) createdPlaylists.clone();
+        return (LinkedList<Playlist>) this.createdPlaylists.clone();
     }
 
     public LinkedList<Comment> getCreatedComments() {
-        return (LinkedList<Comment>) createdComments.clone();
+        return (LinkedList<Comment>) this.createdComments.clone();
     }
 
     public LinkedList<Album> getCreatedAlbums() {
-        return (LinkedList<Album>) createdAlbums.clone();
+        return (LinkedList<Album>) this.createdAlbums.clone();
     }
 
+    public LinkedList<Playlist> getFavoritePlaylists(){
+        return (LinkedList<Playlist>) this.favorizedPlaylists.clone();
+    }
+    
+    public LinkedList<Album> getFavoriteAlbums(){
+        return (LinkedList<Album>) this.favorizedAlbums.clone();
+    }
+    
+    public LinkedList<Medium> getFavoriteMediums(){
+        return (LinkedList<Medium>) this.favorizedMediums.clone();
+    }
 }

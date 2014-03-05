@@ -38,12 +38,12 @@ public class PlayerPanel extends DragablePanel {
      */
     private void init() {
         // Add title label
-        final JLabel lblTitle = new JLabel("Interpret - Titel");
+        final JLabel lblTitle = new JLabel();
 
         // Add seeker
-        final JLabel lblElapsedTime = new JLabel("2:20");
+        final JLabel lblElapsedTime = new JLabel();
         final JSlider slider = new JSlider(0, 1000, 0);
-        final JLabel lblTimeLeft = new JLabel("3:40");
+        final JLabel lblTimeLeft = new JLabel();
 
         // Add Buttons und volume slider
         final JButton btnPrev = new JButton("prev");
@@ -146,10 +146,16 @@ public class PlayerPanel extends DragablePanel {
         
         this.player.addObserver(new PlayerObserver() {
             @Override
-            public void onTrackChanged(Medium newMedium) {
-                lblTitle.setText(newMedium.getArtist().getFirstname() + " - "
+            public void onStateChanged(Medium newMedium) {
+                lblTitle.setText(newMedium.getArtist().getPseudonym() + " - "
                         + newMedium.getTitle());
                 volume.setValue(player.getVolume());
+                // TODO btnPlayPause wird nicht richtig aktualisiert
+                if (player.isPlaying()) {
+                    btnPlayPause.setText("Pause");
+                } else {
+                    btnPlayPause.setText("Play");
+                }
             }
         });
         volume.addChangeListener(new ChangeListener() {
@@ -181,7 +187,6 @@ public class PlayerPanel extends DragablePanel {
                         lblTimeLeft.setText("-" + minutes + ":" + (seconds < 10?"0" + seconds:seconds));
                         
                         slider.setValue((int)(((double)player.getCurrentTime()/(double)player.getTotalDuration())*1000));
-                        System.out.println((int)(((double)player.getCurrentTime()/(double)player.getTotalDuration())*1000));
                     }
                     try {
                         Thread.sleep(500);
