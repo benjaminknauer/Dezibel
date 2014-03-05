@@ -1,6 +1,8 @@
 package de.dezibel.gui;
 
+import de.dezibel.control.ProfileControl;
 import de.dezibel.data.Label;
+import de.dezibel.data.User;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
@@ -20,6 +22,9 @@ import javax.swing.tree.DefaultTreeCellEditor;
 public class ProfilPanel extends DragablePanel {
 
     private static final long serialVersionUID = 1L;
+    private ProfileControl controler;
+    private User currentUser;
+    
     private JTabbedPane tabPanel;
     private JPanel pnProfile;
     private JPanel pnUploads;
@@ -53,6 +58,9 @@ public class ProfilPanel extends DragablePanel {
         BorderLayout layout = new BorderLayout();
         this.setLayout(layout);
         this.add(tabPanel, BorderLayout.CENTER);
+        
+        this.controler = new ProfileControl();
+        this.currentUser = controler.getLoggedInUser();
     }
 
     /**
@@ -97,16 +105,26 @@ public class ProfilPanel extends DragablePanel {
         JLabel lbCountry = new JLabel("Land:");
         JLabel lbAboutMe = new JLabel("Über mich:");
         
-        tfFirstName = new JTextField(25);       
+        tfFirstName = new JTextField(25);
+        // tfFirstName.setText(controler.getFirstName(currentUser));
         tfLastName = new JTextField(25);       
+        // tfLastName.setText(controler.getLastName(currentUser));  
         tfRole = new JTextField(25);       
+        //tfRole.setText(controler.getRole(currentUser));
         tfPseudonym = new JTextField(25);       
+        //tfPseudonym.setText(controler.getPseudonym(currentUser));
         tfGender = new JTextField(25);       
+        //tfGender.setText(controler.getGender(currentUser));
         tfEmail = new JTextField(25);       
+        //tfEmail.setText(controler.getEmail(currentUser));
         tfBirthDate = new JTextField(25);       
+        //tfBirthDate.setText(controler.getBirthDate(currentUser));
         tfCity = new JTextField(25);       
+        //tfCity.setText(controler.getCity(currentUser));
         tfCountry = new JTextField(25);       
+        //tfCountry.setText(controler.getCountry(currentUser));
         tfAboutMe = new JTextField(25);
+        //tfAboutMe.setText(controler.getAboutMe(currentUser));
         
         JButton btnEdit = new JButton("Bearbeiten");
         btnEdit.addActionListener(new ActionListener() {
