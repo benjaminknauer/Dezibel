@@ -16,7 +16,7 @@ import java.util.Iterator;
  */
 public class Medium implements Commentable, Lockable {
 
-    private static MediumLoader mediumLoader;
+    private static MediumLoader mediumLoader = new MediumLoader();
     private String path;
     private String title;
     private Album album;
@@ -51,10 +51,6 @@ public class Medium implements Commentable, Lockable {
         this.ratingList = new HashMap<>();
         this.commentList = new LinkedList<>();
         this.playlistList = new LinkedList<>();
-
-        if (mediumLoader == null) {
-            mediumLoader = new MediumLoader();
-        }
 
         if (path != null) {
             this.upload(path);

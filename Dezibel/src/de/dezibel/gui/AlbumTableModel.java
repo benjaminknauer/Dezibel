@@ -1,22 +1,20 @@
 package de.dezibel.gui;
 
+import de.dezibel.data.Album;
 import de.dezibel.data.Medium;
-import java.util.Date;
 import java.util.LinkedList;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Shows the information of media in the searchpanel.
+ * Shows the information of albums in the searchpanel.
  * @author Richard, Tobias
  */
-public class MediaTableModel extends DefaultTableModel {
+public class AlbumTableModel extends DefaultTableModel {
 
-    private String[] headlines = new String[]{"Künstler", "Titel", "Album", 
-        "Genre", "Uploaddatum", "Bewertung"};
-    private Class<?>[] columnTypes = new Class<?>[]{String.class, String.class,
-        String.class, String.class, Date.class, Double.class};
+    private String[] headlines = new String[]{"Titel"};
+    private Class<?>[] columnTypes = new Class<?>[]{String.class};
 
-    private Medium[] data;
+    private Album[] data;
 
     @Override
     public int getColumnCount() {
@@ -45,25 +43,10 @@ public class MediaTableModel extends DefaultTableModel {
     @Override
     public Object getValueAt(int row, int col) {
         if (data != null && row >= 0 && row < data.length) {
-            Medium m = data[row];
+            Album a = data[row];
             switch (col) {
-                case -1:
-                    return m;
                 case 0:
-                    return m.getArtist().getPseudonym();
-                case 1:
-                    return m.getTitle();
-                case 2:
-                    if (m.getAlbum() != null) return m.getAlbum().getTitle();
-                    else return "";
-                case 3:
-                    if (m.getGenre() != null) return m.getGenre().getName();
-                    else return "";
-                case 4:
-                    return m.getUploadDate();
-                case 5:
-                    // Round to 2 digits
-                    return Math.round(m.getAvgRating() * 100) / 100;
+                    return a.getTitle();
             }
         }
 	return null;
@@ -82,7 +65,7 @@ public class MediaTableModel extends DefaultTableModel {
         if (data == null) {
             this.data = null;
         } else {
-            this.data = new Medium[data.size()];
+            this.data = new Album[data.size()];
             data.toArray(this.data);
         }
         fireTableDataChanged();

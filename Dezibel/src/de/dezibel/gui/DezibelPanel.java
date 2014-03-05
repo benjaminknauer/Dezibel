@@ -23,6 +23,9 @@ import com.javadocking.model.FloatDockModel;
 import com.javadocking.visualizer.FloatExternalizer;
 import com.javadocking.visualizer.LineMinimizer;
 import com.javadocking.visualizer.SingleMaximizer;
+import de.dezibel.control.SaveControl;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * This is the main class of our UI. It uses a docking library, called "Sanaware
@@ -32,7 +35,7 @@ import com.javadocking.visualizer.SingleMaximizer;
  * for the music. If it is docked to the center there will be displayed a
  * playlist.
  *
- * @author Pascal
+ * @author Pascal, Tobias, Richard
  *
  */
 public class DezibelPanel extends JPanel {
@@ -64,6 +67,7 @@ public class DezibelPanel extends JPanel {
     // We uses a LineDock at the bottom,top,left and right where all panels can be docked to.
     // Except some panels, like players where only can be docked at the bottom, center or top.
     // Any panel can be dragged to the center where the panel will be docked and shows extra information 
+    private BorderDock borderDock;
     private LineDock leftLineDock;
     private LineDock rightLineDock;
     private SingleDock centerDock;
@@ -76,6 +80,16 @@ public class DezibelPanel extends JPanel {
     public DezibelPanel(JFrame frame) {
         super(new BorderLayout());
 
+        frame.addWindowListener(new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                SaveControl saveControl = new SaveControl();
+                saveControl.save();
+            }
+            });
+        
+        
         // Create the dock model for the docks.
         FloatDockModel dockModel = new FloatDockModel();
         dockModel.addOwner("dezibel", frame);
@@ -86,8 +100,7 @@ public class DezibelPanel extends JPanel {
         // Create the content components.
         pnLogin = new LoginPanel(this);
         pnRegister = new RegistrationPanel(this);
-        // pnPlayer = new PlayerPanel();
-        pnPlayer = new DragablePanel(this);
+        pnPlayer = new PlayerPanel(this);
         pnNews = new DragablePanel(this);
         pnAds = new DragablePanel(this);
         pnMyList = new DragablePanel(this);
@@ -118,8 +131,7 @@ public class DezibelPanel extends JPanel {
 
         // Panels that can be docked only at top/bottom and center
         daPlayer = new DefaultDockable("pnPlayer", pnPlayer, "Player", null,
-                DockingMode.CENTER + DockingMode.SINGLE + DockingMode.FLOAT
-                + DockingMode.BOTTOM + DockingMode.TOP);
+                DockingMode.CENTER + DockingMode.SINGLE + DockingMode.BOTTOM + DockingMode.TOP +DockingMode.HORIZONTAL_LINE);
         daProfil = new DefaultDockable("pnProfil", pnProfil, "Profil", null,
                 DockingMode.CENTER + DockingMode.SINGLE);
 
@@ -129,11 +141,11 @@ public class DezibelPanel extends JPanel {
         // Add actions to the dockables.
         daLogin = addActions(daLogin);
         daRegister = addActions(daRegister);
-        daPlayer = addActions(daPlayer);
-        daNews = addActions(daNews);
-        daAds = addActions(daAds);
-        daMyLists = addActions(daMyLists);
-        daFavorites = addActions(daFavorites);
+        daPlayer = addActionsWithCloseExt(daPlayer);
+        daNews = addActionsWithClose(daNews);
+        daAds = addActionsWithClose(daAds);
+        daMyLists = addActionsWithClose(daMyLists);
+        daFavorites = addActionsWithClose(daFavorites);
 
         // Create the child tab dock.
         leftLineDock = new LineDock();
@@ -145,7 +157,7 @@ public class DezibelPanel extends JPanel {
         this.addSideCenterListener();
         this.addTopBottomCenterListener();
 
-        BorderDock borderDock = new BorderDock();
+        borderDock = new BorderDock();
         borderDock.addChildDock(leftLineDock, new Position(Position.LEFT));
         borderDock.addChildDock(rightLineDock, new Position(Position.RIGHT));
         borderDock.addChildDock(centerDock, new Position(Position.CENTER));
@@ -166,7 +178,8 @@ public class DezibelPanel extends JPanel {
 
         // Add the maximizer to the panel.
         this.add(maximizer, BorderLayout.CENTER);
-        this.showLogin();
+        //this.showLogin();
+        this.showWorkspace();
     }
 
     /**
@@ -180,6 +193,20 @@ public class DezibelPanel extends JPanel {
     private Dockable addActions(Dockable dockable) {
         //int[] states = { DockableState.NORMAL, DockableState.MINIMIZED };
         int[] states = {DockableState.NORMAL};
+        Dockable wrapper = new StateActionDockable(dockable, new DefaultDockableStateActionFactory(), states);
+        return wrapper;
+    }
+    
+    private Dockable addActionsWithClose(Dockable dockable) {
+        //int[] states = { DockableState.NORMAL, DockableState.MINIMIZED };
+        int[] states = {DockableState.NORMAL,DockableState.CLOSED};
+        Dockable wrapper = new StateActionDockable(dockable, new DefaultDockableStateActionFactory(), states);
+        return wrapper;
+    }
+    
+    private Dockable addActionsWithCloseExt(Dockable dockable) {
+        //int[] states = { DockableState.NORMAL, DockableState.MINIMIZED };
+        int[] states = {DockableState.NORMAL,DockableState.CLOSED,DockableState.EXTERNALIZED};
         Dockable wrapper = new StateActionDockable(dockable, new DefaultDockableStateActionFactory(), states);
         return wrapper;
     }
@@ -337,6 +364,10 @@ public class DezibelPanel extends JPanel {
         this.showSidebars();
         //this.centerDock.addDockable(this.daProfil, new Position(0));
         this.centerDock.addDockable(this.daSearch, new Position(0));
+        LineDock bottomDock = new LineDock();
+        bottomDock.setOrientation(LineDock.ORIENTATION_HORIZONTAL);
+        bottomDock.addDockable(this.daPlayer, new Position(0));
+        this.borderDock.addChildDock(bottomDock, new Position(Position.BOTTOM));
     }
 
     /**

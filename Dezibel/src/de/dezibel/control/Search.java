@@ -1,14 +1,14 @@
 package de.dezibel.control;
 
+import de.dezibel.data.Album;
 import de.dezibel.data.Database;
 import de.dezibel.data.Label;
 import de.dezibel.data.Medium;
-import de.dezibel.data.Playlist;
 import de.dezibel.data.User;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.TreeSet;
 
 /**
  * Is able to search for different kind of data and return all sorted hits
@@ -25,9 +25,9 @@ public class Search {
      * Search all media for the searchTerm and returns all sorted hits
      * @param searchTerm The term to search for
      * @param sorting indicates how the result should be sorted
-     * @return sorted TreeSet
+     * @return sorted LinkedList
      */
-    public TreeSet<Medium> searchForMedia(String searchTerm, int sorting) {
+    public LinkedList<Medium> searchForMedia(String searchTerm, int sorting) {
         searchTerm = searchTerm.toLowerCase();
         LinkedList<Medium> media = Database.getInstance().getMedia();
         Comparator c;
@@ -45,7 +45,7 @@ public class Search {
                 c = new MediumNameComparator();
                 break;
         }
-        TreeSet<Medium> result = new TreeSet<>(c);
+        LinkedList<Medium> result = new LinkedList<>();
         Iterator<Medium> it = media.iterator();
         while (it.hasNext()) {
             Medium tmp = it.next();
@@ -59,13 +59,14 @@ public class Search {
                 result.add(tmp);
                 continue;
             }
-//            if(tmp.getAlbum().getTitle().toLowerCase().contains(searchTerm)) {
-//                result.add(tmp);
-//                continue;
-//            }
+            if(tmp.getAlbum() != null && tmp.getAlbum().getTitle().toLowerCase().contains(searchTerm)) {
+                result.add(tmp);
+                continue;
+            }
             if(tmp.getGenre().getName().toLowerCase().contains(searchTerm))
                 result.add(tmp);
         }
+        Collections.sort(result, c);
         return result;
 
     }
@@ -74,9 +75,9 @@ public class Search {
      * Search all Users for the searchTerm and returns all sorted hits
      * @param searchTerm The term to search for
      * @param sorting indicates how the result should be sorted
-     * @return sorted TreeSet
+     * @return sorted LinkedList
      */
-    public TreeSet<User> searchForUsers(String searchTerm, int sorting) {
+    public LinkedList<User> searchForUsers(String searchTerm, int sorting) {
         searchTerm = searchTerm.toLowerCase();
         LinkedList<User> users = Database.getInstance().getUsers();
         Comparator c;
@@ -88,7 +89,7 @@ public class Search {
                 c = new UserNameComparator();
                 break;
         }
-        TreeSet<User> result = new TreeSet<>(c);
+        LinkedList<User> result = new LinkedList<>();
         Iterator<User> it = users.iterator();
         while (it.hasNext()) {
             User tmp = it.next();
@@ -102,15 +103,15 @@ public class Search {
                 result.add(tmp);
                 continue;
             }
-            if(tmp.getPseudonym().toLowerCase().contains(searchTerm)) {
+            if(tmp.getPseudonym() != null && tmp.getPseudonym().toLowerCase().contains(searchTerm)) {
                 result.add(tmp);
                 continue;
             }
-            if(tmp.getCity().toLowerCase().contains(searchTerm)) {
+            if(tmp.getCity() != null && tmp.getCity().toLowerCase().contains(searchTerm)) {
                 result.add(tmp);
                 continue;
             }
-            if(tmp.getCountry().toLowerCase().contains(searchTerm)) {
+            if(tmp.getCountry() != null && tmp.getCountry().toLowerCase().contains(searchTerm)) {
                 result.add(tmp);
                 continue;
             }
@@ -118,9 +119,10 @@ public class Search {
                 result.add(tmp);
                 continue;
             }
-            if(tmp.getDescription().toLowerCase().contains(searchTerm))
+            if(tmp.getDescription() != null && tmp.getDescription().toLowerCase().contains(searchTerm))
                 result.add(tmp);
         }
+        Collections.sort(result, c);
         return result;
     }
 
@@ -128,9 +130,9 @@ public class Search {
      * Search all labels for the searchTerm and returns all sorted hits
      * @param searchTerm The term to search for
      * @param sorting indicates how the result should be sorted
-     * @return sorted TreeSet
+     * @return sorted LinkedList
      */
-    public TreeSet<Label> searchForLabels(String searchTerm, int sorting) {
+    public LinkedList<Label> searchForLabels(String searchTerm, int sorting) {
         searchTerm = searchTerm.toLowerCase();
         LinkedList<Label> labels = Database.getInstance().getLabels();
         Comparator c;
@@ -142,7 +144,7 @@ public class Search {
                 c = new LabelNameComparator();
                 break;
         }
-        TreeSet<Label> result = new TreeSet<>(c);
+        LinkedList<Label> result = new LinkedList<>();
         Iterator<Label> it = labels.iterator();
         while (it.hasNext()) {
             Label tmp = it.next();
@@ -151,34 +153,36 @@ public class Search {
             if(tmp.getName().toLowerCase().contains(searchTerm))
                 result.add(tmp);
         }
+        Collections.sort(result, c);
         return result;
     }
 
     /**
-     * Search all playlists for the searchTerm and returns all sorted hits
+     * Search all albums for the searchTerm and returns all sorted hits
      * @param searchTerm The term to search for
      * @param sorting indicates how the result should be sorted
-     * @return sorted TreeSet
+     * @return sorted LinkedList
      */
-    public TreeSet<Playlist> searchForPlaylists(String searchTerm, int sorting) {
+    public LinkedList<Album> searchForAlbums(String searchTerm, int sorting) {
         searchTerm = searchTerm.toLowerCase();
-        LinkedList<Playlist> playlists = Database.getInstance().getPlaylists();
+        LinkedList<Album> albums = Database.getInstance().getAlbums();
         Comparator c;
         switch (sorting) {
             case alphabetical:
-                c = new LabelNameComparator();
+                c = new AlbumNameComparator();
                 break;
             default:
-                c = new LabelNameComparator();
+                c = new AlbumNameComparator();
                 break;
         }
-        TreeSet<Playlist> result = new TreeSet<>(c);
-        Iterator<Playlist> it = playlists.iterator();
+        LinkedList<Album> result = new LinkedList<>();
+        Iterator<Album> it = albums.iterator();
         while (it.hasNext()) {
-            Playlist tmp = it.next();
+            Album tmp = it.next();
             if(tmp.getTitle().toLowerCase().contains(searchTerm))
                 result.add(tmp);
         }
+        Collections.sort(result, c);
         return result;
     }
 }
