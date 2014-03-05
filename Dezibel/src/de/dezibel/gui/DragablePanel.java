@@ -8,20 +8,19 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import com.javadocking.dockable.DraggableContent;
 import com.javadocking.drag.DragListener;
-import javax.swing.JSlider;
 
 /**
  *
- * @author Tobias,Pascal
+ * @author Tobias,Pascal, Richard
  */
-public class DragablePanel extends JPanel implements DraggableContent{
+public class DragablePanel extends JPanel implements DraggableContent {
 
     private static final long serialVersionUID = 1L;
     protected DezibelPanel parent;
-    
+
     public DragablePanel(DezibelPanel parent) {
         super(new FlowLayout());
-        
+
         this.parent = parent;
         setMinimumSize(new Dimension(80, 80));
         setPreferredSize(new Dimension(150, 150));
@@ -35,23 +34,22 @@ public class DragablePanel extends JPanel implements DraggableContent{
         addMouseListener(dragListener);
         addMouseMotionListener(dragListener);
         for (Component c : getComponents()) {
-            if (!(c instanceof JSlider)) {
+            if (c instanceof JPanel) {
                 c.addMouseListener(dragListener);
                 c.addMouseMotionListener(dragListener);
             }
         }
     }
-    
-public void onTopBottom(){
-		System.out.println("Methode onTopBottom() von DragablePanel");
-	}
-	
-	
-	public void onLeftRight(){
-		System.out.println("Methode onLeftRight() von DragablePanel");
-	}
-	
-	public void onCenter(){
-		System.out.println("Methode onCenter() von DragablePanel");
-	} 
+
+    public void onTopBottom() {
+        System.out.println("Methode onTopBottom() von DragablePanel");
+    }
+
+    public void onLeftRight() {
+        System.out.println("Methode onLeftRight() von DragablePanel");
+    }
+
+    public void onCenter() {
+        System.out.println("Methode onCenter() von DragablePanel");
+    }
 }
