@@ -43,6 +43,15 @@ public class ProfileControl {
         return Database.getInstance().getLoggedInUser().equals(user);
     }
     
+    /**
+     * 
+     * @param user
+     * @param title
+     * @param filepath 
+     */
+    public void createMedium(User user, String title, String filepath){
+        Database.getInstance().addMedium(title, user, filepath, null, null, null);
+    }
     
     // Control for profile tab
     
@@ -353,6 +362,17 @@ public class ProfileControl {
     // Control for upload tab
     
     /**
+     * Creates a new playlist with one medium and a title for the given user.
+     * 
+     * @param medium first medium of the playlist
+     * @param user user the profile belongs to
+     * @param title title of the playlist
+     */
+    public void createPlaylist(Medium medium, User user, String title){
+        Database.getInstance().addPlaylist(medium, title, user);
+    }
+    
+    /**
      * Returns the given users list of created playlists.
      * 
      * @param user user the profile belongs to
@@ -408,6 +428,45 @@ public class ProfileControl {
         if(belongsToLoggedUser(user)){
             user.removeCreatedMedium(medium);
         }
+    }
+    
+    /**
+     * Adds medium to the users given playlist.
+     * 
+     * @param user user the profile belongs to
+     * @param medium medium which should be added
+     * @param pList playlist the medium should be added to
+     */
+    public void addToPlaylist(User user, Medium medium, Playlist pList){
+        if(belongsToLoggedUser(user)){
+            pList.addMedium(medium);
+        }
+    }
+    
+    /**
+     * Adds medium to the users given album.
+     * 
+     * @param user user the profile belongs to
+     * @param medium medium which should be added
+     * @param album album the medium should be added to
+     */
+    public void addToAlbum(User user, Medium medium, Album album){
+        if(belongsToLoggedUser(user)){
+            album.addMedium(medium);
+        }
+    }
+    
+    /**
+     * Creates a new album with a given first medium, a title and da coverpath
+     * for the given user.
+     * 
+     * @param user user the profile belongs to
+     * @param medium albums first medium
+     * @param title albums title
+     * @param cover path to albums cover
+     */
+    public void createAlbum(User user, Medium medium, String title, String cover){
+        Database.getInstance().addAlbum(medium, title, user, cover);
     }
     
     /**
