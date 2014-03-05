@@ -1,12 +1,10 @@
 package de.dezibel.gui;
 
 import de.dezibel.control.ProfileControl;
-import de.dezibel.data.Label;
 import de.dezibel.data.User;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -22,7 +20,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.tree.DefaultTreeCellEditor;
 
 public class ProfilPanel extends DragablePanel {
 
@@ -50,6 +47,8 @@ public class ProfilPanel extends DragablePanel {
     private JTextField tfCity;
     private JTextField tfCountry;
     private JTextField tfAboutMe;
+    
+    private JButton btnEdit;
     
     private JTable tFollower;
     private FollowerTableModel fModell;
@@ -95,7 +94,7 @@ public class ProfilPanel extends DragablePanel {
     	this.tfLastName.setText(controler.getLastName(currentUser)); 
     	this.tfRole.setText(controler.getRole(currentUser));
     	this.tfPseudonym.setText(controler.getPseudonym(currentUser));
-    	//this.tfGender.setText(controler.getGender(currentUser));
+    	this.tfGender.setSelectedItem(controler.getGender(currentUser));
     	this.tfEmail.setText(controler.getEmail(currentUser));
     	this.tfBirthDate.setText(controler.getBirthDate(currentUser));
     	this.tfCity.setText(controler.getCity(currentUser));
@@ -122,10 +121,10 @@ public class ProfilPanel extends DragablePanel {
         this.pnFavorites = new JPanel();
         tabPanel.addTab("Favoriten", null, pnFavorites);
         this.pnFollower = new JPanel();
-        this.createFollowerComponents();
+        //this.createFollowerComponents(); //TODO
         tabPanel.addTab("Follower", null, pnFollower);
         this.pnComments = new JPanel();
-        this.createCommentsComponents();
+        //this.createCommentsComponents(); //TODO
         tabPanel.addTab("Kommentare", null, pnComments);
         this.pnNews = new JPanel();
         tabPanel.addTab("Neuigkeiten", null, pnNews);
@@ -153,7 +152,7 @@ public class ProfilPanel extends DragablePanel {
         tfLastName = new JTextField(25);       
         tfRole = new JTextField(25);       
         tfPseudonym = new JTextField(25);       
-        String[] items = {"m�nnlich", "weiblich"}; 
+        String[] items = {"männlich", "weiblich"}; 
         tfGender = new JComboBox<>(items);
         tfEmail = new JTextField(25);       
         tfBirthDate = new JTextField(25);       
@@ -161,7 +160,7 @@ public class ProfilPanel extends DragablePanel {
         tfCountry = new JTextField(25);       
         tfAboutMe = new JTextField(25);
         
-        JButton btnEdit = new JButton("Bearbeiten");
+        btnEdit = new JButton("Bearbeiten");
         btnEdit.addActionListener(new ActionListener() {
 
             @Override
@@ -176,9 +175,11 @@ public class ProfilPanel extends DragablePanel {
                 controler.setCity(currentUser, tfCity.getText());
                 controler.setCountry(currentUser, tfCountry.getText());
                 controler.setAboutMe(currentUser, tfAboutMe.getText());
-                setProfileTextfieldsEditable(false);
+                btnEdit.setText("Bearbeiten");
+               setProfileTextfieldsEditable(false);
                 } else{
                     setProfileTextfieldsEditable(true);
+                    btnEdit.setText("Änderung speichern");
                 }
                 
             }
@@ -226,8 +227,13 @@ public class ProfilPanel extends DragablePanel {
     private void setProfileTextfieldsEditable(boolean enabled){
         tfFirstName.setEnabled(enabled);     
         tfLastName.setEnabled(enabled);       
-        tfRole.setEnabled(false);  // Role is not editable        
-        tfPseudonym.setEnabled(enabled);        
+        tfRole.setEnabled(false);  // Role is not editable  
+        // Only artists can have pseudonyms
+        if(currentUser != null && currentUser.isArtist() ){
+            tfPseudonym.setEnabled(enabled);
+        } else {
+            tfPseudonym.setEnabled(false);
+        }  
         tfGender.setEnabled(enabled);         
         tfEmail.setEnabled(enabled);      
         tfBirthDate.setEnabled(enabled);        

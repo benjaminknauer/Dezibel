@@ -154,7 +154,7 @@ public class ProfileControl {
         if(user.getPseudonym() != null){
         return user.getPseudonym();
         } 
-        else return null;
+        else return "";
     }
     
     /**

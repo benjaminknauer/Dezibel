@@ -31,6 +31,8 @@ import com.javadocking.visualizer.LineMinimizer;
 import com.javadocking.visualizer.SingleMaximizer;
 
 import de.dezibel.control.SaveControl;
+import de.dezibel.data.Database;
+import java.awt.FlowLayout;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -62,9 +64,8 @@ public class DezibelPanel extends JPanel {
     private DragablePanel pnAds;
     private DragablePanel pnMyList;
     private DragablePanel pnFavorites;
-    //private DragablePanel pnProfil;
+    private DragablePanel pnProfil;
     private DragablePanel pnSearch;
-
     // Javadocking uses Dockable, to enable dragging and docking for childpanels
     // Any panel you want to drag and dock have to be in its own Dockable
     private Dockable daLogin;
@@ -74,9 +75,8 @@ public class DezibelPanel extends JPanel {
     private Dockable daMyLists;
     private Dockable daFavorites;
     private Dockable daPlayer;
-    //private Dockable daProfil;
+    private Dockable daProfil;
     private Dockable daSearch;
-
     // We uses a LineDock at the bottom,top,left and right where all panels can be docked to.
     // Except some panels, like players where only can be docked at the bottom, center or top.
     // Any panel can be dragged to the center where the panel will be docked and shows extra information 
@@ -94,56 +94,84 @@ public class DezibelPanel extends JPanel {
         super(new BorderLayout());
         this.frame = frame;
         frame.addWindowListener(new WindowAdapter() {
-
             @Override
             public void windowClosing(WindowEvent e) {
                 SaveControl saveControl = new SaveControl();
                 saveControl.save();
             }
-            });
-        
+        });
+
         JMenu menuShow;
         JMenuItem itemLogout;
         JCheckBoxMenuItem cbMenuItem;
         menuBar = new JMenuBar();
         JMenu menuLogout = new JMenu("Logout");
-        
+
         menuBar.add(menuLogout);
         menuShow = new JMenu("Show");
         menuBar.add(menuShow);
         itemLogout = new JMenuItem("Logout");
         menuLogout.add(itemLogout);
-        itemLogout.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-					System.out.println("Hallo");
-					removeMenubar();	
-			}
+        itemLogout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                System.out.println("Hallo");
+                removeMenubar();
+            }
         });
-        
+
         cbMenuItem = new JCheckBoxMenuItem("A check box menu item");
         cbMenuItem.setMnemonic(KeyEvent.VK_C);
         menuShow.add(cbMenuItem);
         cbMenuItem = new JCheckBoxMenuItem("Another one");
         cbMenuItem.setMnemonic(KeyEvent.VK_H);
         menuShow.add(cbMenuItem);
-        
+
         JMenu menuUpload = new JMenu("Upload");
         JMenuItem itemUpload = new JMenuItem("Upload");
         menuUpload.add(itemUpload);
-        
-        itemUpload.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				onUpload();
-			}
+
+        itemUpload.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onUpload();
+            }
         });
-        
+
+        JMenuItem itemProfile = new JMenuItem("Profil");
+        itemProfile.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (centerDock.getDockableCount() > 0) {
+                    centerDock.removeDockable(centerDock
+                            .getDockable(centerDock.getDockableCount() - 1));
+                }
+                centerDock.addDockable(daProfil, new Position(0));
+            }
+        });
+
+        JMenuItem itemSearch = new JMenuItem("Suchen");
+        itemSearch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (centerDock.getDockableCount() > 0) {
+                    centerDock.removeDockable(centerDock
+                            .getDockable(centerDock.getDockableCount() - 1));
+                }
+                centerDock.addDockable(daSearch, new Position(0));
+            }
+        });
+
+        JMenu menuGoTo = new JMenu("Gehe zu..");
+        menuGoTo.add(itemSearch);
+        menuGoTo.add(itemProfile);
+
         menuBar.add(menuShow);
         menuBar.add(menuUpload);
+        menuBar.add(menuGoTo);
         frame.setJMenuBar(menuBar);
-       
-        
+
+
         // Create the dock model for the docks.
         FloatDockModel dockModel = new FloatDockModel();
         dockModel.addOwner("dezibel", frame);
@@ -159,7 +187,7 @@ public class DezibelPanel extends JPanel {
         pnAds = new DragablePanel(this);
         pnMyList = new DragablePanel(this);
         pnFavorites = new DragablePanel(this);
-        //pnProfil = new ProfilPanel(this);
+        pnProfil = new ProfilPanel(this);
         pnSearch = new SearchPanel(this);
 
         // Create the dockables around the content components.
@@ -185,9 +213,9 @@ public class DezibelPanel extends JPanel {
 
         // Panels that can be docked only at top/bottom and center
         daPlayer = new DefaultDockable("pnPlayer", pnPlayer, "Player", null,
-                DockingMode.CENTER + DockingMode.SINGLE + DockingMode.BOTTOM + DockingMode.TOP +DockingMode.HORIZONTAL_LINE);
-       // daProfil = new DefaultDockable("pnProfil", pnProfil, "Profil", null,
-       //         DockingMode.CENTER + DockingMode.SINGLE);
+                DockingMode.CENTER + DockingMode.SINGLE + DockingMode.BOTTOM + DockingMode.TOP + DockingMode.HORIZONTAL_LINE);
+        daProfil = new DefaultDockable("pnProfil", pnProfil, "Profil", null,
+                DockingMode.CENTER + DockingMode.SINGLE);
 
         daSearch = new DefaultDockable("pnSearch", pnSearch, "Search", null,
                 DockingMode.CENTER + DockingMode.SINGLE + DockingMode.BOTTOM + DockingMode.TOP);
@@ -213,8 +241,8 @@ public class DezibelPanel extends JPanel {
 
         borderDock = new BorderDock();
         borderDock.setDock(leftLineDock, Position.LEFT);
-        borderDock.setDock(rightLineDock,Position.RIGHT);
-        borderDock.setDock(centerDock,Position.CENTER);
+        borderDock.setDock(rightLineDock, Position.RIGHT);
+        borderDock.setDock(centerDock, Position.CENTER);
 
         dockModel.addRootDock("borderDock", borderDock, frame);
 
@@ -235,6 +263,7 @@ public class DezibelPanel extends JPanel {
         this.showLogin();
         //this.showWorkspace();
     }
+
     /**
      * Shows the login-panel docked in the center with no other panels on the
      * frame Any panel docked in the center will be removed.
@@ -273,12 +302,15 @@ public class DezibelPanel extends JPanel {
         bottomDock.setOrientation(LineDock.ORIENTATION_HORIZONTAL);
         bottomDock.addDockable(this.daPlayer, new Position(0));
         this.borderDock.addChildDock(bottomDock, new Position(Position.BOTTOM));
+        ((ProfilPanel) daProfil.getContent())
+                .setUser(Database.getInstance().getLoggedInUser());
     }
 
     /**
      * This function is only called in the main-function and only once. It
-     * creates a <code>JFrame</code> with a <code>DezibelPanel</code> and some
-     * docking-features.
+     * creates a
+     * <code>JFrame</code> with a
+     * <code>DezibelPanel</code> and some docking-features.
      */
     public static void createAndShowGUI() {
 
@@ -329,25 +361,27 @@ public class DezibelPanel extends JPanel {
         Dockable wrapper = new StateActionDockable(dockable, new DefaultDockableStateActionFactory(), states);
         return wrapper;
     }
-    
+
     private Dockable addActionsWithClose(Dockable dockable) {
         //int[] states = { DockableState.NORMAL, DockableState.MINIMIZED };
-        int[] states = {DockableState.NORMAL,DockableState.CLOSED};
+        int[] states = {DockableState.NORMAL, DockableState.CLOSED};
         Dockable wrapper = new StateActionDockable(dockable, new DefaultDockableStateActionFactory(), states);
         return wrapper;
     }
-    
+
     private Dockable addActionsWithCloseExt(Dockable dockable) {
         //int[] states = { DockableState.NORMAL, DockableState.MINIMIZED };
-        int[] states = {DockableState.NORMAL,DockableState.CLOSED,DockableState.MINIMIZED,DockableState.EXTERNALIZED};
+        int[] states = {DockableState.NORMAL, DockableState.CLOSED, DockableState.MINIMIZED, DockableState.EXTERNALIZED};
         Dockable wrapper = new StateActionDockable(dockable, new DefaultDockableStateActionFactory(), states);
         return wrapper;
     }
 
     /**
      * Adds a listener to the side-panels, which can be docked at center,left
-     * and right. If a dockable is docked to the center, <code>onCenter</code>
-     * is called from <code>DragablePanel</code>, else <code>onLeftRight</code>
+     * and right. If a dockable is docked to the center,
+     * <code>onCenter</code> is called from
+     * <code>DragablePanel</code>, else
+     * <code>onLeftRight</code>
      */
     private void addSideCenterListener() {
         daNews.addDockingListener(new DockingListener() {
@@ -364,9 +398,7 @@ public class DezibelPanel extends JPanel {
             @Override
             public void dockingWillChange(DockingEvent e) {
                 // TODO Auto-generated method stub
-
             }
-
         });
 
         daAds.addDockingListener(new DockingListener() {
@@ -383,9 +415,7 @@ public class DezibelPanel extends JPanel {
             @Override
             public void dockingWillChange(DockingEvent e) {
                 // TODO Auto-generated method stub
-
             }
-
         });
         daMyLists.addDockingListener(new DockingListener() {
             @Override
@@ -401,9 +431,7 @@ public class DezibelPanel extends JPanel {
             @Override
             public void dockingWillChange(DockingEvent e) {
                 // TODO Auto-generated method stub
-
             }
-
         });
 
         daFavorites.addDockingListener(new DockingListener() {
@@ -420,42 +448,37 @@ public class DezibelPanel extends JPanel {
             @Override
             public void dockingWillChange(DockingEvent e) {
                 // TODO Auto-generated method stub
-
             }
-
         });
     }
 
     /**
-     * Same as <code>addSideCenterListener</code>, but for Top,Bottom and Center
+     * Same as
+     * <code>addSideCenterListener</code>, but for Top,Bottom and Center
      */
     private void addTopBottomCenterListener() {
         daPlayer.addDockingListener(new DockingListener() {
-
             @Override
             public void dockingChanged(DockingEvent e) {
                 DragablePanel pn = (DragablePanel) daPlayer.getContent();
                 if (e.getDestinationDock() == centerDock) {
                     pn.onCenter();
-                } 
-                else if (e.getDestinationDock() == null) {
-                	pn.onExternalized();
-                }
-                else{
+                } else if (e.getDestinationDock() == null) {
+                    pn.onExternalized();
+                } else {
                     pn.onTopBottom();
                 }
             }
 
             @Override
             public void dockingWillChange(DockingEvent e) {
-                if(e.getDestinationDock() == centerDock){
-                	if (centerDock.getDockableCount() > 0) {
+                if (e.getDestinationDock() == centerDock) {
+                    if (centerDock.getDockableCount() > 0) {
                         centerDock.removeDockable(centerDock
                                 .getDockable(centerDock.getDockableCount() - 1));
                     }
                 }
             }
-
         });
     }
 
@@ -470,16 +493,16 @@ public class DezibelPanel extends JPanel {
         rightLineDock.addDockable(daNews, new Position(0));
         rightLineDock.addDockable(daAds, new Position(1));
     }
-    
-    private void removeMenubar(){
-    	menuBar.removeAll();
-    	frame.remove(menuBar);
+
+    private void removeMenubar() {
+        menuBar.removeAll();
+        frame.remove(menuBar);
     }
-    
-    private void onUpload(){
+
+    private void onUpload() {
         System.out.println("asdf");
-    	UploadDialog ud = new UploadDialog(frame);
+        UploadDialog ud = new UploadDialog(frame);
         ud.setVisible(true);
-        
+
     }
 }
