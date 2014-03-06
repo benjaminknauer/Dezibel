@@ -205,5 +205,9 @@ public class Genre {
     public boolean isMarkedForDeletion(){
         return markedForDeletion;
     }
+    
+    public String toString() {
+        return this.name;
+    }
 
 }
