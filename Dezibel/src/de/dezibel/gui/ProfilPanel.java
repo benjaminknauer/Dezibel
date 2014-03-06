@@ -67,6 +67,7 @@ public class ProfilPanel extends DragablePanel {
     private JTable tMedia;
     private JLabel lbAlbums;
     private JTable tAlbums;
+    private JLabel lbPseudonym;
 
     /**
      * Constructor of the ProfilPanel class.
@@ -97,6 +98,12 @@ public class ProfilPanel extends DragablePanel {
     }
 
     public void refresh() {
+       
+         if(!(controler.getLoggedInUser().isArtist())){
+            this.tfPseudonym.setVisible(false);
+            this.lbPseudonym.setVisible(false);
+        }
+         
         this.tfFirstName.setText(controler.getFirstName(currentUser));
         this.tfLastName.setText(controler.getLastName(currentUser));
         this.tfRole.setText(controler.getRole(currentUser));
@@ -181,7 +188,7 @@ public class ProfilPanel extends DragablePanel {
         JLabel lbFirstName = new JLabel("Vorname:");
         JLabel lbLastName = new JLabel("Nachname:");
         JLabel lbRole = new JLabel("Rolle:");
-        JLabel lbPseudonym = new JLabel("Pseudonym:");
+        lbPseudonym = new JLabel("Pseudonym:");
         JLabel lbGender = new JLabel("Geschlecht:");
         JLabel lbEmail = new JLabel("Email:");
         JLabel lbBirthDate = new JLabel("Geburtsdatum:");
