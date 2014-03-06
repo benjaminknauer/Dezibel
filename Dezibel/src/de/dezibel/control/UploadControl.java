@@ -6,9 +6,11 @@ import de.dezibel.data.Database;
 import de.dezibel.data.Genre;
 import de.dezibel.data.Label;
 import de.dezibel.data.User;
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -24,9 +26,21 @@ public class UploadControl {
 
     public ErrorCode upload(String title, User user, String path, Genre genre, Label label, Album album) {
         if (!user.isArtist()) {
-            
+            return ErrorCode.USER_IS_NOT_ARTIST;
         }
         return db.addMedium(title, user, path, genre, label, album);
+    }
+    
+    public boolean promoteUserToArtist(Component parent, User user) {
+        String result = JOptionPane.showInputDialog(parent, "Pseudonym angeben:",
+                "Pseudonym fehlt", JOptionPane.WARNING_MESSAGE);
+        if (result == null || result.isEmpty()) {
+            return false;
+        } else {
+            user.setPseudonym(result);
+            user.promoteToArtist();
+            return true;
+        }
     }
 
     public User[] getSelectableUsers(Label label) {

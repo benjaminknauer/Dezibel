@@ -93,10 +93,18 @@ public class UploadDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switch(upc.upload(tfTitle.getText(), (User) cbUser.getSelectedItem(),
-                        tfUpload.getText(), (Genre) cbGenre.getSelectedItem(),
-                        (Label) cbLabel.getSelectedItem(), (Album) cbAlbum.getSelectedItem())) {
+                        (tfUpload.getText().isEmpty()?null:tfUpload.getText()),
+                        (Genre) cbGenre.getSelectedItem(),
+                        (Label) cbLabel.getSelectedItem(),
+                        (Album) cbAlbum.getSelectedItem())) {
                     case SUCCESS:
                         UploadDialog.this.dispose();
+                        break;
+                    case USER_IS_NOT_ARTIST:
+                        if (upc.promoteUserToArtist(UploadDialog.this, (User) cbUser.getSelectedItem()) == true) {
+                            UploadDialog.this.dispose();
+                        }
+                        break;
                 }
             }
         });
