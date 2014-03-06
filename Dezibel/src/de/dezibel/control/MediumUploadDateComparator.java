@@ -22,9 +22,9 @@ public class MediumUploadDateComparator implements Comparator<Medium> {
     public int compare(Medium media1, Medium media2) {
         if(media1 == null && media2 == null)
             return 0;
-        else if(media1 == null)
+        else if(media1 == null || media1.getUploadDate() == null)
             return -1;
-        else if(media2 == null)
+        else if(media2 == null || media2.getUploadDate() == null)
             return 1;
         return media1.getUploadDate().compareTo(media2.getUploadDate());
     }

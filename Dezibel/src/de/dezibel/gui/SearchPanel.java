@@ -82,14 +82,6 @@ public class SearchPanel extends DragablePanel {
             }
         });
         
-        tfSearch.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                if(tfSearch.getText().isEmpty())
-                    tfSearch.setText("Suche...");
-            }
-        });
-        
         cbFilter = new JComboBox<>(choices);
         bnSearch = new JButton("Suchen");
         rbSongAlphabetical = new JRadioButton("Alphabetisch");
