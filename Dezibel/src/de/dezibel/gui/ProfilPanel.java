@@ -157,7 +157,7 @@ public class ProfilPanel extends DragablePanel {
         tfLastName = new JTextField(25);       
         tfRole = new JTextField(25);       
         tfPseudonym = new JTextField(25);       
-        String[] items = {"m�nnlich", "weiblich"}; 
+        String[] items = {"männlich", "weiblich"}; 
         tfGender = new JComboBox<>(items);
         tfEmail = new JTextField(25);       
         tfBirthDate = new JTextField(25);       
