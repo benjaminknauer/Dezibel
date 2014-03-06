@@ -15,7 +15,6 @@ import javafx.util.Duration;
  *
  * @author Richard, Tobias
  */
-// TODO Auf null prüfen
 public class Player {
 
     private static Player instance = null;
@@ -249,7 +248,7 @@ public class Player {
     }
 
     /**
-     * Adds the playlist to the currentPlaylist, d.h. appends all songs of the
+     * Adds the playlist to the currentPlaylist, i.e. appends all songs of the
      * playlist
      *
      * @param playlist The playlist to add to the currentPlaylist
@@ -268,6 +267,18 @@ public class Player {
     public void setPlaylist(Playlist playlist) {
         if (playlist != null) {
             this.currentPlaylist = playlist.getList();
+        }
+    }
+    
+    /**
+     * Adds the list of media to the currentPlaylist, i.e. appends all songs of the
+     * list
+     *
+     * @param playlist The list of media to add to the currentPlaylist
+     */
+    public void addMedialist(LinkedList<Medium> playlist) {
+        if (playlist != null) {
+            this.currentPlaylist.addAll(playlist);
         }
     }
 
