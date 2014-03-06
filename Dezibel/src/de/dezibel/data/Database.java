@@ -116,7 +116,7 @@ public class Database {
         data[9] = genres;
 
         // Create default administrator.
-        this.addUser("admin@dezibel.de", "admin", "admin", "admin", new Date(), null, null, (Math.random() < 0.5));
+        this.addUser("admin@dezibel.de", "admin", "admin", new HashGenerator().hash("admin"), new Date(), null, null, (Math.random() < 0.5));
         this.users.get(0).promoteToAdmin();
 
         // Create topGenre
