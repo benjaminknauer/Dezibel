@@ -4,8 +4,11 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+
 import com.javadocking.dockable.DraggableContent;
 import com.javadocking.drag.DragListener;
 
@@ -40,20 +43,43 @@ public class DragablePanel extends JPanel implements DraggableContent {
             }
         }
     }
-
-    public void onTopBottom() {
-        System.out.println("Methode onTopBottom() von DragablePanel");
-    }
-
-    public void onLeftRight() {
-        System.out.println("Methode onLeftRight() von DragablePanel");
-    }
-
-    public void onCenter() {
-        System.out.println("Methode onCenter() von DragablePanel");
+    
+    /**
+     * Clears all TextFields
+     * This method has to be overwrite in subclasses.
+     */
+    public void clearTextFields(){
+    
     }
     
+    /**
+     * This function is called when the dragable will be docked at top or bottom
+     * This method has to be overwrite in subclasses.
+     */
+    public void onTopBottom() {
+        
+    }
+    
+    /**
+     * This function is called when the dragable will be docked at left or right
+     * This method has to be overwrite in subclasses.
+     */
+    public void onLeftRight() {
+    	
+    }
+    
+    /**
+     * This function is called when the dragable will be docked at center
+     * This method has to be overwrite in subclasses.
+     */
+    public void onCenter() {
+    }
+    
+    /**
+     * This function is called when the dragable will be externalized
+     * This method has to be overwrite in subclasses.
+     */
     public void onExternalized(){
-    	System.out.println("Methode onExternalized8) von DragablePanel");
+    	
     }
 }

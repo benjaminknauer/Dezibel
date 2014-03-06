@@ -90,6 +90,7 @@ public class DezibelPanel extends JPanel {
 	private BorderDock borderDock;
 	private LineDock leftLineDock;
 	private LineDock rightLineDock;
+	private LineDock bottomDock;
 	private SingleDock centerDock;
 
 	/**
@@ -130,6 +131,8 @@ public class DezibelPanel extends JPanel {
 	 * frame Any panel docked in the center will be removed.
 	 */
 	public void showLogin() {
+		pnLogin.clearTextFields();
+		
 		if (this.centerDock.getDockableCount() > 0) {
 			this.centerDock.removeDockable(this.centerDock
 					.getDockable(this.centerDock.getDockableCount() - 1));
@@ -158,16 +161,20 @@ public class DezibelPanel extends JPanel {
 					.getDockable(this.centerDock.getDockableCount() - 1));
 		}
 		this.showSidebars();
-		// this.centerDock.addDockable(this.daProfil, new Position(0));
 		this.centerDock.addDockable(this.daSearch, new Position(0));
-		LineDock bottomDock = new LineDock();
-		bottomDock.setOrientation(LineDock.ORIENTATION_HORIZONTAL);
 		bottomDock.addDockable(this.daPlayer, new Position(0));
-		this.borderDock.addChildDock(bottomDock, new Position(Position.BOTTOM));
 		((ProfilPanel) daProfil.getContent()).setUser(Database.getInstance()
 				.getLoggedInUser());
 	}
-
+	
+	public void showProfile(){
+		if (centerDock.getDockableCount() > 0) {
+			centerDock.removeDockable(centerDock
+					.getDockable(centerDock.getDockableCount() - 1));
+		}
+		centerDock.addDockable(daProfil, new Position(0));
+	}
+	
 	/**
 	 * This function is only called in the main-function and only once. It
 	 * creates a <code>JFrame</code> with a <code>DezibelPanel</code> and some
@@ -264,7 +271,9 @@ public class DezibelPanel extends JPanel {
 		centerDock = new SingleDock();
 		leftLineDock.setOrientation(LineDock.ORIENTATION_VERTICAL);
 		rightLineDock.setOrientation(LineDock.ORIENTATION_VERTICAL);
-
+		bottomDock = new LineDock();
+		bottomDock.setOrientation(LineDock.ORIENTATION_HORIZONTAL);
+		
 		this.addSideCenterListener();
 		this.addTopBottomCenterListener();
 
@@ -272,6 +281,7 @@ public class DezibelPanel extends JPanel {
 		borderDock.setDock(leftLineDock, Position.LEFT);
 		borderDock.setDock(rightLineDock, Position.RIGHT);
 		borderDock.setDock(centerDock, Position.CENTER);
+		borderDock.setDock(bottomDock,Position.BOTTOM);
 
 		dockModel.addRootDock("borderDock", borderDock, frame);
 
@@ -529,13 +539,8 @@ public class DezibelPanel extends JPanel {
 			itemProfile.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					if (centerDock.getDockableCount() > 0) {
-						centerDock.removeDockable(centerDock
-								.getDockable(centerDock.getDockableCount() - 1));
-					}
-					centerDock.addDockable(daProfil, new Position(0));
-				}
-			});
+					showProfile();
+			}});
 
 			JMenuItem itemSearch = new JMenuItem("Suchen");
 			itemSearch.addActionListener(new ActionListener() {
@@ -585,8 +590,26 @@ public class DezibelPanel extends JPanel {
 		if(daSearch.getDock()!=null)
 			daSearch.getDock().removeDockable(daSearch);
 		
+		if(daPlayer.getState() == DockableState.EXTERNALIZED){
+			//daPlayer.setState(arg0, arg1);
+			centerDock.addDockable(daPlayer,new Position(0));
+			daPlayer.setDock(centerDock);
+		}
+		
 		if(daPlayer.getDock()!=null)
 			daPlayer.getDock().removeDockable(daPlayer);
+			
+			
+		pnLogin.clearTextFields();
+		pnRegister.clearTextFields();
+		pnPlayer.clearTextFields();
+		pnNews.clearTextFields();
+		pnAds.clearTextFields();
+		pnMyList.clearTextFields();
+		pnFavorites.clearTextFields();
+		pnProfil.clearTextFields();
+		pnSearch.clearTextFields();
+		
 		
 		this.showLogin();
 	}
