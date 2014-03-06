@@ -123,12 +123,23 @@ public class Database {
         this.genres.add(new Genre(topGenreName, null));
         
         // TODO Entfernen: Testdaten (Tobias, Richard)
+//        this.addGenre("Electro", this.getTopGenre());
+//        Genre ge = this.getGenres().get(this.getGenres().size() - 1);
+//        this.addGenre("Rock", this.getTopGenre());
+//        Genre g = this.getGenres().get(this.getGenres().size() - 1);
+//        this.addGenre("Hard Rock", g);
+//        g = this.getGenres().get(this.getGenres().size() - 1);
+//        this.addGenre("Nicht ganz so Hard Rock", g);
+//        this.addGenre("Mega Hard Rock", g);
+//        g = this.getGenres().get(this.getGenres().size() - 2);
+//        this.addGenre("Kuschelrock", g);
+//        g = this.getGenres().get(this.getGenres().size() - 1);
 //        this.addUser("richard-schulze@online.de", "Richard", "Schulze",
 //                new HashGenerator().hash("1"), new Date(), "Münster", "Deutschland", true);
 //        User u = this.getUsers().get(this.getUsers().size() - 1);
 //        u.setPseudonym("DVBBS & Borgeous");
-//        this.addMedium("Tsunami", u, "C:\\DVBBS & Borgeous - Tsunami.mp3", this.getTopGenre(), null, null);
-//        this.addMedium("Alarm01", u, "C:\\Alarm01.wav", this.getTopGenre(), null, null);
+//        this.addMedium("Tsunami", u, "C:\\DVBBS & Borgeous - Tsunami.mp3", ge, null, null);
+//        this.addMedium("Alarm01", u, "C:\\Alarm01.wav", g, null, null);
     }
 
     /**

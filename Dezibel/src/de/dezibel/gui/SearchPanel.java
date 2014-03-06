@@ -120,7 +120,7 @@ public class SearchPanel extends DragablePanel {
             }
 
             private void showPopup(MouseEvent me) {
-                ContextMenu contextMenu = new ContextMenu();
+                ContextMenu contextMenu = new ContextMenu(parent);
                 currentPopupMenu = contextMenu.getContextMenu(tableResults, me);
                 currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
             }
