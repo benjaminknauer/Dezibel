@@ -684,8 +684,6 @@ public class User implements Lockable {
     }
     
     public String toString() {
-        if(pseudonym == null || pseudonym.isEmpty())
-            return firstname +"\b"+ lastname;
         return this.pseudonym;
     }
 }

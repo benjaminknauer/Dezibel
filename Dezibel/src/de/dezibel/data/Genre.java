@@ -207,7 +207,13 @@ public class Genre {
     }
     
     public String toString() {
-        return this.name;
+        Genre superGenre = this.getSuperGenre();
+        String resultName = ">" + this.name;
+        while (superGenre != null) {
+            resultName = "—" + resultName;
+            superGenre = superGenre.getSuperGenre();
+        }
+        return resultName;
     }
 
 }
