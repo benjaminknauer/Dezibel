@@ -54,6 +54,7 @@ public class ProfilPanel extends DragablePanel {
     private JTextField tfAboutMe;
 
     private JButton btnFollow;
+    private JButton btnEdit;
 
     private JTable tFollower;
     private FollowerTableModel followerModell;
@@ -108,13 +109,20 @@ public class ProfilPanel extends DragablePanel {
         this.tfAboutMe.setText(controler.getAboutMe(currentUser));
         this.followerModell.setData(controler.getFollowers(currentUser));
         this.commentModell.setData(controler.getCreatedComments(currentUser));
-        
-        if(currentUser == controler.getLoggedInUser()){
-           btnFollow.setVisible(false);
+
+        if (currentUser == controler.getLoggedInUser()) {
+            btnFollow.setVisible(false);
         }
-        
-        if(currentUser != controler.getLoggedInUser()){
-           btnFollow.setVisible(true);
+
+        if (currentUser != controler.getLoggedInUser()) {
+            btnFollow.setVisible(true);
+        }
+
+        if (controler.getLoggedInUser() != currentUser) {
+            btnEdit.setVisible(false);
+        }
+        if (controler.getLoggedInUser() == currentUser) {
+            btnEdit.setVisible(true);
         }
     }
 
@@ -175,7 +183,7 @@ public class ProfilPanel extends DragablePanel {
         tfCountry = new JTextField(25);
         tfAboutMe = new JTextField(25);
 
-        JButton btnEdit = new JButton("Bearbeiten");
+        btnEdit = new JButton("Bearbeiten");
         btnEdit.addActionListener(new ActionListener() {
 
             @Override
@@ -227,7 +235,6 @@ public class ProfilPanel extends DragablePanel {
         addComponent(pnProfile, gbl, lbAboutMe, 0, 9);
         addComponent(pnProfile, gbl, tfAboutMe, 1, 9);
 
-        //TODO Abfrage, ob eigenes Profil
         gbc.fill = GridBagConstraints.NONE;
         gbc.insets = new Insets(10, 0, 0, 0);
         gbc.anchor = GridBagConstraints.WEST;
@@ -235,6 +242,9 @@ public class ProfilPanel extends DragablePanel {
         gbc.gridy = 10;
         gbl.setConstraints(btnEdit, gbc);
         pnProfile.add(btnEdit);
+        gbc.gridx = 2;
+        gbc.gridy = 10;
+        pnProfile.add(btnFollow);
 
         setProfileTextfieldsEditable(false);
 
