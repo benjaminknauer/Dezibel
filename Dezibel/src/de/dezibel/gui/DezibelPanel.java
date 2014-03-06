@@ -131,7 +131,6 @@ public class DezibelPanel extends JPanel {
 	 * frame Any panel docked in the center will be removed.
 	 */
 	public void showLogin() {
-		pnLogin.clearTextFields();
 		
 		if (this.centerDock.getDockableCount() > 0) {
 			this.centerDock.removeDockable(this.centerDock
@@ -161,10 +160,8 @@ public class DezibelPanel extends JPanel {
 					.getDockable(this.centerDock.getDockableCount() - 1));
 		}
 		this.showSidebars();
-		this.centerDock.addDockable(this.daSearch, new Position(0));
-		//this.bottomDock.addDockable(this.daPlayer, new Position(0));
-		//this.daPlayer.setDock(this.bottomDock);
-		//this.borderDock.addDockable(daPlayer, BorderDock., dockableOffset)
+		//this.centerDock.addDockable(this.daSearch, new Position(0));
+		this.centerDock.addDockable(this.daPlayer,new Position(0));
 		((ProfilPanel) daProfil.getContent()).setUser(Database.getInstance()
 				.getLoggedInUser());
 	}
@@ -281,8 +278,6 @@ public class DezibelPanel extends JPanel {
 		borderDock.setDock(leftLineDock, Position.LEFT);
 		borderDock.setDock(rightLineDock, Position.RIGHT);
 		borderDock.setDock(centerDock, Position.CENTER);
-		//borderDock.setDock(bottomDock,Position.BOTTOM);
-		//borderDock.setDock(topDock, Position.TOP);
 		dockModel.addRootDock("borderDock", borderDock, frame);
 
 		// Create an externalizer.
@@ -312,23 +307,13 @@ public class DezibelPanel extends JPanel {
 	 *         parameter
 	 */
 	private Dockable addActions(Dockable dockable) {
-		// int[] states = { DockableState.NORMAL, DockableState.MINIMIZED };
 		int[] states = { DockableState.NORMAL };
 		Dockable wrapper = new StateActionDockable(dockable,
 				new DefaultDockableStateActionFactory(), states);
 		return wrapper;
 	}
 
-	private Dockable addActionsWithClose(Dockable dockable) {
-		// int[] states = { DockableState.NORMAL, DockableState.MINIMIZED };
-		int[] states = { DockableState.NORMAL, DockableState.CLOSED };
-		Dockable wrapper = new StateActionDockable(dockable,
-				new DefaultDockableStateActionFactory(), states);
-		return wrapper;
-	}
-
 	private Dockable addActionsWithCloseExt(Dockable dockable) {
-		// int[] states = { DockableState.NORMAL, DockableState.MINIMIZED };
 		int[] states = { DockableState.NORMAL, DockableState.CLOSED,
 				DockableState.MINIMIZED, DockableState.EXTERNALIZED };
 		Dockable wrapper = new StateActionDockable(dockable,
@@ -546,18 +531,22 @@ public class DezibelPanel extends JPanel {
 			itemSearch.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					if (centerDock.getDockableCount() > 0) {
-						centerDock.removeDockable(centerDock
-								.getDockable(centerDock.getDockableCount() - 1));
-					}
-					centerDock.addDockable(daSearch, new Position(0));
+					onGoTo(daSearch);
 				}
 			});
-
+			
+			JMenuItem itemPlayer = new JMenuItem("Player");
+			itemPlayer.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					onGoTo(daPlayer);
+				}
+			});
+			
 			JMenu menuGoTo = new JMenu("Gehe zu..");
 			menuGoTo.add(itemSearch);
 			menuGoTo.add(itemProfile);
-
+			menuGoTo.add(itemPlayer);
 			menuBar.add(menuShow);
 			menuBar.add(menuUpload);
 			menuBar.add(menuGoTo);
@@ -600,17 +589,16 @@ public class DezibelPanel extends JPanel {
 		if(daPlayer.getDock()!=null)
 			daPlayer.getDock().removeDockable(daPlayer);
 			
-			
-		pnLogin.clearTextFields();
-		pnRegister.clearTextFields();
-		pnPlayer.clearTextFields();
-		pnNews.clearTextFields();
-		pnAds.clearTextFields();
-		pnMyList.clearTextFields();
-		pnFavorites.clearTextFields();
-		pnProfil.clearTextFields();
-		pnSearch.clearTextFields();
-		
+		pnLogin.reset();
+		pnRegister.reset();
+		pnPlayer.reset();
+		pnNews.reset();
+		pnAds.reset();
+		pnMyList.reset();
+		pnFavorites.reset();
+		pnProfil.reset();
+		pnSearch.reset();
+		pnPlayer.reset();
 		
 		this.showLogin();
 		}
@@ -626,7 +614,15 @@ public class DezibelPanel extends JPanel {
 	}
 	
 	private void onGoTo(Dockable da){
+		Dockable center = null;
+		if(this.centerDock.getDockableCount() > 0){
+			center = this.centerDock.getDockable(this.centerDock.getDockableCount() -1);
+			this.centerDock.removeDockable(center);
+		}
+		if(da.getDock() != null)
+			da.getDock().removeDockable(da);
 		
+		this.centerDock.addDockable(da, new Position(0));
 	}
 	
 	private void onUpload() {

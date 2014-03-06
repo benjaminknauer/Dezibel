@@ -45,10 +45,10 @@ public class DragablePanel extends JPanel implements DraggableContent {
     }
     
     /**
-     * Clears all TextFields
+     * Clears all user-depending information (TextFields, Playlists)
      * This method has to be overwrite in subclasses.
      */
-    public void clearTextFields(){
+    public void reset(){
     
     }
     
