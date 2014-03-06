@@ -45,17 +45,13 @@ public class UploadControl {
      * Asks the user to input a pseudonym if no pseudonym was set before.
      * @param parent The parent component that shows the dialog
      * @param user The user that gets promoted
-     * @return <p>true</p>, if the user was promoted succesfully, else <p>false</p>
      */
-    public boolean promoteUserToArtist(Component parent, User user) {
+    public void promoteUserToArtist(Component parent, User user) {
         String result = JOptionPane.showInputDialog(parent, "Pseudonym angeben:",
                 "Pseudonym fehlt", JOptionPane.WARNING_MESSAGE);
-        if (result == null || result.isEmpty()) {
-            return false;
-        } else {
+        if (result != null && !result.isEmpty()) {
             user.setPseudonym(result);
             user.promoteToArtist();
-            return true;
         }
     }
     
