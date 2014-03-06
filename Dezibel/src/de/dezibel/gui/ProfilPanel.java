@@ -99,10 +99,14 @@ public class ProfilPanel extends DragablePanel {
 
     public void refresh() {
        
-         if(!(controler.getLoggedInUser().isArtist())){
+         if(!(currentUser.isArtist())){
             this.tfPseudonym.setVisible(false);
             this.lbPseudonym.setVisible(false);
         }
+         else {
+            this.tfPseudonym.setVisible(true);
+            this.lbPseudonym.setVisible(true);
+         }
          
         this.tfFirstName.setText(controler.getFirstName(currentUser));
         this.tfLastName.setText(controler.getLastName(currentUser));

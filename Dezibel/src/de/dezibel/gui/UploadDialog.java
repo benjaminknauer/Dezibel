@@ -109,9 +109,8 @@ public class UploadDialog extends JDialog {
                             UploadDialog.this.dispose();
                             break;
                         case USER_IS_NOT_ARTIST:
-                            if (upc.promoteUserToArtist(UploadDialog.this, (User) cbUser.getSelectedItem()) == true) {
-                                UploadDialog.this.dispose();
-                            }
+                            upc.promoteUserToArtist(UploadDialog.this, (User) cbUser.getSelectedItem());
+                            cbUser.setModel(new DefaultComboBoxModel<>(upc.getSelectableUsers((Label) cbLabel.getSelectedItem())));
                             break;
                     }
                 } else {
