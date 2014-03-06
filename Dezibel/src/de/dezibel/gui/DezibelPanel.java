@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -90,7 +91,6 @@ public class DezibelPanel extends JPanel {
 	private BorderDock borderDock;
 	private LineDock leftLineDock;
 	private LineDock rightLineDock;
-	private LineDock bottomDock;
 	private SingleDock centerDock;
 
 	/**
@@ -162,7 +162,9 @@ public class DezibelPanel extends JPanel {
 		}
 		this.showSidebars();
 		this.centerDock.addDockable(this.daSearch, new Position(0));
-		bottomDock.addDockable(this.daPlayer, new Position(0));
+		//this.bottomDock.addDockable(this.daPlayer, new Position(0));
+		//this.daPlayer.setDock(this.bottomDock);
+		//this.borderDock.addDockable(daPlayer, BorderDock., dockableOffset)
 		((ProfilPanel) daProfil.getContent()).setUser(Database.getInstance()
 				.getLoggedInUser());
 	}
@@ -260,10 +262,10 @@ public class DezibelPanel extends JPanel {
 		daLogin = addActions(daLogin);
 		daRegister = addActions(daRegister);
 		daPlayer = addActionsWithCloseExt(daPlayer);
-		daNews = addActionsWithClose(daNews);
-		daAds = addActionsWithClose(daAds);
-		daMyLists = addActionsWithClose(daMyLists);
-		daFavorites = addActionsWithClose(daFavorites);
+		daNews = addActions(daNews);
+		daAds = addActions(daAds);
+		daMyLists = addActions(daMyLists);
+		daFavorites = addActions(daFavorites);
 
 		// Create the child tab dock.
 		leftLineDock = new LineDock();
@@ -271,8 +273,6 @@ public class DezibelPanel extends JPanel {
 		centerDock = new SingleDock();
 		leftLineDock.setOrientation(LineDock.ORIENTATION_VERTICAL);
 		rightLineDock.setOrientation(LineDock.ORIENTATION_VERTICAL);
-		bottomDock = new LineDock();
-		bottomDock.setOrientation(LineDock.ORIENTATION_HORIZONTAL);
 		
 		this.addSideCenterListener();
 		this.addTopBottomCenterListener();
@@ -281,8 +281,8 @@ public class DezibelPanel extends JPanel {
 		borderDock.setDock(leftLineDock, Position.LEFT);
 		borderDock.setDock(rightLineDock, Position.RIGHT);
 		borderDock.setDock(centerDock, Position.CENTER);
-		borderDock.setDock(bottomDock,Position.BOTTOM);
-
+		//borderDock.setDock(bottomDock,Position.BOTTOM);
+		//borderDock.setDock(topDock, Position.TOP);
 		dockModel.addRootDock("borderDock", borderDock, frame);
 
 		// Create an externalizer.
@@ -573,6 +573,13 @@ public class DezibelPanel extends JPanel {
 	}
 	
 	private void onLogout(){
+		if(daPlayer.getState() == DockableState.EXTERNALIZED)
+		{
+			JOptionPane.showMessageDialog(this,"Ausloggen nicht moeglich, solange "
+			+ "der Player nicht angedockt ist","Fehler beim Ausloggen",JOptionPane.ERROR_MESSAGE);
+		}
+		else
+		{
 		Database.getInstance().setLoggedInUser(null);
 		this.removeMenubar();
 		if(daAds.getDock()!=null)
@@ -589,13 +596,7 @@ public class DezibelPanel extends JPanel {
 		
 		if(daSearch.getDock()!=null)
 			daSearch.getDock().removeDockable(daSearch);
-		
-		if(daPlayer.getState() == DockableState.EXTERNALIZED){
-			//daPlayer.setState(arg0, arg1);
-			centerDock.addDockable(daPlayer,new Position(0));
-			daPlayer.setDock(centerDock);
-		}
-		
+				
 		if(daPlayer.getDock()!=null)
 			daPlayer.getDock().removeDockable(daPlayer);
 			
@@ -612,6 +613,7 @@ public class DezibelPanel extends JPanel {
 		
 		
 		this.showLogin();
+		}
 	}
 	
 	private void onMenuCheckedSideBar(JCheckBoxMenuItem src, Dockable da){
@@ -621,6 +623,10 @@ public class DezibelPanel extends JPanel {
 			if(da.getDock() != null)
 					da.getDock().removeDockable(da);
 		}
+	}
+	
+	private void onGoTo(Dockable da){
+		
 	}
 	
 	private void onUpload() {
