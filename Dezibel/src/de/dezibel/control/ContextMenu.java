@@ -58,6 +58,8 @@ public class ContextMenu {
             createLabelMenu();
         } else if (currentTableModel.getValueAt(rowNumber, -1) instanceof Album) {
             createAlbumMenu();
+        } else if(currentTableModel.getValueAt(rowNumber, -1) instanceof Playlist){
+            createPlaylistMenu();
         }
         return currentPopupMenu;
     }
@@ -237,6 +239,37 @@ public class ContextMenu {
                 }
             }
         });
+        currentPopupMenu.add(menuItemQueue);
+    }
+    
+    private void createPlaylistMenu(){
+        currentPopupMenu = new JPopupMenu();
+        JMenuItem menuItemShow = new JMenuItem("Anzeigen");
+        menuItemShow.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Playlist p = (Playlist) currentTableModel.getValueAt(
+                        currentTable.getSelectedRow(), -1);
+                if (p != null) {
+                    dp.showPlaylist(p);
+                }
+            }
+        });
+        
+        JMenuItem menuItemQueue = new JMenuItem("Warteschlange");
+        menuItemQueue.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Playlist p = (Playlist) currentTableModel.getValueAt(
+                        currentTable.getSelectedRow(), -1);
+                if (p != null) {
+                    Player.getInstance().addMedialist(p.getList());
+                    Player.getInstance().play();
+                }
+            }
+        });
+        
+        currentPopupMenu.add(menuItemShow);
         currentPopupMenu.add(menuItemQueue);
     }
 }

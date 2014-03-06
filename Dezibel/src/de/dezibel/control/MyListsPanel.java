@@ -8,33 +8,48 @@ import de.dezibel.data.Database;
 import de.dezibel.data.Playlist;
 import de.dezibel.gui.DezibelPanel;
 import de.dezibel.gui.DragablePanel;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+import de.dezibel.gui.MyListsTableModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 /**
  *
  * @author Benny
  */
+
+
 public class MyListsPanel extends DragablePanel{
-    JLabel lbTitel;
-    JScrollPane scrollPane;
-    JTable tblPlaylists;
-    DefaultTableModel dtm;
+    private JLabel lbTitel;
+    private JScrollPane scrollPane;
+    private JTable tblPlaylists;
+    private MyListsTableModel mltm;
+    private JPopupMenu currentPopupMenu;
+    private DezibelPanel dp;
     
     public MyListsPanel(DezibelPanel parent){
         super(parent);
+        this.dp = parent;
+        if(Database.getInstance().getLoggedInUser() != null){
+        createComponents();
+        createLayout();
+        }
+    }
+    
+    public void refresh(){
         createComponents();
         createLayout();
     }
     
     private void createComponents(){
         lbTitel = new JLabel("Wiedergabelisten");
-        dtm = new DefaultTableModel();
-        tblPlaylists = new JTable(dtm);
+        mltm = new MyListsTableModel();
+        tblPlaylists = new JTable(mltm);
         scrollPane = new JScrollPane(tblPlaylists);
         String[] header = {"Titel"};
         LinkedList<Playlist> myPlaylists = Database.getInstance().getLoggedInUser()
@@ -42,8 +57,38 @@ public class MyListsPanel extends DragablePanel{
         LinkedList<Playlist> favoritePlaylists = Database.getInstance().getLoggedInUser()
                 .getFavoritePlaylists();
         myPlaylists.addAll(favoritePlaylists);
-        Object[][] datastuff = {myPlaylists.toArray()};
-        dtm.setDataVector(datastuff, header);
+        mltm.setData(myPlaylists);
+        
+        tblPlaylists.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            if (e.getClickCount()==2) 
+            {
+                Playlist p = (Playlist) mltm.getValueAt(
+                        tblPlaylists.getSelectedRow(), -1);
+                dp.showPlaylist(p);
+            }
+            }
+            @Override
+            public void mousePressed(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            private void showPopup(MouseEvent me) {
+                ContextMenu contextMenu = new ContextMenu(parent);
+                currentPopupMenu = contextMenu.getContextMenu(tblPlaylists, me);
+                currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
+            }
+        });
 
     }
     

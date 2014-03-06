@@ -31,6 +31,7 @@ import com.javadocking.model.FloatDockModel;
 import com.javadocking.visualizer.FloatExternalizer;
 import com.javadocking.visualizer.LineMinimizer;
 import com.javadocking.visualizer.SingleMaximizer;
+import de.dezibel.control.MyListsPanel;
 import de.dezibel.control.SaveControl;
 import de.dezibel.data.Database;
 import de.dezibel.data.Playlist;
@@ -117,7 +118,7 @@ public class DezibelPanel extends JPanel {
 		pnPlayer 	= new PlayerPanel(this);
 		pnNews 		= new DragablePanel(this);
 		pnAds 		= new DragablePanel(this);
-		pnMyList 	= new DragablePanel(this);
+		pnMyList 	= new MyListsPanel(this);
 		pnFavorites = new DragablePanel(this);
 		pnProfil 	= new ProfilPanel(this);
 		pnSearch 	= new SearchPanel(this);
@@ -147,6 +148,7 @@ public class DezibelPanel extends JPanel {
 	 * player-panel docked at the bottom and a profil-panel at the center.
 	 */
 	public void showWorkspace() {
+                ((MyListsPanel) pnMyList).refresh(); //TODO!! QUICK&DIRTY: Aufruf an richtige Stelle setzen
 		this.createMenubar();
 		frame.setJMenuBar(menuBar);
 		this.showSidebars();
@@ -167,6 +169,10 @@ public class DezibelPanel extends JPanel {
 				DockingMode.CENTER + DockingMode.SINGLE);
 		this.showAtCenter(daPlaylist);
 	}
+        
+        public void showMyLists(){
+            pnMyList = new MyListsPanel(this);
+        }
 	
 	/**
 	 * This function is only called in the main-function and only once. It
@@ -420,7 +426,7 @@ public class DezibelPanel extends JPanel {
 	 * called once, after the login-process when the typical workspace will be
 	 * created
 	 */
-	private void showSidebars() {
+	private void showSidebars() {        
 		showSidebar(daMyLists);
 		showSidebar(daNews);
 		showSidebar(daFavorites);
