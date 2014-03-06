@@ -34,6 +34,7 @@ import com.javadocking.visualizer.SingleMaximizer;
 
 import de.dezibel.control.SaveControl;
 import de.dezibel.data.Database;
+import de.dezibel.data.User;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -166,11 +167,13 @@ public class DezibelPanel extends JPanel {
 				.getLoggedInUser());
 	}
 	
-	public void showProfile(){
+	public void showProfile(User user){
 		if (centerDock.getDockableCount() > 0) {
 			centerDock.removeDockable(centerDock
 					.getDockable(centerDock.getDockableCount() - 1));
 		}
+		ProfilPanel pn = (ProfilPanel) pnProfil;
+		pn.setUser(user);
 		centerDock.addDockable(daProfil, new Position(0));
 	}
 	
@@ -524,7 +527,7 @@ public class DezibelPanel extends JPanel {
 			itemProfile.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					showProfile();
+					showProfile(Database.getInstance().getLoggedInUser());
 			}});
 
 			JMenuItem itemSearch = new JMenuItem("Suchen");
