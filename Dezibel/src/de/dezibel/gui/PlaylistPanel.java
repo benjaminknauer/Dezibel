@@ -12,18 +12,20 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.ScrollPane;
+import java.awt.Insets;
+import javax.swing.JScrollPane;
 
 public class PlaylistPanel extends DragablePanel{
     
     JLabel lbTitle;
     JLabel lbCreator;
     JTable tblPlaylistMedia;
-    ScrollPane spPlaylistMedia;
+    JScrollPane spPlaylistMedia;
     
     public PlaylistPanel(DezibelPanel parent, Playlist currentPlaylist){
         super(parent);
         createComponents(currentPlaylist);
+        createLayout();
         
     }
     
@@ -39,8 +41,8 @@ public class PlaylistPanel extends DragablePanel{
         tblPlaylistMedia = new JTable(model);
         model.setData(currentPlaylist.getList());
         
-        spPlaylistMedia = new ScrollPane();
-        spPlaylistMedia.add(tblPlaylistMedia);
+        spPlaylistMedia = new JScrollPane(tblPlaylistMedia);
+   
         
     }
     
@@ -49,11 +51,19 @@ public class PlaylistPanel extends DragablePanel{
         GridBagConstraints gbc = new GridBagConstraints();
         this.setLayout(gbl);
         
+        gbc.weighty = 0.1;
+        gbc.insets = new Insets(0, 30, 0, 0);
         this.add(lbTitle, gbc);
         
         gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.insets = new Insets(0, 0, 0, 30);
+        gbc.anchor = GridBagConstraints.EAST;
         this.add(lbCreator, gbc);
         
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = new Insets(0, 0, 0, 0);
+        gbc.weighty = 0.9;
+        gbc.weightx = 1;
         this.add(spPlaylistMedia, gbc);
    
     }
