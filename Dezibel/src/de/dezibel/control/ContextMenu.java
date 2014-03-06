@@ -8,6 +8,7 @@ import de.dezibel.data.Album;
 import de.dezibel.data.Label;
 import de.dezibel.data.Medium;
 import de.dezibel.data.User;
+import de.dezibel.gui.DezibelPanel;
 import de.dezibel.player.Player;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -27,8 +28,10 @@ public class ContextMenu {
     DefaultTableModel currentTableModel;
     JPopupMenu currentPopupMenu;
     JTable currentTable;
-
-    public ContextMenu() {
+    DezibelPanel dp;
+    
+    public ContextMenu(DezibelPanel parent) {
+        dp = parent;
     }
 
     public JPopupMenu getContextMenu(JTable table, MouseEvent me) {
@@ -75,7 +78,7 @@ public class ContextMenu {
         menuItemShowUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO Beuntzerprofil des ausgewählten Benutzers anzeigen
+                dp.showProfile();
             }
         });
         currentPopupMenu.add(menuItemShowUser);
