@@ -267,6 +267,7 @@ public class SearchPanel extends DragablePanel {
                     case "Album":
                         model = tableModelAlbum;
                         result = searchcontrol.searchForAlbums(tfSearch.getText(), 0);
+                        tableModelAlbum.setData(result);
                         break;
                 }
 
