@@ -187,7 +187,9 @@ public class ContextMenu {
         menuItemShowUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //dp.showProfile();
+                User user = (User) currentTableModel.getValueAt(
+                        currentTable.getSelectedRow(), -1);
+                dp.showProfile(user);
             }
         });
         currentPopupMenu.add(menuItemShowUser);
