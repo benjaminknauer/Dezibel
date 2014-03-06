@@ -216,12 +216,12 @@ public class Player {
     /**
      * Sets the currentMedia
      *
-     * @param song The new currentMedia
+     * @param index The new index
      */
-    public void setCurrentMedia(Medium song) {
-        if (song != null) {
-            this.currentPosition = this.currentPlaylist.indexOf(song);
-            this.createPlayer(song);
+    public void setCurrentMedia(int index) {
+        if (index >= 0 && index < this.currentPlaylist.size()) {
+            this.currentPosition = index;
+            this.createPlayer(this.currentPlaylist.get(index));
         }
     }
 

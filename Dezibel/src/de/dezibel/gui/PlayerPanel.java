@@ -85,12 +85,10 @@ public class PlayerPanel extends DragablePanel {
         tablePlaylist.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
-                System.out.println("Test");
                 if (me.getClickCount() == 2) {
                     Point p = me.getPoint();
                     int rowNumber = tablePlaylist.rowAtPoint(p);
-                    Medium m = (Medium) mediaTableModel.getValueAt(rowNumber, -1);
-                    player.setCurrentMedia(m);
+                    player.setCurrentMedia(rowNumber);
                 }
             }
         });

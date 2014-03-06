@@ -45,6 +45,8 @@ public class LabelTableModel extends DefaultTableModel {
         if (data != null && row >= 0 && row < data.length) {
             Label l = data[row];
             switch (col) {
+                case -1:
+                    return l;
                 case 0:
                     return l.getName();
             }
