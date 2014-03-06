@@ -1,5 +1,6 @@
 package de.dezibel.gui;
 
+import de.dezibel.control.ContextMenu;
 import de.dezibel.control.Search;
 import de.dezibel.data.Medium;
 import de.dezibel.player.Player;
@@ -58,10 +59,6 @@ public class SearchPanel extends DragablePanel {
     private JPanel pnSortingLabel;
     private JPanel pnSortingAlbum;
 
-    private JPopupMenu mediumPopupMenu;
-    private JPopupMenu userPopupMenu;
-    private JPopupMenu albumPopupMenu;
-    private JPopupMenu labelPopupMenu;
     private JPopupMenu currentPopupMenu;
 
     public SearchPanel(DezibelPanel parent) {
@@ -100,12 +97,12 @@ public class SearchPanel extends DragablePanel {
             }
 
             private void showPopup(MouseEvent me) {
-                Point p = me.getPoint();
-                int rowNumber = tableResults.rowAtPoint(p);
-                tableResults.getSelectionModel().setSelectionInterval(rowNumber, rowNumber);
+                ContextMenu contextMenu = new ContextMenu();
+                currentPopupMenu = contextMenu.getContextMenu(tableResults, me);
                 currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
             }
         });
+        
         tablePanel = new JScrollPane(tableResults);
         tablePanel.setViewportView(tableResults);
 
@@ -172,50 +169,6 @@ public class SearchPanel extends DragablePanel {
         tableModelLabel = new LabelTableModel();
         tableModelAlbum = new AlbumTableModel();
 
-        mediumPopupMenu = new JPopupMenu();
-        JMenuItem menuItemPlay = new JMenuItem("Abspielen");
-        menuItemPlay.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Medium m = (Medium) tableModelSong.getValueAt(
-                        tableResults.getSelectedRow(), -1);
-                if (m != null) {
-                    Player.getInstance().addMedium(m);
-                    Player.getInstance().play();
-                }
-            }
-        });
-        mediumPopupMenu.add(menuItemPlay);
-
-        userPopupMenu = new JPopupMenu();
-        JMenuItem menuItemShowUser = new JMenuItem("Anzeigen");
-        menuItemPlay.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO Beuntzerprofil des ausgewählten Benutzers anzeigen
-            }
-        });
-        userPopupMenu.add(menuItemShowUser);
-
-        labelPopupMenu = new JPopupMenu();
-        JMenuItem menuItemShowLabel = new JMenuItem("Anzeigen");
-        menuItemPlay.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO Labelprofil des ausgewählten Labels anzeigen
-            }
-        });
-        labelPopupMenu.add(menuItemShowLabel);
-
-        albumPopupMenu = new JPopupMenu();
-        JMenuItem menuItem = new JMenuItem("Abspielen");
-        menuItemPlay.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO Gewähltes Album abspielen
-            }
-        });
-        albumPopupMenu.add(menuItem);
     }
 
     private void createLayout() {
@@ -290,25 +243,20 @@ public class SearchPanel extends DragablePanel {
 
                         result = searchcontrol.searchForMedia(tfSearch.getText(), sortation);
                         tableModelSong.setData(result);
-                        currentPopupMenu = mediumPopupMenu;
                         break;
                     case "User":
                         model = tableModelUser;
                         result = searchcontrol.searchForUsers(tfSearch.getText(), 0);
                         tableModelUser.setData(result);
-                        currentPopupMenu = userPopupMenu;
                         break;
                     case "Label":
                         model = tableModelLabel;
                         result = searchcontrol.searchForLabels(tfSearch.getText(), 0);
                         tableModelLabel.setData(result);
-                        currentPopupMenu = labelPopupMenu;
                         break;
                     case "Album":
                         model = tableModelAlbum;
                         result = searchcontrol.searchForAlbums(tfSearch.getText(), 0);
-                        tableModelAlbum.setData(result);
-                        currentPopupMenu = albumPopupMenu;
                         break;
                 }
 
