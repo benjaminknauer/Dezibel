@@ -6,6 +6,7 @@ import de.dezibel.data.Comment;
 import de.dezibel.data.Playlist;
 import de.dezibel.data.Medium;
 import de.dezibel.data.Album;
+import de.dezibel.data.Label;
 import de.dezibel.data.News;
 
 import java.text.ParseException;
@@ -506,7 +507,28 @@ public class ProfileControl {
             user.removeCreatedMedium(medium);
         }
     }
+    
+    /**
+     * Returns the list of labels the user manages
+     * 
+     * @param user user the profile belongs to
+     * @return list of managed labels
+     */
+    public LinkedList<Label> getManagedLabels(User user){
+        return user.getManagedLabels();
+    }
 
+    /**
+     * Returns the list of labels the user publishes under
+     * 
+     * @param user user the profile belongs to
+     * @return list of publishing labels
+     */
+    public LinkedList<Label> getPublishingLabels(User user){
+        return user.getPublishingLabels();
+    }    
+    
+    
     // Control for favorits tab
     /**
      * Returns the given users list of favorized users.
