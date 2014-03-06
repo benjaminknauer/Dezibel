@@ -2,9 +2,7 @@ package de.dezibel.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.Toolkit;
-
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -13,7 +11,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-
 import com.javadocking.DockingExecutor;
 import com.javadocking.DockingManager;
 import com.javadocking.dock.BorderDock;
@@ -34,16 +31,12 @@ import com.javadocking.model.FloatDockModel;
 import com.javadocking.visualizer.FloatExternalizer;
 import com.javadocking.visualizer.LineMinimizer;
 import com.javadocking.visualizer.SingleMaximizer;
-
 import de.dezibel.control.SaveControl;
 import de.dezibel.data.Database;
 import de.dezibel.data.Playlist;
 import de.dezibel.data.User;
-
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -138,12 +131,7 @@ public class DezibelPanel extends JPanel {
 	 * frame Any panel docked in the center will be removed.
 	 */
 	public void showLogin() {
-		
-		if (this.centerDock.getDockableCount() > 0) {
-			this.centerDock.removeDockable(this.centerDock
-					.getDockable(this.centerDock.getDockableCount() - 1));
-		}
-		this.centerDock.addDockable(daLogin, new Position(0));
+		this.showAtCenter(daLogin);
 	}
 
 	/**
@@ -151,8 +139,7 @@ public class DezibelPanel extends JPanel {
 	 * the frame Any panel docked in the center will be removed.
 	 */
 	public void showRegistration() {
-		this.centerDock.removeDockable(daLogin);
-		this.centerDock.addDockable(this.daRegister, new Position(0));
+		this.showAtCenter(daRegister);
 	}
 
 	/**
@@ -162,32 +149,22 @@ public class DezibelPanel extends JPanel {
 	public void showWorkspace() {
 		this.createMenubar();
 		frame.setJMenuBar(menuBar);
-		if (this.centerDock.getDockableCount() > 0) {
-			this.centerDock.removeDockable(this.centerDock
-					.getDockable(this.centerDock.getDockableCount() - 1));
-		}
 		this.showSidebars();
-		//this.centerDock.addDockable(this.daSearch, new Position(0));
-		pnPlayer.onCenter();
-		this.centerDock.addDockable(this.daPlayer,new Position(0));
+		this.showAtCenter(daPlayer);
 		((ProfilPanel) daProfil.getContent()).setUser(Database.getInstance()
 				.getLoggedInUser());
 	}
 	
 	public void showProfile(User user){
-		if (centerDock.getDockableCount() > 0) {
-			centerDock.removeDockable(centerDock
-					.getDockable(centerDock.getDockableCount() - 1));
-		}
 		ProfilPanel pn = (ProfilPanel) pnProfil;
 		pn.setUser(user);
-		centerDock.addDockable(daProfil, new Position(0));
+		this.showAtCenter(daProfil);
 	}
 	
 	public void showPlaylist(Playlist list){
 		PlaylistPanel pnPlaylist = new PlaylistPanel(this,list);
-		Dockable daPlaylist = new DefaultDockable("pnPlaylist", pnLogin, "Playlist", null,
-				DockingMode.CENTER);
+		Dockable daPlaylist = new DefaultDockable("pnPlaylist", pnPlaylist, "Playlist", null,
+				DockingMode.CENTER + DockingMode.SINGLE);
 		this.showAtCenter(daPlaylist);
 	}
 	
@@ -433,12 +410,7 @@ public class DezibelPanel extends JPanel {
 
 			@Override
 			public void dockingWillChange(DockingEvent e) {
-//				if (e.getDestinationDock() == centerDock) {
-//					if (centerDock.getDockableCount() > 0) {
-//						centerDock.removeDockable(centerDock
-//								.getDockable(centerDock.getDockableCount() - 1));
-//					}
-//				}
+
 			}
 		});
 	}
@@ -601,12 +573,9 @@ public class DezibelPanel extends JPanel {
 	}
 	
 	private void showAtCenter(Dockable da){
-		Dockable center = null;
 		if(this.centerDock.getDockableCount() > 0){
-			center = this.centerDock.getDockable(this.centerDock.getDockableCount() -1);
-			this.centerDock.removeDockable(center);
+			this.executor.changeDocking(this.centerDock.getDockable(this.centerDock.getDockableCount() -1),null,new Position(0));
 		}
-		
 		this.executor.changeDocking(da, this.centerDock,new Position(0));
 	}
 	
@@ -663,16 +632,7 @@ public class DezibelPanel extends JPanel {
 	}
 	
 	private void onGoTo(Dockable da){
-		if(da.getDock() != null)
-			da.getDock().removeDockable(da);
-		
-		Dockable center = null;
-		if(this.centerDock.getDockableCount() > 0){
-			center = this.centerDock.getDockable(this.centerDock.getDockableCount() -1);
-			this.centerDock.removeDockable(center);
-		}
-		
-		this.executor.changeDocking(da, this.centerDock,new Position(0));
+		this.showAtCenter(da);
 	}
 	
 	private void onUpload() {
