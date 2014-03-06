@@ -279,69 +279,70 @@ public class User implements Lockable {
 
     /**
      * Adds a new favorized playlist to the users list of favorite playlists.
-     * 
+     *
      * @param favPL new favorized playlist
      */
     public void addFavoritePlaylist(Playlist favPL) {
-        if(!(this.favorizedPlaylists.contains(favPL))){
+        if (!(this.favorizedPlaylists.contains(favPL))) {
             this.favorizedPlaylists.add(favPL);
         }
     }
-    
+
     /**
      * Removes playlist from the users list of favorite playlists.
-     * 
+     *
      * @param favPL favorized playlist
      */
-    public void removeFavoritePlaylist(Playlist favPL){
-        if (this.favorizedPlaylists.contains(favPL)){
+    public void removeFavoritePlaylist(Playlist favPL) {
+        if (this.favorizedPlaylists.contains(favPL)) {
             this.favorizedPlaylists.remove(favPL);
         }
     }
-    
+
     /**
      * Adds a new favorized album to the users list of favorite albums.
-     * 
+     *
      * @param favAlbum new favorized album
      */
-    public void addFavoriteAlbum(Album favAlbum){
-        if(!(this.favorizedAlbums.contains(favAlbum))){
+    public void addFavoriteAlbum(Album favAlbum) {
+        if (!(this.favorizedAlbums.contains(favAlbum))) {
             this.favorizedAlbums.add(favAlbum);
         }
     }
-    
+
     /**
      * Removes album from the users list of favorite albums.
-     * 
+     *
      * @param favAlbum favorized album
      */
-    public void removeFavoriteAlbum(Album favAlbum){
-        if(this.favorizedAlbums.contains(favAlbum)){
+    public void removeFavoriteAlbum(Album favAlbum) {
+        if (this.favorizedAlbums.contains(favAlbum)) {
             this.favorizedAlbums.remove(favAlbum);
         }
     }
-    
+
     /**
      * Adds a new favorized medium to the users list of favorite mediums.
-     * 
+     *
      * @param favMedium new favorized medium
      */
-    public void addFavoriteMedium(Medium favMedium){
-        if(!(this.favorizedMediums.contains(favMedium))){
+    public void addFavoriteMedium(Medium favMedium) {
+        if (!(this.favorizedMediums.contains(favMedium))) {
             this.favorizedMediums.add(favMedium);
         }
     }
-    
+
     /**
      * Removes medium from the users list of favorite mediums.
-     * 
+     *
      * @param favMedium favorized medium
      */
-    public void removeFavoriteMedium(Medium favMedium){
-        if(this.favorizedMediums.contains(favMedium)){
+    public void removeFavoriteMedium(Medium favMedium) {
+        if (this.favorizedMediums.contains(favMedium)) {
             this.favorizedMediums.remove(favMedium);
         }
     }
+
     /**
      * Adds a news to the list of news the user created.
      *
@@ -474,7 +475,9 @@ public class User implements Lockable {
      * @post user is flagged as an artist
      */
     public void promoteToArtist() {
-        this.artist = true;
+        if (this.pseudonym != null && !this.pseudonym.isEmpty()) {
+            this.artist = true;
+        }
     }
 
     /**
@@ -671,21 +674,19 @@ public class User implements Lockable {
         return (LinkedList<Album>) this.createdAlbums.clone();
     }
 
-    public LinkedList<Playlist> getFavoritePlaylists(){
+    public LinkedList<Playlist> getFavoritePlaylists() {
         return (LinkedList<Playlist>) this.favorizedPlaylists.clone();
     }
-    
-    public LinkedList<Album> getFavoriteAlbums(){
+
+    public LinkedList<Album> getFavoriteAlbums() {
         return (LinkedList<Album>) this.favorizedAlbums.clone();
     }
-    
-    public LinkedList<Medium> getFavoriteMediums(){
+
+    public LinkedList<Medium> getFavoriteMediums() {
         return (LinkedList<Medium>) this.favorizedMediums.clone();
     }
-    
+
     public String toString() {
-        if(pseudonym == null || pseudonym.isEmpty())
-            return firstname +"\b"+ lastname;
         return this.pseudonym;
     }
 }

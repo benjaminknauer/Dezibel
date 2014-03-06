@@ -82,14 +82,6 @@ public class SearchPanel extends DragablePanel {
             }
         });
         
-        tfSearch.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                if(tfSearch.getText().isEmpty())
-                    tfSearch.setText("Suche...");
-            }
-        });
-        
         cbFilter = new JComboBox<>(choices);
         bnSearch = new JButton("Suchen");
         rbSongAlphabetical = new JRadioButton("Alphabetisch");
@@ -120,7 +112,7 @@ public class SearchPanel extends DragablePanel {
             }
 
             private void showPopup(MouseEvent me) {
-                ContextMenu contextMenu = new ContextMenu();
+                ContextMenu contextMenu = new ContextMenu(parent);
                 currentPopupMenu = contextMenu.getContextMenu(tableResults, me);
                 currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
             }

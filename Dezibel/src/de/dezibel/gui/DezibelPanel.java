@@ -2,6 +2,7 @@ package de.dezibel.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Toolkit;
 
 import javax.swing.JCheckBoxMenuItem;
@@ -32,8 +33,8 @@ import com.javadocking.visualizer.SingleMaximizer;
 
 import de.dezibel.control.SaveControl;
 import de.dezibel.data.Database;
-import java.awt.FlowLayout;
 
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -47,463 +48,583 @@ import java.awt.event.WindowEvent;
  * shows a minimum of information, like the playerpanel shows only the controls
  * for the music. If it is docked to the center there will be displayed a
  * playlist.
- *
+ * 
  * @author Pascal, Tobias, Richard
- *
+ * 
  */
 public class DezibelPanel extends JPanel {
 
-    private static final long serialVersionUID = 1L;
-    private JFrame frame;
-    private JMenuBar menuBar;
-    // Declares all panels the user can work with.
-    private DragablePanel pnLogin;
-    private DragablePanel pnRegister;
-    private DragablePanel pnPlayer;
-    private DragablePanel pnNews;
-    private DragablePanel pnAds;
-    private DragablePanel pnMyList;
-    private DragablePanel pnFavorites;
-    private DragablePanel pnProfil;
-    private DragablePanel pnSearch;
-    // Javadocking uses Dockable, to enable dragging and docking for childpanels
-    // Any panel you want to drag and dock have to be in its own Dockable
-    private Dockable daLogin;
-    private Dockable daRegister;
-    private Dockable daNews;
-    private Dockable daAds;
-    private Dockable daMyLists;
-    private Dockable daFavorites;
-    private Dockable daPlayer;
-    private Dockable daProfil;
-    private Dockable daSearch;
-    // We uses a LineDock at the bottom,top,left and right where all panels can be docked to.
-    // Except some panels, like players where only can be docked at the bottom, center or top.
-    // Any panel can be dragged to the center where the panel will be docked and shows extra information 
-    private BorderDock borderDock;
-    private LineDock leftLineDock;
-    private LineDock rightLineDock;
-    private SingleDock centerDock;
+	private static final long serialVersionUID = 1L;
+	private JFrame frame;
+	private JMenuBar menuBar;
+	
+	// Declares all panels the user can work with.
+	private DragablePanel pnLogin;
+	private DragablePanel pnRegister;
+	private DragablePanel pnPlayer;
+	private DragablePanel pnNews;
+	private DragablePanel pnAds;
+	private DragablePanel pnMyList;
+	private DragablePanel pnFavorites;
+	private DragablePanel pnProfil;
+	private DragablePanel pnSearch;
+	
+	// Javadocking uses Dockable, to enable dragging and docking for childpanels
+	// Any panel you want to drag and dock have to be in its own Dockable
+	private Dockable daLogin;
+	private Dockable daRegister;
+	private Dockable daNews;
+	private Dockable daAds;
+	private Dockable daMyLists;
+	private Dockable daFavorites;
+	private Dockable daPlayer;
+	private Dockable daProfil;
+	private Dockable daSearch;
+	
+	// We uses a LineDock at the bottom,top,left and right where all panels can
+	// be docked to.
+	// Except some panels, like players where only can be docked at the bottom,
+	// center or top.
+	// Any panel can be dragged to the center where the panel will be docked and
+	// shows extra information
+	private BorderDock borderDock;
+	private LineDock leftLineDock;
+	private LineDock rightLineDock;
+	private LineDock bottomDock;
+	private SingleDock centerDock;
 
-    /**
-     * Constructor of the panel
-     *
-     * @param frame Frame that contains the panel.
-     */
-    public DezibelPanel(JFrame frame) {
-        super(new BorderLayout());
-        this.frame = frame;
-        frame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                SaveControl saveControl = new SaveControl();
-                saveControl.save();
-            }
-        });
+	/**
+	 * Constructor of the panel
+	 * 
+	 * @param frame
+	 *            Frame that contains the panel.
+	 */
+	public DezibelPanel(JFrame frame) {
+		super(new BorderLayout());
+		this.frame = frame;
+		
+		frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				SaveControl saveControl = new SaveControl();
+				saveControl.save();
+			}
+		});
 
-        JMenu menuShow;
-        JMenuItem itemLogout;
-        JCheckBoxMenuItem cbMenuItem;
-        menuBar = new JMenuBar();
-        JMenu menuLogout = new JMenu("Logout");
+		// Create the content components.
+		pnLogin 	= new LoginPanel(this);
+		pnRegister 	= new RegistrationPanel(this);
+		pnPlayer 	= new PlayerPanel(this);
+		pnNews 		= new DragablePanel(this);
+		pnAds 		= new DragablePanel(this);
+		pnMyList 	= new DragablePanel(this);
+		pnFavorites = new DragablePanel(this);
+		pnProfil 	= new ProfilPanel(this);
+		pnSearch 	= new SearchPanel(this);
+		
+		this.createDocking();
+		this.showLogin();
+	}
 
-        menuBar.add(menuLogout);
-        menuShow = new JMenu("Show");
-        menuBar.add(menuShow);
-        itemLogout = new JMenuItem("Logout");
-        menuLogout.add(itemLogout);
-        itemLogout.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                System.out.println("Hallo");
-                removeMenubar();
-            }
-        });
+	/**
+	 * Shows the login-panel docked in the center with no other panels on the
+	 * frame Any panel docked in the center will be removed.
+	 */
+	public void showLogin() {
+		pnLogin.clearTextFields();
+		
+		if (this.centerDock.getDockableCount() > 0) {
+			this.centerDock.removeDockable(this.centerDock
+					.getDockable(this.centerDock.getDockableCount() - 1));
+		}
+		this.centerDock.addDockable(daLogin, new Position(0));
+	}
 
-        cbMenuItem = new JCheckBoxMenuItem("A check box menu item");
-        cbMenuItem.setMnemonic(KeyEvent.VK_C);
-        menuShow.add(cbMenuItem);
-        cbMenuItem = new JCheckBoxMenuItem("Another one");
-        cbMenuItem.setMnemonic(KeyEvent.VK_H);
-        menuShow.add(cbMenuItem);
+	/**
+	 * Shows the registration-panel docked in the center with no other panels on
+	 * the frame Any panel docked in the center will be removed.
+	 */
+	public void showRegistration() {
+		this.centerDock.removeDockable(daLogin);
+		this.centerDock.addDockable(this.daRegister, new Position(0));
+	}
 
-        JMenu menuUpload = new JMenu("Upload");
-        JMenuItem itemUpload = new JMenuItem("Upload");
-        menuUpload.add(itemUpload);
+	/**
+	 * Creates the typical workspace, with sidebards on the right and left, the
+	 * player-panel docked at the bottom and a profil-panel at the center.
+	 */
+	public void showWorkspace() {
+		this.createMenubar();
+		frame.setJMenuBar(menuBar);
+		if (this.centerDock.getDockableCount() > 0) {
+			this.centerDock.removeDockable(this.centerDock
+					.getDockable(this.centerDock.getDockableCount() - 1));
+		}
+		this.showSidebars();
+		this.centerDock.addDockable(this.daSearch, new Position(0));
+		bottomDock.addDockable(this.daPlayer, new Position(0));
+		((ProfilPanel) daProfil.getContent()).setUser(Database.getInstance()
+				.getLoggedInUser());
+	}
+	
+	public void showProfile(){
+		if (centerDock.getDockableCount() > 0) {
+			centerDock.removeDockable(centerDock
+					.getDockable(centerDock.getDockableCount() - 1));
+		}
+		centerDock.addDockable(daProfil, new Position(0));
+	}
+	
+	/**
+	 * This function is only called in the main-function and only once. It
+	 * creates a <code>JFrame</code> with a <code>DezibelPanel</code> and some
+	 * docking-features.
+	 */
+	public static void createAndShowGUI() {
 
-        itemUpload.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onUpload();
-            }
-        });
+		// Create the frame.
+		JFrame frame = new JFrame("Dezibel");
 
-        JMenuItem itemProfile = new JMenuItem("Profil");
-        itemProfile.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (centerDock.getDockableCount() > 0) {
-                    centerDock.removeDockable(centerDock
-                            .getDockable(centerDock.getDockableCount() - 1));
-                }
-                centerDock.addDockable(daProfil, new Position(0));
-            }
-        });
+		// Set the frame properties and show it.
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		frame.setLocation((screenSize.width - 600) / 2,
+				(screenSize.height - 800) / 2);
+		frame.setSize(800, 600);
 
-        JMenuItem itemSearch = new JMenuItem("Suchen");
-        itemSearch.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (centerDock.getDockableCount() > 0) {
-                    centerDock.removeDockable(centerDock
-                            .getDockable(centerDock.getDockableCount() - 1));
-                }
-                centerDock.addDockable(daSearch, new Position(0));
-            }
-        });
+		// Create the panel and add it to the frame.
+		DezibelPanel panel = new DezibelPanel(frame);
+		frame.getContentPane().add(panel);
 
-        JMenu menuGoTo = new JMenu("Gehe zu..");
-        menuGoTo.add(itemSearch);
-        menuGoTo.add(itemProfile);
+		// Show.
+		frame.setVisible(true);
+		frame.setMinimumSize(new Dimension(800, 600));
+	}
 
-        menuBar.add(menuShow);
-        menuBar.add(menuUpload);
-        menuBar.add(menuGoTo);
-        
+	/**
+	 * Main-Function, it creates a the typical UI
+	 * 
+	 * @param args
+	 *            startup-arguments (will be ignored!)
+	 */
+	public static void main(String args[]) {
+		Runnable doCreateAndShowGUI = new Runnable() {
+			public void run() {
+				createAndShowGUI();
+			}
+		};
+		SwingUtilities.invokeLater(doCreateAndShowGUI);
+	}
 
+	private void createDocking() {
+		// Create the dock model for the docks.
+		FloatDockModel dockModel = new FloatDockModel();
+		dockModel.addOwner("dezibel", frame);
 
-        // Create the dock model for the docks.
-        FloatDockModel dockModel = new FloatDockModel();
-        dockModel.addOwner("dezibel", frame);
+		// Give the dock model to the docking manager.
+		DockingManager.setDockModel(dockModel);
+		// Create the dockables around the content components.
+		// MainPanles, that can only be displayed in the Center
+		daLogin = new DefaultDockable("pnLogin", pnLogin, "Login", null,
+				DockingMode.CENTER);
+		daRegister = new DefaultDockable("pnRegister", pnRegister, "Register",
+				null, DockingMode.CENTER);
 
-        // Give the dock model to the docking manager.
-        DockingManager.setDockModel(dockModel);
+		// Panels that can be docked at left/right border
+		daNews = new DefaultDockable("pnNews", pnNews, "News", null,
+				DockingMode.CENTER + DockingMode.LEFT + DockingMode.RIGHT
+						+ DockingMode.VERTICAL_LINE + DockingMode.SINGLE);
+		daAds = new DefaultDockable("pnAds", pnAds, "Ads", null,
+				DockingMode.CENTER + DockingMode.LEFT + DockingMode.RIGHT
+						+ DockingMode.VERTICAL_LINE + DockingMode.SINGLE);
+		daMyLists = new DefaultDockable("pnMyList", pnMyList, "MyLists", null,
+				DockingMode.CENTER + DockingMode.LEFT + DockingMode.RIGHT
+						+ DockingMode.VERTICAL_LINE + DockingMode.SINGLE);
+		daFavorites = new DefaultDockable("pnFavorites", pnFavorites,
+				"Favorites", null, DockingMode.CENTER + DockingMode.LEFT
+						+ DockingMode.RIGHT + DockingMode.VERTICAL_LINE
+						+ DockingMode.SINGLE);
 
-        // Create the content components.
-        pnLogin = new LoginPanel(this);
-        pnRegister = new RegistrationPanel(this);
-        pnPlayer = new PlayerPanel(this);
-        pnNews = new DragablePanel(this);
-        pnAds = new DragablePanel(this);
-        pnMyList = new DragablePanel(this);
-        pnFavorites = new DragablePanel(this);
-        pnProfil = new ProfilPanel(this);
-        pnSearch = new SearchPanel(this);
+		// Panels that can be docked only at top/bottom and center
+		daPlayer = new DefaultDockable("pnPlayer", pnPlayer, "Player", null,
+				DockingMode.CENTER + DockingMode.SINGLE + DockingMode.BOTTOM
+						+ DockingMode.TOP + DockingMode.HORIZONTAL_LINE);
+		daProfil = new DefaultDockable("pnProfil", pnProfil, "Profil", null,
+				DockingMode.CENTER + DockingMode.SINGLE);
 
-        // Create the dockables around the content components.
-        // MainPanles, that can only be displayed in the Center
-        daLogin = new DefaultDockable("pnLogin", pnLogin, "Login", null,
-                DockingMode.CENTER);
-        daRegister = new DefaultDockable("pnRegister", pnRegister, "Register",
-                null, DockingMode.CENTER);
+		daSearch = new DefaultDockable("pnSearch", pnSearch, "Search", null,
+				DockingMode.CENTER + DockingMode.SINGLE + DockingMode.BOTTOM
+						+ DockingMode.TOP);
 
-        // Panels that can be docked at left/right border
-        daNews = new DefaultDockable("pnNews", pnNews, "News", null,
-                DockingMode.CENTER + DockingMode.LEFT + DockingMode.RIGHT
-                + DockingMode.VERTICAL_LINE + DockingMode.SINGLE);
-        daAds = new DefaultDockable("pnAds", pnAds, "Ads", null,
-                DockingMode.CENTER + DockingMode.LEFT + DockingMode.RIGHT
-                + DockingMode.VERTICAL_LINE + DockingMode.SINGLE);
-        daMyLists = new DefaultDockable("pnMyList", pnMyList, "MyLists", null,
-                DockingMode.CENTER + DockingMode.LEFT + DockingMode.RIGHT
-                + DockingMode.VERTICAL_LINE + DockingMode.SINGLE);
-        daFavorites = new DefaultDockable("pnFavorites", pnFavorites,
-                "Favorites", null, DockingMode.CENTER + DockingMode.LEFT
-                + DockingMode.RIGHT + DockingMode.VERTICAL_LINE + DockingMode.SINGLE);
+		// Add actions to the dockables.
+		daLogin = addActions(daLogin);
+		daRegister = addActions(daRegister);
+		daPlayer = addActionsWithCloseExt(daPlayer);
+		daNews = addActionsWithClose(daNews);
+		daAds = addActionsWithClose(daAds);
+		daMyLists = addActionsWithClose(daMyLists);
+		daFavorites = addActionsWithClose(daFavorites);
 
-        // Panels that can be docked only at top/bottom and center
-        daPlayer = new DefaultDockable("pnPlayer", pnPlayer, "Player", null,
-                DockingMode.CENTER + DockingMode.SINGLE + DockingMode.BOTTOM + DockingMode.TOP + DockingMode.HORIZONTAL_LINE);
-        daProfil = new DefaultDockable("pnProfil", pnProfil, "Profil", null,
-                DockingMode.CENTER + DockingMode.SINGLE);
+		// Create the child tab dock.
+		leftLineDock = new LineDock();
+		rightLineDock = new LineDock();
+		centerDock = new SingleDock();
+		leftLineDock.setOrientation(LineDock.ORIENTATION_VERTICAL);
+		rightLineDock.setOrientation(LineDock.ORIENTATION_VERTICAL);
+		bottomDock = new LineDock();
+		bottomDock.setOrientation(LineDock.ORIENTATION_HORIZONTAL);
+		
+		this.addSideCenterListener();
+		this.addTopBottomCenterListener();
 
-        daSearch = new DefaultDockable("pnSearch", pnSearch, "Search", null,
-                DockingMode.CENTER + DockingMode.SINGLE + DockingMode.BOTTOM + DockingMode.TOP);
+		borderDock = new BorderDock();
+		borderDock.setDock(leftLineDock, Position.LEFT);
+		borderDock.setDock(rightLineDock, Position.RIGHT);
+		borderDock.setDock(centerDock, Position.CENTER);
+		borderDock.setDock(bottomDock,Position.BOTTOM);
 
-        // Add actions to the dockables.
-        daLogin = addActions(daLogin);
-        daRegister = addActions(daRegister);
-        daPlayer = addActionsWithCloseExt(daPlayer);
-        daNews = addActionsWithClose(daNews);
-        daAds = addActionsWithClose(daAds);
-        daMyLists = addActionsWithClose(daMyLists);
-        daFavorites = addActionsWithClose(daFavorites);
+		dockModel.addRootDock("borderDock", borderDock, frame);
 
-        // Create the child tab dock.
-        leftLineDock = new LineDock();
-        rightLineDock = new LineDock();
-        centerDock = new SingleDock();
-        leftLineDock.setOrientation(LineDock.ORIENTATION_VERTICAL);
-        rightLineDock.setOrientation(LineDock.ORIENTATION_VERTICAL);
+		// Create an externalizer.
+		FloatExternalizer externalizer = new FloatExternalizer(frame);
+		dockModel.addVisualizer("externalizer", externalizer, frame);
 
-        this.addSideCenterListener();
-        this.addTopBottomCenterListener();
+		// Create a minimizer.
+		LineMinimizer minimizer = new LineMinimizer(borderDock);
+		dockModel.addVisualizer("minimizer", minimizer, frame);
 
-        borderDock = new BorderDock();
-        borderDock.setDock(leftLineDock, Position.LEFT);
-        borderDock.setDock(rightLineDock, Position.RIGHT);
-        borderDock.setDock(centerDock, Position.CENTER);
+		// Create a maximizer.
+		SingleMaximizer maximizer = new SingleMaximizer(minimizer);
+		dockModel.addVisualizer("maximizer", maximizer, frame);
 
-        dockModel.addRootDock("borderDock", borderDock, frame);
+		// Add the maximizer to the panel.
+		this.add(maximizer, BorderLayout.CENTER);
+	}
+	
 
-        // Create an externalizer.
-        FloatExternalizer externalizer = new FloatExternalizer(frame);
-        dockModel.addVisualizer("externalizer", externalizer, frame);
+	/**
+	 * Adds the action to a dockable given as parameter. The dockable has the
+	 * default behaviour
+	 * 
+	 * @param dockable
+	 *            the dockable where the actions should be added
+	 * @return a new dockable with the actions, based on the object given as
+	 *         parameter
+	 */
+	private Dockable addActions(Dockable dockable) {
+		// int[] states = { DockableState.NORMAL, DockableState.MINIMIZED };
+		int[] states = { DockableState.NORMAL };
+		Dockable wrapper = new StateActionDockable(dockable,
+				new DefaultDockableStateActionFactory(), states);
+		return wrapper;
+	}
 
-        // Create a minimizer.
-        LineMinimizer minimizer = new LineMinimizer(borderDock);
-        dockModel.addVisualizer("minimizer", minimizer, frame);
+	private Dockable addActionsWithClose(Dockable dockable) {
+		// int[] states = { DockableState.NORMAL, DockableState.MINIMIZED };
+		int[] states = { DockableState.NORMAL, DockableState.CLOSED };
+		Dockable wrapper = new StateActionDockable(dockable,
+				new DefaultDockableStateActionFactory(), states);
+		return wrapper;
+	}
 
-        // Create a maximizer.
-        SingleMaximizer maximizer = new SingleMaximizer(minimizer);
-        dockModel.addVisualizer("maximizer", maximizer, frame);
+	private Dockable addActionsWithCloseExt(Dockable dockable) {
+		// int[] states = { DockableState.NORMAL, DockableState.MINIMIZED };
+		int[] states = { DockableState.NORMAL, DockableState.CLOSED,
+				DockableState.MINIMIZED, DockableState.EXTERNALIZED };
+		Dockable wrapper = new StateActionDockable(dockable,
+				new DefaultDockableStateActionFactory(), states);
+		return wrapper;
+	}
 
-        // Add the maximizer to the panel.
-        this.add(maximizer, BorderLayout.CENTER);
-        this.showLogin();
-        //this.showWorkspace();
-    }
+	/**
+	 * Adds a listener to the side-panels, which can be docked at center,left
+	 * and right. If a dockable is docked to the center, <code>onCenter</code>
+	 * is called from <code>DragablePanel</code>, else <code>onLeftRight</code>
+	 */
+	private void addSideCenterListener() {
+		daNews.addDockingListener(new DockingListener() {
+			@Override
+			public void dockingChanged(DockingEvent e) {
+				DragablePanel pn = (DragablePanel) daNews.getContent();
+				if (e.getDestinationDock() == centerDock) {
+					pn.onCenter();
+				} else {
+					pn.onLeftRight();
+				}
+			}
 
-    /**
-     * Shows the login-panel docked in the center with no other panels on the
-     * frame Any panel docked in the center will be removed.
-     */
-    public void showLogin() {
-        if (this.centerDock.getDockableCount() > 0) {
-            this.centerDock.removeDockable(this.centerDock
-                    .getDockable(this.centerDock.getDockableCount() - 1));
-        }
+			@Override
+			public void dockingWillChange(DockingEvent e) {
+				// TODO Auto-generated method stub
+			}
+		});
 
-        this.centerDock.addDockable(daLogin, new Position(0));
-    }
+		daAds.addDockingListener(new DockingListener() {
+			@Override
+			public void dockingChanged(DockingEvent e) {
+				DragablePanel pn = (DragablePanel) daAds.getContent();
+				if (e.getDestinationDock() == centerDock) {
+					pn.onCenter();
+				} else {
+					pn.onLeftRight();
+				}
+			}
 
-    /**
-     * Shows the registration-panel docked in the center with no other panels on
-     * the frame Any panel docked in the center will be removed.
-     */
-    public void showRegistration() {
-        this.centerDock.removeDockable(daLogin);
-        this.centerDock.addDockable(this.daRegister, new Position(0));
-    }
+			@Override
+			public void dockingWillChange(DockingEvent e) {
+				// TODO Auto-generated method stub
+			}
+		});
+		daMyLists.addDockingListener(new DockingListener() {
+			@Override
+			public void dockingChanged(DockingEvent e) {
+				DragablePanel pn = (DragablePanel) daMyLists.getContent();
+				if (e.getDestinationDock() == centerDock) {
+					pn.onCenter();
+				} else {
+					pn.onLeftRight();
+				}
+			}
 
-    /**
-     * Creates the typical workspace, with sidebards on the right and left, the
-     * player-panel docked at the bottom and a profil-panel at the center.
-     */
-    public void showWorkspace() {
-        frame.setJMenuBar(menuBar);
-        if (this.centerDock.getDockableCount() > 0) {
-            this.centerDock.removeDockable(this.centerDock
-                    .getDockable(this.centerDock.getDockableCount() - 1));
-        }
-        this.showSidebars();
-        //this.centerDock.addDockable(this.daProfil, new Position(0));
-        this.centerDock.addDockable(this.daSearch, new Position(0));
-        LineDock bottomDock = new LineDock();
-        bottomDock.setOrientation(LineDock.ORIENTATION_HORIZONTAL);
-        bottomDock.addDockable(this.daPlayer, new Position(0));
-        this.borderDock.addChildDock(bottomDock, new Position(Position.BOTTOM));
-        ((ProfilPanel) daProfil.getContent())
-                .setUser(Database.getInstance().getLoggedInUser());
-    }
+			@Override
+			public void dockingWillChange(DockingEvent e) {
+				// TODO Auto-generated method stub
+			}
+		});
 
-    /**
-     * This function is only called in the main-function and only once. It
-     * creates a
-     * <code>JFrame</code> with a
-     * <code>DezibelPanel</code> and some docking-features.
-     */
-    public static void createAndShowGUI() {
+		daFavorites.addDockingListener(new DockingListener() {
+			@Override
+			public void dockingChanged(DockingEvent e) {
+				DragablePanel pn = (DragablePanel) daFavorites.getContent();
+				if (e.getDestinationDock() == centerDock) {
+					pn.onCenter();
+				} else {
+					pn.onLeftRight();
+				}
+			}
 
-        // Create the frame.
-        JFrame frame = new JFrame("Dezibel");
+			@Override
+			public void dockingWillChange(DockingEvent e) {
+				// TODO Auto-generated method stub
+			}
+		});
+	}
 
-        // Set the frame properties and show it.
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation((screenSize.width - 600) / 2,
-                (screenSize.height - 800) / 2);
-        frame.setSize(800, 600);
+	/**
+	 * Same as <code>addSideCenterListener</code>, but for Top,Bottom and Center
+	 */
+	private void addTopBottomCenterListener() {
+		daPlayer.addDockingListener(new DockingListener() {
+			@Override
+			public void dockingChanged(DockingEvent e) {
+				DragablePanel pn = (DragablePanel) daPlayer.getContent();
+				if (e.getDestinationDock() == centerDock) {
+					pn.onCenter();
+				} else if (e.getDestinationDock() == null) {
+					pn.onExternalized();
+				} else {
+					pn.onTopBottom();
+				}
+			}
 
-        // Create the panel and add it to the frame.
-        DezibelPanel panel = new DezibelPanel(frame);
-        frame.getContentPane().add(panel);
+			@Override
+			public void dockingWillChange(DockingEvent e) {
+				if (e.getDestinationDock() == centerDock) {
+					if (centerDock.getDockableCount() > 0) {
+						centerDock.removeDockable(centerDock
+								.getDockable(centerDock.getDockableCount() - 1));
+					}
+				}
+			}
+		});
+	}
 
-        // Show.
-        frame.setVisible(true);
-        frame.setMinimumSize(new Dimension(800, 600));
-    }
+	/**
+	 * Shows the typical sidebars with MyList, Favorites, News and Ads. Is only
+	 * called once, after the login-process when the typical workspace will be
+	 * created
+	 */
+	private void showSidebars() {
+//		leftLineDock.addDockable(daMyLists, new Position(0));
+//		leftLineDock.addDockable(daFavorites, new Position(1));
+//		rightLineDock.addDockable(daNews, new Position(0));
+//		rightLineDock.addDockable(daAds, new Position(1));
+		showSidebar(daMyLists);
+		showSidebar(daNews);
+		showSidebar(daFavorites);
+		showSidebar(daAds);
+	}
+	/**
+	 * Docks the specific dockable to the left or right sidebar, depending on which has
+	 * a lower dockable count. bar shouldbe one of daMyLists, daNews, daFavorites, daAds
+	 * @param bar the new Dockable which will be docked at the left or right
+	 */
+	private void showSidebar(Dockable bar){
+		if(this.leftLineDock.getDockableCount() < rightLineDock.getDockableCount())
+			leftLineDock.addDockable(bar, new Position(leftLineDock.getDockableCount()-1));
+		else
+			rightLineDock.addDockable(bar, new Position(rightLineDock.getDockableCount()-1));
+	}
+	
+	private void createMenubar() {
+		if (this.menuBar == null) {
+			JMenu menuShow;
+			JMenuItem itemLogout;
+			JCheckBoxMenuItem cbMenuItem;
+			menuBar = new JMenuBar();
+			JMenu menuLogout = new JMenu("Ausloggen");
 
-    /**
-     * Main-Function, it creates a the typical UI
-     *
-     * @param args startup-arguments (will be ignored!)
-     */
-    public static void main(String args[]) {
-        Runnable doCreateAndShowGUI = new Runnable() {
-            public void run() {
-                createAndShowGUI();
-            }
-        };
-        SwingUtilities.invokeLater(doCreateAndShowGUI);
-    }
+			menuBar.add(menuLogout);
+			menuShow = new JMenu("Anzeige");
+			menuBar.add(menuShow);
+			itemLogout = new JMenuItem("Ausloggen");
+			menuLogout.add(itemLogout);
+			itemLogout.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					onLogout();
+				}
+			});
 
-    /**
-     * Adds the action to a dockable given as parameter. The dockable has the
-     * default behaviour
-     *
-     * @param dockable the dockable where the actions should be added
-     * @return a new dockable with the actions, based on the object given as
-     * parameter
-     */
-    private Dockable addActions(Dockable dockable) {
-        //int[] states = { DockableState.NORMAL, DockableState.MINIMIZED };
-        int[] states = {DockableState.NORMAL};
-        Dockable wrapper = new StateActionDockable(dockable, new DefaultDockableStateActionFactory(), states);
-        return wrapper;
-    }
+			cbMenuItem = new JCheckBoxMenuItem("Neuigkeiten");
+			cbMenuItem.setSelected(true);
+			cbMenuItem.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					onMenuCheckedSideBar((JCheckBoxMenuItem) arg0.getSource(), daNews);
+					
+				}
+			});
+			menuShow.add(cbMenuItem);
+			cbMenuItem = new JCheckBoxMenuItem("Meine Liste");
+			cbMenuItem.setSelected(true);
+			cbMenuItem.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					onMenuCheckedSideBar((JCheckBoxMenuItem) arg0.getSource(), daMyLists);			}
+			});
+			menuShow.add(cbMenuItem);
+			cbMenuItem = new JCheckBoxMenuItem("Favoriten");
+			cbMenuItem.setSelected(true);
+			cbMenuItem.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					onMenuCheckedSideBar((JCheckBoxMenuItem) arg0.getSource(), daFavorites);
+					
+				}
+			});
+			menuShow.add(cbMenuItem);
+			cbMenuItem = new JCheckBoxMenuItem("Werbung");
+			cbMenuItem.setSelected(true);
+			cbMenuItem.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					onMenuCheckedSideBar((JCheckBoxMenuItem) arg0.getSource(), daAds);
+				}
+			});
+			menuShow.add(cbMenuItem);
 
-    private Dockable addActionsWithClose(Dockable dockable) {
-        //int[] states = { DockableState.NORMAL, DockableState.MINIMIZED };
-        int[] states = {DockableState.NORMAL, DockableState.CLOSED};
-        Dockable wrapper = new StateActionDockable(dockable, new DefaultDockableStateActionFactory(), states);
-        return wrapper;
-    }
+			JMenu menuUpload = new JMenu("Upload");
+			JMenuItem itemUpload = new JMenuItem("Upload");
+			menuUpload.add(itemUpload);
 
-    private Dockable addActionsWithCloseExt(Dockable dockable) {
-        //int[] states = { DockableState.NORMAL, DockableState.MINIMIZED };
-        int[] states = {DockableState.NORMAL, DockableState.CLOSED, DockableState.MINIMIZED, DockableState.EXTERNALIZED};
-        Dockable wrapper = new StateActionDockable(dockable, new DefaultDockableStateActionFactory(), states);
-        return wrapper;
-    }
+			itemUpload.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					onUpload();
+				}
+			});
 
-    /**
-     * Adds a listener to the side-panels, which can be docked at center,left
-     * and right. If a dockable is docked to the center,
-     * <code>onCenter</code> is called from
-     * <code>DragablePanel</code>, else
-     * <code>onLeftRight</code>
-     */
-    private void addSideCenterListener() {
-        daNews.addDockingListener(new DockingListener() {
-            @Override
-            public void dockingChanged(DockingEvent e) {
-                DragablePanel pn = (DragablePanel) daNews.getContent();
-                if (e.getDestinationDock() == centerDock) {
-                    pn.onCenter();
-                } else {
-                    pn.onLeftRight();
-                }
-            }
+			JMenuItem itemProfile = new JMenuItem("Profil");
+			itemProfile.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					showProfile();
+			}});
 
-            @Override
-            public void dockingWillChange(DockingEvent e) {
-                // TODO Auto-generated method stub
-            }
-        });
+			JMenuItem itemSearch = new JMenuItem("Suchen");
+			itemSearch.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (centerDock.getDockableCount() > 0) {
+						centerDock.removeDockable(centerDock
+								.getDockable(centerDock.getDockableCount() - 1));
+					}
+					centerDock.addDockable(daSearch, new Position(0));
+				}
+			});
 
-        daAds.addDockingListener(new DockingListener() {
-            @Override
-            public void dockingChanged(DockingEvent e) {
-                DragablePanel pn = (DragablePanel) daAds.getContent();
-                if (e.getDestinationDock() == centerDock) {
-                    pn.onCenter();
-                } else {
-                    pn.onLeftRight();
-                }
-            }
+			JMenu menuGoTo = new JMenu("Gehe zu..");
+			menuGoTo.add(itemSearch);
+			menuGoTo.add(itemProfile);
 
-            @Override
-            public void dockingWillChange(DockingEvent e) {
-                // TODO Auto-generated method stub
-            }
-        });
-        daMyLists.addDockingListener(new DockingListener() {
-            @Override
-            public void dockingChanged(DockingEvent e) {
-                DragablePanel pn = (DragablePanel) daMyLists.getContent();
-                if (e.getDestinationDock() == centerDock) {
-                    pn.onCenter();
-                } else {
-                    pn.onLeftRight();
-                }
-            }
+			menuBar.add(menuShow);
+			menuBar.add(menuUpload);
+			menuBar.add(menuGoTo);
+		}
+	}
 
-            @Override
-            public void dockingWillChange(DockingEvent e) {
-                // TODO Auto-generated method stub
-            }
-        });
-
-        daFavorites.addDockingListener(new DockingListener() {
-            @Override
-            public void dockingChanged(DockingEvent e) {
-                DragablePanel pn = (DragablePanel) daFavorites.getContent();
-                if (e.getDestinationDock() == centerDock) {
-                    pn.onCenter();
-                } else {
-                    pn.onLeftRight();
-                }
-            }
-
-            @Override
-            public void dockingWillChange(DockingEvent e) {
-                // TODO Auto-generated method stub
-            }
-        });
-    }
-
-    /**
-     * Same as
-     * <code>addSideCenterListener</code>, but for Top,Bottom and Center
-     */
-    private void addTopBottomCenterListener() {
-        daPlayer.addDockingListener(new DockingListener() {
-            @Override
-            public void dockingChanged(DockingEvent e) {
-                DragablePanel pn = (DragablePanel) daPlayer.getContent();
-                if (e.getDestinationDock() == centerDock) {
-                    pn.onCenter();
-                } else if (e.getDestinationDock() == null) {
-                    pn.onExternalized();
-                } else {
-                    pn.onTopBottom();
-                }
-            }
-
-            @Override
-            public void dockingWillChange(DockingEvent e) {
-                if (e.getDestinationDock() == centerDock) {
-                    if (centerDock.getDockableCount() > 0) {
-                        centerDock.removeDockable(centerDock
-                                .getDockable(centerDock.getDockableCount() - 1));
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * Shows the typical sidebars with MyList, Favorites, News and Ads. Is only
-     * called once, after the login-process when the typical workspace will be
-     * created
-     */
-    private void showSidebars() {
-        leftLineDock.addDockable(daMyLists, new Position(0));
-        leftLineDock.addDockable(daFavorites, new Position(1));
-        rightLineDock.addDockable(daNews, new Position(0));
-        rightLineDock.addDockable(daAds, new Position(1));
-    }
-
-    private void removeMenubar() {
-        menuBar.removeAll();
-        frame.remove(menuBar);
-    }
-
-    private void onUpload() {
-        System.out.println("asdf");
-        UploadDialog ud = new UploadDialog(frame);
-        ud.setVisible(true);
-
-    }
+	private void removeMenubar() {
+		if (this.menuBar != null) {
+			menuBar.removeAll();
+			frame.remove(menuBar);
+			menuBar = null;
+		}
+	}
+	
+	private void onLogout(){
+		Database.getInstance().setLoggedInUser(null);
+		this.removeMenubar();
+		if(daAds.getDock()!=null)
+			daAds.getDock().removeDockable(daAds);
+		if(daFavorites.getDock()!=null)
+			daFavorites.getDock().removeDockable(daFavorites);
+		if(daNews.getDock()!=null)
+			daNews.getDock().removeDockable(daNews);
+		if(daMyLists.getDock()!=null)
+			daMyLists.getDock().removeDockable(daMyLists);
+		
+		if(daProfil.getDock()!=null)
+			daProfil.getDock().removeDockable(daProfil);
+		
+		if(daSearch.getDock()!=null)
+			daSearch.getDock().removeDockable(daSearch);
+		
+		if(daPlayer.getState() == DockableState.EXTERNALIZED){
+			//daPlayer.setState(arg0, arg1);
+			centerDock.addDockable(daPlayer,new Position(0));
+			daPlayer.setDock(centerDock);
+		}
+		
+		if(daPlayer.getDock()!=null)
+			daPlayer.getDock().removeDockable(daPlayer);
+			
+			
+		pnLogin.clearTextFields();
+		pnRegister.clearTextFields();
+		pnPlayer.clearTextFields();
+		pnNews.clearTextFields();
+		pnAds.clearTextFields();
+		pnMyList.clearTextFields();
+		pnFavorites.clearTextFields();
+		pnProfil.clearTextFields();
+		pnSearch.clearTextFields();
+		
+		
+		this.showLogin();
+	}
+	
+	private void onMenuCheckedSideBar(JCheckBoxMenuItem src, Dockable da){
+		if(src.isSelected())
+			showSidebar(da);
+		else{
+			if(da.getDock() != null)
+					da.getDock().removeDockable(da);
+		}
+	}
+	
+	private void onUpload() {
+		UploadDialog ud = new UploadDialog(frame, null);
+		ud.setVisible(true);
+	}
 }

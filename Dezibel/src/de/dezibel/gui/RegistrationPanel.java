@@ -15,6 +15,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 /**
+ * Panel to display and handle the registration process
  * 
  * @author Richard, Tobias, Pascal
  */
@@ -37,6 +38,10 @@ public class RegistrationPanel extends DragablePanel {
 
     private RegistrationControl regControl;
     
+    /**
+     * Constructor
+     * @param parent The parent panel
+     */
     public RegistrationPanel(DezibelPanel parent) {
         super(parent);
 
@@ -47,11 +52,14 @@ public class RegistrationPanel extends DragablePanel {
         this.regControl = new RegistrationControl();
     }
 
+    /**
+     * Creates all necessary components
+     */
     private void createComponents() {
         pnMain = new JPanel();
         pnMain.setBackground(this.getBackground());
-        bnRegister = new JButton("Register");
-        bnBack = new JButton("Back");
+        bnRegister = new JButton("Registrieren");
+        bnBack = new JButton("Zurück");
 
         bnRegister.addActionListener(new ActionListener() {
             @Override
@@ -67,10 +75,10 @@ public class RegistrationPanel extends DragablePanel {
             }
         });
 
-        this.lbMail = new JLabel("Mail:");
-        this.lbPassword = new JLabel("Password:");
-        this.lbFirstname = new JLabel("Firstname:");
-        this.lbLastname = new JLabel("Lastname:");
+        this.lbMail = new JLabel("Email:");
+        this.lbPassword = new JLabel("Passwort:");
+        this.lbFirstname = new JLabel("Vorname:");
+        this.lbLastname = new JLabel("Nachname:");
 
         this.tfMail = new JTextField();
         this.tfPassword = new JPasswordField();
@@ -79,7 +87,11 @@ public class RegistrationPanel extends DragablePanel {
         this.tfFirstname = new JTextField();
         this.tfLastname = new JTextField();
     }
-
+    
+    /**
+     * Generates the layout and returns it
+     * @return The layout to use
+     */
     private GroupLayout createLayout() {
         GroupLayout layout = new GroupLayout(this.pnMain);
         layout.setAutoCreateContainerGaps(true);
@@ -149,14 +161,17 @@ public class RegistrationPanel extends DragablePanel {
         return layout;
     }
 
+    /**
+     * Handles the process when the register button is hit.
+     */
     private void onRegister() {
         if (this.tfMail.getText().isEmpty()
                 || this.tfPassword.getText().isEmpty()
                 || this.tfPasswordRecap.getText().isEmpty()
                 || this.tfFirstname.getText().isEmpty()
                 || this.tfLastname.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Mandatory field not filled, please fill every field",
-                    "Type Error", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Bitte füllen Sie alle Pflichtfelder",
+                    "Pflichtfelder leer", JOptionPane.INFORMATION_MESSAGE);
         } 
         else if (!this.regControl.checkIfMailAlreadyInUse(this.tfMail.getText())) {
             if (this.tfPassword.getText().equals(this.tfPasswordRecap.getText())) {
@@ -166,21 +181,24 @@ public class RegistrationPanel extends DragablePanel {
                         "Hallo " + this.tfFirstname.getText() + ",\n\n"
                                 + "deine Registrierung war erfolgreich.",
                         this.tfMail.getText());
-                JOptionPane.showMessageDialog(this, "User succesfully created",
-                        "Type Error", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Ihr Konto wurde erfolgreich eingerichtet",
+                        "Registrierung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
                 this.onBack();
             }
             else {
-                JOptionPane.showMessageDialog(this, "The password differs",
-                        "Type Error", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Das Passwort ist nicht identisch",
+                        "Passwort", JOptionPane.INFORMATION_MESSAGE);
             }
         } 
         else {
-            JOptionPane.showMessageDialog(this, "Mail already in use",
-                    "Type Error", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Es existiert bereichts ein Konto zu dieser Email",
+                    "Email existiert schon", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
+    /**
+     * Handles the process when the back button is hit
+     */
     private void onBack() {
         JTextField tf;
         for (Component c : this.pnMain.getComponents()) {

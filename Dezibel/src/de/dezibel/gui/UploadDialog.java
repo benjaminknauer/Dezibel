@@ -52,9 +52,20 @@ public class UploadDialog extends JDialog {
         JButton btUpload = new JButton("Upload");
         JButton btCancel = new JButton("Abbrechen");
         
-        cbUser = new JComboBox<>(upc.getSelectableUsers());
+        JLabel lbGenre = new JLabel("Genre");
+        JLabel lbLabel = new JLabel("Label");
+        JLabel lbUser = new JLabel("Künstler");
+        JLabel lbAlbum = new JLabel("Album");
+        
         cbGenre = new JComboBox<>(upc.getSelectableGenres());
         cbLabel = new JComboBox<>(upc.getSelectableLabels());
+        cbLabel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cbUser.setModel(new DefaultComboBoxModel<>(upc.getSelectableUsers((Label) cbLabel.getSelectedItem())));
+            }
+        });
+        cbUser = new JComboBox<>(upc.getSelectableUsers(null));
         cbAlbum = new JComboBox<>(upc.getSelectableAlbums());
         
         btCancel.addActionListener(new ActionListener() {
@@ -82,42 +93,55 @@ public class UploadDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switch(upc.upload(tfTitle.getText(), (User) cbUser.getSelectedItem(),
-                        tfUpload.getText(), (Genre) cbGenre.getSelectedItem(),
-                        (Label) cbLabel.getSelectedItem(), (Album) cbAlbum.getSelectedItem())) {
+                        (tfUpload.getText().isEmpty()?null:tfUpload.getText()),
+                        (Genre) cbGenre.getSelectedItem(),
+                        (Label) cbLabel.getSelectedItem(),
+                        (Album) cbAlbum.getSelectedItem())) {
                     case SUCCESS:
                         UploadDialog.this.dispose();
+                        break;
+                    case USER_IS_NOT_ARTIST:
+                        if (upc.promoteUserToArtist(UploadDialog.this, (User) cbUser.getSelectedItem()) == true) {
+                            UploadDialog.this.dispose();
+                        }
+                        break;
                 }
             }
         });
-
-        GroupLayout layout = new GroupLayout(this.getContentPane());
-        layout.setHorizontalGroup(layout.createParallelGroup()
-                .addGroup(layout.createSequentialGroup()
-                        .addComponent(lbTitle)
-                        .addComponent(tfTitle))
-                .addGroup(layout.createSequentialGroup()
-                        .addComponent(lbUpload)
-                        .addComponent(tfUpload)
-                        .addComponent(btChoose))
-                .addGroup(layout.createSequentialGroup()
-                        .addComponent(btUpload)
-                        .addComponent(btCancel))
-        );
-
-        layout.setVerticalGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup()
-                        .addComponent(lbTitle)
-                        .addComponent(tfTitle))
-                .addGroup(layout.createParallelGroup()
-                        .addComponent(lbUpload)
-                        .addComponent(tfUpload)
-                        .addComponent(btChoose))
-                .addGroup(layout.createParallelGroup()
-                        .addComponent(btUpload)
-                        .addComponent(btCancel))
-        );
-        this.getContentPane().setLayout(layout);
-
-        pack();
+        
+        this.setLayout(null);
+        lbTitle.setBounds(5, 5, 100, 32);
+        this.add(lbTitle);
+        tfTitle.setBounds(105, 5, 400, 32);
+        this.add(tfTitle);
+        lbGenre.setBounds(5, 42, 100, 32);
+        this.add(lbGenre);
+        cbGenre.setBounds(105, 42, 400, 32);
+        this.add(cbGenre);
+        lbLabel.setBounds(5, 79, 100, 32);
+        this.add(lbLabel);
+        cbLabel.setBounds(105, 79, 400, 32);
+        this.add(cbLabel);
+        lbUser.setBounds(5, 116, 100, 32);
+        this.add(lbUser);
+        cbUser.setBounds(105, 116, 400, 32);
+        this.add(cbUser);
+        lbAlbum.setBounds(5, 153, 100, 32);
+        this.add(lbAlbum);
+        cbAlbum.setBounds(105, 153, 400, 32);
+        this.add(cbAlbum);
+        lbUpload.setBounds(5, 190, 100, 32);
+        this.add(lbUpload);
+        tfUpload.setBounds(105, 190, 345, 32);
+        this.add(tfUpload);
+        btChoose.setBounds(455, 190, 50, 32);
+        this.add(btChoose);
+        btUpload.setBounds(260, 227, 120, 32);
+        this.add(btUpload);
+        btCancel.setBounds(385, 227, 120, 32);
+        this.add(btCancel);
+        
+        this.setResizable(false);
+        this.setSize(515, 300);
     }
 }
