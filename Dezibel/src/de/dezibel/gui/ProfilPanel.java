@@ -39,6 +39,7 @@ public class ProfilPanel extends DragablePanel {
     private JPanel pnFollower;
     private JPanel pnComments;
     private JPanel pnNews;
+    private JPanel pnLabels;
     private GridBagLayout gbl;
     private GridBagConstraints gbc;
 
@@ -60,7 +61,13 @@ public class ProfilPanel extends DragablePanel {
     private FollowerTableModel followerModell;
     private JTable tComments;
     private CommentTableModel commentModell;
+    private JTable tLabelsManaged;
+    private LabelTableModel labelModellManaged;
+    private JTable tLabelsPublishing;
+    private LabelTableModel labelModellPublishing;
     private JScrollPane tablePanel;
+    private JScrollPane scrManagedLabels;
+    private JScrollPane scrPublishingLabels;
     private JLabel lbPlaylist;
     private JTable tPlaylists;
     private JLabel lbMedia;
@@ -98,16 +105,15 @@ public class ProfilPanel extends DragablePanel {
     }
 
     public void refresh() {
-       
-         if(!(currentUser.isArtist())){
+
+        if (!(currentUser.isArtist())) {
             this.tfPseudonym.setVisible(false);
             this.lbPseudonym.setVisible(false);
-        }
-         else {
+        } else {
             this.tfPseudonym.setVisible(true);
             this.lbPseudonym.setVisible(true);
-         }
-         
+        }
+
         this.tfFirstName.setText(controler.getFirstName(currentUser));
         this.tfLastName.setText(controler.getLastName(currentUser));
         this.tfRole.setText(controler.getRole(currentUser));
@@ -120,6 +126,8 @@ public class ProfilPanel extends DragablePanel {
         this.tfAboutMe.setText(controler.getAboutMe(currentUser));
         this.followerModell.setData(controler.getFollowers(currentUser));
         this.commentModell.setData(controler.getCreatedComments(currentUser));
+        this.labelModellManaged.setData(controler.getManagedLabels(currentUser));
+        this.labelModellPublishing.setData(controler.getPublishingLabels(currentUser));
 
         if (currentUser == controler.getLoggedInUser()) {
             btnFollow.setVisible(false);
@@ -145,12 +153,12 @@ public class ProfilPanel extends DragablePanel {
                 currentUser))) {
             btnFollow.setText("Follow");
         }
-        
-        if(tfFirstName.isEnabled()){
+
+        if (tfFirstName.isEnabled()) {
             btnEdit.setText("Speichern");
         }
-        
-        if(!(tfFirstName.isEnabled())){
+
+        if (!(tfFirstName.isEnabled())) {
             btnEdit.setText("Bearbeiten");
         }
     }
@@ -181,6 +189,9 @@ public class ProfilPanel extends DragablePanel {
         tabPanel.addTab("Kommentare", null, pnComments);
         this.pnNews = new JPanel();
         tabPanel.addTab("Neuigkeiten", null, pnNews);
+        this.pnLabels = new JPanel();
+        this.createLabelsComponents();
+        tabPanel.addTab("Labels", null, pnLabels);
     }
 
     /**
@@ -231,8 +242,8 @@ public class ProfilPanel extends DragablePanel {
                 } else {
                     setProfileTextfieldsEditable(true);
                 }
-            refresh();
-            } 
+                refresh();
+            }
         });
 
         btnFollow = new JButton("Follow");
@@ -243,9 +254,7 @@ public class ProfilPanel extends DragablePanel {
                         currentUser)) {
                     controler.removeFavoriteUser(currentUser);
                     System.out.print("favo gelöscht");
-                }
-
-                else if (!(controler.getFavorizedUsers(controler.getLoggedInUser()).contains(
+                } else if (!(controler.getFavorizedUsers(controler.getLoggedInUser()).contains(
                         currentUser))) {
                     controler.addToFavoriteUsers(currentUser);
                     System.out.print("favo zugefügt");
@@ -354,7 +363,7 @@ public class ProfilPanel extends DragablePanel {
         tablePanel = new JScrollPane(tComments);
         BorderLayout fLayout = new BorderLayout();
         pnComments.setLayout(fLayout);
-        pnComments.add(tComments, BorderLayout.CENTER);
+        pnComments.add(tablePanel, BorderLayout.CENTER);
     }
 
     private void createUploadsComponents() {
@@ -403,5 +412,26 @@ public class ProfilPanel extends DragablePanel {
         spAlbums.getViewport().setView(tAlbums);
         pnUploads.add(spAlbums);
         pnUploads.add(lbAlbums);
+    }
+
+    private void createLabelsComponents() {
+        // Managed Labels
+        labelModellManaged = new LabelTableModel();
+        tLabelsManaged = new JTable(labelModellManaged);
+        tLabelsManaged.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        scrManagedLabels = new JScrollPane(tLabelsManaged);
+        scrManagedLabels.setPreferredSize(new Dimension(this.getWidth()/2, this.getHeight()));
+        BorderLayout fLayout = new BorderLayout();
+        pnLabels.setLayout(fLayout);
+        pnLabels.add(scrManagedLabels, BorderLayout.WEST);
+        
+        // Publishing Labels
+        labelModellPublishing = new LabelTableModel();
+        tLabelsPublishing = new JTable(labelModellPublishing);
+        tLabelsPublishing.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        scrPublishingLabels = new JScrollPane(tLabelsPublishing);
+        pnLabels.add(scrPublishingLabels, BorderLayout.EAST);
     }
 }

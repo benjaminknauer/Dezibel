@@ -63,7 +63,7 @@ public class LabelTableModel extends DefaultTableModel {
      * Sets the data of this model.
      * @param data The data to display
      */
-    public void setData(LinkedList<Medium> data) {
+    public void setData(LinkedList<Label> data) {
         if (data == null) {
             this.data = null;
         } else {
