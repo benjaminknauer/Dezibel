@@ -284,4 +284,8 @@ public class Album implements Commentable {
     public boolean isMarkedForDeletion() {
         return this.markedForDeletion;
     }
+    
+    public String toString() {
+        return this.title;
+    }
 }

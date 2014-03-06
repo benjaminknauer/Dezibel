@@ -1,5 +1,6 @@
 package de.dezibel.gui;
 
+import de.dezibel.control.ContextMenu;
 import de.dezibel.control.Search;
 import de.dezibel.data.Medium;
 import de.dezibel.player.Player;
@@ -8,6 +9,8 @@ import java.awt.CardLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
@@ -58,10 +61,6 @@ public class SearchPanel extends DragablePanel {
     private JPanel pnSortingLabel;
     private JPanel pnSortingAlbum;
 
-    private JPopupMenu mediumPopupMenu;
-    private JPopupMenu userPopupMenu;
-    private JPopupMenu albumPopupMenu;
-    private JPopupMenu labelPopupMenu;
     private JPopupMenu currentPopupMenu;
 
     public SearchPanel(DezibelPanel parent) {
@@ -72,18 +71,39 @@ public class SearchPanel extends DragablePanel {
     }
 
     private void createComponents() {
-        String[] choices = {"Song", "User", "Label", "Album"};
+        String[] choices = {"Musik", "Benutzer", "Label", "Album"};
 
-        tfSearch = new JTextField("Search...");
+        tfSearch = new JTextField("Suche...");
+        tfSearch.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                if(tfSearch.getText().equals("Suche..."))
+                    tfSearch.setText("");
+            }
+        });
+        
+        tfSearch.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                if(tfSearch.getText().isEmpty())
+                    tfSearch.setText("Suche...");
+            }
+        });
+        
         cbFilter = new JComboBox<>(choices);
-        bnSearch = new JButton("Search");
-        rbSongAlphabetical = new JRadioButton("Alphabetical");
-        rbUserAlphabetical = new JRadioButton("Alphabetical");
-        rbLabelAlphabetical = new JRadioButton("Alphabetical");
-        rbAlbumAlphabetical = new JRadioButton("Alphabetical");
-        rbRating = new JRadioButton("Rating");
-        rbUploadDate = new JRadioButton("Upload-Date");
-        tableResults = new JTable();
+        bnSearch = new JButton("Suchen");
+        rbSongAlphabetical = new JRadioButton("Alphabetisch");
+        rbUserAlphabetical = new JRadioButton("Alphabetisch");
+        rbLabelAlphabetical = new JRadioButton("Alphabetisch");
+        rbAlbumAlphabetical = new JRadioButton("Alphabetisch");
+        rbRating = new JRadioButton("Bewertung");
+        rbUploadDate = new JRadioButton("Hochladedatum");
+        tableModelSong = new MediaTableModel();
+        tableModelUser = new UserTableModel();
+        tableModelLabel = new LabelTableModel();
+        tableModelAlbum = new AlbumTableModel();
+        tableResults = new JTable(tableModelSong);
+        
         tableResults.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent me) {
@@ -100,12 +120,12 @@ public class SearchPanel extends DragablePanel {
             }
 
             private void showPopup(MouseEvent me) {
-                Point p = me.getPoint();
-                int rowNumber = tableResults.rowAtPoint(p);
-                tableResults.getSelectionModel().setSelectionInterval(rowNumber, rowNumber);
+                ContextMenu contextMenu = new ContextMenu();
+                currentPopupMenu = contextMenu.getContextMenu(tableResults, me);
                 currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
             }
         });
+        
         tablePanel = new JScrollPane(tableResults);
         tablePanel.setViewportView(tableResults);
 
@@ -132,8 +152,8 @@ public class SearchPanel extends DragablePanel {
         pnSortingLabel = new JPanel();
         pnSortingAlbum = new JPanel();
 
-        pnSorting.add(pnSortingMedium, "Song");
-        pnSorting.add(pnSortingUser, "User");
+        pnSorting.add(pnSortingMedium, "Musik");
+        pnSorting.add(pnSortingUser, "Benutzer");
         pnSorting.add(pnSortingLabel, "Label");
         pnSorting.add(pnSortingAlbum, "Album");
 
@@ -167,55 +187,6 @@ public class SearchPanel extends DragablePanel {
         layoutPlaylist.setVerticalGroup(layoutPlaylist.createParallelGroup().addGroup(layoutPlaylist.createParallelGroup().addComponent(rbAlbumAlphabetical)));
         pnSortingAlbum.setLayout(layoutPlaylist);
 
-        tableModelSong = new MediaTableModel();
-        tableModelUser = new UserTableModel();
-        tableModelLabel = new LabelTableModel();
-        tableModelAlbum = new AlbumTableModel();
-
-        mediumPopupMenu = new JPopupMenu();
-        JMenuItem menuItemPlay = new JMenuItem("Abspielen");
-        menuItemPlay.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Medium m = (Medium) tableModelSong.getValueAt(
-                        tableResults.getSelectedRow(), -1);
-                if (m != null) {
-                    Player.getInstance().addMedium(m);
-                    Player.getInstance().play();
-                }
-            }
-        });
-        mediumPopupMenu.add(menuItemPlay);
-
-        userPopupMenu = new JPopupMenu();
-        JMenuItem menuItemShowUser = new JMenuItem("Anzeigen");
-        menuItemPlay.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO Beuntzerprofil des ausgewählten Benutzers anzeigen
-            }
-        });
-        userPopupMenu.add(menuItemShowUser);
-
-        labelPopupMenu = new JPopupMenu();
-        JMenuItem menuItemShowLabel = new JMenuItem("Anzeigen");
-        menuItemPlay.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO Labelprofil des ausgewählten Labels anzeigen
-            }
-        });
-        labelPopupMenu.add(menuItemShowLabel);
-
-        albumPopupMenu = new JPopupMenu();
-        JMenuItem menuItem = new JMenuItem("Abspielen");
-        menuItemPlay.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO Gewähltes Album abspielen
-            }
-        });
-        albumPopupMenu.add(menuItem);
     }
 
     private void createLayout() {
@@ -249,10 +220,10 @@ public class SearchPanel extends DragablePanel {
                 CardLayout cl = (CardLayout) pnSorting.getLayout();
                 cl.show(pnSorting, (String) e.getItem());
                 switch (e.getItem().toString()) {
-                    case "Song":
+                    case "Musik":
                         tableResults.setModel(tableModelSong);
                         break;
-                    case "User":
+                    case "Benutzer":
                         tableResults.setModel(tableModelUser);
                         break;
                     case "Label":
@@ -276,7 +247,7 @@ public class SearchPanel extends DragablePanel {
                 int sortation = 0;
 
                 switch (cbFilter.getSelectedItem().toString()) {
-                    case "Song":
+                    case "Musik":
                         model = tableModelSong;
                         if (rbSongAlphabetical.isSelected()) {
                             sortation = 0;
@@ -290,25 +261,20 @@ public class SearchPanel extends DragablePanel {
 
                         result = searchcontrol.searchForMedia(tfSearch.getText(), sortation);
                         tableModelSong.setData(result);
-                        currentPopupMenu = mediumPopupMenu;
                         break;
-                    case "User":
+                    case "Benutzer":
                         model = tableModelUser;
                         result = searchcontrol.searchForUsers(tfSearch.getText(), 0);
                         tableModelUser.setData(result);
-                        currentPopupMenu = userPopupMenu;
                         break;
                     case "Label":
                         model = tableModelLabel;
                         result = searchcontrol.searchForLabels(tfSearch.getText(), 0);
                         tableModelLabel.setData(result);
-                        currentPopupMenu = labelPopupMenu;
                         break;
                     case "Album":
                         model = tableModelAlbum;
                         result = searchcontrol.searchForAlbums(tfSearch.getText(), 0);
-                        tableModelAlbum.setData(result);
-                        currentPopupMenu = albumPopupMenu;
                         break;
                 }
 

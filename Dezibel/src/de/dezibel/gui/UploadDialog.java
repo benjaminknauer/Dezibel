@@ -1,10 +1,17 @@
 package de.dezibel.gui;
 
-import de.dezibel.data.Database;
+import de.dezibel.ErrorCode;
+import de.dezibel.control.UploadControl;
+import de.dezibel.data.Album;
+import de.dezibel.data.Genre;
+import de.dezibel.data.Label;
+import de.dezibel.data.User;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -17,11 +24,22 @@ import javax.swing.JTextField;
  */
 public class UploadDialog extends JDialog {
 
+    private UploadControl upc;
+    
     private JTextField tfUpload;
+    
+    private JComboBox<User> cbUser;
+    private JComboBox<Genre> cbGenre;
+    private JComboBox<Label> cbLabel;
+    private JComboBox<Album> cbAlbum;
+    
+    private Label label;
 
-    public UploadDialog(JFrame frame) {
+    public UploadDialog(JFrame frame, Label label) {
         super(frame);
         setModal(true);
+        upc = new UploadControl();
+        this.label = label;
         this.init();
     }
 
@@ -33,7 +51,12 @@ public class UploadDialog extends JDialog {
         JButton btChoose = new JButton("...");
         JButton btUpload = new JButton("Upload");
         JButton btCancel = new JButton("Abbrechen");
-
+        
+        cbUser = new JComboBox<>(upc.getSelectableUsers());
+        cbGenre = new JComboBox<>(upc.getSelectableGenres());
+        cbLabel = new JComboBox<>(upc.getSelectableLabels());
+        cbAlbum = new JComboBox<>(upc.getSelectableAlbums());
+        
         btCancel.addActionListener(new ActionListener() {
 
             @Override
@@ -58,9 +81,12 @@ public class UploadDialog extends JDialog {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                Database db = Database.getInstance();
-                db.addMedium(tfTitle.getText(), db.getLoggedInUser(), tfUpload.getText(), db.getTopGenre(),null,null);
-                UploadDialog.this.dispose();
+                switch(upc.upload(tfTitle.getText(), (User) cbUser.getSelectedItem(),
+                        tfUpload.getText(), (Genre) cbGenre.getSelectedItem(),
+                        (Label) cbLabel.getSelectedItem(), (Album) cbAlbum.getSelectedItem())) {
+                    case SUCCESS:
+                        UploadDialog.this.dispose();
+                }
             }
         });
 
