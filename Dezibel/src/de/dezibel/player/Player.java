@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import de.dezibel.data.Medium;
 import de.dezibel.data.Playlist;
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -128,7 +130,7 @@ public class Player {
             if (newMedium.isAvailable()) {
                 this.createPlayer(newMedium);
             } else {
-            // TODO - Sperrung bzw. Löschung für 3 Sekunden anzeigen
+                // TODO - Sperrung bzw. Löschung für 3 Sekunden anzeigen
                 // Eventuell durch eigene Sperr- bzw. Lösch-Medien realisieren.
             }
             this.play();
@@ -216,12 +218,12 @@ public class Player {
     /**
      * Sets the currentMedia
      *
-     * @param song The new currentMedia
+     * @param index The new index
      */
-    public void setCurrentMedia(Medium song) {
-        if (song != null) {
-            this.currentPosition = this.currentPlaylist.indexOf(song);
-            this.createPlayer(song);
+    public void setCurrentMedia(int index) {
+        if (index >= 0 && index < this.currentPlaylist.size()) {
+            this.currentPosition = index;
+            this.createPlayer(this.currentPlaylist.get(index));
         }
     }
 
@@ -269,10 +271,10 @@ public class Player {
             this.currentPlaylist = playlist.getList();
         }
     }
-    
+
     /**
-     * Adds the list of media to the currentPlaylist, i.e. appends all songs of the
-     * list
+     * Adds the list of media to the currentPlaylist, i.e. appends all songs of
+     * the list
      *
      * @param playlist The list of media to add to the currentPlaylist
      */
@@ -349,14 +351,23 @@ public class Player {
      * @param medium The currently playing medium
      */
     private void notifyObserver() {
-        Medium medium = null;
-        if (this.currentPosition >= 0 && this.currentPosition < this.currentPlaylist.size()) {
-            medium = this.currentPlaylist.get(this.currentPosition);
-        }
-        // Notify observer
-        for (PlayerObserver o : observer) {
-            o.onStateChanged(medium);
-        }
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+                Medium medium = null;
+                if (currentPosition >= 0 && currentPosition < currentPlaylist.size()) {
+                    medium = currentPlaylist.get(currentPosition);
+                }
+                // Notify observer
+                for (PlayerObserver o : observer) {
+                    o.onStateChanged(medium);
+                }
+            }
+        }).start();
     }
 
     public LinkedList<Medium> getPlaylist() {

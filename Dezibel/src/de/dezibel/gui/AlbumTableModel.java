@@ -45,6 +45,8 @@ public class AlbumTableModel extends DefaultTableModel {
         if (data != null && row >= 0 && row < data.length) {
             Album a = data[row];
             switch (col) {
+                case -1:
+                    return a;
                 case 0:
                     return a.getTitle();
             }

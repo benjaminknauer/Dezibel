@@ -531,6 +531,16 @@ public class ProfileControl {
     }
 
     /**
+     * Removes a user from the logged in users list of favorite users.
+     * @param user former favorite user
+     */
+    public void removeFavoriteUser(User user){
+        if(!(belongsToLoggedUser(user))) {
+            Database.getInstance().getLoggedInUser().removeFavoriteUser(user);
+        }
+    }
+    
+    /**
      * Returns the given users list of favorized playlists.
      *
      * @param user user the profile belongs to
