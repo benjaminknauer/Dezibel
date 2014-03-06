@@ -53,11 +53,13 @@ public class Player {
      * player is currently playing, nothing happens
      */
     public void play() {
-        if (this.player == null) {
+        if (this.player == null && this.currentPosition >= 0 && this.currentPosition < this.currentPlaylist.size()) {
             createPlayer(this.currentPlaylist.get(this.currentPosition));
         }
-        this.player.play();
-        notifyObserver(this.currentPlaylist.get(this.currentPosition));
+        if (this.player != null) {
+            this.player.play();
+            notifyObserver();
+        }
     }
 
     /**
@@ -67,7 +69,7 @@ public class Player {
     public void pause() {
         if (this.player != null) {
             this.player.pause();
-            notifyObserver(this.currentPlaylist.get(this.currentPosition));
+            notifyObserver();
         }
     }
 
@@ -80,7 +82,7 @@ public class Player {
             this.player.stop();
             this.currentPosition = 0;
             this.createPlayer(this.currentPlaylist.get(this.currentPosition));
-            notifyObserver(this.currentPlaylist.get(this.currentPosition));
+            notifyObserver();
         }
     }
 
@@ -100,15 +102,17 @@ public class Player {
      * nothing happens.
      */
     public void next() {
-        this.currentPosition = (++this.currentPosition) % this.currentPlaylist.size();
-        Medium newMedium = this.currentPlaylist.get(this.currentPosition);
-        if (newMedium.isAvailable()) {
-            this.createPlayer(newMedium);
-        } else {
-            // TODO - Sperrung bzw. Löschung für 3 Sekunden anzeigen
-            // Eventuell durch eigene Sperr- bzw. Lösch-Medien realisieren.
+        if (this.currentPlaylist.size() > 0) {
+            this.currentPosition = (++this.currentPosition) % this.currentPlaylist.size();
+            Medium newMedium = this.currentPlaylist.get(this.currentPosition);
+            if (newMedium.isAvailable()) {
+                this.createPlayer(newMedium);
+            } else {
+                // TODO - Sperrung bzw. Löschung für 3 Sekunden anzeigen
+                // Eventuell durch eigene Sperr- bzw. Lösch-Medien realisieren.
+            }
+            this.play();
         }
-        this.play();
     }
 
     /**
@@ -116,18 +120,20 @@ public class Player {
      * nothing happens.
      */
     public void previous() {
-        this.currentPosition = --this.currentPosition;
-        if (this.currentPosition < 0) {
-            this.currentPosition = this.currentPlaylist.size() - 1;
-        }
-        Medium newMedium = this.currentPlaylist.get(this.currentPosition);
-        if (newMedium.isAvailable()) {
-            this.createPlayer(newMedium);
-        } else {
+        if (this.currentPlaylist.size() > 0) {
+            this.currentPosition = --this.currentPosition;
+            if (this.currentPosition < 0) {
+                this.currentPosition = this.currentPlaylist.size() - 1;
+            }
+            Medium newMedium = this.currentPlaylist.get(this.currentPosition);
+            if (newMedium.isAvailable()) {
+                this.createPlayer(newMedium);
+            } else {
             // TODO - Sperrung bzw. Löschung für 3 Sekunden anzeigen
-            // Eventuell durch eigene Sperr- bzw. Lösch-Medien realisieren.
+                // Eventuell durch eigene Sperr- bzw. Lösch-Medien realisieren.
+            }
+            this.play();
         }
-        this.play();
     }
 
     /**
@@ -323,7 +329,7 @@ public class Player {
         });
         this.player = tmpPlayer;
 
-        notifyObserver(medium);
+        notifyObserver();
     }
 
     /**
@@ -331,18 +337,21 @@ public class Player {
      *
      * @param medium The currently playing medium
      */
-    private void notifyObserver(Medium medium) {
+    private void notifyObserver() {
+        Medium medium = null;
+        if (this.currentPosition >= 0 && this.currentPosition < this.currentPlaylist.size()) {
+            medium = this.currentPlaylist.get(this.currentPosition);
+        }
         // Notify observer
         for (PlayerObserver o : observer) {
             o.onStateChanged(medium);
         }
     }
-    
-    
+
     public LinkedList<Medium> getPlaylist() {
         return this.currentPlaylist;
     }
-    
+
     public int getCurrentIndex() {
         return currentPosition;
     }
