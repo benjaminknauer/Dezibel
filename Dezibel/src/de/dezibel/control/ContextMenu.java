@@ -36,11 +36,10 @@ public class ContextMenu {
     JPopupMenu currentPopupMenu;
     JTable currentTable;
     DezibelPanel dp;
-    
+
     public ContextMenu(DezibelPanel parent) {
         dp = parent;
     }
-
 
     public JPopupMenu getContextMenu(JTable table, MouseEvent me) {
         currentTable = table;
@@ -59,13 +58,12 @@ public class ContextMenu {
         } else if (currentTableModel.getValueAt(rowNumber, -1) instanceof Album) {
             createAlbumMenu();
         }
-
         return currentPopupMenu;
     }
 
     private void createMediumMenu() {
         currentPopupMenu = new JPopupMenu();
-        JMenuItem menuItemPlay = new JMenuItem("Abspielen");
+        JMenuItem menuItemPlay = new JMenuItem("Warteschlange");
         JMenu menuAddToPlaylist = new JMenu("zur Wiedergabeliste hinzufügen");
         JMenuItem menuItemNewPlaylist = new JMenuItem("neue Wiedergabeliste");
 
@@ -113,7 +111,7 @@ public class ContextMenu {
                 currentTable.getSelectedRow(), -1)).getArtist())) {
             JMenu menuAddToAlbum = new JMenu("zu Album hinzufügen");
             JMenuItem menuItemNewAlbum = new JMenuItem("neues Album");
-            
+
             menuItemNewAlbum.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -127,34 +125,61 @@ public class ContextMenu {
                                 currentTable.getSelectedRow(), -1), null);
                     }
                 }
-            }
+            });
 
-                );
+            currentPopupMenu.add(menuAddToAlbum);
 
-            currentPopupMenu.add (menuAddToAlbum);
+            menuAddToAlbum.add(menuItemNewAlbum);
 
-                menuAddToAlbum.add (menuItemNewAlbum);
+            menuAddToAlbum.addSeparator();
 
-                menuAddToAlbum.addSeparator ();
-            }
-
-        
             MenuItem currentMenuItem;
-            for (Playlist currentPlaylist : Database.getInstance().getLoggedInUser().getCreatedPlaylists()) {
-                currentMenuItem = new MenuItem(currentPlaylist.getTitle(), currentPlaylist);
+            for (Album currentAlbum : Database.getInstance().getLoggedInUser().getCreatedAlbums()) {
+                currentMenuItem = new MenuItem(currentAlbum.getTitle(), currentAlbum);
                 currentMenuItem.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        new PlaylistControl().addMediumToPlaylist((Medium) currentTableModel.getValueAt(
+                        new AlbumControl().addMediumToAlbum((Medium) currentTableModel.getValueAt(
                                 currentTable.getSelectedRow(), -1),
-                                (Playlist) ((MenuItem) e.getSource()).getEntity());
+                                (Album) ((MenuItem) e.getSource()).getEntity());
                     }
                 });
-                menuAddToPlaylist.add(currentMenuItem);
+                menuAddToAlbum.add(currentMenuItem);
+            }
+
+            menuAddToAlbum.addSeparator();
+
+            for (Label currentLabel : Database.getInstance().getLoggedInUser().getManagedLabels()) {
+                for (Album currentAlbum : currentLabel.getAlbums()) {
+                    currentMenuItem = new MenuItem(currentAlbum.getTitle(), currentAlbum);
+                    currentMenuItem.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            new AlbumControl().addMediumToAlbum((Medium) currentTableModel.getValueAt(
+                                    currentTable.getSelectedRow(), -1),
+                                    (Album) ((MenuItem) e.getSource()).getEntity());
+                        }
+                    });
+                    menuAddToAlbum.add(currentMenuItem);
+                }
+                menuAddToAlbum.addSeparator();
             }
         }
 
-    
+        MenuItem currentMenuItem;
+        for (Playlist currentPlaylist : Database.getInstance().getLoggedInUser().getCreatedPlaylists()) {
+            currentMenuItem = new MenuItem(currentPlaylist.getTitle(), currentPlaylist);
+            currentMenuItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    new PlaylistControl().addMediumToPlaylist((Medium) currentTableModel.getValueAt(
+                            currentTable.getSelectedRow(), -1),
+                            (Playlist) ((MenuItem) e.getSource()).getEntity());
+                }
+            });
+            menuAddToPlaylist.add(currentMenuItem);
+        }
+    }
 
     private void createUserMenu() {
         currentPopupMenu = new JPopupMenu();
@@ -162,7 +187,7 @@ public class ContextMenu {
         menuItemShowUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dp.showProfile();
+                //dp.showProfile();
             }
         });
         currentPopupMenu.add(menuItemShowUser);
@@ -182,13 +207,18 @@ public class ContextMenu {
 
     private void createAlbumMenu() {
         currentPopupMenu = new JPopupMenu();
-        JMenuItem menuItem = new JMenuItem("Abspielen");
-        menuItem.addActionListener(new ActionListener() {
+        JMenuItem menuItemQueue = new JMenuItem("Warteschlange");
+        menuItemQueue.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO Gewähltes Album abspielen
+                Album a = (Album) currentTableModel.getValueAt(
+                        currentTable.getSelectedRow(), -1);
+                if (a != null) {
+                    Player.getInstance().addMedialist(a.getMediaList());
+                    Player.getInstance().play();
+                }
             }
         });
-        currentPopupMenu.add(menuItem);
+        currentPopupMenu.add(menuItemQueue);
     }
 }
