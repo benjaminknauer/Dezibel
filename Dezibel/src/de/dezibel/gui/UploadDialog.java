@@ -110,6 +110,7 @@ public class UploadDialog extends JDialog {
                             break;
                         case USER_IS_NOT_ARTIST:
                             upc.promoteUserToArtist(UploadDialog.this, (User) cbUser.getSelectedItem());
+                            cbUser.setModel(new DefaultComboBoxModel<>(upc.getSelectableUsers((Label) cbLabel.getSelectedItem())));
                             break;
                     }
                 } else {
