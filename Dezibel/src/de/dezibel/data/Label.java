@@ -311,4 +311,8 @@ public class Label implements Lockable {
     public boolean isMarkedForDeletion() {
         return markedForDeletion;
     }
+    
+    public String toString() {
+        return this.name;
+    }
 }

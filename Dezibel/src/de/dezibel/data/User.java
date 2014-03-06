@@ -682,4 +682,10 @@ public class User implements Lockable {
     public LinkedList<Medium> getFavoriteMediums(){
         return (LinkedList<Medium>) this.favorizedMediums.clone();
     }
+    
+    public String toString() {
+        if(pseudonym == null || pseudonym.isEmpty())
+            return firstname +"\b"+ lastname;
+        return this.pseudonym;
+    }
 }
