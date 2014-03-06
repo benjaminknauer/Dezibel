@@ -5,6 +5,7 @@ import de.dezibel.control.UploadControl;
 import de.dezibel.data.Album;
 import de.dezibel.data.Genre;
 import de.dezibel.data.Label;
+import de.dezibel.data.Medium;
 import de.dezibel.data.User;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +17,7 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 /**
@@ -25,25 +27,29 @@ import javax.swing.JTextField;
 public class UploadDialog extends JDialog {
 
     private UploadControl upc;
-    
+
     private JTextField tfUpload;
-    
+
     private JComboBox<User> cbUser;
     private JComboBox<Genre> cbGenre;
     private JComboBox<Label> cbLabel;
     private JComboBox<Album> cbAlbum;
-    
-    private Label label;
 
-    public UploadDialog(JFrame frame, Label label) {
+    private Label label;
+    private Medium medium;
+
+    public UploadDialog(JFrame frame, Label label, Medium medium) {
         super(frame);
         setModal(true);
         upc = new UploadControl();
         this.label = label;
+        this.medium = medium;
         this.init();
     }
 
     public void init() {
+        setTitle("Upload");
+        
         JLabel lbTitle = new JLabel("Titel");
         final JTextField tfTitle = new JTextField();
         JLabel lbUpload = new JLabel("Datei");
@@ -51,12 +57,12 @@ public class UploadDialog extends JDialog {
         JButton btChoose = new JButton("...");
         JButton btUpload = new JButton("Upload");
         JButton btCancel = new JButton("Abbrechen");
-        
+
         JLabel lbGenre = new JLabel("Genre");
         JLabel lbLabel = new JLabel("Label");
         JLabel lbUser = new JLabel("Künstler");
         JLabel lbAlbum = new JLabel("Album");
-        
+
         cbGenre = new JComboBox<>(upc.getSelectableGenres());
         cbLabel = new JComboBox<>(upc.getSelectableLabels());
         cbLabel.addActionListener(new ActionListener() {
@@ -67,7 +73,7 @@ public class UploadDialog extends JDialog {
         });
         cbUser = new JComboBox<>(upc.getSelectableUsers(null));
         cbAlbum = new JComboBox<>(upc.getSelectableAlbums());
-        
+
         btCancel.addActionListener(new ActionListener() {
 
             @Override
@@ -87,28 +93,43 @@ public class UploadDialog extends JDialog {
                 }
             }
         });
-        
-        btUpload.addActionListener(new ActionListener () {
+
+        btUpload.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                switch(upc.upload(tfTitle.getText(), (User) cbUser.getSelectedItem(),
-                        (tfUpload.getText().isEmpty()?null:tfUpload.getText()),
-                        (Genre) cbGenre.getSelectedItem(),
-                        (Label) cbLabel.getSelectedItem(),
-                        (Album) cbAlbum.getSelectedItem())) {
-                    case SUCCESS:
-                        UploadDialog.this.dispose();
-                        break;
-                    case USER_IS_NOT_ARTIST:
-                        if (upc.promoteUserToArtist(UploadDialog.this, (User) cbUser.getSelectedItem()) == true) {
+                if (medium == null) {
+                    switch (upc.upload(tfTitle.getText(), (User) cbUser.getSelectedItem(),
+                            (tfUpload.getText().isEmpty() ? null : tfUpload.getText()),
+                            (Genre) cbGenre.getSelectedItem(),
+                            (Label) cbLabel.getSelectedItem(),
+                            (Album) cbAlbum.getSelectedItem())) {
+                        case SUCCESS:
+                            JOptionPane.showMessageDialog(UploadDialog.this, "Das Medium wurde erfolgreich erstellt!", "Erfolg", JOptionPane.INFORMATION_MESSAGE);
                             UploadDialog.this.dispose();
-                        }
-                        break;
+                            break;
+                        case USER_IS_NOT_ARTIST:
+                            if (upc.promoteUserToArtist(UploadDialog.this, (User) cbUser.getSelectedItem()) == true) {
+                                UploadDialog.this.dispose();
+                            }
+                            break;
+                    }
+                } else {
+                    switch (medium.upload(tfUpload.getText())) {
+                        case UPLOAD_ERROR:
+                            JOptionPane.showMessageDialog(UploadDialog.this,
+                                    "Die Datei konnte nicht hochgeladen werden.",
+                                    "Fehler", JOptionPane.ERROR_MESSAGE);
+                            break;
+                        case SUCCESS:
+                            JOptionPane.showMessageDialog(UploadDialog.this, "Das Medium wurde erfolgreich erstellt!", "Erfolg", JOptionPane.INFORMATION_MESSAGE);
+                            UploadDialog.this.dispose();
+                            break;
+                    }
                 }
             }
         });
-        
+
         this.setLayout(null);
         lbTitle.setBounds(5, 5, 100, 32);
         this.add(lbTitle);
@@ -140,8 +161,22 @@ public class UploadDialog extends JDialog {
         this.add(btUpload);
         btCancel.setBounds(385, 227, 120, 32);
         this.add(btCancel);
-        
+
         this.setResizable(false);
         this.setSize(515, 300);
+
+        if (this.medium != null) {
+            // Read infromation if a medium is set
+            tfTitle.setText(this.medium.getTitle());
+            tfTitle.setEditable(false);
+            cbGenre.setSelectedItem(this.medium.getGenre());
+            cbGenre.setEnabled(false);
+            cbLabel.setSelectedItem(this.medium.getLabel());
+            cbLabel.setEnabled(false);
+            cbUser.setSelectedItem(this.medium.getArtist());
+            cbUser.setEnabled(false);
+            cbAlbum.setSelectedItem(this.medium.getAlbum());
+            cbAlbum.setEnabled(false);
+        }
     }
 }

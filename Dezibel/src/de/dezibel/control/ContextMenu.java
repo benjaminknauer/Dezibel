@@ -12,6 +12,7 @@ import de.dezibel.data.Playlist;
 import de.dezibel.data.User;
 import de.dezibel.gui.DezibelPanel;
 import de.dezibel.gui.MenuItem;
+import de.dezibel.gui.UploadDialog;
 import de.dezibel.player.Player;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -63,6 +64,21 @@ public class ContextMenu {
 
     private void createMediumMenu() {
         currentPopupMenu = new JPopupMenu();
+        
+        final Medium m = (Medium) currentTableModel.getValueAt(currentTable.getSelectedRow(), -1);
+        if (m.getArtist() == Database.getInstance().getLoggedInUser() &&
+                (m.getPath() == null || m.getPath().isEmpty())) {
+            JMenuItem menuItemUpload = new JMenuItem("Upload");
+            menuItemUpload.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    UploadDialog ud = new UploadDialog(dp.getFrame(), null, m);
+                    ud.setVisible(true);
+                }
+            });
+            currentPopupMenu.add(menuItemUpload);
+        }
+        
         JMenuItem menuItemPlay = new JMenuItem("Warteschlange");
         JMenu menuAddToPlaylist = new JMenu("zur Wiedergabeliste hinzufügen");
         JMenuItem menuItemNewPlaylist = new JMenuItem("neue Wiedergabeliste");
@@ -187,7 +203,9 @@ public class ContextMenu {
         menuItemShowUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //dp.showProfile();
+                User user = (User) currentTableModel.getValueAt(
+                        currentTable.getSelectedRow(), -1);
+                dp.showProfile(user);
             }
         });
         currentPopupMenu.add(menuItemShowUser);

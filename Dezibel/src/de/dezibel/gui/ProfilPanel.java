@@ -67,6 +67,7 @@ public class ProfilPanel extends DragablePanel {
     private JTable tMedia;
     private JLabel lbAlbums;
     private JTable tAlbums;
+    private JLabel lbPseudonym;
 
     /**
      * Constructor of the ProfilPanel class.
@@ -97,6 +98,12 @@ public class ProfilPanel extends DragablePanel {
     }
 
     public void refresh() {
+       
+         if(!(controler.getLoggedInUser().isArtist())){
+            this.tfPseudonym.setVisible(false);
+            this.lbPseudonym.setVisible(false);
+        }
+         
         this.tfFirstName.setText(controler.getFirstName(currentUser));
         this.tfLastName.setText(controler.getLastName(currentUser));
         this.tfRole.setText(controler.getRole(currentUser));
@@ -123,6 +130,24 @@ public class ProfilPanel extends DragablePanel {
         }
         if (controler.getLoggedInUser() == currentUser) {
             btnEdit.setVisible(true);
+        }
+
+        if (controler.getFavorizedUsers(controler.getLoggedInUser()).contains(
+                currentUser)) {
+            btnFollow.setText("Unfollow");
+        }
+
+        if (!(controler.getFavorizedUsers(controler.getLoggedInUser()).contains(
+                currentUser))) {
+            btnFollow.setText("Follow");
+        }
+        
+        if(tfFirstName.isEnabled()){
+            btnEdit.setText("Speichern");
+        }
+        
+        if(!(tfFirstName.isEnabled())){
+            btnEdit.setText("Bearbeiten");
         }
     }
 
@@ -163,7 +188,7 @@ public class ProfilPanel extends DragablePanel {
         JLabel lbFirstName = new JLabel("Vorname:");
         JLabel lbLastName = new JLabel("Nachname:");
         JLabel lbRole = new JLabel("Rolle:");
-        JLabel lbPseudonym = new JLabel("Pseudonym:");
+        lbPseudonym = new JLabel("Pseudonym:");
         JLabel lbGender = new JLabel("Geschlecht:");
         JLabel lbEmail = new JLabel("Email:");
         JLabel lbBirthDate = new JLabel("Geburtsdatum:");
@@ -202,15 +227,26 @@ public class ProfilPanel extends DragablePanel {
                 } else {
                     setProfileTextfieldsEditable(true);
                 }
-
-            }
+            refresh();
+            } 
         });
 
         btnFollow = new JButton("Follow");
         btnFollow.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controler.addToFavoriteUsers(currentUser);
+                if (controler.getFavorizedUsers(controler.getLoggedInUser()).contains(
+                        currentUser)) {
+                    controler.removeFavoriteUser(currentUser);
+                    System.out.print("favo gelöscht");
+                }
+
+                else if (!(controler.getFavorizedUsers(controler.getLoggedInUser()).contains(
+                        currentUser))) {
+                    controler.addToFavoriteUsers(currentUser);
+                    System.out.print("favo zugefügt");
+                }
+                refresh();
             }
         });
 
@@ -242,8 +278,9 @@ public class ProfilPanel extends DragablePanel {
         gbc.gridy = 10;
         gbl.setConstraints(btnEdit, gbc);
         pnProfile.add(btnEdit);
-        gbc.gridx = 2;
+        gbc.gridx = 1;
         gbc.gridy = 10;
+        gbl.setConstraints(btnFollow, gbc);
         pnProfile.add(btnFollow);
 
         setProfileTextfieldsEditable(false);

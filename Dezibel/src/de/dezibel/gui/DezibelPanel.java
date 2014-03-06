@@ -629,7 +629,11 @@ public class DezibelPanel extends JPanel {
 	}
 	
 	private void onUpload() {
-		UploadDialog ud = new UploadDialog(frame, null);
+		UploadDialog ud = new UploadDialog(frame, null, null);
 		ud.setVisible(true);
 	}
+        
+        public JFrame getFrame() {
+            return frame;
+        }
 }
