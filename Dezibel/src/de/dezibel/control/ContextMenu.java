@@ -5,9 +5,12 @@
 package de.dezibel.control;
 
 import de.dezibel.data.Album;
+import de.dezibel.data.Database;
 import de.dezibel.data.Label;
 import de.dezibel.data.Medium;
+import de.dezibel.data.Playlist;
 import de.dezibel.data.User;
+import de.dezibel.gui.MenuItem;
 import de.dezibel.player.Player;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -17,6 +20,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JTable;
+import javax.swing.JMenu;
+import javax.swing.JOptionPane;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -48,13 +55,17 @@ public class ContextMenu {
         } else if (currentTableModel.getValueAt(rowNumber, -1) instanceof Album) {
             createAlbumMenu();
         }
-        
+
         return currentPopupMenu;
     }
 
     private void createMediumMenu() {
         currentPopupMenu = new JPopupMenu();
         JMenuItem menuItemPlay = new JMenuItem("Abspielen");
+        JMenu menuAddToPlaylist = new JMenu("zur Wiedergabeliste hinzufügen");
+        JMenuItem menuItemNewPlaylist = new JMenuItem("neue Wiedergabeliste");
+
+
         menuItemPlay.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -66,8 +77,80 @@ public class ContextMenu {
                 }
             }
         });
+
+        menuItemNewPlaylist.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ImageIcon logoIcon = new ImageIcon(this.getClass().getResource("/img/mini-logo.png"));
+                String title = ((String) JOptionPane.showInputDialog(null,
+                        "Titel der Wiedergabeliste", "Titel eingeben",
+                        JOptionPane.QUESTION_MESSAGE, logoIcon, null, null)).trim();
+                if (title != null && !title.isEmpty()) {
+                    new PlaylistControl().createPlaylist(title,
+                            (Medium) currentTableModel.getValueAt(
+                            currentTable.getSelectedRow(), -1));
+                }
+            }
+        });
+
+
         currentPopupMenu.add(menuItemPlay);
-    }
+        currentPopupMenu.add(menuAddToPlaylist);
+        menuAddToPlaylist.add(menuItemNewPlaylist);
+        menuAddToPlaylist.addSeparator();
+        menuAddToPlaylist.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
+        });
+
+        if (Database.getInstance().getLoggedInUser()
+                .equals(((Medium) currentTableModel.getValueAt(
+                currentTable.getSelectedRow(), -1)).getArtist())) {
+            JMenu menuAddToAlbum = new JMenu("zu Album hinzufügen");
+            JMenuItem menuItemNewAlbum = new JMenuItem("neues Album");
+            
+            menuItemNewAlbum.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ImageIcon logoIcon = new ImageIcon(this.getClass().getResource("/img/mini-logo.png"));
+                    String title = ((String) JOptionPane.showInputDialog(null,
+                            "Titel des Albums", "Titel eingeben",
+                            JOptionPane.QUESTION_MESSAGE, logoIcon, null, null)).trim();
+                    if (title != null && !title.isEmpty()) {
+                        new AlbumControl().createAlbum(title,
+                                (Medium) currentTableModel.getValueAt(
+                                currentTable.getSelectedRow(), -1), null);
+                    }
+                }
+            }
+
+                );
+
+            currentPopupMenu.add (menuAddToAlbum);
+
+                menuAddToAlbum.add (menuItemNewAlbum);
+
+                menuAddToAlbum.addSeparator ();
+            }
+
+        
+            MenuItem currentMenuItem;
+            for (Playlist currentPlaylist : Database.getInstance().getLoggedInUser().getCreatedPlaylists()) {
+                currentMenuItem = new MenuItem(currentPlaylist.getTitle(), currentPlaylist);
+                currentMenuItem.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        new PlaylistControl().addMediumToPlaylist((Medium) currentTableModel.getValueAt(
+                                currentTable.getSelectedRow(), -1),
+                                (Playlist) ((MenuItem) e.getSource()).getEntity());
+                    }
+                });
+                menuAddToPlaylist.add(currentMenuItem);
+            }
+        }
+
+    
 
     private void createUserMenu() {
         currentPopupMenu = new JPopupMenu();
