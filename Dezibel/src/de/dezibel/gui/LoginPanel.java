@@ -1,23 +1,12 @@
 package de.dezibel.gui;
 
-import com.sun.corba.se.spi.orbutil.fsm.Input;
 import de.dezibel.control.LoginControl;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
@@ -29,9 +18,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 /**
- *
+ * Panel to display and handle the login process
+ * 
  * @author Pascal, Tobias
- *
  */
 public class LoginPanel extends DragablePanel {
 
@@ -47,18 +36,22 @@ public class LoginPanel extends DragablePanel {
     
     private LoginControl loginControl;
 
+    /**
+     * Constructor
+     * @param parent The parent panel
+     */
     public LoginPanel(DezibelPanel parent) {
         super(parent);
         ImageIcon logoIcon = new ImageIcon(this.getClass().getResource("/img/logo.png"));
 
         labelLogo = new JLabel(logoIcon);
         pnLoginPanel = new JPanel();
-        labelMail = new JLabel("Mail:");
+        labelMail = new JLabel("Email:");
         labelPassword = new JLabel("Passwort:");
         tfMail = new JTextField();
         tfPassword = new JPasswordField();
         bnLogin = new JButton("Login");
-        bnRegister = new JButton("Register");
+        bnRegister = new JButton("Registrieren");
         
         loginControl = new LoginControl();
 
@@ -140,27 +133,48 @@ public class LoginPanel extends DragablePanel {
         this.setBorder(null);
     }
 
+    /**
+     * Handles the process when the lgoin button is hit
+     */
     private void onLogin() {
         if (this.tfMail.getText().isEmpty() || this.tfPassword.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Mail or Password can not be empty",
-                    "Type Error", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Email oder Passwort ist leer",
+                    "Fehler", JOptionPane.INFORMATION_MESSAGE);
         } else {
             if(loginControl.checkIfMailExists(this.tfMail.getText()))
                 if(loginControl.checkPassword(this.tfPassword.getText())) {
                     loginControl.markLoggedInUser();
+                    this.clearTextFields();
                     this.parent.showWorkspace();
                 }
                 else
-                    JOptionPane.showMessageDialog(this, "Password false",
-                    "Type Error", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Passwort falsch",
+                    "Falsches Passwort", JOptionPane.INFORMATION_MESSAGE);
             else
-                JOptionPane.showMessageDialog(this, "A user with this mail doesnt exist",
-                    "Type Error", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Ein Benutzer mit dieser Email existiert nicht",
+                    "Benutzer existiert nicht", JOptionPane.INFORMATION_MESSAGE);
                     
         }
     }
 
+    /**
+     * Handles the process when the register button is hit
+     */
     private void onRegister() {
+        this.clearTextFields();
         this.parent.showRegistration();
+    }
+    
+    /**
+     * Clears all text fields
+     */
+    public void clearTextFields() {
+        JTextField tf;
+        for (Component c : this.pnLoginPanel.getComponents()) {
+            if (c instanceof JTextField) {
+                tf = (JTextField) c;
+                tf.setText("");
+            }
+        }
     }
 }
