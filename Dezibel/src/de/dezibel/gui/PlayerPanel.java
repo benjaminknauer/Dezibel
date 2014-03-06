@@ -3,11 +3,11 @@ package de.dezibel.gui;
 import de.dezibel.data.Medium;
 import de.dezibel.player.Player;
 import de.dezibel.player.PlayerObserver;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -82,6 +82,18 @@ public class PlayerPanel extends DragablePanel {
         tablePlaylist = new JTable(mediaTableModel);
         tablePlaylist.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tablePlaylist.setEnabled(false);
+        tablePlaylist.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                System.out.println("Test");
+                if (me.getClickCount() == 2) {
+                    Point p = me.getPoint();
+                    int rowNumber = tablePlaylist.rowAtPoint(p);
+                    Medium m = (Medium) mediaTableModel.getValueAt(rowNumber, -1);
+                    player.setCurrentMedia(m);
+                }
+            }
+        });
         scrollPane = new JScrollPane(tablePlaylist);
 
         createTopBottomLayout();
