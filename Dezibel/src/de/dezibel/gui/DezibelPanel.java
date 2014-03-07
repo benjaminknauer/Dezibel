@@ -31,6 +31,7 @@ import com.javadocking.model.FloatDockModel;
 import com.javadocking.visualizer.FloatExternalizer;
 import com.javadocking.visualizer.LineMinimizer;
 import com.javadocking.visualizer.SingleMaximizer;
+import de.dezibel.UpdateEntity;
 import de.dezibel.control.SaveControl;
 import de.dezibel.data.Database;
 import de.dezibel.data.Playlist;
@@ -175,6 +176,13 @@ public class DezibelPanel extends JPanel {
         
         public void refresh(UpdateEntity ue){
         	switch(ue){
+                    case PLAYLIST:
+                        pnMyList.refresh();
+                        if(this.centerDock.getDockable(0).getContent() instanceof PlaylistPanel){
+                        PlaylistPanel pn = (PlaylistPanel) this.centerDock.getDockable(0).getContent();
+                        pn.refresh();
+                        }
+                        
         	
         	default:
         	break;
@@ -617,7 +625,7 @@ public class DezibelPanel extends JPanel {
 		this.executor.changeDocking(da, this.centerDock,new Position(0));
 		
 		}else{
-			JOptionPane.showMessageDialog(this,"Kann diese Aktion nicht ausführen,"
+			JOptionPane.showMessageDialog(this,"Kann diese Aktion nicht ausfï¿½hren,"
 					+ "solange das Fenster nicht angedockt ist","Fehler beim Andocken des Fensters",JOptionPane.ERROR_MESSAGE);
 		}
 	}

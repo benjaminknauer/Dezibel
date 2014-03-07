@@ -4,6 +4,7 @@
  */
 package de.dezibel.control;
 
+import de.dezibel.UpdateEntity;
 import de.dezibel.data.Album;
 import de.dezibel.data.Database;
 import de.dezibel.data.Label;
@@ -109,7 +110,7 @@ public class ContextMenu {
                     new PlaylistControl().createPlaylist(title,
                             (Medium) currentTableModel.getValueAt(
                             currentTable.getSelectedRow(), -1));
-                    dp.refresh
+                    dp.refresh(UpdateEntity.PLAYLIST);
                 }
             }
         });
@@ -142,6 +143,7 @@ public class ContextMenu {
                         new AlbumControl().createAlbum(title,
                                 (Medium) currentTableModel.getValueAt(
                                 currentTable.getSelectedRow(), -1), null);
+                        dp.refresh(UpdateEntity.ALBUM);
                     }
                 }
             });
@@ -161,6 +163,7 @@ public class ContextMenu {
                         new AlbumControl().addMediumToAlbum((Medium) currentTableModel.getValueAt(
                                 currentTable.getSelectedRow(), -1),
                                 (Album) ((MenuItem) e.getSource()).getEntity());
+                        dp.refresh(UpdateEntity.ALBUM);
                     }
                 });
                 menuAddToAlbum.add(currentMenuItem);
@@ -177,6 +180,7 @@ public class ContextMenu {
                             new AlbumControl().addMediumToAlbum((Medium) currentTableModel.getValueAt(
                                     currentTable.getSelectedRow(), -1),
                                     (Album) ((MenuItem) e.getSource()).getEntity());
+                            dp.refresh(UpdateEntity.ALBUM);
                         }
                     });
                     menuAddToAlbum.add(currentMenuItem);
@@ -194,6 +198,7 @@ public class ContextMenu {
                     new PlaylistControl().addMediumToPlaylist((Medium) currentTableModel.getValueAt(
                             currentTable.getSelectedRow(), -1),
                             (Playlist) ((MenuItem) e.getSource()).getEntity());
+                    dp.refresh(UpdateEntity.PLAYLIST);
                 }
             });
             menuAddToPlaylist.add(currentMenuItem);

@@ -28,6 +28,7 @@ public class PlaylistPanel extends DragablePanel {
     DezibelPanel dp;
     PlaylistMediaTableModel model;
     JPopupMenu currentPopupMenu;
+    Playlist currentPlaylist;
 
     public PlaylistPanel(DezibelPanel parent, Playlist currentPlaylist) {
         super(parent);
@@ -38,6 +39,7 @@ public class PlaylistPanel extends DragablePanel {
     }
 
     private void createComponents(Playlist currentPlaylist) {
+        this.currentPlaylist = currentPlaylist;
         lbTitle = new JLabel(currentPlaylist.getTitle());
         String creatorString = currentPlaylist.getCreator().getPseudonym();
         if (creatorString == null || creatorString.trim().isEmpty()) {
@@ -61,7 +63,7 @@ public class PlaylistPanel extends DragablePanel {
                         //TODO Song an der Anfang der Queue
                         Player.getInstance().clearPlaylist();
                         Player.getInstance().addMedium(m);
-                        
+
                         Player.getInstance().play();
                     }
                 }
@@ -111,5 +113,17 @@ public class PlaylistPanel extends DragablePanel {
         gbc.weightx = 1;
         this.add(spPlaylistMedia, gbc);
 
+    }
+
+    @Override
+    public void refresh() {
+        model.setData(currentPlaylist.getList());
+        lbTitle = new JLabel(currentPlaylist.getTitle());
+        String creatorString = currentPlaylist.getCreator().getPseudonym();
+        if (creatorString == null || creatorString.trim().isEmpty()) {
+            creatorString = currentPlaylist.getCreator().getFirstname() + " "
+                    + currentPlaylist.getCreator().getLastname();
+        }
+        lbCreator = new JLabel(creatorString);
     }
 }
