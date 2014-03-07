@@ -1,5 +1,6 @@
 package de.dezibel.gui;
 
+import de.dezibel.control.LabelControl;
 import de.dezibel.control.ProfileControl;
 import de.dezibel.data.Label;
 import de.dezibel.data.User;
@@ -18,6 +19,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JPanel;
@@ -34,8 +36,10 @@ import javax.swing.tree.DefaultTreeCellEditor;
 public class ProfilPanel extends DragablePanel {
 
     private static final long serialVersionUID = 1L;
-    private ProfileControl controler;
+    private ProfileControl profileControler;
+    private LabelControl labelControler;
     private User currentUser;
+    private boolean isLabelVisible;
 
     private JTabbedPane tabPanel;
     private JPanel pnProfile;
@@ -75,15 +79,28 @@ public class ProfilPanel extends DragablePanel {
     private JScrollPane scrPublishingLabels;
     private JLabel lbPlaylist;
     private JTable tPlaylists;
-    private JLabel lbMedia;
     private JTable tMedia;
-    private JLabel lbAlbums;
     private JTable tAlbums;
     private JLabel lbPseudonym;
     private JTable tNews;
     private JTextArea taNews;
 
     private JPopupMenu currentPopupMenu;
+    private JButton btnCreateLabel;
+    private boolean isNewsVisible;
+    private JScrollPane spMedia;
+    private JScrollPane spAlbums;
+    private JLabel lbMediaUpload;
+    private JLabel lbMediaFavo;
+    private JLabel lbAlbumsFavo;
+    private JLabel lbAlbumsUpload;
+    private MyListsTableModel playlistModellUpload;
+    private MyListsTableModel playlistModellFavo;
+    private MediaTableModel mediaModellUpload;
+    private MediaTableModel mediaModellFavo;
+    private AlbumTableModel albumModellUpload;
+    private AlbumTableModel albumModellFavo;
+
     /**
      * Constructor of the ProfilPanel class.
      *
@@ -99,8 +116,9 @@ public class ProfilPanel extends DragablePanel {
         this.setLayout(layout);
         this.add(tabPanel, BorderLayout.CENTER);
 
-        this.controler = new ProfileControl();
-        this.currentUser = controler.getLoggedInUser();
+        this.profileControler = new ProfileControl();
+        this.labelControler = new LabelControl();
+        this.currentUser = profileControler.getLoggedInUser();
     }
 
     public void setUser(User newUser) {
@@ -115,7 +133,7 @@ public class ProfilPanel extends DragablePanel {
     public void refresh() {
 
         tabPanel.setSelectedIndex(0);
-        
+
         if (!(currentUser.isArtist())) {
             this.tfPseudonym.setVisible(false);
             this.lbPseudonym.setVisible(false);
@@ -124,42 +142,42 @@ public class ProfilPanel extends DragablePanel {
             this.lbPseudonym.setVisible(true);
         }
 
-        this.tfFirstName.setText(controler.getFirstName(currentUser));
-        this.tfLastName.setText(controler.getLastName(currentUser));
-        this.tfRole.setText(controler.getRole(currentUser));
-        this.tfPseudonym.setText(controler.getPseudonym(currentUser));
-        //this.tfGender.setText(controler.getGender(currentUser));
-        this.tfEmail.setText(controler.getEmail(currentUser));
-        this.tfBirthDate.setText(controler.getBirthDate(currentUser));
-        this.tfCity.setText(controler.getCity(currentUser));
-        this.tfCountry.setText(controler.getCountry(currentUser));
-        this.tfAboutMe.setText(controler.getAboutMe(currentUser));
-        this.followerModell.setData(controler.getFollowers(currentUser));
-        this.commentModell.setData(controler.getCreatedComments(currentUser));
-        this.labelModellManaged.setData(controler.getManagedLabels(currentUser));
-        this.labelModellPublishing.setData(controler.getPublishingLabels(currentUser));
+        this.tfFirstName.setText(profileControler.getFirstName(currentUser));
+        this.tfLastName.setText(profileControler.getLastName(currentUser));
+        this.tfRole.setText(profileControler.getRole(currentUser));
+        this.tfPseudonym.setText(profileControler.getPseudonym(currentUser));
+        //this.tfGender.setText(profileControler.getGender(currentUser));
+        this.tfEmail.setText(profileControler.getEmail(currentUser));
+        this.tfBirthDate.setText(profileControler.getBirthDate(currentUser));
+        this.tfCity.setText(profileControler.getCity(currentUser));
+        this.tfCountry.setText(profileControler.getCountry(currentUser));
+        this.tfAboutMe.setText(profileControler.getAboutMe(currentUser));
+        this.followerModell.setData(profileControler.getFollowers(currentUser));
+        this.commentModell.setData(profileControler.getCreatedComments(currentUser));
+        this.labelModellManaged.setData(profileControler.getManagedLabels(currentUser));
+        this.labelModellPublishing.setData(profileControler.getPublishingLabels(currentUser));
 
-        if (currentUser == controler.getLoggedInUser()) {
+        if (currentUser == profileControler.getLoggedInUser()) {
             btnFollow.setVisible(false);
         }
 
-        if (currentUser != controler.getLoggedInUser()) {
+        if (currentUser != profileControler.getLoggedInUser()) {
             btnFollow.setVisible(true);
         }
 
-        if (controler.getLoggedInUser() != currentUser) {
+        if (profileControler.getLoggedInUser() != currentUser) {
             btnEdit.setVisible(false);
         }
-        if (controler.getLoggedInUser() == currentUser) {
+        if (profileControler.getLoggedInUser() == currentUser) {
             btnEdit.setVisible(true);
         }
 
-        if (controler.getFavorizedUsers(controler.getLoggedInUser()).contains(
+        if (profileControler.getFavorizedUsers(profileControler.getLoggedInUser()).contains(
                 currentUser)) {
             btnFollow.setText("Unfollow");
         }
 
-        if (!(controler.getFavorizedUsers(controler.getLoggedInUser()).contains(
+        if (!(profileControler.getFavorizedUsers(profileControler.getLoggedInUser()).contains(
                 currentUser))) {
             btnFollow.setText("Follow");
         }
@@ -172,10 +190,62 @@ public class ProfilPanel extends DragablePanel {
             btnEdit.setText("Bearbeiten");
         }
 
-        followerModell.setData(controler.getFollowers(currentUser));
-        labelModellPublishing.setData(controler.getManagedLabels(currentUser));
-        commentModell.setData(controler.getCreatedComments(currentUser));
-        labelModellManaged.setData(controler.getPublishingLabels(currentUser));
+        if (currentUser.isLabelManager()) {
+            scrManagedLabels.setVisible(true);
+        } else {
+            scrManagedLabels.setVisible(false);
+        }
+
+        if (currentUser.getPublishingLabels().isEmpty()) {
+            scrPublishingLabels.setVisible(false);
+        } else {
+            scrPublishingLabels.setVisible(true);
+        }
+
+        if (currentUser == profileControler.getLoggedInUser()) {
+            btnCreateLabel.setVisible(true);
+        } else {
+            btnCreateLabel.setVisible(false);
+        }
+
+        if ((currentUser != profileControler.getLoggedInUser())
+                && !(currentUser.isLabelManager())
+                && currentUser.getPublishingLabels().isEmpty()) {
+            tabPanel.remove(pnLabels);
+            isLabelVisible = false;
+        } else if (!(isLabelVisible)) {
+            tabPanel.addTab("Labels", null, pnLabels);
+        }
+
+        if (!(currentUser.isArtist())) {
+            tabPanel.remove(pnNews);
+            isNewsVisible = false;
+        } else if (!(isNewsVisible)) {
+            tabPanel.addTab("News", null, pnNews);
+        }
+
+        if (!(currentUser.isArtist())) {
+            spMedia.setVisible(false);
+            spAlbums.setVisible(false);
+            lbMediaUpload.setVisible(false);
+            lbAlbumsUpload.setVisible(false);
+        } else {
+            spMedia.setVisible(true);
+            spAlbums.setVisible(true);
+            lbMediaUpload.setVisible(true);
+            lbAlbumsUpload.setVisible(true);
+        }
+
+        followerModell.setData(profileControler.getFollowers(currentUser));
+        labelModellPublishing.setData(profileControler.getPublishingLabels(currentUser));
+        commentModell.setData(profileControler.getCreatedComments(currentUser));
+        labelModellManaged.setData(profileControler.getManagedLabels(currentUser));
+        playlistModellUpload.setData(profileControler.getCreatedPlaylists(currentUser));
+        playlistModellFavo.setData(profileControler.getFavorizedPlaylists(currentUser));
+        mediaModellUpload.setData(profileControler.getCreatedMediums(currentUser));
+        mediaModellFavo.setData(profileControler.getFavorizedMediums(currentUser));
+        albumModellUpload.setData(profileControler.getCreatedAlbums(currentUser));
+        albumModellFavo.setData(profileControler.getFavorizedAlbums(currentUser));
     }
 
     /**
@@ -197,7 +267,7 @@ public class ProfilPanel extends DragablePanel {
         this.pnFavorites = new JPanel();
         this.createFavoritenComponents();
         tabPanel.addTab("Favoriten", null, pnFavorites);
-         this.pnFollower = new JPanel();
+        this.pnFollower = new JPanel();
         this.createFollowerComponents();
         tabPanel.addTab("Follower", null, pnFollower);
         this.pnComments = new JPanel();
@@ -246,15 +316,15 @@ public class ProfilPanel extends DragablePanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (tfFirstName.isEnabled() && currentUser != null) {
-                    controler.setFirstName(currentUser, tfFirstName.getText());
-                    controler.setLastName(currentUser, tfLastName.getText());
-                    controler.setPseudonym(currentUser, tfPseudonym.getText());
-                    controler.setGender(currentUser, tfGender.getSelectedItem().toString());
-                    controler.setEmail(currentUser, tfEmail.getText());
-                    controler.setBirthDate(currentUser, tfBirthDate.getText());
-                    controler.setCity(currentUser, tfCity.getText());
-                    controler.setCountry(currentUser, tfCountry.getText());
-                    controler.setAboutMe(currentUser, tfAboutMe.getText());
+                    profileControler.setFirstName(currentUser, tfFirstName.getText());
+                    profileControler.setLastName(currentUser, tfLastName.getText());
+                    profileControler.setPseudonym(currentUser, tfPseudonym.getText());
+                    profileControler.setGender(currentUser, tfGender.getSelectedItem().toString());
+                    profileControler.setEmail(currentUser, tfEmail.getText());
+                    profileControler.setBirthDate(currentUser, tfBirthDate.getText());
+                    profileControler.setCity(currentUser, tfCity.getText());
+                    profileControler.setCountry(currentUser, tfCountry.getText());
+                    profileControler.setAboutMe(currentUser, tfAboutMe.getText());
                     setProfileTextfieldsEditable(false);
                 } else {
                     setProfileTextfieldsEditable(true);
@@ -267,13 +337,13 @@ public class ProfilPanel extends DragablePanel {
         btnFollow.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (controler.getFavorizedUsers(controler.getLoggedInUser()).contains(
+                if (profileControler.getFavorizedUsers(profileControler.getLoggedInUser()).contains(
                         currentUser)) {
-                    controler.removeFavoriteUser(currentUser);
+                    profileControler.removeFavoriteUser(currentUser);
                     System.out.print("favo gelöscht");
-                } else if (!(controler.getFavorizedUsers(controler.getLoggedInUser()).contains(
+                } else if (!(profileControler.getFavorizedUsers(profileControler.getLoggedInUser()).contains(
                         currentUser))) {
-                    controler.addToFavoriteUsers(currentUser);
+                    profileControler.addToFavoriteUsers(currentUser);
                     System.out.print("favo zugefügt");
                 }
                 refresh();
@@ -413,7 +483,7 @@ public class ProfilPanel extends DragablePanel {
 
         taNews = new JTextArea();
 
-       // taNews.setEnabled(false);
+        // taNews.setEnabled(false);
         JScrollPane sptaNews = new JScrollPane(taNews);
         sptaNews.getViewport().setView(taNews);
         taNews.setEnabled(false);
@@ -453,166 +523,151 @@ public class ProfilPanel extends DragablePanel {
 
     private void createFavoritenComponents() {
 
+        playlistModellFavo = new MyListsTableModel();
         lbPlaylist = new JLabel("Wiedergabe Listen");
-        lbPlaylist.setHorizontalAlignment(JLabel.LEADING);
-        tPlaylists = new JTable(100, 1);
-        tPlaylists.getTableHeader().setVisible(false);
-        tPlaylists.setEnabled(false);
+        lbPlaylist.setHorizontalAlignment(JLabel.CENTER);
+        tPlaylists = new JTable(playlistModellFavo);
+        tPlaylists.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        
         JScrollPane spPlaylists = new JScrollPane(tPlaylists);
         spPlaylists.getViewport().setView(tPlaylists);
         pnFavorites.add(spPlaylists);
 
-        lbMedia = new JLabel("Media");
-        lbMedia.setHorizontalAlignment(JLabel.LEADING);
-        tMedia = new JTable(100, 1);
-        tMedia.setEnabled(false);
-        tMedia.getTableHeader().setVisible(false);
+        mediaModellFavo = new MediaTableModel();
+        lbMediaFavo = new JLabel("Media");
+        lbMediaFavo.setHorizontalAlignment(JLabel.CENTER);
+        tMedia = new JTable(mediaModellFavo);
+        tMedia.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         JScrollPane spMedia = new JScrollPane(tMedia);
         spMedia.getViewport().setView(tMedia);
         pnFavorites.add(spMedia);
 
-        lbAlbums = new JLabel("Alben");
-        lbAlbums.setHorizontalAlignment(JLabel.LEADING);
-        tAlbums = new JTable(100, 1);
-        tAlbums.getTableHeader().setVisible(false);
-        tAlbums.setEnabled(false);
+        albumModellFavo = new AlbumTableModel();
+        lbAlbumsFavo = new JLabel("Alben");
+        lbAlbumsFavo.setHorizontalAlignment(JLabel.CENTER);
+        tAlbums = new JTable(albumModellFavo);
+        tAlbums.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        
         JScrollPane spAlbums = new JScrollPane();
-        tAlbums.setEnabled(false);
         spAlbums.getViewport().setView(tAlbums);
         pnFavorites.add(spAlbums);
 
         GroupLayout layout = new GroupLayout(pnFavorites);
         layout.setHorizontalGroup(layout
-                .createParallelGroup(GroupLayout.Alignment.CENTER, true)
-                .addGroup(
-                        GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(lbPlaylist, 128, 128, 200)
-                        .addComponent(spPlaylists, 128, 128, 1500))
-                // .addComponent(spPlaylists))
-
-                .addGroup(
-                        GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(lbMedia, 128, 128, 200)
-                        .addComponent(spMedia, 128, 128, 1500))
-                .addGroup(
-                        GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(lbAlbums, 128, 128, 200)
-                        .addComponent(spAlbums, 128, 128, 1500))
+                .createParallelGroup(GroupLayout.Alignment.CENTER)
+                .addComponent(lbPlaylist, 128, 128, 200)
+                .addComponent(spPlaylists, 128, 128, 1500)
+                .addComponent(lbMediaFavo, 128, 128, 200)
+                .addComponent(spMedia, 128, 128, 1500)
+                .addComponent(lbAlbumsFavo, 128, 128, 200)
+                .addComponent(spAlbums, 128, 128, 1500)
         );
 
         layout.setVerticalGroup(layout.createParallelGroup(
                 GroupLayout.Alignment.CENTER, true)
                 .addGroup(layout.createSequentialGroup()
-                        .addGroup(
-                                layout.createParallelGroup(GroupLayout.Alignment.LEADING, true)
-                                .addComponent(lbPlaylist, 32, 32, 100)
-                                .addComponent(spPlaylists, 100, 100, 700))
-                        //.addComponent(spPlaylists))
-
-                        .addGroup(
-                                layout.createParallelGroup()
-                                .addComponent(lbMedia, 32, 32, 100)
-                                .addComponent(spMedia, 32, 32, 700))
-                        .addGroup(
-                                layout.createParallelGroup()
-                                .addComponent(lbAlbums, 32, 32, 100)
-                                .addComponent(spAlbums, 32, 32, 700))
+                        .addComponent(lbPlaylist, 32, 32, 32)
+                        .addComponent(spPlaylists, 100, 100, 700)
+                        .addComponent(lbMediaFavo, 32, 32, 32)
+                        .addComponent(spMedia, 100, 100, 700)
+                        .addComponent(lbAlbumsFavo, 32, 32, 32)
+                        .addComponent(spAlbums, 100, 100, 700)
                 )
         );
 
         layout.setAutoCreateContainerGaps(true);
         layout.setAutoCreateGaps(true);
         pnFavorites.setLayout(layout);
-        pnFavorites.setOpaque(false);
+        
 
     }
 
     private void createUploadsComponents() {
-
-        //BorderLayout upLayout = new BorderLayout();
-        //pnUploads.setLayout(upLayout);
+        
         lbPlaylist = new JLabel("Wiedergabe Listen");
-        lbPlaylist.setHorizontalAlignment(JLabel.LEADING);
-        tPlaylists = new JTable(100, 1);
-        tPlaylists.getTableHeader().setVisible(false);
-        tPlaylists.setEnabled(false);
+        lbPlaylist.setHorizontalAlignment(JLabel.CENTER);
+        playlistModellUpload = new MyListsTableModel();
+        tPlaylists = new JTable(playlistModellUpload);
+        tPlaylists.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        
         JScrollPane spPlaylists = new JScrollPane(tPlaylists);
         spPlaylists.getViewport().setView(tPlaylists);
         pnUploads.add(spPlaylists);
         // pnUploads.add(tPlaylists);
 
-        lbMedia = new JLabel("Media");
-        lbMedia.setHorizontalAlignment(JLabel.LEADING);
-        tMedia = new JTable(100, 1);
-        tMedia.setEnabled(false);
-        tMedia.getTableHeader().setVisible(false);
+        mediaModellUpload = new MediaTableModel();
+        tMedia = new JTable(mediaModellUpload);
+        tMedia.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        lbMediaUpload = new JLabel("Media");
+        lbMediaUpload.setHorizontalAlignment(JLabel.CENTER);
 
-        JScrollPane spMedia = new JScrollPane(tMedia);
+        spMedia = new JScrollPane(tMedia);
         spMedia.getViewport().setView(tMedia);
         pnUploads.add(spMedia);
-        //pnUploads.add(lbMedia);
 
-        lbAlbums = new JLabel("Alben");
-        lbAlbums.setHorizontalAlignment(JLabel.LEADING);
-        tAlbums = new JTable(100, 1);
-        tAlbums.getTableHeader().setVisible(false);
-        tAlbums.setEnabled(false);
-        JScrollPane spAlbums = new JScrollPane();
-        tAlbums.setEnabled(false);
+        albumModellUpload = new AlbumTableModel();
+        tAlbums = new JTable(albumModellUpload);
+        tAlbums.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        spAlbums = new JScrollPane();
+        lbAlbumsUpload = new JLabel("Alben");
+        lbAlbumsUpload.setHorizontalAlignment(JLabel.CENTER);
         spAlbums.getViewport().setView(tAlbums);
         pnUploads.add(spAlbums);
-        //pnUploads.add(lbAlbums);
 
         GroupLayout layout = new GroupLayout(pnUploads);
         layout.setHorizontalGroup(layout
-                .createParallelGroup(GroupLayout.Alignment.CENTER, true)
-                .addGroup(
-                        GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(lbPlaylist, 128, 128, 200)
-                        .addComponent(spPlaylists, 128, 128, 1500))
-                // .addComponent(spPlaylists))
-
-                .addGroup(
-                        GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(lbMedia, 128, 128, 200)
-                        .addComponent(spMedia, 128, 128, 1500))
-                .addGroup(
-                        GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(lbAlbums, 128, 128, 200)
-                        .addComponent(spAlbums, 128, 128, 1500))
+                .createParallelGroup(GroupLayout.Alignment.CENTER)
+                .addComponent(lbPlaylist, 128, 128, 200)
+                .addComponent(spPlaylists, 128, 128, 1500)
+                .addComponent(lbMediaUpload, 128, 128, 200)
+                .addComponent(spMedia, 128, 128, 1500)
+                .addComponent(lbAlbumsUpload, 128, 128, 200)
+                .addComponent(spAlbums, 128, 128, 1500)
         );
 
         layout.setVerticalGroup(layout.createParallelGroup(
                 GroupLayout.Alignment.CENTER, true)
                 .addGroup(layout.createSequentialGroup()
-                        .addGroup(
-                                layout.createParallelGroup(GroupLayout.Alignment.LEADING, true)
-                                .addComponent(lbPlaylist, 32, 32, 100)
-                                .addComponent(spPlaylists, 100, 100, 750))
-                        //.addComponent(spPlaylists))
-
-                        .addGroup(
-                                layout.createParallelGroup()
-                                .addComponent(lbMedia, 32, 32, 100)
-                                .addComponent(spMedia, 32, 32, 750))
-                        .addGroup(
-                                layout.createParallelGroup()
-                                .addComponent(lbAlbums, 32, 32, 100)
-                                .addComponent(spAlbums, 32, 32, 750))
+                        .addComponent(lbPlaylist, 32, 32, 32)
+                        .addComponent(spPlaylists, 100, 100, 700)
+                        .addComponent(lbMediaUpload, 32, 32, 32)
+                        .addComponent(spMedia, 100, 100, 700)
+                        .addComponent(lbAlbumsUpload, 32, 32, 32)
+                        .addComponent(spAlbums, 100, 100, 700)
+                        
                 )
         );
 
         layout.setAutoCreateContainerGaps(true);
         layout.setAutoCreateGaps(true);
         pnUploads.setLayout(layout);
-        pnUploads.setOpaque(false);
+       
 
     }
 
     private void createLabelsComponents() {
 
-        // Managed Labels
+        // Create Label Button
+        btnCreateLabel = new JButton("Label erstellen");
+        btnCreateLabel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String labelName = JOptionPane.showInputDialog("Wählen Sie einen Namen für Ihr Label:");
+                System.out.print(labelName);
+                if (labelName != null && labelName.length() > 0) {
+                    labelControler.createLabel(currentUser, labelName);
+                    labelControler.promoteUserToLabelManager(currentUser);
+                    refresh();
+                    tabPanel.setSelectedIndex(6);
+                } else {
+                    JOptionPane.showMessageDialog(parent, "Eingabefeld war leer!"
+                            + " Es wurde kein neues Label erstellt.");
+                }
+            }
+        });
+
+        // Managed Labels Tabel
         gbl = new GridBagLayout();
         labelModellManaged = new LabelTableModel();
         labelModellManaged.setHeader(new String[]{"Meine Labels"});
@@ -632,7 +687,7 @@ public class ProfilPanel extends DragablePanel {
 
         gbc = new GridBagConstraints();
 
-        gbc.insets = new Insets(0, 0, 0, 5);
+        gbc.insets = new Insets(0, 5, 0, 5);
         gbc.fill = GridBagConstraints.BOTH;
 
         gbc.weightx = 1;
@@ -640,9 +695,15 @@ public class ProfilPanel extends DragablePanel {
 
         gbl.setConstraints(scrManagedLabels, gbc);
         pnLabels.add(scrManagedLabels);
-        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.insets = new Insets(0, 5, 0, 5);
         gbl.setConstraints(scrPublishingLabels, gbc);
         pnLabels.add(scrPublishingLabels);
 
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.gridy = 1;
+        gbc.gridwidth = 2;
+        gbc.weighty = 0.1;
+        gbl.setConstraints(btnCreateLabel, gbc);
+        pnLabels.add(btnCreateLabel);
     }
 }

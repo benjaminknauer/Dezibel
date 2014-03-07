@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package de.dezibel.gui;
 
 import de.dezibel.UpdateEntity;
@@ -11,6 +7,7 @@ import de.dezibel.data.Album;
 import de.dezibel.data.Database;
 import de.dezibel.data.Label;
 import de.dezibel.data.Medium;
+import de.dezibel.data.News;
 import de.dezibel.data.Playlist;
 import de.dezibel.data.User;
 import de.dezibel.player.Player;
@@ -29,7 +26,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JRadioButtonMenuItem;
 
 /**
- *
  * Handles the right click actions for all panels
  *
  *
@@ -82,6 +78,8 @@ public class ContextMenu {
             createAlbumMenu();
         } else if (currentTableModel.getValueAt(rowNumber, -1) instanceof Playlist) {
             createPlaylistMenu();
+        } else if (currentTableModel.getValueAt(rowNumber, -1) instanceof News) {
+            createNewsMenu();
         }
         return currentPopupMenu;
     }
@@ -306,7 +304,7 @@ public class ContextMenu {
             });
             menuAddToPlaylist.add(currentMenuItem);
         }
-        
+
         menuItemComment.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -315,13 +313,13 @@ public class ContextMenu {
                 cd.setVisible(true);
             }
         });
-        
+
         currentPopupMenu.add(menuItemComment);
     }
 
     /**
-     * Adds the PopupMenu which handles the right clicks on media in the
-     * player playlist to the MediumPopupMenu
+     * Adds the PopupMenu which handles the right clicks on media in the player
+     * playlist to the MediumPopupMenu
      */
     private void addPlayerPanelMenuItems() {
         JMenuItem menuItemRemove = new JMenuItem("Entfernen");
@@ -401,12 +399,13 @@ public class ContextMenu {
      */
     private void createAlbumMenu() {
         currentPopupMenu = new JPopupMenu();
+        final Album a = (Album) currentTableModel.getValueAt(
+                currentTable.getSelectedRow(), -1);
         JMenuItem menuItemQueue = new JMenuItem("Warteschlange");
+        JMenuItem menuItemComment = new JMenuItem("Kommentieren");
         menuItemQueue.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Album a = (Album) currentTableModel.getValueAt(
-                        currentTable.getSelectedRow(), -1);
                 if (a != null) {
                     Player.getInstance().addMedialist(a.getMediaList());
                     Player.getInstance().play();
@@ -414,6 +413,15 @@ public class ContextMenu {
             }
         });
         currentPopupMenu.add(menuItemQueue);
+        menuItemComment.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CommentDialog cd = new CommentDialog(dp.getFrame());
+                cd.commentAlbum(a);
+                cd.setVisible(true);
+            }
+        });
+        currentPopupMenu.add(menuItemComment);
     }
 
     /**
@@ -421,12 +429,13 @@ public class ContextMenu {
      */
     private void createPlaylistMenu() {
         currentPopupMenu = new JPopupMenu();
+        final Playlist p = (Playlist) currentTableModel.getValueAt(
+                currentTable.getSelectedRow(), -1);
         JMenuItem menuItemShow = new JMenuItem("Anzeigen");
+        JMenuItem menuItemComment = new JMenuItem("Kommentieren");
         menuItemShow.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Playlist p = (Playlist) currentTableModel.getValueAt(
-                        currentTable.getSelectedRow(), -1);
                 if (p != null) {
                     dp.showPlaylist(p);
                 }
@@ -437,8 +446,6 @@ public class ContextMenu {
         menuItemQueue.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Playlist p = (Playlist) currentTableModel.getValueAt(
-                        currentTable.getSelectedRow(), -1);
                 if (p != null) {
                     Player.getInstance().addMedialist(p.getList());
                     Player.getInstance().play();
@@ -450,8 +457,6 @@ public class ContextMenu {
         menuItemRename.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Playlist p = (Playlist) currentTableModel.getValueAt(
-                        currentTable.getSelectedRow(), -1);
                 if (p != null) {
                     ImageIcon logoIcon = new ImageIcon(this.getClass().getResource("/img/mini-logo.png"));
                     String title = ((String) JOptionPane.showInputDialog(null,
@@ -469,8 +474,6 @@ public class ContextMenu {
         menuItemDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Playlist p = (Playlist) currentTableModel.getValueAt(
-                        currentTable.getSelectedRow(), -1);
                 if (p != null) {
                     Database.getInstance().deletePlaylist(p);
                     dp.refresh(UpdateEntity.PLAYLIST);
@@ -482,6 +485,17 @@ public class ContextMenu {
         currentPopupMenu.add(menuItemQueue);
         currentPopupMenu.add(menuItemRename);
         currentPopupMenu.add(menuItemDelete);
+
+        currentPopupMenu.add(menuItemQueue);
+        menuItemComment.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CommentDialog cd = new CommentDialog(dp.getFrame());
+                cd.commentPlaylists(p);
+                cd.setVisible(true);
+            }
+        });
+        currentPopupMenu.add(menuItemComment);
     }
 
     /**
@@ -518,5 +532,34 @@ public class ContextMenu {
 
         currentPopupMenu.add(removeMediumFromPlaylist);
         currentPopupMenu.add(deleteMediumAt);
+    }
+
+    /**
+     * Adds the PopupMenu which handles the right clicks on news
+     */
+    private void createNewsMenu() {
+        currentPopupMenu = new JPopupMenu();
+        final News n = (News) currentTableModel.getValueAt(
+                currentTable.getSelectedRow(), -1);
+        JMenuItem menuItemShow = new JMenuItem("Anzeigen");
+        JMenuItem menuItemComment = new JMenuItem("Kommentieren");
+        menuItemShow.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (n != null) {
+                    //dp.showNews(n);
+                }
+            }
+        });
+        currentPopupMenu.add(menuItemShow);
+        menuItemComment.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CommentDialog cd = new CommentDialog(dp.getFrame());
+                cd.commentNews(n);
+                cd.setVisible(true);
+            }
+        });
+        currentPopupMenu.add(menuItemComment);
     }
 }

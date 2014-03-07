@@ -312,6 +312,9 @@ public class Medium implements Commentable, Lockable {
 
     public void setGenre(Genre genre) {
         this.genre = genre;
+        if (!genre.getMedia().contains(this)) {
+            genre.addMedium(this);
+        }
     }
 
     public Label getLabel() {
