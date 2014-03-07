@@ -1,0 +1,15 @@
+126
+pnFavorites     = new FavoritesPanel(this);
+
+711
+void showFavoritesUser(User user) {
+        FavoritesPanel pn = (FavoritesPanel) pnFavorites;
+		pn.setFavoiteUser(user);
+		this.showAtCenter(daProfil);
+    }
+    
+    void showFavoritesLabel(User user) {
+        FavoritesPanel pn = (FavoritesPanel) pnFavorites;        
+                pn.setFavoiteUser(user);
+		this.showAtCenter(daProfil);
+    }
