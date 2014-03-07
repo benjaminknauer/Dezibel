@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package de.dezibel.control;
 
 import de.dezibel.data.Database;
@@ -22,35 +19,25 @@ import javax.swing.JTable;
  *
  * @author Benny
  */
+public class MyListsPanel extends DragablePanel {
 
-
-public class MyListsPanel extends DragablePanel{
     private JLabel lbTitel;
     private JScrollPane scrollPane;
     private JTable tblPlaylists;
     private MyListsTableModel mltm;
     private JPopupMenu currentPopupMenu;
     private DezibelPanel dp;
-    
-    public MyListsPanel(DezibelPanel parent){
+
+    public MyListsPanel(DezibelPanel parent) {
         super(parent);
         this.dp = parent;
-        if(Database.getInstance().getLoggedInUser() != null){
-        createComponents();
-        createLayout();
-        }
+            createComponents();
+            createLayout();
+
     }
-    
-    public void refresh(){
-        createComponents();
-        createLayout();
-    }
-    
-    private void createComponents(){
-        lbTitel = new JLabel("Wiedergabelisten");
-        mltm = new MyListsTableModel();
-        tblPlaylists = new JTable(mltm);
-        scrollPane = new JScrollPane(tblPlaylists);
+
+    public void refresh() {
+        if (Database.getInstance().getLoggedInUser() != null) {
         String[] header = {"Titel"};
         LinkedList<Playlist> myPlaylists = Database.getInstance().getLoggedInUser()
                 .getCreatedPlaylists();
@@ -58,17 +45,26 @@ public class MyListsPanel extends DragablePanel{
                 .getFavoritePlaylists();
         myPlaylists.addAll(favoritePlaylists);
         mltm.setData(myPlaylists);
-        
+        }
+    }
+
+    private void createComponents() {
+        lbTitel = new JLabel("Wiedergabelisten");
+        mltm = new MyListsTableModel();
+        tblPlaylists = new JTable(mltm);
+        scrollPane = new JScrollPane(tblPlaylists);
+
+
         tblPlaylists.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-            if (e.getClickCount()==2) 
-            {
-                Playlist p = (Playlist) mltm.getValueAt(
-                        tblPlaylists.getSelectedRow(), -1);
-                dp.showPlaylist(p);
+                if (e.getClickCount() == 2) {
+                    Playlist p = (Playlist) mltm.getValueAt(
+                            tblPlaylists.getSelectedRow(), -1);
+                    dp.showPlaylist(p);
+                }
             }
-            }
+
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
@@ -91,11 +87,10 @@ public class MyListsPanel extends DragablePanel{
         });
 
     }
-    
-    private void createLayout(){
+
+    private void createLayout() {
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.add(lbTitel);
         this.add(scrollPane);
     }
-    
 }
