@@ -12,7 +12,9 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import java.awt.event.ActionListener;
+import java.io.File;
 import javafx.scene.chart.PieChart;
+import javax.swing.filechooser.FileFilter;
 
 /**
  * 
@@ -52,9 +54,26 @@ public class CreateAlbumDialog extends JDialog{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFileChooser jfc = new JFileChooser();
-                String path = jfc.getSelectedFile().getPath();
-                tfFilePath.setText(path);
+                JFileChooser fc = new JFileChooser();
+                fc.setFileFilter(new FileFilter() {
+
+                    @Override
+                    public boolean accept(File f) {
+                        return f.isDirectory() || f.getPath().endsWith(".jpg")
+                                || f.getPath().endsWith(".jpeg") 
+                                || f.getPath().endsWith(".png")
+                                || f.getPath().endsWith(".bmp"); 
+                    }
+
+                    @Override
+                    public String getDescription() {
+                        return "nur Bilddateien";
+                    }
+                });
+                int returnVal = fc.showOpenDialog(CreateAlbumDialog.this);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    tfFilePath.setText(fc.getSelectedFile().getAbsolutePath());
+                }
             }
         });
         btnCreate = new JButton("Anlegen");
@@ -80,17 +99,26 @@ public class CreateAlbumDialog extends JDialog{
     private void createLayout(){
         
         this.setLayout(null);
-        lbAlbumTitle.setBounds(5, 5, 100, 32);
+        lbAlbumTitle.setBounds(10, 5, 200, 32);
         this.add(lbAlbumTitle);
-        tfAlbumTitle.setBounds(5, 42, 250, 250);
+        tfAlbumTitle.setBounds(10, 42, 250, 32);
         this.add(tfAlbumTitle);
-        btnCreate.setBounds(5, 300, 120, 32);
+        
+        lbFilePath.setBounds(10, 79, 200, 32);
+        this.add(lbFilePath);
+        tfFilePath.setBounds(10, 116, 220, 32);
+        this.add(tfFilePath);
+        
+        btnFilePath.setBounds(225, 118, 40, 28);
+        this.add(btnFilePath);
+        
+        btnCreate.setBounds(130, 153, 120, 32);
         this.add(btnCreate);
-        btnCancel.setBounds(130, 300, 120, 32);
+        btnCancel.setBounds(5, 153, 120, 32);
         this.add(btnCancel);
 
         this.setResizable(false);
-        this.setSize(400, 256);
+        this.setSize(270, 215 );
     }
     
 }
