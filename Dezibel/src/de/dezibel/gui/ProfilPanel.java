@@ -7,6 +7,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -24,6 +25,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
 import javax.swing.tree.DefaultTreeCellEditor;
 
 public class ProfilPanel extends DragablePanel {
@@ -161,6 +164,11 @@ public class ProfilPanel extends DragablePanel {
         if (!(tfFirstName.isEnabled())) {
             btnEdit.setText("Bearbeiten");
         }
+        
+        followerModell.setData(controler.getFollowers(currentUser));
+        labelModellPublishing.setData(controler.getManagedLabels(currentUser));
+        commentModell.setData(controler.getCreatedComments(currentUser));
+        labelModellManaged.setData(controler.getPublishingLabels(currentUser));
     }
 
     /**
@@ -342,7 +350,7 @@ public class ProfilPanel extends DragablePanel {
         followerModell = new FollowerTableModel();
         tFollower = new JTable(followerModell);
         tFollower.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
+        
         tFollower.addMouseListener(new MouseAdapter() {
             public void mouseDoubleClicked(MouseEvent e) {
                 setUser(followerModell.getUserAt(tFollower.getSelectedRow()));
@@ -359,6 +367,7 @@ public class ProfilPanel extends DragablePanel {
         commentModell = new CommentTableModel();
         tComments = new JTable(commentModell);
         tComments.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        
 
         tablePanel = new JScrollPane(tComments);
         BorderLayout fLayout = new BorderLayout();
@@ -415,23 +424,41 @@ public class ProfilPanel extends DragablePanel {
     }
 
     private void createLabelsComponents() {
+        
         // Managed Labels
+        gbl = new GridBagLayout();
         labelModellManaged = new LabelTableModel();
+        labelModellManaged.setHeader(new String[]{"Meine Labels"});
         tLabelsManaged = new JTable(labelModellManaged);
         tLabelsManaged.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
+      
+        
         scrManagedLabels = new JScrollPane(tLabelsManaged);
-        scrManagedLabels.setPreferredSize(new Dimension(this.getWidth()/2, this.getHeight()));
-        BorderLayout fLayout = new BorderLayout();
-        pnLabels.setLayout(fLayout);
-        pnLabels.add(scrManagedLabels, BorderLayout.WEST);
+        pnLabels.setLayout(gbl);
         
         // Publishing Labels
         labelModellPublishing = new LabelTableModel();
+        labelModellPublishing.setHeader(new String[]{"Meine Publisher"});
         tLabelsPublishing = new JTable(labelModellPublishing);
         tLabelsPublishing.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
+        
+        
         scrPublishingLabels = new JScrollPane(tLabelsPublishing);
-        pnLabels.add(scrPublishingLabels, BorderLayout.EAST);
+       
+        gbc = new GridBagConstraints();
+        
+        gbc.insets = new Insets(0, 0, 0, 5);
+        gbc.fill = GridBagConstraints.BOTH;
+        
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        
+        gbl.setConstraints(scrManagedLabels, gbc);
+        pnLabels.add(scrManagedLabels);
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbl.setConstraints(scrPublishingLabels, gbc);
+        pnLabels.add(scrPublishingLabels);
+        
+        
     }
 }
