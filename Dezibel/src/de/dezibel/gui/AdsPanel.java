@@ -29,7 +29,7 @@ public class AdsPanel extends DragablePanel {
         JTable tableRecommendations = new JTable(tableModelRecommendations);
         JScrollPane scrollPane = new JScrollPane(tableRecommendations);
         
-        JButton btnRefresh = new JButton("Aktualisieren");
+        JButton btnRefresh = new JButton("Empfehlungen neu abrufen");
         btnRefresh.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -41,12 +41,14 @@ public class AdsPanel extends DragablePanel {
         layout.setHorizontalGroup(layout.createParallelGroup()
                 .addComponent(scrollPane)
                 .addGap(10)
-                .addComponent(btnRefresh, GroupLayout.Alignment.TRAILING)
+                .addComponent(btnRefresh, GroupLayout.Alignment.CENTER)
+                .addGap(10)
         );
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addComponent(scrollPane)
                 .addGap(10)
                 .addComponent(btnRefresh)
+                .addGap(10)
         );
         setLayout(layout);
     }
