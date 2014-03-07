@@ -1,6 +1,7 @@
 package de.dezibel.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
@@ -106,7 +107,8 @@ public class DezibelPanel extends JPanel {
 	public DezibelPanel(JFrame frame) {
 		super(new BorderLayout());
 		this.frame = frame;
-		
+		frame.setBackground(DezibelColor.Background);
+		this.setBackground(DezibelColor.Background);
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -114,7 +116,7 @@ public class DezibelPanel extends JPanel {
 				saveControl.save();
 			}
 		});
-		
+	
 		this.addLeft = true;
 		// Create the content components.
 		pnLogin 	= new LoginPanel(this);
@@ -126,6 +128,16 @@ public class DezibelPanel extends JPanel {
 		pnFavorites = new DragablePanel(this);
 		pnProfil 	= new ProfilPanel(this);
 		pnSearch 	= new SearchPanel(this);
+		
+		pnLogin.setBackground(DezibelColor.Background);
+		pnRegister.setBackground(DezibelColor.Background);
+		pnPlayer.setBackground(DezibelColor.Background);
+		pnNews.setBackground(DezibelColor.Background);
+		pnAds.setBackground(DezibelColor.Background);
+		pnMyList.setBackground(DezibelColor.Background);
+		pnFavorites.setBackground(DezibelColor.Background);
+		pnProfil.setBackground(DezibelColor.Background);	
+		pnSearch.setBackground(DezibelColor.Background);
 		
 		this.createDocking();
 		this.showLogin();
@@ -282,7 +294,7 @@ public class DezibelPanel extends JPanel {
 		daAds = addActions(daAds);
 		daMyLists = addActions(daMyLists);
 		daFavorites = addActions(daFavorites);
-
+		
 		// Create the child tab dock.
 		leftLineDock = new LineDock();
 		rightLineDock = new LineDock();
@@ -299,7 +311,12 @@ public class DezibelPanel extends JPanel {
 		borderDock.setDock(rightLineDock, Position.RIGHT);
 		borderDock.setDock(centerDock, Position.CENTER);
 		dockModel.addRootDock("borderDock", borderDock, frame);
-
+		
+		borderDock.setBackground(DezibelColor.Background);
+		leftLineDock.setBackground(DezibelColor.Background);
+		rightLineDock.setBackground(DezibelColor.Background);
+		centerDock.setBackground(DezibelColor.Background);
+		
 		// Create an externalizer.
 		FloatExternalizer externalizer = new FloatExternalizer(frame);
 		dockModel.addVisualizer("externalizer", externalizer, frame);

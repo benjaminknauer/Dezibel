@@ -354,6 +354,8 @@ public class PlayerPanel extends DragablePanel {
                 }
             }
         }).start();
+        this.scrollPane.setOpaque(false);
+        this.setOpaque(false);
     }
 
     /**

@@ -42,6 +42,7 @@ public class LoginPanel extends DragablePanel {
      */
     public LoginPanel(DezibelPanel parent) {
         super(parent);
+        //this.setBackground(Color.WHITE);
         ImageIcon logoIcon = new ImageIcon(this.getClass().getResource("/img/logo.png"));
 
         labelLogo = new JLabel(logoIcon);
@@ -52,9 +53,11 @@ public class LoginPanel extends DragablePanel {
         tfPassword = new JPasswordField();
         bnLogin = new JButton("Login");
         bnRegister = new JButton("Registrieren");
-        
+        pnLoginPanel.setOpaque(false);
+        //pnLoginPanel.setBackground(parent.getBackground());
+        pnLoginPanel.setBackground(Color.WHITE);
         loginControl = new LoginControl();
-
+        
         bnLogin.addActionListener(new ActionListener() {
 
             @Override
@@ -71,7 +74,7 @@ public class LoginPanel extends DragablePanel {
             }
         });
 
-        pnLoginPanel.setBackground(this.getBackground());
+        ///pnLoginPanel.setBackground(this.getBackground());
         tfMail.setBounds(105, 102, 200, 30);
         tfPassword.setBounds(105, 102, 200, 30);
 
@@ -129,7 +132,7 @@ public class LoginPanel extends DragablePanel {
         gbc.gridy = 1;
         this.add(pnLoginPanel, gbc);
         
-        this.setBackground(new Color(239, 239, 239));
+        //this.setBackground(new Color(239, 239, 239));
         this.setBorder(null);
     }
 

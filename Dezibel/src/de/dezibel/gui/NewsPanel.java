@@ -28,6 +28,8 @@ public class NewsPanel extends DragablePanel {
 		
 		this.createComponents();
 		this.createLayout();
+		this.setOpaque(false);
+		this.setBackground(parent.getBackground());
 	}
 	
 	private void createComponents(){
@@ -37,6 +39,7 @@ public class NewsPanel extends DragablePanel {
 		spNews = new JScrollPane(tblNews);
 		spNews.setViewportView(tblNews);
 		
+		spNews.setOpaque(false);
 		tblNews.addMouseListener(new MouseAdapter(){
 
 			@Override
