@@ -83,6 +83,7 @@ public class ProfilPanel extends DragablePanel {
     private JTable tNews;
     private JTextArea taNews;
 
+    private JPopupMenu currentPopupMenu;
     /**
      * Constructor of the ProfilPanel class.
      *
@@ -113,6 +114,8 @@ public class ProfilPanel extends DragablePanel {
 
     public void refresh() {
 
+        tabPanel.setSelectedIndex(0);
+        
         if (!(currentUser.isArtist())) {
             this.tfPseudonym.setVisible(false);
             this.lbPseudonym.setVisible(false);
@@ -374,7 +377,7 @@ public class ProfilPanel extends DragablePanel {
 
             private void showPopup(MouseEvent me) {
                 ContextMenu contextMenu = new ContextMenu(parent);
-                JPopupMenu currentPopupMenu = contextMenu.getContextMenu(tFollower, me);
+                currentPopupMenu = contextMenu.getContextMenu(tFollower, me);
                 currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
             }
         });
