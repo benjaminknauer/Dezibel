@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 
 /**
  * Controls the complete upload process.
+ *
  * @author Tobias, Richard
  */
 public class UploadControl {
@@ -23,9 +24,10 @@ public class UploadControl {
     public UploadControl() {
         db = Database.getInstance();
     }
-    
+
     /**
      * Tries to upload the medium with the given parameters.
+     *
      * @param title The title of the song
      * @param user The publishing artist
      * @param path The path of the file or null, if no file was selected
@@ -38,11 +40,15 @@ public class UploadControl {
         if (!user.isArtist()) {
             return ErrorCode.USER_IS_NOT_ARTIST;
         }
-        return db.addMediumToAlbum(title, user, path, genre, label, album);
+        if (album != null) {
+            return db.addMediumToAlbum(title, user, path, genre, label, album);
+        }
+        return db.addMedium(title, user, path, genre, label);
     }
-    
+
     /**
      * Asks the user to input a pseudonym if no pseudonym was set before.
+     *
      * @param parent The parent component that shows the dialog
      * @param user The user that gets promoted
      */
@@ -54,10 +60,11 @@ public class UploadControl {
             user.promoteToArtist();
         }
     }
-    
+
     /**
-     * Gets the users that can get selected in the upload dialog, depending on the
-     * selected label.
+     * Gets the users that can get selected in the upload dialog, depending on
+     * the selected label.
+     *
      * @param label The currently selected label
      * @return An array containing all selectable users
      */
@@ -76,10 +83,11 @@ public class UploadControl {
         }
         return selectableUsers;
     }
-    
+
     /**
      * Gets all genres that can be selected in the upload dialog.
-     * @return  An array containing all selectable genres
+     *
+     * @return An array containing all selectable genres
      */
     public Genre[] getSelectableGenres() {
         ArrayList<Genre> result = getGenresRecursive(db.getTopGenre());
@@ -87,9 +95,10 @@ public class UploadControl {
         result.toArray(resultArray);
         return resultArray;
     }
-    
+
     /**
      * Gets all genres that are subgenres of the submitted topGenre.
+     *
      * @param topGenre The genre to process
      * @return An ArrayList containing all subgenres
      */
@@ -101,10 +110,11 @@ public class UploadControl {
         }
         return result;
     }
-    
+
     /**
      * Gets all labels that can be selected in the upload dialog.
-     * @return  An array containing all selectable labels
+     *
+     * @return An array containing all selectable labels
      */
     public Label[] getSelectableLabels() {
         User u = db.getLoggedInUser();
@@ -116,10 +126,11 @@ public class UploadControl {
         result.toArray(resultArray);
         return resultArray;
     }
-    
+
     /**
      * Gets all albums that can be selected in the upload dialog.
-     * @return  An array containing all selectable albums
+     *
+     * @return An array containing all selectable albums
      */
     public Album[] getSelectableAlbums() {
         User u = db.getLoggedInUser();
@@ -135,5 +146,4 @@ public class UploadControl {
         result.toArray(resultArray);
         return resultArray;
     }
-
 }
