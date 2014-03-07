@@ -1,6 +1,5 @@
 package de.dezibel.gui;
 
-import de.dezibel.control.ContextMenu;
 import de.dezibel.data.Medium;
 import de.dezibel.data.Playlist;
 import de.dezibel.player.Player;
