@@ -1,7 +1,6 @@
 package de.dezibel.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
@@ -41,8 +40,6 @@ import de.dezibel.control.SaveControl;
 import de.dezibel.data.Database;
 import de.dezibel.data.Playlist;
 import de.dezibel.data.User;
-
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -127,7 +124,7 @@ public class DezibelPanel extends JPanel {
 		pnNews 		= new NewsPanel(this);
 		pnAds 		= new AdsPanel(this);
 		pnMyList 	= new MyListsPanel(this);
-		pnFavorites = new DragablePanel(this);
+		pnFavorites = new FavoritesPanel(this);
 		pnProfil 	= new ProfilPanel(this);
 		pnSearch 	= new SearchPanel(this);
 		

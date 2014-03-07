@@ -2,12 +2,11 @@ package de.dezibel.gui;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-
+import de.dezibel.control.NewsControl;
 import de.dezibel.data.News;
 
 /**
@@ -83,7 +82,7 @@ public class NewsPanel extends DragablePanel {
      */
     public void refresh(){
     	this.reset();
-    	de.dezibel.control.News controller = new de.dezibel.control.News();
+    	NewsControl controller = new NewsControl();
     	NewsTableModel  model = new NewsTableModel();
     	model.setData(controller.searchForNews());
     	this.tblNews.setModel(model);

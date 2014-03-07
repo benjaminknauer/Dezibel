@@ -52,5 +52,17 @@ public class AdsPanel extends DragablePanel {
         );
         setLayout(layout);
     }
+
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void refresh() {
+		// TODO Auto-generated method stub
+		
+	}
     
 }
