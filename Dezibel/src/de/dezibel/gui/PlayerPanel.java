@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTable;
@@ -130,6 +131,26 @@ public class PlayerPanel extends DragablePanel {
                     int rowNumber = tablePlaylist.rowAtPoint(p);
                     player.setCurrentMedia(rowNumber);
                 }
+                
+            }
+            @Override
+            public void mousePressed(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            private void showPopup(MouseEvent me) {
+                PlayerContextMenu contextMenu = new PlayerContextMenu(parent);
+                JPopupMenu currentPopupMenu = contextMenu.getContextMenu(tablePlaylist);
+                currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
             }
         });
         // Renderer that shows the currently playing song
