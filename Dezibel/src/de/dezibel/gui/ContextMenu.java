@@ -30,11 +30,10 @@ import javax.swing.JRadioButtonMenuItem;
 
 /**
  *
- * Handles the right click actions for all panels except PlayerPanel.
+ * Handles the right click actions for all panels
  *
  *
  * @author Benny, Tobias
- * @see PlayerContextMenu
  */
 public class ContextMenu {
 
@@ -71,6 +70,9 @@ public class ContextMenu {
             createMediumMenu();
             if (table.getParent().getParent().getParent() instanceof PlaylistPanel) {
                 addPlaylistPanelMenuItems();
+            }
+            if (table.getParent().getParent().getParent() instanceof PlayerPanel) {
+                addPlayerPanelMenuItems();
             }
         } else if (currentTableModel.getValueAt(rowNumber, -1) instanceof User) {
             createUserMenu();
@@ -301,6 +303,51 @@ public class ContextMenu {
     }
 
     /**
+     * Adds the PopupMenu which handles the right clicks on media in the
+     * player playlist to the MediumPopupMenu
+     */
+    private void addPlayerPanelMenuItems() {
+        JMenuItem menuItemRemove = new JMenuItem("Entfernen");
+        JMenuItem menuItemDuplicate = new JMenuItem("Duplizieren");
+        JMenuItem menuItemMoveUp = new JMenuItem("Hochschieben");
+        JMenuItem menuItemMoveDown = new JMenuItem("Runterschieben");
+
+        menuItemRemove.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Player.getInstance().removeMedium(currentTable.getSelectedRow());
+            }
+        });
+
+        menuItemDuplicate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Player.getInstance().addMedium((Medium) currentTable.getValueAt(currentTable.getSelectedRow(), -1));
+            }
+        });
+
+        menuItemMoveUp.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Player.getInstance().moveUp(currentTable.getSelectedRow());
+            }
+        });
+
+        menuItemMoveDown.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Player.getInstance().moveDown(currentTable.getSelectedRow());
+            }
+        });
+
+        currentPopupMenu.remove(0);
+        currentPopupMenu.add(menuItemRemove);
+        currentPopupMenu.add(menuItemDuplicate);
+        currentPopupMenu.add(menuItemMoveUp);
+        currentPopupMenu.add(menuItemMoveDown);
+    }
+
+    /**
      * Creates the UserPopupMenu which handles the right clicks on users
      */
     private void createUserMenu() {
@@ -353,8 +400,7 @@ public class ContextMenu {
     }
 
     /**
-     * Creates the PlaylistPopupMenu which handles the right clicks on
-     * playlists, except the curretn playlist of the player.
+     * Creates the PlaylistPopupMenu which handles the right clicks on playlists
      */
     private void createPlaylistMenu() {
         currentPopupMenu = new JPopupMenu();
@@ -421,6 +467,10 @@ public class ContextMenu {
         currentPopupMenu.add(menuItemDelete);
     }
 
+    /**
+     * Adds the PopupMenu which handles the right clicks on playlists in the
+     * playlistpanel to the MediumPopupMenu
+     */
     private void addPlaylistPanelMenuItems() {
         JMenuItem deleteMediumAt = new JMenuItem("Nur hier entfernen");
         deleteMediumAt.addActionListener(new ActionListener() {
