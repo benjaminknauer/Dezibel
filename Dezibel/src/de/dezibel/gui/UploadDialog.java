@@ -1,6 +1,5 @@
 package de.dezibel.gui;
 
-import de.dezibel.ErrorCode;
 import de.dezibel.control.UploadControl;
 import de.dezibel.data.Album;
 import de.dezibel.data.Genre;
@@ -10,7 +9,6 @@ import de.dezibel.data.User;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -33,7 +31,7 @@ public class UploadDialog extends JDialog {
     private JComboBox<User> cbUser;
     private JComboBox<Genre> cbGenre;
     private JComboBox<Label> cbLabel;
-    private JComboBox<Album> cbAlbum;
+    private JComboBox<Object> cbAlbum;
 
     private Label label;
     private Medium medium;
@@ -72,7 +70,8 @@ public class UploadDialog extends JDialog {
             }
         });
         cbUser = new JComboBox<>(upc.getSelectableUsers(null));
-        cbAlbum = new JComboBox<>(upc.getSelectableAlbums());
+        cbAlbum = new JComboBox<>((Object[]) upc.getSelectableAlbums());
+        cbAlbum.addItem("Neues Album erstellen");
 
         btCancel.addActionListener(new ActionListener() {
 
@@ -99,11 +98,19 @@ public class UploadDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (medium == null) {
+                    Object albumSelection = cbAlbum.getSelectedItem();
+                    Album album;
+                    if (albumSelection instanceof String) {
+                        // TODO - Neues Album anlegen
+                        album = null;
+                    } else {
+                        album = (Album) cbAlbum.getSelectedItem();
+                    }
                     switch (upc.upload(tfTitle.getText(), (User) cbUser.getSelectedItem(),
                             (tfUpload.getText().isEmpty() ? null : tfUpload.getText()),
                             (Genre) cbGenre.getSelectedItem(),
                             (Label) cbLabel.getSelectedItem(),
-                            (Album) cbAlbum.getSelectedItem())) {
+                            album)) {
                         case SUCCESS:
                             JOptionPane.showMessageDialog(UploadDialog.this, "Das Medium wurde erfolgreich erstellt!", "Erfolg", JOptionPane.INFORMATION_MESSAGE);
                             UploadDialog.this.dispose();
