@@ -53,6 +53,13 @@ public class DragablePanel extends JPanel implements DraggableContent {
     }
     
     /**
+     * Refresh all user-information, displayed on the panel
+     */
+    public void refresh(){
+    	
+    }
+    
+    /**
      * This function is called when the dragable will be docked at top or bottom
      * This method has to be overwrite in subclasses.
      */

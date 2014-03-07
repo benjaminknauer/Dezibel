@@ -172,7 +172,14 @@ public class DezibelPanel extends JPanel {
         public void showMyLists(){
             pnMyList = new MyListsPanel(this);
         }
-	
+        
+        public void refresh(UpdateEntity ue){
+        	switch(ue){
+        	
+        	default:
+        	break;
+        	}
+        }
 	/**
 	 * This function is only called in the main-function and only once. It
 	 * creates a <code>JFrame</code> with a <code>DezibelPanel</code> and some
@@ -591,6 +598,9 @@ public class DezibelPanel extends JPanel {
 	
 	private void showAtCenter(Dockable da){
 	
+		if(da.getState() != DockableState.EXTERNALIZED){
+			
+		
 		if(da.getDock() != null){
 			LeafDock leaf = da.getDock();
 			leaf.removeDockable(da);
@@ -605,6 +615,11 @@ public class DezibelPanel extends JPanel {
 			this.executor.changeDocking(this.centerDock.getDockable(this.centerDock.getDockableCount() -1),null,new Position(0));
 		}
 		this.executor.changeDocking(da, this.centerDock,new Position(0));
+		
+		}else{
+			JOptionPane.showMessageDialog(this,"Kann diese Aktion nicht ausführen,"
+					+ "solange das Fenster nicht angedockt ist","Fehler beim Andocken des Fensters",JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	private void onLogout(){
@@ -645,7 +660,6 @@ public class DezibelPanel extends JPanel {
 		pnProfil.reset();
 		pnSearch.reset();
 		pnPlayer.reset();
-		
 		this.showLogin();
 		}
 	}
@@ -669,6 +683,6 @@ public class DezibelPanel extends JPanel {
 	}
         
         public JFrame getFrame() {
-            return frame;
+            return this.frame;
         }
 }
