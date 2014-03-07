@@ -105,4 +105,9 @@ public class MyListsPanel extends DragablePanel{
         this.add(lbTitel);
         this.add(scrollPane);
     }
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
 }

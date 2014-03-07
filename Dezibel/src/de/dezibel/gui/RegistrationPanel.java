@@ -209,4 +209,16 @@ public class RegistrationPanel extends DragablePanel {
         }
         this.parent.showLogin();
     }
+
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void refresh() {
+		// TODO Auto-generated method stub
+		
+	}
 }

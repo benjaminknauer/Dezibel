@@ -1,7 +1,6 @@
 package de.dezibel.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
@@ -41,8 +40,6 @@ import de.dezibel.control.SaveControl;
 import de.dezibel.data.Database;
 import de.dezibel.data.Playlist;
 import de.dezibel.data.User;
-
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -124,10 +121,10 @@ public class DezibelPanel extends JPanel {
 		pnLogin 	= new LoginPanel(this);
 		pnRegister 	= new RegistrationPanel(this);
 		pnPlayer 	= new PlayerPanel(this);
-		pnNews 		= new NewsPanel(this);
+		pnNews 		= new NewsSidePanel(this);
 		pnAds 		= new AdsPanel(this);
 		pnMyList 	= new MyListsPanel(this);
-		pnFavorites = new DragablePanel(this);
+		pnFavorites = new FavoritesPanel(this);
 		pnProfil 	= new ProfilPanel(this);
 		pnSearch 	= new SearchPanel(this);
 		
@@ -167,11 +164,12 @@ public class DezibelPanel extends JPanel {
 	 * player-panel docked at the bottom and a profil-panel at the center.
 	 */
 	public void showWorkspace() {
-                ((MyListsPanel) pnMyList).refresh(); //TODO!! QUICK&DIRTY: Aufruf an richtige Stelle setzen
-		this.createMenubar();
+        ((MyListsPanel) pnMyList).refresh(); //TODO!! QUICK&DIRTY: Aufruf an richtige Stelle setzen
+        this.createMenubar();
 		frame.setJMenuBar(menuBar);
 		this.showSidebars();
-		this.showAtCenter(daPlayer);
+		//this.showAtCenter(daPlayer);
+		this.showAtCenter(daSearch);
 		((ProfilPanel) daProfil.getContent()).setUser(Database.getInstance()
 				.getLoggedInUser());
 	}

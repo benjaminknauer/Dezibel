@@ -10,7 +10,7 @@ import de.dezibel.data.News;
  * @author Pascal
  *
  */
-public class NewsTableModel extends DefaultTableModel {
+public class NewsSideTableModel extends DefaultTableModel {
 	private String[] headlines = new String[]{"News"};
 	    private Class<?>[] columnTypes = new Class<?>[]{String.class};
 	    

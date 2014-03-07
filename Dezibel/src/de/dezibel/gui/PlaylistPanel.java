@@ -127,4 +127,10 @@ public class PlaylistPanel extends DragablePanel {
             dp.clearCenter();
         }
     }
+
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
 }

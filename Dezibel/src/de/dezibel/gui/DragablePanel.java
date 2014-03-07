@@ -16,7 +16,7 @@ import com.javadocking.drag.DragListener;
  *
  * @author Tobias,Pascal, Richard
  */
-public class DragablePanel extends JPanel implements DraggableContent {
+public abstract class DragablePanel extends JPanel implements DraggableContent {
 
     private static final long serialVersionUID = 1L;
     protected DezibelPanel parent;
@@ -48,30 +48,26 @@ public class DragablePanel extends JPanel implements DraggableContent {
      * Clears all user-depending information (TextFields, Playlists)
      * This method has to be overwrite in subclasses.
      */
-    public void reset(){
-    
-    }
+    public abstract void reset();
     
     /**
      * Refresh all user-information, displayed on the panel
      */
-    public void refresh(){
-    	
-    }
+    public abstract void refresh();
     
     /**
      * This function is called when the dragable will be docked at top or bottom
      * This method has to be overwrite in subclasses.
      */
-    public void onTopBottom() {
-        
+    public void onTopBottom(){
+    	
     }
     
     /**
      * This function is called when the dragable will be docked at left or right
      * This method has to be overwrite in subclasses.
      */
-    public void onLeftRight() {
+    public  void onLeftRight(){
     	
     }
     
@@ -79,7 +75,8 @@ public class DragablePanel extends JPanel implements DraggableContent {
      * This function is called when the dragable will be docked at center
      * This method has to be overwrite in subclasses.
      */
-    public void onCenter() {
+    public void onCenter(){
+    	
     }
     
     /**
