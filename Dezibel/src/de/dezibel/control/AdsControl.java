@@ -20,6 +20,7 @@ public class AdsControl {
      */
     public Medium[] getRecommendedMedia() {
         User u = Database.getInstance().getLoggedInUser();
+        if (u == null) return null;
         LinkedList<Medium> recommendedMedia = new LinkedList<>();
         
         // Get favorite genre
@@ -27,6 +28,7 @@ public class AdsControl {
         Integer count;
         int maxCount = -1;
         Genre favoriteGenre = null;
+        
         for (Medium m : u.getFavoriteMediums()) {
             count = mediumCounts.get(m.getGenre());
             if (count == null) {
@@ -41,7 +43,9 @@ public class AdsControl {
             }
         }
         // Use topgenre if no favorite genre was found
-        favoriteGenre = Database.getInstance().getTopGenre();
+        if (favoriteGenre == null) {
+            favoriteGenre = Database.getInstance().getTopGenre();
+        }
         
         // Get a song out of the favorite genre that is not rated yet
         for (Medium m : favoriteGenre.getMedia()) {
@@ -52,7 +56,7 @@ public class AdsControl {
         
         // Return random top 10
         Collections.shuffle(recommendedMedia);
-        recommendedMedia = (LinkedList<Medium>) recommendedMedia.subList(0, Math.min(recommendedMedia.size(), 10));
+        recommendedMedia = new LinkedList(recommendedMedia.subList(0, Math.min(recommendedMedia.size(), 10)));
         Medium[] result = new Medium[recommendedMedia.size()];
         recommendedMedia.toArray(result);
         return result;
