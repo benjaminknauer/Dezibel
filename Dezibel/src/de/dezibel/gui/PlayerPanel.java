@@ -153,8 +153,8 @@ public class PlayerPanel extends DragablePanel {
             }
 
             private void showPopup(MouseEvent me) {
-                PlayerContextMenu contextMenu = new PlayerContextMenu(parent);
-                JPopupMenu currentPopupMenu = contextMenu.getContextMenu(tablePlaylist);
+                ContextMenu contextMenu = new ContextMenu(parent);
+                JPopupMenu currentPopupMenu = contextMenu.getContextMenu(tablePlaylist, me);
                 currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
             }
         });
