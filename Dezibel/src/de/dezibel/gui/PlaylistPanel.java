@@ -122,5 +122,9 @@ public class PlaylistPanel extends DragablePanel {
                     + currentPlaylist.getCreator().getLastname();
         }
         lbCreator = new JLabel(creatorString);
+        
+        if(currentPlaylist.getList().isEmpty()){
+            dp.clearCenter();
+        }
     }
 }

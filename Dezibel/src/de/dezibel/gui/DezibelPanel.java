@@ -630,6 +630,12 @@ public class DezibelPanel extends JPanel {
 		}
 	}
 	
+        public void clearCenter(){
+            if(this.centerDock.getDockableCount() > 0){
+			this.executor.changeDocking(this.centerDock.getDockable(this.centerDock.getDockableCount() -1),null,new Position(0));
+		}
+        }
+        
 	private void onLogout(){
 		if(daPlayer.getState() == DockableState.EXTERNALIZED)
 		{

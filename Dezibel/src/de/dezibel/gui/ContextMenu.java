@@ -2,9 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.dezibel.control;
+package de.dezibel.gui;
 
 import de.dezibel.UpdateEntity;
+import de.dezibel.control.AlbumControl;
+import de.dezibel.control.PlaylistControl;
 import de.dezibel.data.Album;
 import de.dezibel.data.Database;
 import de.dezibel.data.Label;
