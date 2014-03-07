@@ -31,11 +31,12 @@ import com.javadocking.model.FloatDockModel;
 import com.javadocking.visualizer.FloatExternalizer;
 import com.javadocking.visualizer.LineMinimizer;
 import com.javadocking.visualizer.SingleMaximizer;
-import de.dezibel.UpdateEntity;
+de.dezibel.data.News
 import de.dezibel.control.SaveControl;
 import de.dezibel.data.Database;
 import de.dezibel.data.Playlist;
 import de.dezibel.data.User;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -116,7 +117,7 @@ public class DezibelPanel extends JPanel {
 		pnLogin 	= new LoginPanel(this);
 		pnRegister 	= new RegistrationPanel(this);
 		pnPlayer 	= new PlayerPanel(this);
-		pnNews 		= new DragablePanel(this);
+		pnNews 		= new NewsPanel(this);
 		pnAds 		= new DragablePanel(this);
 		pnMyList 	= new MyListsPanel(this);
 		pnFavorites = new DragablePanel(this);
