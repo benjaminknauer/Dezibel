@@ -29,8 +29,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JRadioButtonMenuItem;
 
 /**
- *
+ * Handles the right click actions for all panels except PlayerPanel. 
+ * 
+ * 
  * @author Benny, Tobias
+ * @see PlayerContextMenu
  */
 public class ContextMenu {
 
@@ -39,10 +42,20 @@ public class ContextMenu {
     JTable currentTable;
     DezibelPanel dp;
 
+    /**
+     * Constructor
+     * @param parent Parent panel
+     */
     public ContextMenu(DezibelPanel parent) {
         dp = parent;
     }
 
+    /**
+     * Returns the specific context menu depends on what clicked on
+     * @param table Table to work on
+     * @param me MouseEvent to check where clicked
+     * @return The specific context menu
+     */
     public JPopupMenu getContextMenu(JTable table, MouseEvent me) {
         currentTable = table;
         currentTableModel = (DefaultTableModel) table.getModel();
@@ -65,6 +78,9 @@ public class ContextMenu {
         return currentPopupMenu;
     }
 
+    /**
+     * Creates the MediumPopupMenu which handles the right clicks on media
+     */
     private void createMediumMenu() {
         currentPopupMenu = new JPopupMenu();
         
@@ -104,6 +120,8 @@ public class ContextMenu {
                 }
             }
         });
+        
+        currentPopupMenu.add(menuItemPlay);
         
         menuItemRate1.addActionListener(new ActionListener() {
             @Override
@@ -189,8 +207,6 @@ public class ContextMenu {
             }
         });
 
-
-        currentPopupMenu.add(menuItemPlay);
         currentPopupMenu.add(menuAddToPlaylist);
         menuAddToPlaylist.add(menuItemNewPlaylist);
         menuAddToPlaylist.addSeparator();
@@ -279,6 +295,9 @@ public class ContextMenu {
         }
     }
 
+    /**
+     * Creates the UserPopupMenu which handles the right clicks on users
+     */
     private void createUserMenu() {
         currentPopupMenu = new JPopupMenu();
         JMenuItem menuItemShowUser = new JMenuItem("Anzeigen");
@@ -293,6 +312,9 @@ public class ContextMenu {
         currentPopupMenu.add(menuItemShowUser);
     }
 
+    /**
+     * Creates the LabelPopupMenu which handles the right clicks on labels
+     */
     private void createLabelMenu() {
         currentPopupMenu = new JPopupMenu();
         JMenuItem menuItemShowLabel = new JMenuItem("Anzeigen");
@@ -305,6 +327,9 @@ public class ContextMenu {
         currentPopupMenu.add(menuItemShowLabel);
     }
 
+    /**
+     * Creates the AlbumPopupMenu which handles the right clicks on albums
+     */
     private void createAlbumMenu() {
         currentPopupMenu = new JPopupMenu();
         JMenuItem menuItemQueue = new JMenuItem("Warteschlange");
@@ -322,6 +347,10 @@ public class ContextMenu {
         currentPopupMenu.add(menuItemQueue);
     }
     
+    /**
+     * Creates the PlaylistPopupMenu which handles the right clicks on playlists,
+     * except the curretn playlist of the player.
+     */
     private void createPlaylistMenu(){
         currentPopupMenu = new JPopupMenu();
         JMenuItem menuItemShow = new JMenuItem("Anzeigen");
