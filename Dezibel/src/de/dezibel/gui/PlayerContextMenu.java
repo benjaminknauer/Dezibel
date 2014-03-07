@@ -24,14 +24,14 @@ public class PlayerContextMenu {
     DefaultTableModel currentTableModel;
     JPopupMenu currentPopupMenu;
     JTable currentTable;
-    PlayerPanel pp;
+    DezibelPanel dp;
     
     /**
      * Constructor
      * @param parent The parent panel
      */
-    public PlayerContextMenu(PlayerPanel parent) {
-        pp = parent;
+    public PlayerContextMenu(DezibelPanel parent) {
+        dp = parent;
     }
     
     /**
@@ -61,8 +61,7 @@ public class PlayerContextMenu {
         menuItemRemove.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                pp.remove(currentTable.getSelectedRow());
-                currentTableModel.fireTableDataChanged();
+                Player.getInstance().removeMedium(currentTable.getSelectedRow());
             }
         });
         
@@ -70,7 +69,6 @@ public class PlayerContextMenu {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Player.getInstance().addMedium((Medium) currentTable.getValueAt(currentTable.getSelectedRow(),-1));
-                currentTableModel.fireTableDataChanged();
             }
         });
         
@@ -78,7 +76,6 @@ public class PlayerContextMenu {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Player.getInstance().moveUp(currentTable.getSelectedRow());
-                currentTableModel.fireTableDataChanged();
             }
         });
         
@@ -86,7 +83,6 @@ public class PlayerContextMenu {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Player.getInstance().moveDown(currentTable.getSelectedRow());
-                currentTableModel.fireTableDataChanged();
             }
         });
 
