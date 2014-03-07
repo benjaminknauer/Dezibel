@@ -109,6 +109,7 @@ public class ContextMenu {
                     new PlaylistControl().createPlaylist(title,
                             (Medium) currentTableModel.getValueAt(
                             currentTable.getSelectedRow(), -1));
+                    dp.refresh
                 }
             }
         });
