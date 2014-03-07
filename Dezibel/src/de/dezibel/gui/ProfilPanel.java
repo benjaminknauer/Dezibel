@@ -29,6 +29,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 import javax.swing.tree.DefaultTreeCellEditor;
@@ -464,6 +466,7 @@ public class ProfilPanel extends DragablePanel {
         tComments.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         tablePanel = new JScrollPane(tComments);
+        tablePanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         BorderLayout fLayout = new BorderLayout();
         pnComments.setLayout(fLayout);
         pnComments.add(tablePanel, BorderLayout.CENTER);
@@ -580,7 +583,52 @@ public class ProfilPanel extends DragablePanel {
         layout.setAutoCreateGaps(true);
         pnFavorites.setLayout(layout);
         
+        tPlaylists.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
 
+            @Override
+            public void mouseReleased(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            private void showPopup(MouseEvent me) {
+                ContextMenu contextMenu = new ContextMenu(parent);
+                currentPopupMenu = contextMenu.getContextMenu(tPlaylists, me);
+                currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
+            }
+        });
+        
+        tMedia.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            private void showPopup(MouseEvent me) {
+                ContextMenu contextMenu = new ContextMenu(parent);
+                currentPopupMenu = contextMenu.getContextMenu(tMedia, me);
+                currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
+                
+            }
+          
+        });
+            
     }
 
     private void createUploadsComponents() {
@@ -659,7 +707,7 @@ public class ProfilPanel extends DragablePanel {
                     labelControler.createLabel(currentUser, labelName);
                     labelControler.promoteUserToLabelManager(currentUser);
                     refresh();
-                    tabPanel.setSelectedIndex(6);
+                    tabPanel.setSelectedIndex(5);
                 } else {
                     JOptionPane.showMessageDialog(parent, "Eingabefeld war leer!"
                             + " Es wurde kein neues Label erstellt.");
