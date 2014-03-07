@@ -721,6 +721,9 @@ public class DezibelPanel extends JPanel {
 		
 	}
 	
+	public void tristan(){
+		
+	}
     public JFrame getFrame() {
             return this.frame;
         }

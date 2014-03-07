@@ -27,8 +27,8 @@ public class DragablePanel extends JPanel implements DraggableContent {
         this.parent = parent;
         setMinimumSize(new Dimension(80, 80));
         setPreferredSize(new Dimension(150, 150));
-        setBackground(Color.white);
-        setBorder(BorderFactory.createLineBorder(Color.lightGray));
+        setBackground(DezibelColor.Background);
+        setBorder(BorderFactory.createLineBorder(DezibelColor.LineBorder));
     }
 
     // Implementations of DraggableContent.
