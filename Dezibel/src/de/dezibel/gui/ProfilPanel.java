@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -80,6 +81,8 @@ public class ProfilPanel extends DragablePanel {
     private JLabel lbAlbums;
     private JTable tAlbums;
     private JLabel lbPseudonym;
+    private JTable tNews;
+    private JTextArea taNews;
 
     /**
      * Constructor of the ProfilPanel class.
@@ -166,7 +169,7 @@ public class ProfilPanel extends DragablePanel {
         if (!(tfFirstName.isEnabled())) {
             btnEdit.setText("Bearbeiten");
         }
-        
+
         followerModell.setData(controler.getFollowers(currentUser));
         labelModellPublishing.setData(controler.getManagedLabels(currentUser));
         commentModell.setData(controler.getCreatedComments(currentUser));
@@ -190,14 +193,16 @@ public class ProfilPanel extends DragablePanel {
         this.createUploadsComponents();
         tabPanel.addTab("Uploads", null, pnUploads);
         this.pnFavorites = new JPanel();
+        this.createFavoritenComponents();
         tabPanel.addTab("Favoriten", null, pnFavorites);
-        this.pnFollower = new JPanel();
+         this.pnFollower = new JPanel();
         this.createFollowerComponents();
         tabPanel.addTab("Follower", null, pnFollower);
         this.pnComments = new JPanel();
         this.createCommentsComponents();
         tabPanel.addTab("Kommentare", null, pnComments);
         this.pnNews = new JPanel();
+        this.createNewsComponents();
         tabPanel.addTab("Neuigkeiten", null, pnNews);
         this.pnLabels = new JPanel();
         this.createLabelsComponents();
@@ -352,7 +357,7 @@ public class ProfilPanel extends DragablePanel {
         followerModell = new FollowerTableModel();
         tFollower = new JTable(followerModell);
         tFollower.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
+
         tFollower.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent me) {
@@ -385,7 +390,6 @@ public class ProfilPanel extends DragablePanel {
         commentModell = new CommentTableModel();
         tComments = new JTable(commentModell);
         tComments.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
 
         tablePanel = new JScrollPane(tComments);
         BorderLayout fLayout = new BorderLayout();
@@ -393,90 +397,250 @@ public class ProfilPanel extends DragablePanel {
         pnComments.add(tablePanel, BorderLayout.CENTER);
     }
 
-    private void createUploadsComponents() {
+    private void createNewsComponents() {
+
+        //pnNews
+        //taNews = new JTextArea();
+        tNews = new JTable(100, 1);
+
+        tNews.getTableHeader().setVisible(false);
+        tNews.setEnabled(false);
+        JScrollPane sptNews = new JScrollPane(tNews);
+        sptNews.getViewport().setView(tNews);
+        pnNews.add(sptNews);
+
+        taNews = new JTextArea();
+
+       // taNews.setEnabled(false);
+        JScrollPane sptaNews = new JScrollPane(taNews);
+        sptaNews.getViewport().setView(taNews);
+        taNews.setEnabled(false);
+        pnNews.add(sptaNews);
+
+        GroupLayout layout = new GroupLayout(pnNews);
+        layout.setHorizontalGroup(layout
+                .createParallelGroup(GroupLayout.Alignment.CENTER, true)
+                .addGroup(
+                        GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(sptNews, 128, 128, 2000))
+                // .addComponent(spPlaylists))
+
+                .addGroup(
+                        GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(sptaNews, 128, 128, 2000))
+        );
+
+        layout.setVerticalGroup(layout.createParallelGroup(
+                GroupLayout.Alignment.CENTER, true)
+                .addGroup(layout.createSequentialGroup()
+                        .addGroup(
+                                layout.createParallelGroup(GroupLayout.Alignment.LEADING, true)
+                                .addComponent(sptNews, 100, 100, 1000))
+                        .addGroup(
+                                layout.createParallelGroup(GroupLayout.Alignment.TRAILING, true)
+                                .addComponent(sptaNews, 100, 100, 1000))
+                )
+        );
+
+        layout.setAutoCreateContainerGaps(true);
+        layout.setAutoCreateGaps(true);
+        pnNews.setLayout(layout);
+        pnNews.setOpaque(false);
+
+    }
+
+    private void createFavoritenComponents() {
 
         lbPlaylist = new JLabel("Wiedergabe Listen");
         lbPlaylist.setHorizontalAlignment(JLabel.LEADING);
-        lbPlaylist.setBounds(0, 0, 200, 30);
-        tPlaylists = new JTable(10, 1);
-//        tPlaylists.isCellEditable(10,1);
-        //tPlaylists.setEditable(false);
+        tPlaylists = new JTable(100, 1);
         tPlaylists.getTableHeader().setVisible(false);
+        tPlaylists.setEnabled(false);
         JScrollPane spPlaylists = new JScrollPane(tPlaylists);
-        //  tableModelPlaylist = new PlaylistTableModel();        
-        tPlaylists.setBounds(110, 0, 400, 100);
-        pnUploads.add(tPlaylists);
-        // JScrollPane spPlaylists = new JScrollPane(tPlaylists);
-        spPlaylists.setBounds(110, -5, 400, 100);
         spPlaylists.getViewport().setView(tPlaylists);
-        pnUploads.add(spPlaylists);
-        pnUploads.add(lbPlaylist);
+        pnFavorites.add(spPlaylists);
 
         lbMedia = new JLabel("Media");
         lbMedia.setHorizontalAlignment(JLabel.LEADING);
-        lbMedia.setBounds(0, 150, 200, 30);
-        tMedia = new JTable(10, 1);
+        tMedia = new JTable(100, 1);
         tMedia.setEnabled(false);
         tMedia.getTableHeader().setVisible(false);
+
         JScrollPane spMedia = new JScrollPane(tMedia);
-        tMedia.setBounds(110, 150, 400, 100);
-        pnUploads.add(tMedia);
-        spMedia.setBounds(110, 150, 400, 100);
         spMedia.getViewport().setView(tMedia);
-        pnUploads.add(spMedia);
-        pnUploads.add(lbMedia);
+        pnFavorites.add(spMedia);
 
         lbAlbums = new JLabel("Alben");
         lbAlbums.setHorizontalAlignment(JLabel.LEADING);
-        lbAlbums.setBounds(0, 300, 200, 30);
-        tAlbums = new JTable(10, 1);
+        tAlbums = new JTable(100, 1);
         tAlbums.getTableHeader().setVisible(false);
-        tAlbums.setBounds(110, 300, 400, 100);
-        pnUploads.add(tAlbums);
         tAlbums.setEnabled(false);
         JScrollPane spAlbums = new JScrollPane();
-        spAlbums.setBounds(110, 300, 400, 100);
+        tAlbums.setEnabled(false);
+        spAlbums.getViewport().setView(tAlbums);
+        pnFavorites.add(spAlbums);
+
+        GroupLayout layout = new GroupLayout(pnFavorites);
+        layout.setHorizontalGroup(layout
+                .createParallelGroup(GroupLayout.Alignment.CENTER, true)
+                .addGroup(
+                        GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(lbPlaylist, 128, 128, 200)
+                        .addComponent(spPlaylists, 128, 128, 1500))
+                // .addComponent(spPlaylists))
+
+                .addGroup(
+                        GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(lbMedia, 128, 128, 200)
+                        .addComponent(spMedia, 128, 128, 1500))
+                .addGroup(
+                        GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(lbAlbums, 128, 128, 200)
+                        .addComponent(spAlbums, 128, 128, 1500))
+        );
+
+        layout.setVerticalGroup(layout.createParallelGroup(
+                GroupLayout.Alignment.CENTER, true)
+                .addGroup(layout.createSequentialGroup()
+                        .addGroup(
+                                layout.createParallelGroup(GroupLayout.Alignment.LEADING, true)
+                                .addComponent(lbPlaylist, 32, 32, 100)
+                                .addComponent(spPlaylists, 100, 100, 700))
+                        //.addComponent(spPlaylists))
+
+                        .addGroup(
+                                layout.createParallelGroup()
+                                .addComponent(lbMedia, 32, 32, 100)
+                                .addComponent(spMedia, 32, 32, 700))
+                        .addGroup(
+                                layout.createParallelGroup()
+                                .addComponent(lbAlbums, 32, 32, 100)
+                                .addComponent(spAlbums, 32, 32, 700))
+                )
+        );
+
+        layout.setAutoCreateContainerGaps(true);
+        layout.setAutoCreateGaps(true);
+        pnFavorites.setLayout(layout);
+        pnFavorites.setOpaque(false);
+
+    }
+
+    private void createUploadsComponents() {
+
+        //BorderLayout upLayout = new BorderLayout();
+        //pnUploads.setLayout(upLayout);
+        lbPlaylist = new JLabel("Wiedergabe Listen");
+        lbPlaylist.setHorizontalAlignment(JLabel.LEADING);
+        tPlaylists = new JTable(100, 1);
+        tPlaylists.getTableHeader().setVisible(false);
+        tPlaylists.setEnabled(false);
+        JScrollPane spPlaylists = new JScrollPane(tPlaylists);
+        spPlaylists.getViewport().setView(tPlaylists);
+        pnUploads.add(spPlaylists);
+        // pnUploads.add(tPlaylists);
+
+        lbMedia = new JLabel("Media");
+        lbMedia.setHorizontalAlignment(JLabel.LEADING);
+        tMedia = new JTable(100, 1);
+        tMedia.setEnabled(false);
+        tMedia.getTableHeader().setVisible(false);
+
+        JScrollPane spMedia = new JScrollPane(tMedia);
+        spMedia.getViewport().setView(tMedia);
+        pnUploads.add(spMedia);
+        //pnUploads.add(lbMedia);
+
+        lbAlbums = new JLabel("Alben");
+        lbAlbums.setHorizontalAlignment(JLabel.LEADING);
+        tAlbums = new JTable(100, 1);
+        tAlbums.getTableHeader().setVisible(false);
+        tAlbums.setEnabled(false);
+        JScrollPane spAlbums = new JScrollPane();
+        tAlbums.setEnabled(false);
         spAlbums.getViewport().setView(tAlbums);
         pnUploads.add(spAlbums);
-        pnUploads.add(lbAlbums);
+        //pnUploads.add(lbAlbums);
+
+        GroupLayout layout = new GroupLayout(pnUploads);
+        layout.setHorizontalGroup(layout
+                .createParallelGroup(GroupLayout.Alignment.CENTER, true)
+                .addGroup(
+                        GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(lbPlaylist, 128, 128, 200)
+                        .addComponent(spPlaylists, 128, 128, 1500))
+                // .addComponent(spPlaylists))
+
+                .addGroup(
+                        GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(lbMedia, 128, 128, 200)
+                        .addComponent(spMedia, 128, 128, 1500))
+                .addGroup(
+                        GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(lbAlbums, 128, 128, 200)
+                        .addComponent(spAlbums, 128, 128, 1500))
+        );
+
+        layout.setVerticalGroup(layout.createParallelGroup(
+                GroupLayout.Alignment.CENTER, true)
+                .addGroup(layout.createSequentialGroup()
+                        .addGroup(
+                                layout.createParallelGroup(GroupLayout.Alignment.LEADING, true)
+                                .addComponent(lbPlaylist, 32, 32, 100)
+                                .addComponent(spPlaylists, 100, 100, 750))
+                        //.addComponent(spPlaylists))
+
+                        .addGroup(
+                                layout.createParallelGroup()
+                                .addComponent(lbMedia, 32, 32, 100)
+                                .addComponent(spMedia, 32, 32, 750))
+                        .addGroup(
+                                layout.createParallelGroup()
+                                .addComponent(lbAlbums, 32, 32, 100)
+                                .addComponent(spAlbums, 32, 32, 750))
+                )
+        );
+
+        layout.setAutoCreateContainerGaps(true);
+        layout.setAutoCreateGaps(true);
+        pnUploads.setLayout(layout);
+        pnUploads.setOpaque(false);
+
     }
 
     private void createLabelsComponents() {
-        
+
         // Managed Labels
         gbl = new GridBagLayout();
         labelModellManaged = new LabelTableModel();
         labelModellManaged.setHeader(new String[]{"Meine Labels"});
         tLabelsManaged = new JTable(labelModellManaged);
         tLabelsManaged.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-      
-        
+
         scrManagedLabels = new JScrollPane(tLabelsManaged);
         pnLabels.setLayout(gbl);
-        
+
         // Publishing Labels
         labelModellPublishing = new LabelTableModel();
         labelModellPublishing.setHeader(new String[]{"Meine Publisher"});
         tLabelsPublishing = new JTable(labelModellPublishing);
         tLabelsPublishing.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
-        
+
         scrPublishingLabels = new JScrollPane(tLabelsPublishing);
-       
+
         gbc = new GridBagConstraints();
-        
+
         gbc.insets = new Insets(0, 0, 0, 5);
         gbc.fill = GridBagConstraints.BOTH;
-        
+
         gbc.weightx = 1;
         gbc.weighty = 1;
-        
+
         gbl.setConstraints(scrManagedLabels, gbc);
         pnLabels.add(scrManagedLabels);
         gbc.insets = new Insets(0, 5, 0, 0);
         gbl.setConstraints(scrPublishingLabels, gbc);
         pnLabels.add(scrPublishingLabels);
-        
-        
+
     }
 }
