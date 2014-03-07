@@ -123,7 +123,7 @@ public class DezibelPanel extends JPanel {
 		pnRegister 	= new RegistrationPanel(this);
 		pnPlayer 	= new PlayerPanel(this);
 		pnNews 		= new NewsPanel(this);
-		pnAds 		= new DragablePanel(this);
+		pnAds 		= new AdsPanel(this);
 		pnMyList 	= new MyListsPanel(this);
 		pnFavorites = new DragablePanel(this);
 		pnProfil 	= new ProfilPanel(this);
