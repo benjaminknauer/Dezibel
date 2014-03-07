@@ -1,15 +1,10 @@
 package de.dezibel.gui;
 
 import de.dezibel.control.Search;
-import de.dezibel.data.Medium;
-import de.dezibel.player.Player;
 
 import java.awt.CardLayout;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
@@ -20,7 +15,6 @@ import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
@@ -233,7 +227,7 @@ public class SearchPanel extends DragablePanel {
             public void actionPerformed(ActionEvent arg0) {
 
                 Search searchcontrol = new Search();
-                LinkedList result = null;
+                LinkedList result;
                 DefaultTableModel model = null;
                 int sortation = 0;
 

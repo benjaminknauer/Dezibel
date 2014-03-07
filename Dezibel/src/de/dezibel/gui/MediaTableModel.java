@@ -63,7 +63,7 @@ public class MediaTableModel extends DefaultTableModel {
                     return m.getUploadDate();
                 case 5:
                     // Round to 2 digits
-                    return Math.round(m.getAvgRating() * 100) / 100;
+                    return Math.round(m.getAvgRating() * 100.0) / 100.0;
             }
         }
 	return null;
