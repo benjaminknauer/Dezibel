@@ -112,7 +112,10 @@ public class PlayerPanel extends DragablePanel {
                     @Override
                     public void run() {
                         if (selectedRow >= 0 && selectedRow < mediaTableModel.getRowCount()) {
-                            tablePlaylist.addRowSelectionInterval(selectedRow, selectedRow);
+                            tablePlaylist.requestFocus();
+                            tablePlaylist.changeSelection(selectedRow, selectedRow, false, false);
+                        } else {
+                            tablePlaylist.clearSelection();
                         }
                     }
                 });
@@ -135,17 +138,21 @@ public class PlayerPanel extends DragablePanel {
                     JTable table, Object color,
                     boolean isSelected, boolean hasFocus,
                     int row, int column) {
-                Component tmp = super.getTableCellRendererComponent(table, color, isSelected, hasFocus, row, column);
+                super.getTableCellRendererComponent(table, color, isSelected, hasFocus, row, column);
                 if (table.getSelectedRow() == row) {
-                    tmp.setBackground(new Color(184, 207, 229));
+                    if (player.getCurrentIndex() == row) {
+                        this.setBackground(new Color(123, 223, 153));
+                    } else {
+                        this.setBackground(new Color(184, 207, 229));
+                    }
                 } else {
                     if (player.getCurrentIndex() == row) {
-                        tmp.setBackground(Color.GREEN.brighter());
+                        this.setBackground(Color.GREEN.brighter().brighter());
                     } else {
-                        tmp.setBackground(Color.WHITE);
+                        this.setBackground(Color.WHITE);
                     }
                 }
-                return tmp;
+                return this;
             }
         });
         tablePlaylist.setDefaultRenderer(Date.class, new DefaultTableCellRenderer() {
@@ -156,10 +163,14 @@ public class PlayerPanel extends DragablePanel {
                     boolean isSelected, boolean hasFocus,
                     int row, int column) {
                 if (table.getSelectedRow() == row) {
-                    this.setBackground(new Color(184, 207, 229));
+                    if (player.getCurrentIndex() == row) {
+                        this.setBackground(new Color(123, 223, 153));
+                    } else {
+                        this.setBackground(new Color(184, 207, 229));
+                    }
                 } else {
                     if (player.getCurrentIndex() == row) {
-                        this.setBackground(Color.GREEN.brighter());
+                        this.setBackground(Color.GREEN.brighter().brighter());
                     } else {
                         this.setBackground(Color.WHITE);
                     }
@@ -175,10 +186,14 @@ public class PlayerPanel extends DragablePanel {
                     int row, int column) {
                 super.getTableCellRendererComponent(table, color, isSelected, hasFocus, row, column);
                 if (table.getSelectedRow() == row) {
-                    this.setBackground(new Color(184, 207, 229));
+                    if (player.getCurrentIndex() == row) {
+                        this.setBackground(new Color(123, 223, 153));
+                    } else {
+                        this.setBackground(new Color(184, 207, 229));
+                    }
                 } else {
                     if (player.getCurrentIndex() == row) {
-                        this.setBackground(Color.GREEN.brighter());
+                        this.setBackground(Color.GREEN.brighter().brighter());
                     } else {
                         this.setBackground(Color.WHITE);
                     }
