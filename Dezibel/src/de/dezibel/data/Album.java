@@ -44,13 +44,12 @@ public class Album implements Commentable {
      */
     public Album(Medium medium, String title, Label publisher) {
         this.mediaList = new LinkedList<>();
-        this.mediaList.add(medium);
+        this.addNewMedium(medium);
         this.comments = new LinkedList<>();
         this.title = title;
         this.label = publisher;
         isAuthorLabel = true;
         publisher.addAlbum(this);
-        medium.addAlbum(this);
     }
 
     /**
@@ -66,8 +65,8 @@ public class Album implements Commentable {
             Album.imageLoader = new ImageLoader();
         }
         this.mediaList = new LinkedList<>();
-        this.mediaList.add(medium);
         this.comments = new LinkedList<>();
+        this.addNewMedium(medium);
         this.title = title;
         this.artist = creator;
         isAuthorLabel = false;
@@ -75,27 +74,53 @@ public class Album implements Commentable {
     }
 
     /**
-     * Adds the given medium to this album.
-     * Won't have an effect if the medium is already in this album.
+     * Creates a copy of the given medium and adds it to this album.
+     * Won't have an effect if a medium with the same filepath is already in this album.
      * @param medium The medium to be added to this album.
      * @post The medium is in the album.
      */
-    public void addMedium(Medium medium) {
+    public void addNewMedium(Medium medium) {
         if (this.addingMed) {
             return;
         }
         
-        if (this.mediaList.contains(medium)) {
+        for(Medium currentMedium : this.mediaList){
+            if(currentMedium.getPath().equals(medium.getPath())){
+                return;
+            }
+        }
+        this.addingMed = true;
+
+        Database.getInstance().addMediumToAlbum(medium.getTitle(), medium.getArtist(), medium.getPath(), medium.getGenre(), medium.getLabel(), this);
+        this.mediaList.add(medium);
+      
+        this.addingMed = false;
+    }
+    
+    /**
+     * Adds the given medium to this album's media list. Does nothing if there already is a medium with the same filepath.
+     * Do not use this to add a new Medium to the album. Use <code>addNewMedium</code> instead.
+     * @param medium The medium to be added to this album's media list.
+     */
+    void addMedium(Medium medium) {
+        if (this.addingMed)
             return;
+        
+        if(medium == null)
+            return;
+        
+        for(Medium currentMedium : this.mediaList){
+            if(((currentMedium.getPath() == null) && (null == medium.getPath())) ||
+                    currentMedium.getPath().equals(medium.getPath())){
+                return;
+            }
         }
         
         this.addingMed = true;
-
-
-
+        
         this.mediaList.add(medium);
-        medium.addAlbum(this);
-
+        medium.setAlbum(this);
+        
         this.addingMed = false;
     }
 

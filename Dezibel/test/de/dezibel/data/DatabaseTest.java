@@ -28,7 +28,7 @@ public class DatabaseTest {
         instance.addUser("mail@mail.com", "Hans", "Peter", "123", new Date(),
                 "Ort", "Land", true);
         User user1 = instance.getUsers().get(instance.getUsers().size() - 1);
-        instance.addMedium("Titel", user1, "", instance.getTopGenre(), null, null);
+        instance.addMedium("Titel", user1, "", instance.getTopGenre(), null);
         Medium medium = instance.getMedia().get(instance.getMedia().size() - 1);
         instance.save();
         // Add second user who does not get saved
@@ -114,7 +114,7 @@ public class DatabaseTest {
         instance.addUser("mail@mail.com", "Artist", "Artist", "123", new Date(),
                 "Ort", "Land", true);
         User artist = instance.getUsers().get(instance.getUsers().size() - 1);
-        instance.addMedium("Titel", artist, "", instance.getTopGenre(), null, null);
+        instance.addMedium("Titel", artist, "", instance.getTopGenre(), null);
         commentable = instance.getMedia().get(instance.getMedia().size() - 1);
         instance.addComment(text, commentable, author);
         Comment comment = instance.getComments().get(instance.getComments().size() - 1);
@@ -140,7 +140,7 @@ public class DatabaseTest {
         instance.addUser("mail@mail.com", "Artist", "Artist", "123", new Date(),
                 "Ort", "Land", true);
         User artist = instance.getUsers().get(instance.getUsers().size() - 1);
-        instance.addMedium("Titel", artist, "", instance.getTopGenre(), null, null);
+        instance.addMedium("Titel", artist, "", instance.getTopGenre(), null);
         commentable = instance.getMedia().get(instance.getMedia().size() - 1);
         instance.addComment(text, commentable, author);
         Comment comment = instance.getComments().get(instance.getComments().size() - 1);
@@ -234,7 +234,7 @@ public class DatabaseTest {
         User manager = instance.getUsers().get(instance.getUsers().size() - 1);
         instance.addLabel(manager, "Label1");
         label = instance.getLabels().get(instance.getLabels().size() - 1);
-        instance.addMedium(title, artist, path, genre, label, null);
+        instance.addMedium(title, artist, path, genre, label);
         Medium medium = instance.getMedia().get(instance.getMedia().size() - 1);
         assertTrue(instance.getMedia().contains(medium));
         assertEquals(title, medium.getTitle());
@@ -316,9 +316,9 @@ public class DatabaseTest {
         instance.addUser("mail@mail.com", "Hans", "Peter", "123", new Date(),
                 "Ort", "Land", true);
         author = instance.getUsers().get(instance.getUsers().size() - 1);
-        instance.addMedium("Medium1", author, "", instance.getTopGenre(), null, null);
+        instance.addMedium("Medium1", author, "", instance.getTopGenre(), null);
         medium = instance.getMedia().get(instance.getMedia().size() - 1);
-        instance.addMedium("Medium2", author, "", instance.getTopGenre(), null, null);
+        instance.addMedium("Medium2", author, "", instance.getTopGenre(), null);
         instance.addPlaylist(medium, title, author);
         Playlist playlist = instance.getPlaylists().get(instance.getPlaylists().size() - 1);
         assertTrue(instance.getPlaylists().contains(playlist));
@@ -340,9 +340,9 @@ public class DatabaseTest {
         instance.addUser("mail@mail.com", "Hans", "Peter", "123", new Date(),
                 "Ort", "Land", true);
         author = instance.getUsers().get(instance.getUsers().size() - 1);
-        instance.addMedium("Medium1", author, "", instance.getTopGenre(), null, null);
+        instance.addMedium("Medium1", author, "", instance.getTopGenre(), null);
         medium = instance.getMedia().get(instance.getMedia().size() - 1);
-        instance.addMedium("Medium2", author, "", instance.getTopGenre(), null, null);
+        instance.addMedium("Medium2", author, "", instance.getTopGenre(), null);
         instance.addPlaylist(medium, title, author);
         Playlist playlist = instance.getPlaylists().get(instance.getPlaylists().size() - 1);
         instance.deletePlaylist(playlist);

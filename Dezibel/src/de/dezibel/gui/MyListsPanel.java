@@ -6,11 +6,13 @@ import de.dezibel.data.Playlist;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
+import java.awt.Color;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  *
@@ -30,7 +32,7 @@ public class MyListsPanel extends DragablePanel{
         this.dp = parent;
             createComponents();
             createLayout();
-            
+            this.setOpaque(false);
         
 
     }
@@ -83,6 +85,18 @@ public class MyListsPanel extends DragablePanel{
                 currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
             }
         });
+        
+        tblPlaylists.setOpaque(false);
+        ((DefaultTableCellRenderer)tblPlaylists.getDefaultRenderer(Object.class)).setBackground(dp.getBackground());
+        tblPlaylists.setSelectionBackground(dp.getBackground());
+        tblPlaylists.setSelectionForeground(Color.BLACK);
+        tblPlaylists.setBorder(null);
+        
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        
+        tblPlaylists.setShowGrid(false);
+
 
     }
 

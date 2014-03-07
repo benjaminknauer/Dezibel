@@ -52,7 +52,7 @@ public class ProfileControl {
      * @param filepath
      */
     public void createMedium(User user, String title, String filepath) {
-        Database.getInstance().addMedium(title, user, filepath, null, null, null);
+        Database.getInstance().addMedium(title, user, filepath, null, null);
     }
 
     // Control for profile tab
@@ -469,7 +469,7 @@ public class ProfileControl {
      */
     public void addToAlbum(User user, Medium medium, Album album) {
         if (belongsToLoggedUser(user)) {
-            album.addMedium(medium);
+            album.addNewMedium(medium);
         }
     }
 

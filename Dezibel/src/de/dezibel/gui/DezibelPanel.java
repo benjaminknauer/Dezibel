@@ -36,6 +36,7 @@ import de.dezibel.control.SaveControl;
 import de.dezibel.data.Database;
 import de.dezibel.data.Playlist;
 import de.dezibel.data.User;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -123,6 +124,7 @@ public class DezibelPanel extends JPanel {
 		pnProfil 	= new ProfilPanel(this);
 		pnSearch 	= new SearchPanel(this);
 		
+                this.setBackground(new Color(239, 239, 239));
 		this.createDocking();
 		this.showLogin();
 	}
