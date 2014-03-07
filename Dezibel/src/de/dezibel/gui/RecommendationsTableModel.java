@@ -64,13 +64,8 @@ public class RecommendationsTableModel extends DefaultTableModel {
      * Sets the data of this model.
      * @param data The data to display
      */
-    public void setData(LinkedList<Medium> data) {
-        if (data == null) {
-            this.data = null;
-        } else {
-            this.data = new Medium[data.size()];
-            data.toArray(this.data);
-        }
+    public void setData(Medium[] data) {
+        this.data = data;
         fireTableDataChanged();
     }
     

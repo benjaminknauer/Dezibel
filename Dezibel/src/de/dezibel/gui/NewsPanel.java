@@ -28,8 +28,7 @@ public class NewsPanel extends DragablePanel {
 		
 		this.createComponents();
 		this.createLayout();
-		this.setOpaque(false);
-		this.setBackground(parent.getBackground());
+		this.setBackground(DezibelColor.PanelBackground);
 	}
 	
 	private void createComponents(){
@@ -39,7 +38,7 @@ public class NewsPanel extends DragablePanel {
 		spNews = new JScrollPane(tblNews);
 		spNews.setViewportView(tblNews);
 		
-		spNews.setOpaque(false);
+		spNews.setBackground(DezibelColor.PanelBackground);
 		tblNews.addMouseListener(new MouseAdapter(){
 
 			@Override
@@ -70,7 +69,8 @@ public class NewsPanel extends DragablePanel {
 	
 	public void reset(){
 		int i=model.getRowCount()-1;
-		while(i<0)
+	
+		while(i > 0)
 		{
 			model.removeRow(i);
 			i--;

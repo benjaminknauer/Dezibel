@@ -115,6 +115,7 @@ public class ContextMenu {
         final JRadioButtonMenuItem menuItemRate5 = new JRadioButtonMenuItem("5 Stern", false);
         JMenu menuAddToPlaylist = new JMenu("zur Wiedergabeliste hinzufügen");
         JMenuItem menuItemNewPlaylist = new JMenuItem("neue Wiedergabeliste");
+        JMenuItem menuItemComment = new JMenuItem("Kommentieren");
 
         menuItemPlay.addActionListener(new ActionListener() {
             @Override
@@ -136,6 +137,7 @@ public class ContextMenu {
                 Medium m = (Medium) currentTableModel.getValueAt(
                         currentTable.getSelectedRow(), -1);
                 m.rate(1, Database.getInstance().getLoggedInUser());
+                Database.getInstance().getLoggedInUser().removeFavoriteMedium(m);
                 menuItemRate1.setSelected(true);
                 currentTableModel.fireTableCellUpdated(currentTable.getSelectedRow(), 5);
             }
@@ -147,6 +149,7 @@ public class ContextMenu {
                 Medium m = (Medium) currentTableModel.getValueAt(
                         currentTable.getSelectedRow(), -1);
                 m.rate(2, Database.getInstance().getLoggedInUser());
+                Database.getInstance().getLoggedInUser().removeFavoriteMedium(m);
                 menuItemRate2.setSelected(true);
                 currentTableModel.fireTableCellUpdated(currentTable.getSelectedRow(), 5);
             }
@@ -158,6 +161,7 @@ public class ContextMenu {
                 Medium m = (Medium) currentTableModel.getValueAt(
                         currentTable.getSelectedRow(), -1);
                 m.rate(3, Database.getInstance().getLoggedInUser());
+                Database.getInstance().getLoggedInUser().removeFavoriteMedium(m);
                 menuItemRate3.setSelected(true);
                 currentTableModel.fireTableCellUpdated(currentTable.getSelectedRow(), 5);
             }
@@ -169,6 +173,7 @@ public class ContextMenu {
                 Medium m = (Medium) currentTableModel.getValueAt(
                         currentTable.getSelectedRow(), -1);
                 m.rate(4, Database.getInstance().getLoggedInUser());
+                Database.getInstance().getLoggedInUser().removeFavoriteMedium(m);
                 menuItemRate4.setSelected(true);
                 currentTableModel.fireTableCellUpdated(currentTable.getSelectedRow(), 5);
             }
@@ -180,6 +185,7 @@ public class ContextMenu {
                 Medium m = (Medium) currentTableModel.getValueAt(
                         currentTable.getSelectedRow(), -1);
                 m.rate(5, Database.getInstance().getLoggedInUser());
+                Database.getInstance().getLoggedInUser().addFavoriteMedium(m);
                 menuItemRate5.setSelected(true);
                 currentTableModel.fireTableCellUpdated(currentTable.getSelectedRow(), 5);
             }
@@ -300,6 +306,17 @@ public class ContextMenu {
             });
             menuAddToPlaylist.add(currentMenuItem);
         }
+        
+        menuItemComment.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CommentDialog cd = new CommentDialog(dp.getFrame());
+                cd.commentMedia(m);
+                cd.setVisible(true);
+            }
+        });
+        
+        currentPopupMenu.add(menuItemComment);
     }
 
     /**

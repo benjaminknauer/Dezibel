@@ -123,7 +123,7 @@ public class DezibelPanel extends JPanel {
 		pnRegister 	= new RegistrationPanel(this);
 		pnPlayer 	= new PlayerPanel(this);
 		pnNews 		= new NewsPanel(this);
-		pnAds 		= new DragablePanel(this);
+		pnAds 		= new AdsPanel(this);
 		pnMyList 	= new MyListsPanel(this);
 		pnFavorites = new DragablePanel(this);
 		pnProfil 	= new ProfilPanel(this);
@@ -139,7 +139,7 @@ public class DezibelPanel extends JPanel {
 		pnProfil.setBackground(DezibelColor.Background);	
 		pnSearch.setBackground(DezibelColor.Background);
 		
-                this.setBackground(new Color(239, 239, 239));
+        //this.setBackground(new Color(239, 239, 239));
 		this.createDocking();
 		this.showLogin();
 	}
@@ -177,11 +177,13 @@ public class DezibelPanel extends JPanel {
 	public void showProfile(User user){
 		ProfilPanel pn = (ProfilPanel) pnProfil;
 		pn.setUser(user);
+		pn.setBackground(DezibelColor.Background);
 		this.showAtCenter(daProfil);
 	}
 	
 	public void showPlaylist(Playlist list){
 		PlaylistPanel pnPlaylist = new PlaylistPanel(this,list);
+		pnPlaylist.setBackground(DezibelColor.Background);
 		Dockable daPlaylist = new DefaultDockable("pnPlaylist", pnPlaylist, "Playlist", null,
 				DockingMode.CENTER + DockingMode.SINGLE);
 		this.showAtCenter(daPlaylist);
@@ -189,6 +191,7 @@ public class DezibelPanel extends JPanel {
         
         public void showMyLists(){
             pnMyList = new MyListsPanel(this);
+            pnMyList.setBackground(DezibelColor.Background);
         }
         
         public void refresh(UpdateEntity ue){
@@ -312,11 +315,6 @@ public class DezibelPanel extends JPanel {
 		borderDock.setDock(rightLineDock, Position.RIGHT);
 		borderDock.setDock(centerDock, Position.CENTER);
 		dockModel.addRootDock("borderDock", borderDock, frame);
-		
-		borderDock.setBackground(DezibelColor.Background);
-		leftLineDock.setBackground(DezibelColor.Background);
-		rightLineDock.setBackground(DezibelColor.Background);
-		centerDock.setBackground(DezibelColor.Background);
 		
 		// Create an externalizer.
 		FloatExternalizer externalizer = new FloatExternalizer(frame);
@@ -722,6 +720,9 @@ public class DezibelPanel extends JPanel {
 		
 	}
 	
+	public void tristan(){
+		
+	}
     public JFrame getFrame() {
             return this.frame;
         }
