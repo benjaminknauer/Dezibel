@@ -19,12 +19,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 /**
- *
+ * Dialog to upload a medium
+ * 
  * @author Tobias, Richard
  */
-public class UploadDialog extends JDialog {
+public final class UploadDialog extends JDialog {
 
-    private UploadControl upc;
+    private final UploadControl upc;
 
     private JTextField tfUpload;
 
@@ -33,9 +34,17 @@ public class UploadDialog extends JDialog {
     private JComboBox<Label> cbLabel;
     private JComboBox<Object> cbAlbum;
 
-    private Label label;
-    private Medium medium;
+    private final Label label;
+    private final Medium medium;
 
+    /**
+     * Constructor
+     * @param frame the fram to block
+     * @param label the standard label if the user wants to upload for a label.
+     * label is set if the UploadDialog is opened from a labelprofil from a labelmanager
+     * @param medium is set if the medium already exists but contains no file
+     * and you want to upload a file now
+     */
     public UploadDialog(JFrame frame, Label label, Medium medium) {
         super(frame);
         setModal(true);
@@ -45,6 +54,9 @@ public class UploadDialog extends JDialog {
         this.init();
     }
 
+    /**
+     * Inits the dialogframe
+     */
     public void init() {
         setTitle("Upload");
         

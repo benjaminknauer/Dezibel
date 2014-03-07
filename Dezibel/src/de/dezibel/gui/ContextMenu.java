@@ -115,6 +115,7 @@ public class ContextMenu {
         final JRadioButtonMenuItem menuItemRate5 = new JRadioButtonMenuItem("5 Stern", false);
         JMenu menuAddToPlaylist = new JMenu("zur Wiedergabeliste hinzufügen");
         JMenuItem menuItemNewPlaylist = new JMenuItem("neue Wiedergabeliste");
+        JMenuItem menuItemComment = new JMenuItem("Kommentieren");
 
         menuItemPlay.addActionListener(new ActionListener() {
             @Override
@@ -300,6 +301,17 @@ public class ContextMenu {
             });
             menuAddToPlaylist.add(currentMenuItem);
         }
+        
+        menuItemComment.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CommentDialog cd = new CommentDialog(dp.getFrame());
+                cd.commentMedia(m);
+                cd.setVisible(true);
+            }
+        });
+        
+        currentPopupMenu.add(menuItemComment);
     }
 
     /**
