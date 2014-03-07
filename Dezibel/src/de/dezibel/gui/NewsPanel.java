@@ -2,8 +2,12 @@ package de.dezibel.gui;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+
 import de.dezibel.data.News;
 
 /**
@@ -14,6 +18,7 @@ import de.dezibel.data.News;
 public class NewsPanel extends DragablePanel {
 
 	private static final long serialVersionUID = 1L;
+	private JLabel lbTitle;
 	private JTable tblNews;
     private JScrollPane spNews;
     private NewsTableModel model;
@@ -26,6 +31,7 @@ public class NewsPanel extends DragablePanel {
 	}
 	
 	private void createComponents(){
+		lbTitle = new JLabel("Neuigkeiten");
 		model = new NewsTableModel();
 		tblNews = new JTable(model);
 		spNews = new JScrollPane(tblNews);
@@ -49,8 +55,9 @@ public class NewsPanel extends DragablePanel {
 	
 	private void createLayout(){
 		this.removeAll();
-		//this.setLayout(new BorderLayout());
-		this.add(tblNews);
+		this.setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
+		this.add(lbTitle);
+		this.add(spNews);
 	}
 	
 	private void onDoubleClick(){
