@@ -1,7 +1,6 @@
 
 package de.dezibel.gui;
 
-import de.dezibel.control.ContextMenu;
 import de.dezibel.data.Database;
 import de.dezibel.data.Playlist;
 import java.awt.event.MouseAdapter;
