@@ -3,6 +3,7 @@ package de.dezibel.gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -11,6 +12,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+
 import com.javadocking.DockingExecutor;
 import com.javadocking.DockingManager;
 import com.javadocking.dock.BorderDock;
@@ -31,7 +33,8 @@ import com.javadocking.model.FloatDockModel;
 import com.javadocking.visualizer.FloatExternalizer;
 import com.javadocking.visualizer.LineMinimizer;
 import com.javadocking.visualizer.SingleMaximizer;
-de.dezibel.data.News
+
+import de.dezibel.UpdateEntity;
 import de.dezibel.control.SaveControl;
 import de.dezibel.data.Database;
 import de.dezibel.data.Playlist;
