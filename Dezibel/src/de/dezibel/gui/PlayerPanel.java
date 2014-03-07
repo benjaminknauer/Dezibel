@@ -5,8 +5,8 @@ import de.dezibel.player.Player;
 import de.dezibel.player.PlayerObserver;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.ComponentOrientation;
-import java.awt.Font;
+import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,16 +16,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -46,6 +44,7 @@ public class PlayerPanel extends DragablePanel {
     private final Player player;
 
     private GroupLayout layout;
+    private JLabel lblCover;
     private JLabel lblTitle;
     private JSlider slider;
     private JLabel lblElapsedTime;
@@ -79,6 +78,11 @@ public class PlayerPanel extends DragablePanel {
     private void init() {
         // Initialize layout
         layout = new GroupLayout(this);
+
+        // Cover-Panel
+        lblCover = new JLabel();
+        lblCover.setOpaque(true);
+        lblCover.setBackground(Color.WHITE);
 
         // Add title label
         lblTitle = new JLabel();
@@ -131,8 +135,9 @@ public class PlayerPanel extends DragablePanel {
                     int rowNumber = tablePlaylist.rowAtPoint(p);
                     player.setCurrentMedia(rowNumber);
                 }
-                
+
             }
+
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
@@ -284,19 +289,31 @@ public class PlayerPanel extends DragablePanel {
         this.player.addObserver(new PlayerObserver() {
             @Override
             public void onStateChanged(Medium newMedium) {
-                lblTitle.setText(newMedium.getArtist().getPseudonym() + " - "
-                        + newMedium.getTitle());
-                volume.setValue(player.getVolume());
-                mediaTableModel.setData(player.getPlaylist());
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        if (player.isPlaying()) {
-                            btnPlayPause.setText("Pause");
+                if (newMedium != null) {
+                    if (newMedium.getAlbum() != null) {
+                        Image img = newMedium.getAlbum().getCover();
+                        if (img != null) {
+                            lblCover.setIcon(new ImageIcon(img));
                         } else {
-                            btnPlayPause.setText("Play");
+                            lblCover.setIcon(new ImageIcon(this.getClass().getResource("/img/no_cover.png")));
                         }
+                    } else {
+                        lblCover.setIcon(new ImageIcon(this.getClass().getResource("/img/no_album.png")));
                     }
-                });
+                    lblTitle.setText(newMedium.getArtist().getPseudonym() + " - "
+                            + newMedium.getTitle());
+                    volume.setValue(player.getVolume());
+                    mediaTableModel.setData(player.getPlaylist());
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            if (player.isPlaying()) {
+                                btnPlayPause.setText("Pause");
+                            } else {
+                                btnPlayPause.setText("Play");
+                            }
+                        }
+                    });
+                }
             }
         });
         volume.addChangeListener(new ChangeListener() {
@@ -347,6 +364,9 @@ public class PlayerPanel extends DragablePanel {
         layout.setHorizontalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING, true)
                 .addGroup(GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(minHGap, prefHGap, maxHGap)
+                        .addComponent(lblCover, 128, 128, 128)
+                        .addGap(minHGap, prefHGap, maxHGap)
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addComponent(lblTitle, GroupLayout.Alignment.CENTER)
                                 .addGroup(layout.createSequentialGroup()
@@ -374,6 +394,9 @@ public class PlayerPanel extends DragablePanel {
                 + btnPrev.getPreferredSize().getHeight()) + 2 * prefVGap;
         layout.setVerticalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING, true)
+                .addGap(10, prefVGap, maxVGap)
+                .addComponent(lblCover, 128, 128, 128)
+                .addGap(minVGap, prefVGap, maxVGap)
                 .addGroup(layout.createSequentialGroup()
                         .addComponent(lblTitle)
                         .addGap(minVGap, prefVGap, maxVGap)
@@ -407,6 +430,9 @@ public class PlayerPanel extends DragablePanel {
         layout.setHorizontalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING, true)
                 .addGroup(GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(minHGap, prefHGap, maxHGap)
+                        .addComponent(lblCover, 128, 128, 128)
+                        .addGap(minHGap, prefHGap, maxHGap)
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addComponent(lblTitle, GroupLayout.Alignment.CENTER)
                                 .addGroup(layout.createSequentialGroup()
@@ -437,6 +463,9 @@ public class PlayerPanel extends DragablePanel {
                 layout.createSequentialGroup()
                 .addGroup(
                         layout.createParallelGroup(GroupLayout.Alignment.LEADING, true)
+                        .addGap(minVGap, prefVGap, maxVGap)
+                        .addComponent(lblCover, 128, 128, 128)
+                        .addGap(minVGap, prefVGap, maxVGap)
                         .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblTitle)
                                 .addGap(minVGap, prefVGap, maxVGap)
