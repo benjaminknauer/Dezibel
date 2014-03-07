@@ -415,6 +415,7 @@ public class Database {
         m.setLabel(label);
         m.setAlbum(album);
         this.media.add(m);        
+        album.addMedium(m);
         
         return ErrorCode.SUCCESS;
     }

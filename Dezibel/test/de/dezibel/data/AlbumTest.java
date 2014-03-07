@@ -13,6 +13,7 @@ import org.junit.After;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -36,7 +37,9 @@ public class AlbumTest{
     public void setUp() {
         loggedUser =  new User("pet_mart@gmail.com", "Peter", "Martinez", "777", true);        
         medium1 = new Medium("Flippy Beats", loggedUser, coverPathTest);
+        medium1.setGenre(Database.getInstance().getTopGenre());
         medium2 = new Medium("Funk Grooves", loggedUser, coverPathTest);
+        medium2.setGenre(Database.getInstance().getTopGenre());
         publisher = new Label(loggedUser, "Regular Music Group");
         albumTest = new Album(medium1, "First", publisher);       
         imageloader = new ImageLoader();
@@ -96,17 +99,30 @@ public class AlbumTest{
         System.out.println("AddMedium");
         albumTest.addMedium(medium2);
         assertTrue(albumTest.getMediaList().contains(medium2));
+        assertEquals(2, albumTest.getMediaList().size());
         
         assertTrue(medium2.getAlbum().equals(albumTest));
     }
     
+    /**
+     * Test of addNewMedium method, of class control/Album
+     */
+    @Test
+    public void testAddNewMedium() {
+        System.out.println("AddNewMedium");
+        albumTest.addNewMedium(medium2);
+        assertFalse(albumTest.getMediaList().contains(medium2));
+        assertNull(medium2.getAlbum());
+        assertEquals(2, albumTest.getMediaList().size());
+        assertTrue(albumTest.getMediaList().get(1).getTitle().equals(medium2.getTitle()));
+    }
     /**
      * Test of removeCreatedMedium method, of class control/Album.
      */
     @Test
     public void testRemoveMedium() {
         System.out.println("RemoveMedium"); 
-        albumTest.removeMedium(medium1);        
+        albumTest.removeMedium(albumTest.getMediaList().get(0));        
         assertTrue(albumTest.getMediaList().isEmpty());        
         assertTrue(albumTest.isMarkedForDeletion());
         assertTrue(medium1.getAlbum() == null);
