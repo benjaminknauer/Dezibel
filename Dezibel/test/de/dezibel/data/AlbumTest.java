@@ -94,10 +94,10 @@ public class AlbumTest{
     @Test
     public void testAddMedium() {
         System.out.println("AddMedium");
-        albumTest.addMedium(medium1);
-        assertTrue(albumTest.getMediaList().getLast().equals(medium1));
+        albumTest.addMedium(medium2);
+        assertTrue(albumTest.getMediaList().contains(medium2));
         
-        assertTrue(medium1.getAlbum().equals(albumTest));
+        assertTrue(medium2.getAlbum().equals(albumTest));
     }
     
     /**

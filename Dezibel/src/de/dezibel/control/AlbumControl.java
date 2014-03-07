@@ -22,6 +22,6 @@ public class AlbumControl {
     }
     
     public void addMediumToAlbum(Medium medium, Album album){
-        album.addMedium(medium);
+        album.addNewMedium(medium);
     }
 }

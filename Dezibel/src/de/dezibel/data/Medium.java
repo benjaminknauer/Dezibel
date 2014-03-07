@@ -29,8 +29,7 @@ public class Medium implements Commentable, Lockable {
     private boolean locked;
     private boolean addingPL;
     private boolean removingPL;
-    private boolean addingAlbum;
-    private boolean removingAlbum;
+    private boolean settingAlbum;
     private String lockText;
     private HashMap<Integer, Rating> ratingList;
     private LinkedList<Comment> commentList;
@@ -235,22 +234,6 @@ public class Medium implements Commentable, Lockable {
             removingPL = false;
         }
     }
-
-    /**
-     * Adds an album to the list of albums which contain the medium
-     *
-     * @param album new playlist which should contain medium
-     */
-    public void addAlbum(Album album) {
-        if(this.addingAlbum)
-            return;
-        
-        this.addingAlbum = true;
-        this.album = album;
-        album.addMedium(this);
-
-        this.addingAlbum = false;
-    }    
     
     /**
      * Removes association to the album the medium was associated with.
@@ -300,7 +283,15 @@ public class Medium implements Commentable, Lockable {
     }
 
     public void setAlbum(Album album) {
+        if(this.settingAlbum)
+            return;
+        this.settingAlbum = true;
+        if(this.album != null)
+            this.album.removeMedium(this);
         this.album = album;
+        if(album != null)
+            album.addMedium(this);
+        this.settingAlbum = false;
     }
 
     public double getAvgRating() {

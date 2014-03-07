@@ -38,7 +38,7 @@ public class UploadControl {
         if (!user.isArtist()) {
             return ErrorCode.USER_IS_NOT_ARTIST;
         }
-        return db.addMedium(title, user, path, genre, label, album);
+        return db.addMediumToAlbum(title, user, path, genre, label, album);
     }
     
     /**
