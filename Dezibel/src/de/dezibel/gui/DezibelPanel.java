@@ -36,10 +36,12 @@ import com.javadocking.visualizer.LineMinimizer;
 import com.javadocking.visualizer.SingleMaximizer;
 
 import de.dezibel.UpdateEntity;
+import de.dezibel.control.NewsControl;
 import de.dezibel.control.SaveControl;
 import de.dezibel.data.Database;
 import de.dezibel.data.Playlist;
 import de.dezibel.data.User;
+
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -610,9 +612,21 @@ public class DezibelPanel extends JPanel {
 			menuGoTo.add(itemSearch);
 			menuGoTo.add(itemProfile);
 			menuGoTo.add(itemPlayer);
+			
+			JMenu menuNews = new JMenu("Neuigkeiten");
+			JMenuItem itemCreateNews = new JMenuItem("Erstellen");
+			itemCreateNews.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					onCreateNews();
+				}
+			});
+			
+			menuNews.add(itemCreateNews);
 			menuBar.add(menuShow);
-			menuBar.add(menuUpload);
 			menuBar.add(menuGoTo);
+			menuBar.add(menuUpload);
+			menuBar.add(menuNews);
 		}
 	}
 
@@ -717,12 +731,32 @@ public class DezibelPanel extends JPanel {
 	}
      
 	private void onCreateNews(){
+		String strTitle = null;
+		String strText = null;
 		
-	}
-	
-	public void tristan(){
+		strTitle = (String)JOptionPane.showInputDialog(
+                frame,
+                "Bitte geben sie einen Titel für die Neuigkeit an",
+                "Neuigkeiten-Titel",
+                JOptionPane.PLAIN_MESSAGE,
+                null,null,null);
 		
+		if(strTitle != null && strTitle.length()> 0)
+		{
+			strText = (String)JOptionPane.showInputDialog(
+	                frame,
+	                "Bitte geben sie einen Text für die Neuigkeit an",
+	                "Neuigkeiten-Text",
+	                JOptionPane.PLAIN_MESSAGE,
+	                null,null,null);
+			if(strText != null && strTitle.length() > 0)
+			{
+				NewsControl controller = new NewsControl();
+				controller.createNews(null, strTitle, strText);
+			}
+		}
 	}
+
     public JFrame getFrame() {
             return this.frame;
         }
