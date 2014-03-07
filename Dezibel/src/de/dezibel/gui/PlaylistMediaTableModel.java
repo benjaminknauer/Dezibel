@@ -1,6 +1,7 @@
 package de.dezibel.gui;
 
 import de.dezibel.data.Medium;
+import de.dezibel.data.Playlist;
 import java.util.Date;
 import java.util.LinkedList;
 import javax.swing.table.DefaultTableModel;
@@ -10,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Benjamin Knauer, Henner
  */
 public class PlaylistMediaTableModel extends DefaultTableModel {
-
+    private Playlist currentPlaylist;
     private String[] headlines = new String[]{"","Künstler", "Titel", "Album", 
         "Genre", "Uploaddatum", "Bewertung"};
     private Class<?>[] columnTypes = new Class<?>[]{Boolean.class, String.class, String.class,
@@ -86,18 +87,23 @@ public class PlaylistMediaTableModel extends DefaultTableModel {
     
     /**
      * Sets the data of this model.
-     * @param data The data to display
+     * @param playlist The data to display
      */
-    public void setData(LinkedList<Medium> data) {
-        if (data == null) {
+    public void setData(Playlist playlist) {
+        this.currentPlaylist = playlist;
+        if (playlist == null) {
             this.data = null;
             this.selected = null;
         } else {
-            this.data = new Medium[data.size()];
-            data.toArray(this.data);
-            this.selected = new boolean[data.size()];
+            this.data = new Medium[playlist.getList().size()];
+            playlist.getList().toArray(this.data);
+            this.selected = new boolean[playlist.getList().size()];
         }
         fireTableDataChanged();
+    }
+    
+    public Playlist getCurrentPlaylist(){
+        return currentPlaylist;
     }
     
 }

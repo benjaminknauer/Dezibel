@@ -57,7 +57,7 @@ public class MyListsPanel extends DragablePanel{
         tblPlaylists.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
+                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
                     Playlist p = (Playlist) mltm.getValueAt(
                             tblPlaylists.getSelectedRow(), -1);
                     dp.showPlaylist(p);

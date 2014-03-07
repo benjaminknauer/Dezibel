@@ -48,15 +48,14 @@ public class PlaylistPanel extends DragablePanel {
         }
         lbCreator = new JLabel(creatorString);
         model = new PlaylistMediaTableModel();
+        model.setData(currentPlaylist);
         tblPlaylistMedia = new JTable(model);
-        model.setData(currentPlaylist.getList());
-
         spPlaylistMedia = new JScrollPane(tblPlaylistMedia);
 
         tblPlaylistMedia.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
+                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
                     Medium m = (Medium) model.getValueAt(
                             tblPlaylistMedia.getSelectedRow(), -1);
                     if (m != null) {
@@ -112,12 +111,11 @@ public class PlaylistPanel extends DragablePanel {
         gbc.weighty = 0.9;
         gbc.weightx = 1;
         this.add(spPlaylistMedia, gbc);
-
     }
 
     @Override
     public void refresh() {
-        model.setData(currentPlaylist.getList());
+        model.setData(currentPlaylist);
         lbTitle = new JLabel(currentPlaylist.getTitle());
         String creatorString = currentPlaylist.getCreator().getPseudonym();
         if (creatorString == null || creatorString.trim().isEmpty()) {

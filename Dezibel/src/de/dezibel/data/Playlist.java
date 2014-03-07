@@ -97,6 +97,8 @@ public class Playlist implements Commentable {
             this.mediumList.remove(medium);
         }
         medium.removePlaylist(this);
+        if(mediumList.isEmpty())
+            this.delete();
     }
 
     /**

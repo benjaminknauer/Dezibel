@@ -13,6 +13,8 @@ import de.dezibel.data.Playlist;
 import de.dezibel.data.User;
 import de.dezibel.gui.DezibelPanel;
 import de.dezibel.gui.MenuItem;
+import de.dezibel.gui.PlaylistMediaTableModel;
+import de.dezibel.gui.PlaylistPanel;
 import de.dezibel.gui.UploadDialog;
 import de.dezibel.player.Player;
 import java.awt.Point;
@@ -53,13 +55,16 @@ public class ContextMenu {
 
         if (currentTableModel.getValueAt(rowNumber, -1) instanceof Medium) {
             createMediumMenu();
+            if(table.getParent().getParent().getParent() instanceof PlaylistPanel){
+                addPlaylistPanelMenuItems();
+            }
         } else if (currentTableModel.getValueAt(rowNumber, -1) instanceof User) {
             createUserMenu();
         } else if (currentTableModel.getValueAt(rowNumber, -1) instanceof Label) {
             createLabelMenu();
         } else if (currentTableModel.getValueAt(rowNumber, -1) instanceof Album) {
             createAlbumMenu();
-        } else if(currentTableModel.getValueAt(rowNumber, -1) instanceof Playlist){
+        } else if (currentTableModel.getValueAt(rowNumber, -1) instanceof Playlist) {
             createPlaylistMenu();
         }
         return currentPopupMenu;
@@ -67,10 +72,10 @@ public class ContextMenu {
 
     private void createMediumMenu() {
         currentPopupMenu = new JPopupMenu();
-        
+
         final Medium m = (Medium) currentTableModel.getValueAt(currentTable.getSelectedRow(), -1);
-        if (m.getArtist() == Database.getInstance().getLoggedInUser() &&
-                (m.getPath() == null || m.getPath().isEmpty())) {
+        if (m.getArtist() == Database.getInstance().getLoggedInUser()
+                && (m.getPath() == null || m.getPath().isEmpty())) {
             JMenuItem menuItemUpload = new JMenuItem("Upload");
             menuItemUpload.addActionListener(new ActionListener() {
                 @Override
@@ -81,7 +86,7 @@ public class ContextMenu {
             });
             currentPopupMenu.add(menuItemUpload);
         }
-        
+
         JMenuItem menuItemPlay = new JMenuItem("Warteschlange");
         JMenu menuAddToPlaylist = new JMenu("zur Wiedergabeliste hinzufügen");
         JMenuItem menuItemNewPlaylist = new JMenuItem("neue Wiedergabeliste");
@@ -247,8 +252,8 @@ public class ContextMenu {
         });
         currentPopupMenu.add(menuItemQueue);
     }
-    
-    private void createPlaylistMenu(){
+
+    private void createPlaylistMenu() {
         currentPopupMenu = new JPopupMenu();
         JMenuItem menuItemShow = new JMenuItem("Anzeigen");
         menuItemShow.addActionListener(new ActionListener() {
@@ -261,7 +266,7 @@ public class ContextMenu {
                 }
             }
         });
-        
+
         JMenuItem menuItemQueue = new JMenuItem("Warteschlange");
         menuItemQueue.addActionListener(new ActionListener() {
             @Override
@@ -274,8 +279,75 @@ public class ContextMenu {
                 }
             }
         });
-        
+
+        JMenuItem menuItemRename = new JMenuItem("Umbenennen");
+        menuItemRename.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Playlist p = (Playlist) currentTableModel.getValueAt(
+                        currentTable.getSelectedRow(), -1);
+                if (p != null) {
+                    ImageIcon logoIcon = new ImageIcon(this.getClass().getResource("/img/mini-logo.png"));
+                    String title = ((String) JOptionPane.showInputDialog(null,
+                            "Titel der Wiedergabeliste", "Titel eingeben",
+                            JOptionPane.QUESTION_MESSAGE, logoIcon, null, null)).trim();
+                    if (title != null && !title.isEmpty()) {
+                        p.setTitle(title);
+                        dp.refresh(UpdateEntity.PLAYLIST);
+                    }
+                }
+            }
+        });
+
+        JMenuItem menuItemDelete = new JMenuItem("Wiedergabeliste löschen");
+        menuItemDelete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Playlist p = (Playlist) currentTableModel.getValueAt(
+                        currentTable.getSelectedRow(), -1);
+                if (p != null) {
+                    Database.getInstance().deletePlaylist(p);
+                    dp.refresh(UpdateEntity.PLAYLIST);
+                }
+            }
+        });
+
         currentPopupMenu.add(menuItemShow);
         currentPopupMenu.add(menuItemQueue);
+        currentPopupMenu.add(menuItemRename);
+        currentPopupMenu.add(menuItemDelete);
     }
+    
+    private void addPlaylistPanelMenuItems(){
+        JMenuItem deleteMediumAt = new JMenuItem("Nur hier entfernen");
+        deleteMediumAt.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Playlist p = ((PlaylistMediaTableModel) currentTableModel).getCurrentPlaylist();
+                if (p != null) {
+                    new PlaylistControl().removeMediumAt(p, currentTable.getSelectedRow());
+                    dp.refresh(UpdateEntity.PLAYLIST);
+                }
+            }
+        });
+        
+        
+        JMenuItem removeMediumFromPlaylist = new JMenuItem("Komplett aus Wiedergabeliste entfernen");
+        removeMediumFromPlaylist.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Playlist p = ((PlaylistMediaTableModel) currentTableModel).getCurrentPlaylist();
+                if (p != null) {
+                    new PlaylistControl().removeMedium(p, (Medium) currentTableModel.getValueAt(
+                        currentTable.getSelectedRow(), -1));
+                    dp.refresh(UpdateEntity.PLAYLIST);
+                }
+            }
+        });
+        
+        currentPopupMenu.add(removeMediumFromPlaylist);
+        currentPopupMenu.add(deleteMediumAt);
+}
 }
