@@ -81,17 +81,15 @@ public class PlayerPanel extends DragablePanel {
 
         // Cover-Panel
         lblCover = new JLabel();
-        lblCover.setOpaque(true);
-        lblCover.setBackground(Color.WHITE);
 
         // Add title label
         lblTitle = new JLabel();
-
+        
         // Add seeker
         lblElapsedTime = new JLabel();
         slider = new JSlider(0, 1000, 0);
         lblTimeLeft = new JLabel();
-
+        slider.setBackground(DezibelColor.SliderBackground);
         // Add Buttons und volume slider
         btnPrev = new JButton("prev");
         btnPlayPause = new JButton("play");
@@ -242,7 +240,7 @@ public class PlayerPanel extends DragablePanel {
             }
         });
         scrollPane = new JScrollPane(tablePlaylist);
-
+        scrollPane.setBackground(DezibelColor.Background);
         createTopBottomLayout();
 
         // Listener
@@ -354,8 +352,6 @@ public class PlayerPanel extends DragablePanel {
                 }
             }
         }).start();
-        this.scrollPane.setOpaque(false);
-        this.setOpaque(false);
     }
 
     /**

@@ -69,7 +69,8 @@ public class NewsPanel extends DragablePanel {
 	
 	public void reset(){
 		int i=model.getRowCount()-1;
-		while(i<0)
+	
+		while(i > 0)
 		{
 			model.removeRow(i);
 			i--;
