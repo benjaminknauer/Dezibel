@@ -271,6 +271,21 @@ public class Player {
             this.currentPlaylist.add(song);
         }
     }
+    
+    /**
+     * Adds a medium to the currentPlaylist
+     *
+     * @param song The Medium to add
+     */
+    public void addMediumAsNext(Medium song) {
+        if (song != null) {
+            if (this.currentPosition + 1 >= this.currentPlaylist.size()) {
+                addMedium(song);
+            } else {
+                this.currentPlaylist.add(this.currentPosition + 1, song);
+            }
+        }
+    }
 
     /**
      * Removes the given medium from the currentPlalist.
