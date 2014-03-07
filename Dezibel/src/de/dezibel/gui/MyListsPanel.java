@@ -17,7 +17,7 @@ import javax.swing.JTable;
  *
  * @author Benny
  */
-public class MyListsPanel extends DragablePanel {
+public class MyListsPanel extends DragablePanel{
 
     private JLabel lbTitel;
     private JScrollPane scrollPane;
@@ -31,9 +31,11 @@ public class MyListsPanel extends DragablePanel {
         this.dp = parent;
             createComponents();
             createLayout();
+            
+        
 
     }
-
+    @Override
     public void refresh() {
         if (Database.getInstance().getLoggedInUser() != null) {
         LinkedList<Playlist> myPlaylists = Database.getInstance().getLoggedInUser()
