@@ -1,7 +1,6 @@
 package de.dezibel.gui;
 
 import de.dezibel.data.Medium;
-import java.util.Date;
 import java.util.LinkedList;
 import javax.swing.table.DefaultTableModel;
 
@@ -9,12 +8,10 @@ import javax.swing.table.DefaultTableModel;
  * Shows the information of media in the searchpanel.
  * @author Richard, Tobias
  */
-public class MediaTableModel extends DefaultTableModel {
+public class RecommendationsTableModel extends DefaultTableModel {
 
-    private String[] headlines = new String[]{"Künstler", "Titel", "Album", 
-        "Genre", "Uploaddatum", "Bewertung"};
-    private Class<?>[] columnTypes = new Class<?>[]{String.class, String.class,
-        String.class, String.class, Date.class, Double.class};
+    private String[] headlines = new String[]{"Künstler", "Titel"};
+    private Class<?>[] columnTypes = new Class<?>[]{String.class, String.class};
 
     private Medium[] data;
 
@@ -53,17 +50,6 @@ public class MediaTableModel extends DefaultTableModel {
                     return m.getArtist().getPseudonym();
                 case 1:
                     return m.getTitle();
-                case 2:
-                    if (m.getAlbum() != null) return m.getAlbum().getTitle();
-                    else return "";
-                case 3:
-                    if (m.getGenre() != null) return m.getGenre().getName();
-                    else return "";
-                case 4:
-                    return m.getUploadDate();
-                case 5:
-                    // Round to 2 digits
-                    return Math.round(m.getAvgRating() * 100.0) / 100.0;
             }
         }
 	return null;

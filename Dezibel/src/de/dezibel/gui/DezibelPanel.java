@@ -1,8 +1,10 @@
 package de.dezibel.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -11,6 +13,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+
 import com.javadocking.DockingExecutor;
 import com.javadocking.DockingManager;
 import com.javadocking.dock.BorderDock;
@@ -31,6 +34,7 @@ import com.javadocking.model.FloatDockModel;
 import com.javadocking.visualizer.FloatExternalizer;
 import com.javadocking.visualizer.LineMinimizer;
 import com.javadocking.visualizer.SingleMaximizer;
+
 import de.dezibel.UpdateEntity;
 import de.dezibel.control.SaveControl;
 import de.dezibel.data.Database;
@@ -103,7 +107,8 @@ public class DezibelPanel extends JPanel {
 	public DezibelPanel(JFrame frame) {
 		super(new BorderLayout());
 		this.frame = frame;
-		
+		frame.setBackground(DezibelColor.Background);
+		this.setBackground(DezibelColor.Background);
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -111,18 +116,28 @@ public class DezibelPanel extends JPanel {
 				saveControl.save();
 			}
 		});
-		
+	
 		this.addLeft = true;
 		// Create the content components.
 		pnLogin 	= new LoginPanel(this);
 		pnRegister 	= new RegistrationPanel(this);
 		pnPlayer 	= new PlayerPanel(this);
-		pnNews 		= new DragablePanel(this);
+		pnNews 		= new NewsPanel(this);
 		pnAds 		= new DragablePanel(this);
 		pnMyList 	= new MyListsPanel(this);
 		pnFavorites = new DragablePanel(this);
 		pnProfil 	= new ProfilPanel(this);
 		pnSearch 	= new SearchPanel(this);
+		
+		pnLogin.setBackground(DezibelColor.Background);
+		pnRegister.setBackground(DezibelColor.Background);
+		pnPlayer.setBackground(DezibelColor.Background);
+		pnNews.setBackground(DezibelColor.Background);
+		pnAds.setBackground(DezibelColor.Background);
+		pnMyList.setBackground(DezibelColor.Background);
+		pnFavorites.setBackground(DezibelColor.Background);
+		pnProfil.setBackground(DezibelColor.Background);	
+		pnSearch.setBackground(DezibelColor.Background);
 		
                 this.setBackground(new Color(239, 239, 239));
 		this.createDocking();
@@ -280,7 +295,7 @@ public class DezibelPanel extends JPanel {
 		daAds = addActions(daAds);
 		daMyLists = addActions(daMyLists);
 		daFavorites = addActions(daFavorites);
-
+		
 		// Create the child tab dock.
 		leftLineDock = new LineDock();
 		rightLineDock = new LineDock();
@@ -297,7 +312,12 @@ public class DezibelPanel extends JPanel {
 		borderDock.setDock(rightLineDock, Position.RIGHT);
 		borderDock.setDock(centerDock, Position.CENTER);
 		dockModel.addRootDock("borderDock", borderDock, frame);
-
+		
+		borderDock.setBackground(DezibelColor.Background);
+		leftLineDock.setBackground(DezibelColor.Background);
+		rightLineDock.setBackground(DezibelColor.Background);
+		centerDock.setBackground(DezibelColor.Background);
+		
 		// Create an externalizer.
 		FloatExternalizer externalizer = new FloatExternalizer(frame);
 		dockModel.addVisualizer("externalizer", externalizer, frame);
@@ -697,8 +717,12 @@ public class DezibelPanel extends JPanel {
 		UploadDialog ud = new UploadDialog(frame, null, null);
 		ud.setVisible(true);
 	}
-        
-        public JFrame getFrame() {
+     
+	private void onCreateNews(){
+		
+	}
+	
+    public JFrame getFrame() {
             return this.frame;
         }
 }

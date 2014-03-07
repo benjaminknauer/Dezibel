@@ -59,7 +59,7 @@ public class Player {
         }
         if (this.player != null) {
             this.player.play();
-            notifyObserver();
+            this.notifyObserver();
         }
     }
 
@@ -70,7 +70,7 @@ public class Player {
     public void pause() {
         if (this.player != null) {
             this.player.pause();
-            notifyObserver();
+            this.notifyObserver();
         }
     }
 
@@ -83,7 +83,7 @@ public class Player {
             this.player.stop();
             this.currentPosition = 0;
             this.createPlayer(this.currentPlaylist.get(this.currentPosition));
-            notifyObserver();
+            this.notifyObserver();
         }
     }
 
@@ -111,7 +111,7 @@ public class Player {
             } else if (index == this.currentPosition + 1) {
                 this.currentPosition++;
             }
-            notifyObserver();
+            this.notifyObserver();
         }
     }
     
@@ -128,7 +128,7 @@ public class Player {
             } else if (index == this.currentPosition - 1) {
                 this.currentPosition--;
             }
-            notifyObserver();
+            this.notifyObserver();
         }
     }
 
@@ -269,6 +269,7 @@ public class Player {
     public void addMedium(Medium song) {
         if (song != null) {
             this.currentPlaylist.add(song);
+            this.notifyObserver();
         }
     }
     
@@ -283,6 +284,7 @@ public class Player {
                 addMedium(song);
             } else {
                 this.currentPlaylist.add(this.currentPosition + 1, song);
+                this.notifyObserver();
             }
         }
     }
@@ -295,6 +297,7 @@ public class Player {
     public void removeMedium(int index) {
         if (index >= 0 && index < this.currentPlaylist.size()) {
             this.currentPlaylist.remove(index);
+            this.notifyObserver();
         }
     }
 
@@ -307,6 +310,7 @@ public class Player {
     public void addPlaylist(Playlist playlist) {
         if (playlist != null) {
             this.currentPlaylist.addAll(playlist.getList());
+            this.notifyObserver();
         }
     }
 
@@ -318,6 +322,7 @@ public class Player {
     public void setPlaylist(Playlist playlist) {
         if (playlist != null) {
             this.currentPlaylist = playlist.getList();
+            this.notifyObserver();
         }
     }
 
@@ -330,6 +335,7 @@ public class Player {
     public void addMedialist(LinkedList<Medium> playlist) {
         if (playlist != null) {
             this.currentPlaylist.addAll(playlist);
+            this.notifyObserver();
         }
     }
 
@@ -341,6 +347,7 @@ public class Player {
     public void clearPlaylist() {
         this.stop();
         this.currentPlaylist.clear();
+        this.notifyObserver();
     }
 
     /**
@@ -391,7 +398,7 @@ public class Player {
         });
         this.player = tmpPlayer;
 
-        notifyObserver();
+        this.notifyObserver();
     }
 
     /**
