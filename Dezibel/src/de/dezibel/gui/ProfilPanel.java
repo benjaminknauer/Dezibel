@@ -1,5 +1,6 @@
 package de.dezibel.gui;
 
+import de.dezibel.control.ContextMenu;
 import de.dezibel.control.ProfileControl;
 import de.dezibel.data.Label;
 import de.dezibel.data.User;
@@ -20,6 +21,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
@@ -352,8 +354,24 @@ public class ProfilPanel extends DragablePanel {
         tFollower.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         
         tFollower.addMouseListener(new MouseAdapter() {
-            public void mouseDoubleClicked(MouseEvent e) {
-                setUser(followerModell.getUserAt(tFollower.getSelectedRow()));
+            @Override
+            public void mousePressed(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            private void showPopup(MouseEvent me) {
+                ContextMenu contextMenu = new ContextMenu(parent);
+                JPopupMenu currentPopupMenu = contextMenu.getContextMenu(tFollower, me);
+                currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
             }
         });
 
