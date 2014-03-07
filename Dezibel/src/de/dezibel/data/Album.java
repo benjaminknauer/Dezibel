@@ -2,8 +2,17 @@ package de.dezibel.data;
 
 import de.dezibel.ErrorCode;
 import de.dezibel.io.ImageLoader;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 /**
  * This class represents an Album.
@@ -243,6 +252,19 @@ public class Album implements Commentable {
             return ErrorCode.UPLOAD_ERROR;
         }
         this.coverPath = uploadPath;
+        // Scale image to standard dimension
+        BufferedImage dest = new BufferedImage(128, 128, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2 = dest.createGraphics();
+        g2.drawImage(getCover(), 0, 0, 128, 128, Color.WHITE, null);
+        g2.dispose();
+        try {
+            ImageIO.write(dest, "jpg", new File(this.coverPath));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            File f = new File(this.coverPath);
+            if (f.exists()) f.delete();
+            return ErrorCode.UPLOAD_ERROR;
+        }
         return ErrorCode.SUCCESS;
     }
 
