@@ -404,6 +404,18 @@ public class DezibelPanel extends JPanel {
 		daPlayer.addDockingListener(new DockingListener() {
 			@Override
 			public void dockingChanged(DockingEvent e) {
+//				System.out.println("Docking Changed wurde aufgerufen von Player");
+//				if(e.getOriginDock() != null)
+//					System.out.println("von: " + e.getOriginDock().toString());
+//				else
+//					System.out.println("von: -");
+//				
+//				if(e.getDestinationDock() != null)
+//					System.out.println("nach: " + e.getDestinationDock().toString());
+//				else
+//					System.out.println("nach: -");
+				
+				
 				DragablePanel pn = (DragablePanel) daPlayer.getContent();
 				if (e.getDestinationDock() == centerDock) {
 					pn.onCenter();
@@ -579,6 +591,17 @@ public class DezibelPanel extends JPanel {
 	}
 	
 	private void showAtCenter(Dockable da){
+	
+		if(da.getDock() != null){
+			LeafDock leaf = da.getDock();
+			leaf.removeDockable(da);
+			
+			if(leaf == this.borderDock.getChildDockOfPosition(Position.TOP))
+				borderDock.emptyChild(leaf);
+			if(leaf == this.borderDock.getChildDockOfPosition(Position.BOTTOM))
+				borderDock.emptyChild(leaf);
+		}
+		
 		if(this.centerDock.getDockableCount() > 0){
 			this.executor.changeDocking(this.centerDock.getDockable(this.centerDock.getDockableCount() -1),null,new Position(0));
 		}
