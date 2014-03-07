@@ -698,6 +698,7 @@ public class DezibelPanel extends JPanel {
 		if(daPlayer.getDock()!=null)
 			daPlayer.getDock().removeDockable(daPlayer);
 			
+		this.clearCenter();
 		pnLogin.reset();
 		pnRegister.reset();
 		pnPlayer.reset();
