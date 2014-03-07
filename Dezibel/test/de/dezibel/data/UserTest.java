@@ -307,6 +307,7 @@ public class UserTest {
      */
     @Test
     public void testPromoteToArtist() {
+        loggedUser.setPseudonym("Magic Markus");
         loggedUser.promoteToArtist();
         assertTrue(loggedUser.isArtist());
     }
