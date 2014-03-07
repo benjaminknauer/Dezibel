@@ -73,4 +73,7 @@ public class LabelTableModel extends DefaultTableModel {
         fireTableDataChanged();
     }
     
+    public void setHeader(String[] headlines){
+        this.headlines = headlines;
+    }
 }
