@@ -1,11 +1,9 @@
 
-package de.dezibel.control;
+package de.dezibel.gui;
 
+import de.dezibel.control.ContextMenu;
 import de.dezibel.data.Database;
 import de.dezibel.data.Playlist;
-import de.dezibel.gui.DezibelPanel;
-import de.dezibel.gui.DragablePanel;
-import de.dezibel.gui.MyListsTableModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
@@ -38,7 +36,6 @@ public class MyListsPanel extends DragablePanel {
 
     public void refresh() {
         if (Database.getInstance().getLoggedInUser() != null) {
-        String[] header = {"Titel"};
         LinkedList<Playlist> myPlaylists = Database.getInstance().getLoggedInUser()
                 .getCreatedPlaylists();
         LinkedList<Playlist> favoritePlaylists = Database.getInstance().getLoggedInUser()

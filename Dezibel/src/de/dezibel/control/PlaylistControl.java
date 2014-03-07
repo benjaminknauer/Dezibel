@@ -17,6 +17,7 @@ public class PlaylistControl {
     public void createPlaylist(String title, Medium firstMedium){
         Database.getInstance().addPlaylist(firstMedium, title,
                 Database.getInstance().getLoggedInUser());
+        
     }
     
     public void addMediumToPlaylist(Medium medium, Playlist playlist){
