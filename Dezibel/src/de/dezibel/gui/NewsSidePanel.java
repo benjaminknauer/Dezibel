@@ -3,12 +3,11 @@ package de.dezibel.gui;
 import de.dezibel.control.NewsControl;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-
+import de.dezibel.control.NewsControl;
 import de.dezibel.data.News;
 
 /**
@@ -16,15 +15,15 @@ import de.dezibel.data.News;
  * @author Pascal
  *
  */
-public class NewsPanel extends DragablePanel {
+public class NewsSidePanel extends DragablePanel {
 
     private static final long serialVersionUID = 1L;
     private JLabel lbTitle;
     private JTable tblNews;
     private JScrollPane spNews;
-    private NewsTableModel model;
+    private NewsSideTableModel model;
 
-    public NewsPanel(DezibelPanel parent) {
+    public NewsSidePanel(DezibelPanel parent) {
         super(parent);
 
         this.createComponents();
@@ -34,7 +33,7 @@ public class NewsPanel extends DragablePanel {
 
     private void createComponents() {
         lbTitle = new JLabel("Neuigkeiten");
-        model = new NewsTableModel();
+        model = new NewsSideTableModel();
         tblNews = new JTable(model);
         spNews = new JScrollPane(tblNews);
         spNews.setViewportView(tblNews);
@@ -84,7 +83,7 @@ public class NewsPanel extends DragablePanel {
     public void refresh() {
         this.reset();
         NewsControl controller = new NewsControl();
-        NewsTableModel model = new NewsTableModel();
+        NewsSideTableModel model = new NewsSideTableModel();
         model.setData(controller.searchForNews());
         this.tblNews.setModel(model);
     }

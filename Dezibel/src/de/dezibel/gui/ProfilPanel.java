@@ -706,4 +706,10 @@ public class ProfilPanel extends DragablePanel {
         gbl.setConstraints(btnCreateLabel, gbc);
         pnLabels.add(btnCreateLabel);
     }
+
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
 }
