@@ -44,6 +44,8 @@ public class FollowerTableModel extends DefaultTableModel {
         if (data != null && row >= 0 && row < data.length) {
             User u = data[row];
             switch (col) {
+                case -1:
+                    return u;
                 case 0:
                     return u.getFirstname();
                 case 1:

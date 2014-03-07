@@ -2,34 +2,39 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.dezibel.control;
+package de.dezibel.gui;
 
+import de.dezibel.UpdateEntity;
+import de.dezibel.control.AlbumControl;
+import de.dezibel.control.PlaylistControl;
 import de.dezibel.data.Album;
 import de.dezibel.data.Database;
 import de.dezibel.data.Label;
 import de.dezibel.data.Medium;
 import de.dezibel.data.Playlist;
 import de.dezibel.data.User;
-import de.dezibel.gui.DezibelPanel;
-import de.dezibel.gui.MenuItem;
-import de.dezibel.gui.UploadDialog;
 import de.dezibel.player.Player;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import javax.swing.ButtonGroup;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JTable;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JRadioButtonMenuItem;
 
 /**
  *
- * @author Benny
+ * Handles the right click actions for all panels except PlayerPanel.
+ *
+ *
+ * @author Benny, Tobias
+ * @see PlayerContextMenu
  */
 public class ContextMenu {
 
@@ -38,10 +43,22 @@ public class ContextMenu {
     JTable currentTable;
     DezibelPanel dp;
 
+    /**
+     * Constructor
+     *
+     * @param parent Parent panel
+     */
     public ContextMenu(DezibelPanel parent) {
         dp = parent;
     }
 
+    /**
+     * Returns the specific context menu depends on what clicked on
+     *
+     * @param table Table to work on
+     * @param me MouseEvent to check where clicked
+     * @return The specific context menu
+     */
     public JPopupMenu getContextMenu(JTable table, MouseEvent me) {
         currentTable = table;
         currentTableModel = (DefaultTableModel) table.getModel();
@@ -52,24 +69,30 @@ public class ContextMenu {
 
         if (currentTableModel.getValueAt(rowNumber, -1) instanceof Medium) {
             createMediumMenu();
+            if (table.getParent().getParent().getParent() instanceof PlaylistPanel) {
+                addPlaylistPanelMenuItems();
+            }
         } else if (currentTableModel.getValueAt(rowNumber, -1) instanceof User) {
             createUserMenu();
         } else if (currentTableModel.getValueAt(rowNumber, -1) instanceof Label) {
             createLabelMenu();
         } else if (currentTableModel.getValueAt(rowNumber, -1) instanceof Album) {
             createAlbumMenu();
-        } else if(currentTableModel.getValueAt(rowNumber, -1) instanceof Playlist){
+        } else if (currentTableModel.getValueAt(rowNumber, -1) instanceof Playlist) {
             createPlaylistMenu();
         }
         return currentPopupMenu;
     }
 
+    /**
+     * Creates the MediumPopupMenu which handles the right clicks on media
+     */
     private void createMediumMenu() {
         currentPopupMenu = new JPopupMenu();
-        
+
         final Medium m = (Medium) currentTableModel.getValueAt(currentTable.getSelectedRow(), -1);
-        if (m.getArtist() == Database.getInstance().getLoggedInUser() &&
-                (m.getPath() == null || m.getPath().isEmpty())) {
+        if (m.getArtist() == Database.getInstance().getLoggedInUser()
+                && (m.getPath() == null || m.getPath().isEmpty())) {
             JMenuItem menuItemUpload = new JMenuItem("Upload");
             menuItemUpload.addActionListener(new ActionListener() {
                 @Override
@@ -80,11 +103,16 @@ public class ContextMenu {
             });
             currentPopupMenu.add(menuItemUpload);
         }
-        
+
         JMenuItem menuItemPlay = new JMenuItem("Warteschlange");
+        JMenu menuRate = new JMenu("Bewerten");
+        final JRadioButtonMenuItem menuItemRate1 = new JRadioButtonMenuItem("1 Stern", false);
+        final JRadioButtonMenuItem menuItemRate2 = new JRadioButtonMenuItem("2 Stern", false);
+        final JRadioButtonMenuItem menuItemRate3 = new JRadioButtonMenuItem("3 Stern", false);
+        final JRadioButtonMenuItem menuItemRate4 = new JRadioButtonMenuItem("4 Stern", false);
+        final JRadioButtonMenuItem menuItemRate5 = new JRadioButtonMenuItem("5 Stern", false);
         JMenu menuAddToPlaylist = new JMenu("zur Wiedergabeliste hinzufügen");
         JMenuItem menuItemNewPlaylist = new JMenuItem("neue Wiedergabeliste");
-
 
         menuItemPlay.addActionListener(new ActionListener() {
             @Override
@@ -98,6 +126,76 @@ public class ContextMenu {
             }
         });
 
+        currentPopupMenu.add(menuItemPlay);
+
+        menuItemRate1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Medium m = (Medium) currentTableModel.getValueAt(
+                        currentTable.getSelectedRow(), -1);
+                m.rate(1, Database.getInstance().getLoggedInUser());
+                menuItemRate1.setSelected(true);
+                currentTableModel.fireTableCellUpdated(currentTable.getSelectedRow(), 5);
+            }
+        });
+
+        menuItemRate2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Medium m = (Medium) currentTableModel.getValueAt(
+                        currentTable.getSelectedRow(), -1);
+                m.rate(2, Database.getInstance().getLoggedInUser());
+                menuItemRate2.setSelected(true);
+                currentTableModel.fireTableCellUpdated(currentTable.getSelectedRow(), 5);
+            }
+        });
+
+        menuItemRate3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Medium m = (Medium) currentTableModel.getValueAt(
+                        currentTable.getSelectedRow(), -1);
+                m.rate(3, Database.getInstance().getLoggedInUser());
+                menuItemRate3.setSelected(true);
+                currentTableModel.fireTableCellUpdated(currentTable.getSelectedRow(), 5);
+            }
+        });
+
+        menuItemRate4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Medium m = (Medium) currentTableModel.getValueAt(
+                        currentTable.getSelectedRow(), -1);
+                m.rate(4, Database.getInstance().getLoggedInUser());
+                menuItemRate4.setSelected(true);
+                currentTableModel.fireTableCellUpdated(currentTable.getSelectedRow(), 5);
+            }
+        });
+
+        menuItemRate5.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Medium m = (Medium) currentTableModel.getValueAt(
+                        currentTable.getSelectedRow(), -1);
+                m.rate(5, Database.getInstance().getLoggedInUser());
+                menuItemRate5.setSelected(true);
+                currentTableModel.fireTableCellUpdated(currentTable.getSelectedRow(), 5);
+            }
+        });
+
+        currentPopupMenu.add(menuRate);
+        ButtonGroup menuRateButtonGroup = new ButtonGroup();
+        menuRate.add(menuItemRate1);
+        menuRateButtonGroup.add(menuItemRate1);
+        menuRate.add(menuItemRate2);
+        menuRateButtonGroup.add(menuItemRate2);
+        menuRate.add(menuItemRate3);
+        menuRateButtonGroup.add(menuItemRate3);
+        menuRate.add(menuItemRate4);
+        menuRateButtonGroup.add(menuItemRate4);
+        menuRate.add(menuItemRate5);
+        menuRateButtonGroup.add(menuItemRate5);
+
         menuItemNewPlaylist.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -108,14 +206,12 @@ public class ContextMenu {
                 if (title != null && !title.isEmpty()) {
                     new PlaylistControl().createPlaylist(title,
                             (Medium) currentTableModel.getValueAt(
-                            currentTable.getSelectedRow(), -1));
-                    dp.refresh
+                                    currentTable.getSelectedRow(), -1));
+                    dp.refresh(UpdateEntity.PLAYLIST);
                 }
             }
         });
 
-
-        currentPopupMenu.add(menuItemPlay);
         currentPopupMenu.add(menuAddToPlaylist);
         menuAddToPlaylist.add(menuItemNewPlaylist);
         menuAddToPlaylist.addSeparator();
@@ -127,7 +223,7 @@ public class ContextMenu {
 
         if (Database.getInstance().getLoggedInUser()
                 .equals(((Medium) currentTableModel.getValueAt(
-                currentTable.getSelectedRow(), -1)).getArtist())) {
+                                currentTable.getSelectedRow(), -1)).getArtist())) {
             JMenu menuAddToAlbum = new JMenu("zu Album hinzufügen");
             JMenuItem menuItemNewAlbum = new JMenuItem("neues Album");
 
@@ -141,7 +237,8 @@ public class ContextMenu {
                     if (title != null && !title.isEmpty()) {
                         new AlbumControl().createAlbum(title,
                                 (Medium) currentTableModel.getValueAt(
-                                currentTable.getSelectedRow(), -1), null);
+                                        currentTable.getSelectedRow(), -1), null);
+                        dp.refresh(UpdateEntity.ALBUM);
                     }
                 }
             });
@@ -161,6 +258,7 @@ public class ContextMenu {
                         new AlbumControl().addMediumToAlbum((Medium) currentTableModel.getValueAt(
                                 currentTable.getSelectedRow(), -1),
                                 (Album) ((MenuItem) e.getSource()).getEntity());
+                        dp.refresh(UpdateEntity.ALBUM);
                     }
                 });
                 menuAddToAlbum.add(currentMenuItem);
@@ -177,6 +275,7 @@ public class ContextMenu {
                             new AlbumControl().addMediumToAlbum((Medium) currentTableModel.getValueAt(
                                     currentTable.getSelectedRow(), -1),
                                     (Album) ((MenuItem) e.getSource()).getEntity());
+                            dp.refresh(UpdateEntity.ALBUM);
                         }
                     });
                     menuAddToAlbum.add(currentMenuItem);
@@ -194,12 +293,16 @@ public class ContextMenu {
                     new PlaylistControl().addMediumToPlaylist((Medium) currentTableModel.getValueAt(
                             currentTable.getSelectedRow(), -1),
                             (Playlist) ((MenuItem) e.getSource()).getEntity());
+                    dp.refresh(UpdateEntity.PLAYLIST);
                 }
             });
             menuAddToPlaylist.add(currentMenuItem);
         }
     }
 
+    /**
+     * Creates the UserPopupMenu which handles the right clicks on users
+     */
     private void createUserMenu() {
         currentPopupMenu = new JPopupMenu();
         JMenuItem menuItemShowUser = new JMenuItem("Anzeigen");
@@ -214,6 +317,9 @@ public class ContextMenu {
         currentPopupMenu.add(menuItemShowUser);
     }
 
+    /**
+     * Creates the LabelPopupMenu which handles the right clicks on labels
+     */
     private void createLabelMenu() {
         currentPopupMenu = new JPopupMenu();
         JMenuItem menuItemShowLabel = new JMenuItem("Anzeigen");
@@ -226,6 +332,9 @@ public class ContextMenu {
         currentPopupMenu.add(menuItemShowLabel);
     }
 
+    /**
+     * Creates the AlbumPopupMenu which handles the right clicks on albums
+     */
     private void createAlbumMenu() {
         currentPopupMenu = new JPopupMenu();
         JMenuItem menuItemQueue = new JMenuItem("Warteschlange");
@@ -242,8 +351,12 @@ public class ContextMenu {
         });
         currentPopupMenu.add(menuItemQueue);
     }
-    
-    private void createPlaylistMenu(){
+
+    /**
+     * Creates the PlaylistPopupMenu which handles the right clicks on
+     * playlists, except the curretn playlist of the player.
+     */
+    private void createPlaylistMenu() {
         currentPopupMenu = new JPopupMenu();
         JMenuItem menuItemShow = new JMenuItem("Anzeigen");
         menuItemShow.addActionListener(new ActionListener() {
@@ -256,7 +369,7 @@ public class ContextMenu {
                 }
             }
         });
-        
+
         JMenuItem menuItemQueue = new JMenuItem("Warteschlange");
         menuItemQueue.addActionListener(new ActionListener() {
             @Override
@@ -269,8 +382,74 @@ public class ContextMenu {
                 }
             }
         });
-        
+
+        JMenuItem menuItemRename = new JMenuItem("Umbenennen");
+        menuItemRename.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Playlist p = (Playlist) currentTableModel.getValueAt(
+                        currentTable.getSelectedRow(), -1);
+                if (p != null) {
+                    ImageIcon logoIcon = new ImageIcon(this.getClass().getResource("/img/mini-logo.png"));
+                    String title = ((String) JOptionPane.showInputDialog(null,
+                            "Titel der Wiedergabeliste", "Titel eingeben",
+                            JOptionPane.QUESTION_MESSAGE, logoIcon, null, null)).trim();
+                    if (title != null && !title.isEmpty()) {
+                        p.setTitle(title);
+                        dp.refresh(UpdateEntity.PLAYLIST);
+                    }
+                }
+            }
+        });
+
+        JMenuItem menuItemDelete = new JMenuItem("Wiedergabeliste löschen");
+        menuItemDelete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Playlist p = (Playlist) currentTableModel.getValueAt(
+                        currentTable.getSelectedRow(), -1);
+                if (p != null) {
+                    Database.getInstance().deletePlaylist(p);
+                    dp.refresh(UpdateEntity.PLAYLIST);
+                }
+            }
+        });
+
         currentPopupMenu.add(menuItemShow);
         currentPopupMenu.add(menuItemQueue);
+        currentPopupMenu.add(menuItemRename);
+        currentPopupMenu.add(menuItemDelete);
+    }
+
+    private void addPlaylistPanelMenuItems() {
+        JMenuItem deleteMediumAt = new JMenuItem("Nur hier entfernen");
+        deleteMediumAt.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Playlist p = ((PlaylistMediaTableModel) currentTableModel).getCurrentPlaylist();
+                if (p != null) {
+                    new PlaylistControl().removeMediumAt(p, currentTable.getSelectedRow());
+                    dp.refresh(UpdateEntity.PLAYLIST);
+                }
+            }
+        });
+
+        JMenuItem removeMediumFromPlaylist = new JMenuItem("Komplett aus Wiedergabeliste entfernen");
+        removeMediumFromPlaylist.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Playlist p = ((PlaylistMediaTableModel) currentTableModel).getCurrentPlaylist();
+                if (p != null) {
+                    new PlaylistControl().removeMedium(p, (Medium) currentTableModel.getValueAt(
+                            currentTable.getSelectedRow(), -1));
+                    dp.refresh(UpdateEntity.PLAYLIST);
+                }
+            }
+        });
+
+        currentPopupMenu.add(removeMediumFromPlaylist);
+        currentPopupMenu.add(deleteMediumAt);
     }
 }

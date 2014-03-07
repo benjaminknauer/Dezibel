@@ -3,23 +3,39 @@ package de.dezibel.gui;
 import de.dezibel.data.Medium;
 import de.dezibel.player.Player;
 import de.dezibel.player.PlayerObserver;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.ComponentOrientation;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  *
@@ -41,6 +57,7 @@ public class PlayerPanel extends DragablePanel {
     private JSlider volume;
     private JTable tablePlaylist;
     private JScrollPane scrollPane;
+    private int selectedRow = -1;
 
     private MediaTableModel mediaTableModel;
 
@@ -81,8 +98,31 @@ public class PlayerPanel extends DragablePanel {
         // Playlist
         mediaTableModel = new MediaTableModel();
         tablePlaylist = new JTable(mediaTableModel);
+        // Save selection even after table update
+        tablePlaylist.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                selectedRow = e.getFirstIndex();
+            }
+        });
+        // Restore selected raw table
+        mediaTableModel.addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (selectedRow >= 0 && selectedRow < mediaTableModel.getRowCount()) {
+                            tablePlaylist.requestFocus();
+                            tablePlaylist.changeSelection(selectedRow, selectedRow, false, false);
+                        } else {
+                            tablePlaylist.clearSelection();
+                        }
+                    }
+                });
+            }
+        });
         tablePlaylist.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        tablePlaylist.setEnabled(false);
         tablePlaylist.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
@@ -90,6 +130,109 @@ public class PlayerPanel extends DragablePanel {
                     Point p = me.getPoint();
                     int rowNumber = tablePlaylist.rowAtPoint(p);
                     player.setCurrentMedia(rowNumber);
+                }
+                
+            }
+            @Override
+            public void mousePressed(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            private void showPopup(MouseEvent me) {
+                PlayerContextMenu contextMenu = new PlayerContextMenu(parent);
+                JPopupMenu currentPopupMenu = contextMenu.getContextMenu(tablePlaylist);
+                currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
+            }
+        });
+        // Renderer that shows the currently playing song
+        tablePlaylist.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            public Component getTableCellRendererComponent(
+                    JTable table, Object color,
+                    boolean isSelected, boolean hasFocus,
+                    int row, int column) {
+                super.getTableCellRendererComponent(table, color, isSelected, hasFocus, row, column);
+                if (table.getSelectedRow() == row) {
+                    if (player.getCurrentIndex() == row) {
+                        this.setBackground(new Color(123, 223, 153));
+                    } else {
+                        this.setBackground(new Color(184, 207, 229));
+                    }
+                } else {
+                    if (player.getCurrentIndex() == row) {
+                        this.setBackground(Color.GREEN.brighter().brighter());
+                    } else {
+                        this.setBackground(Color.WHITE);
+                    }
+                }
+                return this;
+            }
+        });
+        tablePlaylist.setDefaultRenderer(Date.class, new DefaultTableCellRenderer() {
+            private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy");
+
+            public Component getTableCellRendererComponent(
+                    JTable table, Object color,
+                    boolean isSelected, boolean hasFocus,
+                    int row, int column) {
+                if (table.getSelectedRow() == row) {
+                    if (player.getCurrentIndex() == row) {
+                        this.setBackground(new Color(123, 223, 153));
+                    } else {
+                        this.setBackground(new Color(184, 207, 229));
+                    }
+                } else {
+                    if (player.getCurrentIndex() == row) {
+                        this.setBackground(Color.GREEN.brighter().brighter());
+                    } else {
+                        this.setBackground(Color.WHITE);
+                    }
+                }
+                this.setText(dateFormatter.format(table.getModel().getValueAt(row, column)));
+                return this;
+            }
+        });
+        tablePlaylist.setDefaultRenderer(Double.class, new DefaultTableCellRenderer() {
+            public Component getTableCellRendererComponent(
+                    JTable table, Object color,
+                    boolean isSelected, boolean hasFocus,
+                    int row, int column) {
+                super.getTableCellRendererComponent(table, color, isSelected, hasFocus, row, column);
+                if (table.getSelectedRow() == row) {
+                    if (player.getCurrentIndex() == row) {
+                        this.setBackground(new Color(123, 223, 153));
+                    } else {
+                        this.setBackground(new Color(184, 207, 229));
+                    }
+                } else {
+                    if (player.getCurrentIndex() == row) {
+                        this.setBackground(Color.GREEN.brighter().brighter());
+                    } else {
+                        this.setBackground(Color.WHITE);
+                    }
+                }
+                this.setHorizontalAlignment(SwingConstants.RIGHT);
+                return this;
+            }
+        });
+        // Listener for reordering the playlist via keys
+        tablePlaylist.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent ke) {
+                if (tablePlaylist.getSelectedRow() != -1) {
+                    if (ke.getKeyCode() == KeyEvent.VK_UP) {
+                        player.moveUp(tablePlaylist.getSelectedRow());
+                    } else if (ke.getKeyCode() == KeyEvent.VK_DOWN) {
+                        player.moveDown(tablePlaylist.getSelectedRow());
+                    }
                 }
             }
         });
@@ -145,9 +288,6 @@ public class PlayerPanel extends DragablePanel {
                         + newMedium.getTitle());
                 volume.setValue(player.getVolume());
                 mediaTableModel.setData(player.getPlaylist());
-                tablePlaylist.getSelectionModel().setSelectionInterval(
-                        Player.getInstance().getCurrentIndex(),
-                        Player.getInstance().getCurrentIndex());
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
                         if (player.isPlaying()) {
@@ -259,6 +399,10 @@ public class PlayerPanel extends DragablePanel {
      * Creates the panel layout when the panel is docked on center.
      */
     private void createCenterLayout() {
+        // Reset table selection
+        selectedRow = -1;
+        tablePlaylist.clearSelection();
+
         int minHGap = 0, prefHGap = 20, maxHGap = 20;
         layout.setHorizontalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING, true)

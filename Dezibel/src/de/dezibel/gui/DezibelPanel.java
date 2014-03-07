@@ -31,8 +31,7 @@ import com.javadocking.model.FloatDockModel;
 import com.javadocking.visualizer.FloatExternalizer;
 import com.javadocking.visualizer.LineMinimizer;
 import com.javadocking.visualizer.SingleMaximizer;
-
-import de.dezibel.UpdateEntity;
+de.dezibel.data.News
 import de.dezibel.control.SaveControl;
 import de.dezibel.data.Database;
 import de.dezibel.data.Playlist;
@@ -178,6 +177,13 @@ public class DezibelPanel extends JPanel {
         
         public void refresh(UpdateEntity ue){
         	switch(ue){
+                    case PLAYLIST:
+                        pnMyList.refresh();
+                        if(this.centerDock.getDockable(0).getContent() instanceof PlaylistPanel){
+                        PlaylistPanel pn = (PlaylistPanel) this.centerDock.getDockable(0).getContent();
+                        pn.refresh();
+                        }
+                        
         	
         	default:
         	break;
@@ -620,11 +626,17 @@ public class DezibelPanel extends JPanel {
 		this.executor.changeDocking(da, this.centerDock,new Position(0));
 		
 		}else{
-			JOptionPane.showMessageDialog(this,"Kann diese Aktion nicht ausführen,"
+			JOptionPane.showMessageDialog(this,"Kann diese Aktion nicht ausf�hren,"
 					+ "solange das Fenster nicht angedockt ist","Fehler beim Andocken des Fensters",JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
+        public void clearCenter(){
+            if(this.centerDock.getDockableCount() > 0){
+			this.executor.changeDocking(this.centerDock.getDockable(this.centerDock.getDockableCount() -1),null,new Position(0));
+		}
+        }
+        
 	private void onLogout(){
 		if(daPlayer.getState() == DockableState.EXTERNALIZED)
 		{

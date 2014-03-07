@@ -97,6 +97,40 @@ public class Player {
             this.player.seek(new Duration(pos * 1000));
         }
     }
+    
+    /**
+     * Moves the song at source index one position up.
+     * @param index The index that has to be moved up
+     */
+    public void moveUp(int index) {
+        if (index >= 1 && index < this.currentPlaylist.size()) {
+            this.currentPlaylist.add(index - 1, this.currentPlaylist.get(index));
+            this.currentPlaylist.remove(index + 1);
+            if (index == this.currentPosition) {
+                this.currentPosition--;
+            } else if (index == this.currentPosition + 1) {
+                this.currentPosition++;
+            }
+            notifyObserver();
+        }
+    }
+    
+    /**
+     * Moves the song at source index one position down.
+     * @param index The index that has to be moved down
+     */
+    public void moveDown(int index) {
+        if (index >= 0 && index < this.currentPlaylist.size() - 1) {
+            this.currentPlaylist.add(index + 2, this.currentPlaylist.get(index));
+            this.currentPlaylist.remove(index);
+            if (index == this.currentPosition) {
+                this.currentPosition++;
+            } else if (index == this.currentPosition - 1) {
+                this.currentPosition--;
+            }
+            notifyObserver();
+        }
+    }
 
     /**
      * Jumps to the next medium in the playlist. If the playlist is empty,
@@ -237,6 +271,21 @@ public class Player {
             this.currentPlaylist.add(song);
         }
     }
+    
+    /**
+     * Adds a medium to the currentPlaylist
+     *
+     * @param song The Medium to add
+     */
+    public void addMediumAsNext(Medium song) {
+        if (song != null) {
+            if (this.currentPosition + 1 >= this.currentPlaylist.size()) {
+                addMedium(song);
+            } else {
+                this.currentPlaylist.add(this.currentPosition + 1, song);
+            }
+        }
+    }
 
     /**
      * Removes the given medium from the currentPlalist.
@@ -354,7 +403,7 @@ public class Player {
         new Thread(new Runnable() {
             public void run() {
                 try {
-                    Thread.sleep(300);
+                    Thread.sleep(50);
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 }

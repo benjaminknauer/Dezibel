@@ -1,7 +1,6 @@
 
 package de.dezibel.gui;
 
-import de.dezibel.control.ContextMenu;
 import de.dezibel.data.Database;
 import de.dezibel.data.Playlist;
 import java.awt.event.MouseAdapter;
@@ -57,7 +56,7 @@ public class MyListsPanel extends DragablePanel{
         tblPlaylists.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
+                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
                     Playlist p = (Playlist) mltm.getValueAt(
                             tblPlaylists.getSelectedRow(), -1);
                     dp.showPlaylist(p);

@@ -23,4 +23,12 @@ public class PlaylistControl {
     public void addMediumToPlaylist(Medium medium, Playlist playlist){
         playlist.addMedium(medium);
     }
+    
+    public void removeMediumAt(Playlist playlist, int index){
+        playlist.removeMediumAt(index);
+    }
+    
+    public void removeMedium(Playlist playlist, Medium medium) {
+        playlist.removeMedium(medium);
+    }
 }

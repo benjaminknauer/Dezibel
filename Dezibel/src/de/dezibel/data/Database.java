@@ -472,7 +472,7 @@ public class Database {
      * @param playlist The playlist to be deleted.
      * @post <code>playlist</code> is not in the database.
      */
-    void deletePlaylist(Playlist playlist) {
+    public void deletePlaylist(Playlist playlist) {
         this.playlists.remove(playlist);
         if(playlist != null)
             playlist.delete();

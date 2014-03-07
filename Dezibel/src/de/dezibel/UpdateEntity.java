@@ -11,5 +11,6 @@ package de.dezibel;
 public enum UpdateEntity{
     MEDIUM,
     PLAYLIST,
-    NEWS
+    NEWS,
+    ALBUM
 }

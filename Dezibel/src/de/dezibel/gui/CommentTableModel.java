@@ -44,6 +44,8 @@ public class CommentTableModel extends DefaultTableModel {
         if (data != null && row >= 0 && row < data.length) {
             Comment c = data[row];
             switch (col) {
+                case -1:
+                    return c;
                 case 0:
                     return c.getText();
             }
