@@ -1,6 +1,5 @@
 package de.dezibel.gui;
 
-import de.dezibel.control.ContextMenu;
 import de.dezibel.control.ProfileControl;
 import de.dezibel.data.Label;
 import de.dezibel.data.User;

@@ -2,18 +2,17 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.dezibel.control;
+package de.dezibel.gui;
 
 import de.dezibel.UpdateEntity;
+import de.dezibel.control.AlbumControl;
+import de.dezibel.control.PlaylistControl;
 import de.dezibel.data.Album;
 import de.dezibel.data.Database;
 import de.dezibel.data.Label;
 import de.dezibel.data.Medium;
 import de.dezibel.data.Playlist;
 import de.dezibel.data.User;
-import de.dezibel.gui.DezibelPanel;
-import de.dezibel.gui.MenuItem;
-import de.dezibel.gui.UploadDialog;
 import de.dezibel.player.Player;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -26,13 +25,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JTable;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JRadioButtonMenuItem;
 
 /**
  *
- * @author Benny
+ * @author Benny, Tobias
  */
 public class ContextMenu {
 
