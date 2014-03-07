@@ -16,7 +16,7 @@ import java.util.Iterator;
  */
 public class Medium implements Commentable, Lockable {
 
-    private static MediumLoader mediumLoader = new MediumLoader();
+    private static final MediumLoader mediumLoader = new MediumLoader();
     private String path;
     private String title;
     private Album album;
@@ -31,9 +31,9 @@ public class Medium implements Commentable, Lockable {
     private boolean removingPL;
     private boolean settingAlbum;
     private String lockText;
-    private HashMap<Integer, Rating> ratingList;
-    private LinkedList<Comment> commentList;
-    private LinkedList<Playlist> playlistList;
+    private final HashMap<Integer, Rating> ratingList;
+    private final LinkedList<Comment> commentList;
+    private final LinkedList<Playlist> playlistList;
 
     /**
      * Class Constructor, which is used if its user chooses a filepath.
@@ -54,6 +54,9 @@ public class Medium implements Commentable, Lockable {
         if (path != null) {
             this.upload(path);
         }
+        else
+            Database.getInstance().addNews("Ankündigung", artist.getPseudonym() 
+                    + " wird bald " + title + " veröffentlichen!", artist);
         artist.addCreatedMedium(this);
     }
 

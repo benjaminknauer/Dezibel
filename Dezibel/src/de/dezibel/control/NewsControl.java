@@ -3,8 +3,10 @@ package de.dezibel.control;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import de.dezibel.ErrorCode;
 import de.dezibel.data.Database;
 import de.dezibel.data.Label;
+import de.dezibel.data.News;
 import de.dezibel.data.User;
 
 /**
@@ -12,13 +14,32 @@ import de.dezibel.data.User;
  * @author Pascal
  *
  */
-public class News {
+public class NewsControl {
 	
 	private int maxNumberOfNews = 15;
 	
-	public News() {
-		
+	public NewsControl() {
+	
 	}
+	
+	/**
+	 * Creates a new News with the given, title and text.
+	 * Creator will be the author of the news.
+	 * 
+	 * @param creator Author of the news
+	 * @param title Title of the news
+	 * @param text text of the news
+	 * @return <code>ErrorCode<code>
+	 */
+	public ErrorCode createNews(User creator,String title,String text){
+		if(creator == null)
+			creator = Database.getInstance().getLoggedInUser();
+		
+		News ne = new News(title, text, creator);
+		creator.addNews(ne);
+		return ErrorCode.SUCCESS;
+	}
+	
 	/**
 	 * search in the news from favourised labels and users and returns the 
 	 * 15 newest news.
