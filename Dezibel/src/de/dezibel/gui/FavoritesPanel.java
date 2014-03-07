@@ -30,16 +30,12 @@ public class FavoritesPanel extends DragablePanel{
 
      
     private JPopupMenu currentPopupMenu;
-    private DezibelPanel dp;
     private User currentUser;
 
     public FavoritesPanel(DezibelPanel parent) {
         super(parent);
-        this.dp = parent;
-            createComponents();
-            createLayout();
-            
-        
+        createComponents();
+        createLayout();
 
     }
     @Override
@@ -70,7 +66,7 @@ public class FavoritesPanel extends DragablePanel{
                 if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
                     User u = (User) ftmu.getValueAt(
                             tblFavoritesUser.getSelectedRow(), -1);
-                    dp.showFavoritesUser(u);
+                    parent.showProfile(u);
                 }
             }            
         });
@@ -81,7 +77,8 @@ public class FavoritesPanel extends DragablePanel{
                 if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
                    User u = (User) ftmu.getValueAt(
                             tblFavoritesLabel.getSelectedRow(), -1);
-                    dp.showFavoritesLabel(u);
+                    //parent.showProfile(u);
+                   // TODO: Implement showProfile for Label
                 }
             }            
         });
@@ -99,4 +96,9 @@ public class FavoritesPanel extends DragablePanel{
         this.currentUser = newUser;
         this.refresh();
     }
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
 }

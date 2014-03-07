@@ -168,7 +168,8 @@ public class DezibelPanel extends JPanel {
 		this.createMenubar();
 		frame.setJMenuBar(menuBar);
 		this.showSidebars();
-		this.showAtCenter(daPlayer);
+		//this.showAtCenter(daPlayer);
+		this.showAtCenter(daSearch);
 		((ProfilPanel) daProfil.getContent()).setUser(Database.getInstance()
 				.getLoggedInUser());
 	}
