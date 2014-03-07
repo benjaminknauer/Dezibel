@@ -121,7 +121,7 @@ public class DezibelPanel extends JPanel {
 		pnLogin 	= new LoginPanel(this);
 		pnRegister 	= new RegistrationPanel(this);
 		pnPlayer 	= new PlayerPanel(this);
-		pnNews 		= new NewsPanel(this);
+		pnNews 		= new NewsSidePanel(this);
 		pnAds 		= new AdsPanel(this);
 		pnMyList 	= new MyListsPanel(this);
 		pnFavorites = new FavoritesPanel(this);
@@ -164,8 +164,8 @@ public class DezibelPanel extends JPanel {
 	 * player-panel docked at the bottom and a profil-panel at the center.
 	 */
 	public void showWorkspace() {
-                ((MyListsPanel) pnMyList).refresh(); //TODO!! QUICK&DIRTY: Aufruf an richtige Stelle setzen
-		this.createMenubar();
+        ((MyListsPanel) pnMyList).refresh(); //TODO!! QUICK&DIRTY: Aufruf an richtige Stelle setzen
+        this.createMenubar();
 		frame.setJMenuBar(menuBar);
 		this.showSidebars();
 		//this.showAtCenter(daPlayer);
