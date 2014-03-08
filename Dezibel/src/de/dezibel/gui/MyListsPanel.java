@@ -1,4 +1,3 @@
-
 package de.dezibel.gui;
 
 import de.dezibel.data.Database;
@@ -18,7 +17,7 @@ import javax.swing.table.DefaultTableCellRenderer;
  *
  * @author Benny
  */
-public class MyListsPanel extends DragablePanel{
+public class MyListsPanel extends DragablePanel {
 
     private JLabel lbTitel;
     private JScrollPane scrollPane;
@@ -30,21 +29,22 @@ public class MyListsPanel extends DragablePanel{
     public MyListsPanel(DezibelPanel parent) {
         super(parent);
         this.dp = parent;
-            createComponents();
-            createLayout();
-            this.setOpaque(false);
-        
+        createComponents();
+        createLayout();
+        this.setOpaque(false);
+
 
     }
+
     @Override
     public void refresh() {
         if (Database.getInstance().getLoggedInUser() != null) {
-        LinkedList<Playlist> myPlaylists = Database.getInstance().getLoggedInUser()
-                .getCreatedPlaylists();
-        LinkedList<Playlist> favoritePlaylists = Database.getInstance().getLoggedInUser()
-                .getFavoritePlaylists();
-        myPlaylists.addAll(favoritePlaylists);
-        mltm.setData(myPlaylists);
+            LinkedList<Playlist> myPlaylists = Database.getInstance().getLoggedInUser()
+                    .getCreatedPlaylists();
+            LinkedList<Playlist> favoritePlaylists = Database.getInstance().getLoggedInUser()
+                    .getFavoritePlaylists();
+            myPlaylists.addAll(favoritePlaylists);
+            mltm.setData(myPlaylists);
         }
     }
 
@@ -58,11 +58,9 @@ public class MyListsPanel extends DragablePanel{
         tblPlaylists.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
-                    Playlist p = (Playlist) mltm.getValueAt(
-                            tblPlaylists.getSelectedRow(), -1);
-                    dp.showPlaylist(p);
-                }
+                Playlist p = (Playlist) mltm.getValueAt(
+                        tblPlaylists.getSelectedRow(), -1);
+                dp.showPlaylist(p);
             }
 
             @Override
@@ -85,17 +83,12 @@ public class MyListsPanel extends DragablePanel{
                 currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
             }
         });
-        
-        tblPlaylists.setOpaque(false);
-        ((DefaultTableCellRenderer)tblPlaylists.getDefaultRenderer(Object.class)).setBackground(dp.getBackground());
-        tblPlaylists.setSelectionBackground(dp.getBackground());
-        tblPlaylists.setSelectionForeground(Color.BLACK);
-        tblPlaylists.setBorder(null);
-        
-        scrollPane.setOpaque(false);
-        scrollPane.getViewport().setOpaque(false);
-        
+
+        scrollPane.getViewport().setBackground(dp.getBackground());
+        ((DefaultTableCellRenderer) tblPlaylists.getDefaultRenderer(Object.class)).setBackground(dp.getBackground());
+        tblPlaylists.setSelectionBackground(new Color(0, 153, 255));
         tblPlaylists.setShowGrid(false);
+        tblPlaylists.setFocusable(false);
 
 
     }
@@ -105,9 +98,9 @@ public class MyListsPanel extends DragablePanel{
         this.add(lbTitel);
         this.add(scrollPane);
     }
-	@Override
-	public void reset() {
-		// TODO Auto-generated method stub
-		
-	}
+
+    @Override
+    public void reset() {
+        // TODO Auto-generated method stub
+    }
 }

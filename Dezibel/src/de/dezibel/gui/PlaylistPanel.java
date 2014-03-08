@@ -3,6 +3,7 @@ package de.dezibel.gui;
 import de.dezibel.data.Medium;
 import de.dezibel.data.Playlist;
 import de.dezibel.player.Player;
+import java.awt.Font;
 
 /**
  *
@@ -94,6 +95,10 @@ public class PlaylistPanel extends DragablePanel {
         GridBagLayout gbl = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
         this.setLayout(gbl);
+        
+        Font f = new Font("Title", Font.BOLD, 16);
+        lbTitle.setFont(f);
+        lbCreator.setFont(f);
 
         gbc.weighty = 0.1;
         gbc.insets = new Insets(0, 30, 0, 0);
