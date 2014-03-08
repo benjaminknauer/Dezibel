@@ -378,7 +378,7 @@ public class Player {
      * @pre medium != null
      */
     private void createPlayer(Medium medium) {
-        File f = medium.getFile();
+        File f = medium.getFile(); //TODO nullpointer & crash, wenn medium nur ankündigung
         Media m = new Media(f.toURI().toString());
         MediaPlayer tmpPlayer = new MediaPlayer(m);
         if (this.player != null) {
