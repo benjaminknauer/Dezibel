@@ -109,10 +109,10 @@ public class ContextMenu {
         JMenuItem menuItemPlayNext = new JMenuItem("Als nächsten abspielen");
         JMenu menuRate = new JMenu("Bewerten");
         final JRadioButtonMenuItem menuItemRate1 = new JRadioButtonMenuItem("1 Stern", false);
-        final JRadioButtonMenuItem menuItemRate2 = new JRadioButtonMenuItem("2 Stern", false);
-        final JRadioButtonMenuItem menuItemRate3 = new JRadioButtonMenuItem("3 Stern", false);
-        final JRadioButtonMenuItem menuItemRate4 = new JRadioButtonMenuItem("4 Stern", false);
-        final JRadioButtonMenuItem menuItemRate5 = new JRadioButtonMenuItem("5 Stern", false);
+        final JRadioButtonMenuItem menuItemRate2 = new JRadioButtonMenuItem("2 Sterne", false);
+        final JRadioButtonMenuItem menuItemRate3 = new JRadioButtonMenuItem("3 Sterne", false);
+        final JRadioButtonMenuItem menuItemRate4 = new JRadioButtonMenuItem("4 Sterne", false);
+        final JRadioButtonMenuItem menuItemRate5 = new JRadioButtonMenuItem("5 Sterne", false);
         JMenu menuAddToPlaylist = new JMenu("zur Wiedergabeliste hinzufügen");
         JMenuItem menuItemNewPlaylist = new JMenuItem("neue Wiedergabeliste");
         JMenuItem menuItemComment = new JMenuItem("Kommentieren");
