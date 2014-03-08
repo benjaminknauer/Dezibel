@@ -38,8 +38,10 @@ import de.dezibel.UpdateEntity;
 import de.dezibel.control.NewsControl;
 import de.dezibel.control.SaveControl;
 import de.dezibel.data.Database;
+import de.dezibel.data.Medium;
 import de.dezibel.data.Playlist;
 import de.dezibel.data.User;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -752,5 +754,13 @@ public class DezibelPanel extends JPanel {
 
     public JFrame getFrame() {
         return this.frame;
+    }
+    
+    public void showMedium(Medium medium){
+    	MediumPanel pnMedium = new MediumPanel(this, medium);
+        pnMedium.setBackground(DezibelColor.Background);
+        Dockable daMedium = new DefaultDockable("pnMedium", pnMedium, "Medium", null,
+                DockingMode.CENTER + DockingMode.SINGLE);
+        this.showAtCenter(daMedium);
     }
 }
