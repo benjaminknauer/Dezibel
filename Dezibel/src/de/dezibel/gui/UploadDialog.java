@@ -20,7 +20,7 @@ import javax.swing.JTextField;
 
 /**
  * Dialog to upload a medium
- * 
+ *
  * @author Tobias, Richard
  */
 public final class UploadDialog extends JDialog {
@@ -39,9 +39,11 @@ public final class UploadDialog extends JDialog {
 
     /**
      * Constructor
+     *
      * @param frame the fram to block
      * @param label the standard label if the user wants to upload for a label.
-     * label is set if the UploadDialog is opened from a labelprofil from a labelmanager
+     * label is set if the UploadDialog is opened from a labelprofil from a
+     * labelmanager
      * @param medium is set if the medium already exists but contains no file
      * and you want to upload a file now
      */
@@ -59,7 +61,7 @@ public final class UploadDialog extends JDialog {
      */
     public void init() {
         setTitle("Upload");
-        
+
         JLabel lbTitle = new JLabel("Titel");
         final JTextField tfTitle = new JTextField();
         JLabel lbUpload = new JLabel("Datei");
@@ -109,7 +111,9 @@ public final class UploadDialog extends JDialog {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (medium == null) {
+                if (tfTitle.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(UploadDialog.this, "Bitte geben Sie einen Titel an", "Titel angeben", JOptionPane.INFORMATION_MESSAGE);
+                } else if (medium == null) {
                     Object albumSelection = cbAlbum.getSelectedItem();
                     Album album;
                     if (albumSelection instanceof String) {
