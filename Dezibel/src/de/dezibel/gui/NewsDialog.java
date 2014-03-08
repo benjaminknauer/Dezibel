@@ -2,13 +2,13 @@ package de.dezibel.gui;
 
 import de.dezibel.control.NewsControl;
 import de.dezibel.data.Database;
-import de.dezibel.data.Medium;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -42,9 +42,13 @@ class NewsDialog extends JDialog {
         JLabel lbTitle = new JLabel("Titel");
         final JTextField tfTitle = new JTextField();
         final JTextArea taText = new JTextArea();
+        JScrollPane sp = new JScrollPane(taText, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                                            JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         JButton btComment = new JButton("Abschicken");
         JButton btCancel = new JButton("Abbrechen");
 
+        
+        
         btComment.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -65,8 +69,8 @@ class NewsDialog extends JDialog {
         this.add(lbTitle);
         tfTitle.setBounds(80, 5, 175, 32);
         this.add(tfTitle);
-        taText.setBounds(5, 42, 250, 250);
-        this.add(taText);
+        sp.setBounds(5, 42, 250, 250);
+        this.add(sp);
         btComment.setBounds(5, 300, 120, 32);
         this.add(btComment);
         btCancel.setBounds(130, 300, 120, 32);

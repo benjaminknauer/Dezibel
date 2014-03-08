@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 /**
@@ -43,6 +44,8 @@ class CommentDialog extends JDialog {
 
         JLabel lbYourComment = new JLabel("Dein Kommentar");
         final JTextArea taText = new JTextArea();
+        JScrollPane sp = new JScrollPane(taText, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                                            JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         JButton btComment = new JButton("Kommentieren");
         JButton btCancel = new JButton("Abbrechen");
 
@@ -64,8 +67,8 @@ class CommentDialog extends JDialog {
         this.setLayout(null);
         lbYourComment.setBounds(5, 5, 100, 32);
         this.add(lbYourComment);
-        taText.setBounds(5, 42, 250, 250);
-        this.add(taText);
+        sp.setBounds(5, 42, 250, 250);
+        this.add(sp);
         btComment.setBounds(5, 300, 120, 32);
         this.add(btComment);
         btCancel.setBounds(130, 300, 120, 32);
@@ -85,6 +88,8 @@ class CommentDialog extends JDialog {
 
         JLabel lbYourComment = new JLabel("Dein Kommentar");
         final JTextArea taText = new JTextArea();
+        JScrollPane sp = new JScrollPane(taText, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                                            JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         JButton btComment = new JButton("Kommentieren");
         JButton btCancel = new JButton("Abbrechen");
 
@@ -106,8 +111,8 @@ class CommentDialog extends JDialog {
         this.setLayout(null);
         lbYourComment.setBounds(5, 5, 100, 32);
         this.add(lbYourComment);
-        taText.setBounds(5, 42, 250, 250);
-        this.add(taText);
+        sp.setBounds(5, 42, 250, 250);
+        this.add(sp);
         btComment.setBounds(5, 300, 120, 32);
         this.add(btComment);
         btCancel.setBounds(130, 300, 120, 32);
@@ -127,6 +132,8 @@ class CommentDialog extends JDialog {
 
         JLabel lbYourComment = new JLabel("Dein Kommentar");
         final JTextArea taText = new JTextArea();
+        JScrollPane sp = new JScrollPane(taText, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                                            JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         JButton btComment = new JButton("Kommentieren");
         JButton btCancel = new JButton("Abbrechen");
 
@@ -148,8 +155,8 @@ class CommentDialog extends JDialog {
         this.setLayout(null);
         lbYourComment.setBounds(5, 5, 100, 32);
         this.add(lbYourComment);
-        taText.setBounds(5, 42, 250, 250);
-        this.add(taText);
+        sp.setBounds(5, 42, 250, 250);
+        this.add(sp);
         btComment.setBounds(5, 300, 120, 32);
         this.add(btComment);
         btCancel.setBounds(130, 300, 120, 32);
@@ -169,6 +176,8 @@ class CommentDialog extends JDialog {
 
         JLabel lbYourComment = new JLabel("Dein Kommentar");
         final JTextArea taText = new JTextArea();
+        JScrollPane sp = new JScrollPane(taText, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                                            JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         JButton btComment = new JButton("Kommentieren");
         JButton btCancel = new JButton("Abbrechen");
 
@@ -190,8 +199,8 @@ class CommentDialog extends JDialog {
         this.setLayout(null);
         lbYourComment.setBounds(5, 5, 100, 32);
         this.add(lbYourComment);
-        taText.setBounds(5, 42, 250, 250);
-        this.add(taText);
+        sp.setBounds(5, 42, 250, 250);
+        this.add(sp);
         btComment.setBounds(5, 300, 120, 32);
         this.add(btComment);
         btCancel.setBounds(130, 300, 120, 32);
