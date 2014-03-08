@@ -165,6 +165,7 @@ public class DezibelPanel extends JPanel {
 	 */
 	public void showWorkspace() {
         ((MyListsPanel) pnMyList).refresh();
+        ((AdsPanel) pnAds).refresh();
         this.createMenubar();
 		frame.setJMenuBar(menuBar);
 		this.showSidebars();

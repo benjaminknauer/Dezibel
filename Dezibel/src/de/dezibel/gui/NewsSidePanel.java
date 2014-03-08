@@ -58,6 +58,8 @@ public class NewsSidePanel extends DragablePanel {
     private void createLayout() {
         this.removeAll();
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        lbTitle.setAlignmentX(CENTER_ALIGNMENT);
+        lbTitle.setFont(DezibelFont.SIDEPANEL_TITLE);
         this.add(lbTitle);
         this.add(spNews);
     }

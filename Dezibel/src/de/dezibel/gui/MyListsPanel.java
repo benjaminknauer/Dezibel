@@ -31,7 +31,7 @@ public class MyListsPanel extends DragablePanel {
         this.dp = parent;
         createComponents();
         createLayout();
-        this.setOpaque(false);
+        this.setBackground(DezibelColor.PanelBackground);
 
 
     }
@@ -95,6 +95,8 @@ public class MyListsPanel extends DragablePanel {
 
     private void createLayout() {
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        lbTitel.setFont(DezibelFont.SIDEPANEL_TITLE);
+        lbTitel.setAlignmentX(CENTER_ALIGNMENT);
         this.add(lbTitel);
         this.add(scrollPane);
     }
