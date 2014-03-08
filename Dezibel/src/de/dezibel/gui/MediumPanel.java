@@ -2,6 +2,8 @@ package de.dezibel.gui;
 
 import java.awt.Dimension;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.ListIterator;
 
 import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
@@ -10,6 +12,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -49,8 +52,9 @@ public class MediumPanel extends DragablePanel {
     private JList<String>		comments;
     private DefaultListModel<String> commentsModel;
     private JScrollPane spComments;
+    private JScrollPane spCommentArea;
     private JTextArea 	commentDetail;
-    
+    private LinkedList<String> details;
     
 	public MediumPanel(DezibelPanel parent, Medium current) {
 		super(parent);
@@ -62,6 +66,9 @@ public class MediumPanel extends DragablePanel {
 
 	@Override
 	public void reset() {
+		currentMedium = null;
+		artist = null;
+		label = null;
 		lbInfoTitle.setText("");
 	    lbInfoAlbum.setText("");
 	    lbInfoUploadDate.setText("");
@@ -71,23 +78,71 @@ public class MediumPanel extends DragablePanel {
 	    lbInfoLabel.setText("");
 	    commentsModel.clear();
 	    commentDetail.setText("");
+	    details.clear();
 	}
 
 	@Override
 	public void refresh() {
-		lbInfoTitle.setText("");
-	    lbInfoAlbum.setText("");
-	    lbInfoUploadDate.setText("");
-	   lbInfoAvgRating.setText("");
-	    lbInfoArtist.setText("");
-	    lbInfoGenre.setText("");
-	    lbInfoLabel.setText("");
-	    commentsModel.clear();
-	    commentDetail.setText("");
+		if(currentMedium != null)
+		{
+			lbInfoTitle.setText("");
+			lbInfoAlbum.setText("");
+			lbInfoUploadDate.setText("");
+			lbInfoAvgRating.setText("");
+			lbInfoArtist.setText("");
+			lbInfoGenre.setText("");
+			lbInfoLabel.setText("");
+			commentsModel.clear();
+			commentDetail.setText("");
+			
+			if(currentMedium.getArtist() != null)
+				lbInfoArtist.setText(currentMedium.getArtist().getPseudonym());
+			else
+				lbInfoArtist.setText("-");
+			
+			lbInfoTitle.setText(currentMedium.getTitle());
+			
+			if(currentMedium.getAlbum() != null)
+				lbInfoAlbum.setText(currentMedium.getAlbum().getTitle());
+			else
+				lbInfoAlbum.setText("-");
+			
+			if(currentMedium.getGenre() != null)
+				lbInfoGenre.setText(currentMedium.getGenre().getName());
+			else
+				lbInfoGenre.setText("-");
+			
+			if(currentMedium.getLabel() != null)
+				lbInfoLabel.setText(currentMedium.getLabel().getName());
+			else
+				lbInfoLabel.setText("-");
+			
+			if(currentMedium.getUploadDate() != null)
+				lbInfoUploadDate.setText(currentMedium.getUploadDate().toString());
+			else
+				lbInfoUploadDate.setText("-");
+			
+			Double rating = currentMedium.getAvgRating();
+			lbInfoAvgRating.setText(rating.toString());
+			
+			if((currentMedium.getComments() != null) && (currentMedium.getComments().size() > 0))
+			{
+				ListIterator<de.dezibel.data.Comment> iter = currentMedium.getComments().listIterator();
+				de.dezibel.data.Comment com;
+				
+				while(iter.hasNext())
+				{
+					com = iter.next();
+					commentsModel.addElement(com.getAuthor().getLastname() + com.getAuthor().getFirstname());
+					details.addLast(com.getText());
+				}
+			}
+		}
 	}
 
 	
 	private void createComponents(){
+		details = new LinkedList<String>();
 		lbArtist = new JLabel("Künstler:");
 		lbTitle = new JLabel("Titel:");
 	    lbAlbum = new JLabel("Album:");
@@ -107,12 +162,10 @@ public class MediumPanel extends DragablePanel {
 	    
 	    
 	    commentsModel = new DefaultListModel<String>();
-	    commentsModel.addElement("Paco Spacko");
-	    commentsModel.addElement("SoSoSo");
 	    
 	    comments = new JList<String>(commentsModel);
 	    comments.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-	    comments.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+	    comments.setLayoutOrientation(JList.VERTICAL);
 	    comments.setVisibleRowCount(-1);
 	    spComments = new JScrollPane(comments);
 	    spComments.setPreferredSize(new Dimension(250, 80));
@@ -126,67 +179,77 @@ public class MediumPanel extends DragablePanel {
 	    });
 	    
 	    commentDetail = new JTextArea();
+	    commentDetail.setWrapStyleWord(true);
+	    commentDetail.setLineWrap(true);
+	    commentDetail.setText("");
 	    commentDetail.setEditable(false);
+	    spCommentArea = new JScrollPane(commentDetail);
 	}
 	
 	private void createLayout(){
 		GroupLayout layout = new GroupLayout(this);
 		
-		layout.setHorizontalGroup(layout.createSequentialGroup()
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER))
-					.addComponent(lbArtist)
-					.addComponent(lbTitle)
-					.addComponent(lbAlbum)
-					.addComponent(lbGenre)
-					.addComponent(lbLabel)
-					.addComponent(lbUploadDate)
-					.addComponent(lbAvgRating)
-					.addComponent(lbComments)
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER))
-					.addComponent(lbInfoArtist)
-					.addComponent(lbInfoTitle)
-					.addComponent(lbInfoAlbum)
-					.addComponent(lbInfoGenre)
-					.addComponent(lbInfoLabel)
-					.addComponent(lbInfoUploadDate)
-					.addComponent(lbInfoAvgRating)
-					.addGroup(layout.createSequentialGroup()
-							.addComponent(spComments)
-							.addComponent(commentDetail))
-				);
+		layout.setAutoCreateContainerGaps(true);
+		layout.setAutoCreateGaps(true);
 		
-		layout.setVerticalGroup(layout.createSequentialGroup()
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE))
-					.addComponent(lbArtist)
-					.addComponent(lbInfoArtist)
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE))
-					.addComponent(lbTitle)
-					.addComponent(lbInfoTitle)
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE))
-					.addComponent(lbAlbum)
-					.addComponent(lbInfoAlbum)
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE))
-					.addComponent(lbGenre)
-					.addComponent(lbInfoGenre)
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE))
-					.addComponent(lbLabel)
-					.addComponent(lbInfoLabel)
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE))
-					.addComponent(lbUploadDate)
-					.addComponent(lbInfoUploadDate)
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE))
-					.addComponent(lbAvgRating)
-					.addComponent(lbInfoAvgRating)
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE))
-					.addComponent(lbComments)
-					.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-						.addComponent(spComments)
-						.addComponent(commentDetail))
-				);
+		
+		layout.setHorizontalGroup(layout.createSequentialGroup()
+			    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+			    		.addComponent(lbArtist)
+						.addComponent(lbTitle)
+						.addComponent(lbAlbum)
+						.addComponent(lbGenre)
+						.addComponent(lbLabel)
+						.addComponent(lbUploadDate)
+						.addComponent(lbAvgRating)
+						.addComponent(lbComments))
+			    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+			    		.addComponent(lbInfoArtist)
+						.addComponent(lbInfoTitle)
+						.addComponent(lbInfoAlbum)
+						.addComponent(lbInfoGenre)
+						.addComponent(lbInfoLabel)
+						.addComponent(lbInfoUploadDate)
+						.addComponent(lbInfoAvgRating)
+						.addGroup(layout.createSequentialGroup()
+							.addComponent(spComments)
+							.addComponent(spCommentArea)))
+			);
+
+			layout.setVerticalGroup(layout.createSequentialGroup()
+			    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+			    	.addComponent(lbArtist)
+			        .addComponent(lbInfoArtist))
+			    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+			    	.addComponent(lbTitle)
+			        .addComponent(lbInfoTitle))
+			    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+			    	.addComponent(lbAlbum)
+			        .addComponent(lbInfoAlbum))
+			    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+			    	.addComponent(lbGenre)
+			        .addComponent(lbInfoGenre))
+			    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+			    	.addComponent(lbLabel)
+			        .addComponent(lbInfoLabel))
+			    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+			    	.addComponent(lbUploadDate)
+			        .addComponent(lbInfoUploadDate))
+			   .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+			    	.addComponent(lbAvgRating)
+			        .addComponent(lbInfoAvgRating))
+			   .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+			    	.addComponent(lbComments)
+			        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+			        		.addComponent(spComments)
+			        		.addComponent(spCommentArea)))
+			);
+			layout.linkSize(SwingConstants.HORIZONTAL, spComments, spCommentArea);
+			layout.linkSize(SwingConstants.VERTICAL, spComments, spCommentArea);
 		this.setLayout(layout);
 	}
 	
 	private void onCommentChanged(){
-		
+		this.commentDetail.setText(this.details.get(comments.getSelectedIndex()));
 	}
 }
