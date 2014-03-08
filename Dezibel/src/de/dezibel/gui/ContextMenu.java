@@ -105,6 +105,7 @@ public class ContextMenu {
         }
 
         JMenuItem menuItemPlay = new JMenuItem("Warteschlange");
+        JMenuItem menuItemPlayNext = new JMenuItem("Als nächsten abspielen");
         JMenu menuRate = new JMenu("Bewerten");
         final JRadioButtonMenuItem menuItemRate1 = new JRadioButtonMenuItem("1 Stern", false);
         final JRadioButtonMenuItem menuItemRate2 = new JRadioButtonMenuItem("2 Stern", false);
@@ -128,6 +129,22 @@ public class ContextMenu {
         });
 
         currentPopupMenu.add(menuItemPlay);
+
+        menuItemPlayNext.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Medium m = (Medium) currentTableModel.getValueAt(
+                        currentTable.getSelectedRow(), -1);
+                if (m != null) {
+                    Player.getInstance().addMediumAsNext(m);
+                    if (!Player.getInstance().isPlaying()) {
+                        Player.getInstance().play();
+                    }
+                }
+            }
+        });
+        
+        currentPopupMenu.add(menuItemPlayNext);
 
         menuItemRate1.addActionListener(new ActionListener() {
             @Override
