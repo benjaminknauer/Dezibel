@@ -3,6 +3,7 @@ package de.dezibel.gui;
 import de.dezibel.control.LabelControl;
 import de.dezibel.control.ProfileControl;
 import de.dezibel.data.Label;
+import de.dezibel.data.News;
 import de.dezibel.data.User;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -102,6 +103,7 @@ public class ProfilPanel extends DragablePanel {
     private MediaTableModel mediaModellFavo;
     private AlbumTableModel albumModellUpload;
     private AlbumTableModel albumModellFavo;
+    private NewsSideTableModel newsModell;
 
     /**
      * Constructor of the ProfilPanel class.
@@ -248,6 +250,7 @@ public class ProfilPanel extends DragablePanel {
         mediaModellFavo.setData(profileControler.getFavorizedMediums(currentUser));
         albumModellUpload.setData(profileControler.getCreatedAlbums(currentUser));
         albumModellFavo.setData(profileControler.getFavorizedAlbums(currentUser));
+        newsModell.setData(profileControler.getNews(currentUser));
     }
 
     /**
@@ -474,22 +477,20 @@ public class ProfilPanel extends DragablePanel {
 
     private void createNewsComponents() {
 
-        //pnNews
-        //taNews = new JTextArea();
-        tNews = new JTable(100, 1);
+        newsModell = new NewsSideTableModel();
+        tNews = new JTable(newsModell);
 
-        tNews.getTableHeader().setVisible(false);
-        tNews.setEnabled(false);
         JScrollPane sptNews = new JScrollPane(tNews);
         sptNews.getViewport().setView(tNews);
         pnNews.add(sptNews);
 
         taNews = new JTextArea();
+        taNews.setLineWrap(true);
+        taNews.setWrapStyleWord(true);
 
-        // taNews.setEnabled(false);
         JScrollPane sptaNews = new JScrollPane(taNews);
         sptaNews.getViewport().setView(taNews);
-        taNews.setEnabled(false);
+        taNews.setEditable(false);
         pnNews.add(sptaNews);
 
         GroupLayout layout = new GroupLayout(pnNews);
@@ -498,8 +499,6 @@ public class ProfilPanel extends DragablePanel {
                 .addGroup(
                         GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(sptNews, 128, 128, 2000))
-                // .addComponent(spPlaylists))
-
                 .addGroup(
                         GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(sptaNews, 128, 128, 2000))
@@ -520,8 +519,14 @@ public class ProfilPanel extends DragablePanel {
         layout.setAutoCreateContainerGaps(true);
         layout.setAutoCreateGaps(true);
         pnNews.setLayout(layout);
-        pnNews.setOpaque(false);
 
+        tNews.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                News n = (News) newsModell.getValueAt(tNews.getSelectedRow(), -1);
+                taNews.setText(n.getText());
+            }
+        });
     }
 
     private void createFavoritenComponents() {
@@ -531,7 +536,7 @@ public class ProfilPanel extends DragablePanel {
         lbPlaylist.setHorizontalAlignment(JLabel.CENTER);
         tPlaylists = new JTable(playlistModellFavo);
         tPlaylists.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
+
         JScrollPane spPlaylists = new JScrollPane(tPlaylists);
         spPlaylists.getViewport().setView(tPlaylists);
         pnFavorites.add(spPlaylists);
@@ -551,7 +556,7 @@ public class ProfilPanel extends DragablePanel {
         lbAlbumsFavo.setHorizontalAlignment(JLabel.CENTER);
         tAlbums = new JTable(albumModellFavo);
         tAlbums.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
+
         JScrollPane spAlbums = new JScrollPane();
         spAlbums.getViewport().setView(tAlbums);
         pnFavorites.add(spAlbums);
@@ -582,7 +587,7 @@ public class ProfilPanel extends DragablePanel {
         layout.setAutoCreateContainerGaps(true);
         layout.setAutoCreateGaps(true);
         pnFavorites.setLayout(layout);
-        
+
         tPlaylists.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent me) {
@@ -604,7 +609,7 @@ public class ProfilPanel extends DragablePanel {
                 currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
             }
         });
-        
+
         tMedia.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent me) {
@@ -624,21 +629,21 @@ public class ProfilPanel extends DragablePanel {
                 ContextMenu contextMenu = new ContextMenu(parent);
                 currentPopupMenu = contextMenu.getContextMenu(tMedia, me);
                 currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
-                
+
             }
-          
+
         });
-            
+
     }
 
     private void createUploadsComponents() {
-        
+
         lbPlaylist = new JLabel("Wiedergabe Listen");
         lbPlaylist.setHorizontalAlignment(JLabel.CENTER);
         playlistModellUpload = new MyListsTableModel();
         tPlaylists = new JTable(playlistModellUpload);
         tPlaylists.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
+
         JScrollPane spPlaylists = new JScrollPane(tPlaylists);
         spPlaylists.getViewport().setView(tPlaylists);
         pnUploads.add(spPlaylists);
@@ -683,14 +688,12 @@ public class ProfilPanel extends DragablePanel {
                         .addComponent(spMedia, 100, 100, 700)
                         .addComponent(lbAlbumsUpload, 32, 32, 32)
                         .addComponent(spAlbums, 100, 100, 700)
-                        
                 )
         );
 
         layout.setAutoCreateContainerGaps(true);
         layout.setAutoCreateGaps(true);
         pnUploads.setLayout(layout);
-       
 
     }
 
@@ -755,9 +758,9 @@ public class ProfilPanel extends DragablePanel {
         pnLabels.add(btnCreateLabel);
     }
 
-	@Override
-	public void reset() {
+    @Override
+    public void reset() {
 		// TODO Auto-generated method stub
-		
-	}
+
+    }
 }
