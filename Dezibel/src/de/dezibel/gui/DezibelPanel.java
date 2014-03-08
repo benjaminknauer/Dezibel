@@ -61,7 +61,6 @@ public class DezibelPanel extends JPanel {
     private static final long serialVersionUID = 1L;
     private JFrame frame;
     private JMenuBar menuBar;
-
     // Declares all panels the user can work with.
     private DragablePanel pnLogin;
     private DragablePanel pnRegister;
@@ -72,8 +71,7 @@ public class DezibelPanel extends JPanel {
     private DragablePanel pnFavorites;
     private DragablePanel pnProfil;
     private DragablePanel pnSearch;
-
-	// Javadocking uses Dockable, to enable dragging and docking for childpanels
+    // Javadocking uses Dockable, to enable dragging and docking for childpanels
     // Any panel you want to drag and dock have to be in its own Dockable
     private Dockable daLogin;
     private Dockable daRegister;
@@ -84,137 +82,136 @@ public class DezibelPanel extends JPanel {
     private Dockable daPlayer;
     private Dockable daProfil;
     private Dockable daSearch;
+    // We uses a LineDock at the bottom,top,left and right where all panels can
+    // be docked to.
+    // Except some panels, like players where only can be docked at the bottom,
+    // center or top.
+    // Any panel can be dragged to the center where the panel will be docked and
+    // shows extra information
+    private BorderDock borderDock;
+    private LineDock leftLineDock;
+    private LineDock rightLineDock;
+    private SingleDock centerDock;
+    private DockingExecutor executor;
+    private boolean addLeft;
 
-	// We uses a LineDock at the bottom,top,left and right where all panels can
-	// be docked to.
-	// Except some panels, like players where only can be docked at the bottom,
-	// center or top.
-	// Any panel can be dragged to the center where the panel will be docked and
-	// shows extra information
-	private BorderDock borderDock;
-	private LineDock leftLineDock;
-	private LineDock rightLineDock;
-	private SingleDock centerDock;
-	private DockingExecutor executor;
-	private boolean addLeft;
-	/**
-	 * Constructor of the panel
-	 * 
-	 * @param frame
-	 *            Frame that contains the panel.
-	 */
-	public DezibelPanel(JFrame frame) {
-		super(new BorderLayout());
-		this.frame = frame;
-		frame.setBackground(DezibelColor.Background);
-		this.setBackground(DezibelColor.Background);
-		frame.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				SaveControl saveControl = new SaveControl();
-				saveControl.save();
-			}
-		});
-	
-		this.addLeft = true;
-		// Create the content components.
-		pnLogin 	= new LoginPanel(this);
-		pnRegister 	= new RegistrationPanel(this);
-		pnPlayer 	= new PlayerPanel(this);
-		pnNews 		= new NewsSidePanel(this);
-		pnAds 		= new AdsPanel(this);
-		pnMyList 	= new MyListsPanel(this);
-		pnFavorites = new FavoritesPanel(this);
-		pnProfil 	= new ProfilPanel(this);
-		pnSearch 	= new SearchPanel(this);
-		
-		pnLogin.setBackground(DezibelColor.Background);
-		pnRegister.setBackground(DezibelColor.Background);
-		pnPlayer.setBackground(DezibelColor.Background);
-		pnNews.setBackground(DezibelColor.Background);
-		pnAds.setBackground(DezibelColor.Background);
-		pnMyList.setBackground(DezibelColor.Background);
-		pnFavorites.setBackground(DezibelColor.Background);
-		pnProfil.setBackground(DezibelColor.Background);	
-		pnSearch.setBackground(DezibelColor.Background);
-		
+    /**
+     * Constructor of the panel
+     *
+     * @param frame Frame that contains the panel.
+     */
+    public DezibelPanel(JFrame frame) {
+        super(new BorderLayout());
+        this.frame = frame;
+        frame.setBackground(DezibelColor.Background);
+        this.setBackground(DezibelColor.Background);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                SaveControl saveControl = new SaveControl();
+                saveControl.save();
+            }
+        });
+
+        this.addLeft = true;
+        // Create the content components.
+        pnLogin = new LoginPanel(this);
+        pnRegister = new RegistrationPanel(this);
+        pnPlayer = new PlayerPanel(this);
+        pnNews = new NewsSidePanel(this);
+        pnAds = new AdsPanel(this);
+        pnMyList = new MyListsPanel(this);
+        pnFavorites = new FavoritesPanel(this);
+        pnProfil = new ProfilPanel(this);
+        pnSearch = new SearchPanel(this);
+
+        pnLogin.setBackground(DezibelColor.Background);
+        pnRegister.setBackground(DezibelColor.Background);
+        pnPlayer.setBackground(DezibelColor.Background);
+        pnNews.setBackground(DezibelColor.Background);
+        pnAds.setBackground(DezibelColor.Background);
+        pnMyList.setBackground(DezibelColor.Background);
+        pnFavorites.setBackground(DezibelColor.Background);
+        pnProfil.setBackground(DezibelColor.Background);
+        pnSearch.setBackground(DezibelColor.Background);
+
         //this.setBackground(new Color(239, 239, 239));
-		this.createDocking();
-		this.showLogin();
-	}
+        this.createDocking();
+        this.showLogin();
+    }
 
-	/**
-	 * Shows the login-panel docked in the center with no other panels on the
-	 * frame Any panel docked in the center will be removed.
-	 */
-	public void showLogin() {
-		this.showAtCenter(daLogin);
-	}
+    /**
+     * Shows the login-panel docked in the center with no other panels on the
+     * frame Any panel docked in the center will be removed.
+     */
+    public void showLogin() {
+        this.showAtCenter(daLogin);
+    }
 
-	/**
-	 * Shows the registration-panel docked in the center with no other panels on
-	 * the frame Any panel docked in the center will be removed.
-	 */
-	public void showRegistration() {
-		this.showAtCenter(daRegister);
-	}
+    /**
+     * Shows the registration-panel docked in the center with no other panels on
+     * the frame Any panel docked in the center will be removed.
+     */
+    public void showRegistration() {
+        this.showAtCenter(daRegister);
+    }
 
-	/**
-	 * Creates the typical workspace, with sidebards on the right and left, the
-	 * player-panel docked at the bottom and a profil-panel at the center.
-	 */
-	public void showWorkspace() {
+    /**
+     * Creates the typical workspace, with sidebards on the right and left, the
+     * player-panel docked at the bottom and a profil-panel at the center.
+     */
+    public void showWorkspace() {
         ((MyListsPanel) pnMyList).refresh();
         ((AdsPanel) pnAds).refresh();
         this.createMenubar();
-		frame.setJMenuBar(menuBar);
-		this.showSidebars();
-		//this.showAtCenter(daPlayer);
-		this.showAtCenter(daSearch);
-		((ProfilPanel) daProfil.getContent()).setUser(Database.getInstance()
-				.getLoggedInUser());
-	}
-	
-	public void showProfile(User user){
-		ProfilPanel pn = (ProfilPanel) pnProfil;
-		pn.setUser(user);
-		pn.setBackground(DezibelColor.Background);
-		this.showAtCenter(daProfil);
-	}
-	
-	public void showPlaylist(Playlist list){
-		PlaylistPanel pnPlaylist = new PlaylistPanel(this,list);
-		pnPlaylist.setBackground(DezibelColor.Background);
-		Dockable daPlaylist = new DefaultDockable("pnPlaylist", pnPlaylist, "Playlist", null,
-				DockingMode.CENTER + DockingMode.SINGLE);
-		this.showAtCenter(daPlaylist);
-	}
-        
-        public void showMyLists(){
-            pnMyList = new MyListsPanel(this);
-            pnMyList.setBackground(DezibelColor.Background);
+        frame.setJMenuBar(menuBar);
+        this.showSidebars();
+        //this.showAtCenter(daPlayer);
+        this.showAtCenter(daSearch);
+        ((ProfilPanel) daProfil.getContent()).setUser(Database.getInstance()
+                .getLoggedInUser());
+    }
+
+    public void showProfile(User user) {
+        ProfilPanel pn = (ProfilPanel) pnProfil;
+        pn.setUser(user);
+        pn.setBackground(DezibelColor.Background);
+        this.showAtCenter(daProfil);
+    }
+
+    public void showPlaylist(Playlist list) {
+        PlaylistPanel pnPlaylist = new PlaylistPanel(this, list);
+        pnPlaylist.setBackground(DezibelColor.Background);
+        Dockable daPlaylist = new DefaultDockable("pnPlaylist", pnPlaylist, "Playlist", null,
+                DockingMode.CENTER + DockingMode.SINGLE);
+        this.showAtCenter(daPlaylist);
+    }
+
+    public void showMyLists() {
+        pnMyList = new MyListsPanel(this);
+        pnMyList.setBackground(DezibelColor.Background);
+    }
+
+    public void refresh(UpdateEntity ue) {
+        switch (ue) {
+            case PLAYLIST:
+                pnMyList.refresh();
+                if (this.centerDock.getDockable(0).getContent() instanceof PlaylistPanel) {
+                    PlaylistPanel pn = (PlaylistPanel) this.centerDock.getDockable(0).getContent();
+                    pn.refresh();
+                }
+
+
+            default:
+                break;
         }
-        
-        public void refresh(UpdateEntity ue){
-        	switch(ue){
-                    case PLAYLIST:
-                        pnMyList.refresh();
-                        if(this.centerDock.getDockable(0).getContent() instanceof PlaylistPanel){
-                        PlaylistPanel pn = (PlaylistPanel) this.centerDock.getDockable(0).getContent();
-                        pn.refresh();
-                        }
-                        
-        	
-        	default:
-        	break;
-        	}
-        }
-    
+    }
 
     /**
      * This function is only called in the main-function and only once. It
-     * creates a <code>JFrame</code> with a <code>DezibelPanel</code> and some
-     * docking-features.
+     * creates a
+     * <code>JFrame</code> with a
+     * <code>DezibelPanel</code> and some docking-features.
      */
     public static void createAndShowGUI() {
 
@@ -261,7 +258,7 @@ public class DezibelPanel extends JPanel {
 
         // Give the dock model to the docking manager.
         DockingManager.setDockModel(dockModel);
-		// Create the dockables around the content components.
+        // Create the dockables around the content components.
         // MainPanles, that can only be displayed in the Center
         daLogin = new DefaultDockable("pnLogin", pnLogin, "Login", null,
                 DockingMode.CENTER);
@@ -360,8 +357,10 @@ public class DezibelPanel extends JPanel {
 
     /**
      * Adds a listener to the side-panels, which can be docked at center,left
-     * and right. If a dockable is docked to the center, <code>onCenter</code>
-     * is called from <code>DragablePanel</code>, else <code>onLeftRight</code>
+     * and right. If a dockable is docked to the center,
+     * <code>onCenter</code> is called from
+     * <code>DragablePanel</code>, else
+     * <code>onLeftRight</code>
      */
     private void addSideCenterListener() {
         daNews.addDockingListener(new DockingListener() {
@@ -433,7 +432,8 @@ public class DezibelPanel extends JPanel {
     }
 
     /**
-     * Same as <code>addSideCenterListener</code>, but for Top,Bottom and Center
+     * Same as
+     * <code>addSideCenterListener</code>, but for Top,Bottom and Center
      */
     private void addTopBottomCenterListener() {
         daPlayer.addDockingListener(new DockingListener() {
@@ -462,7 +462,6 @@ public class DezibelPanel extends JPanel {
 
             @Override
             public void dockingWillChange(DockingEvent e) {
-
             }
         });
     }
@@ -653,7 +652,7 @@ public class DezibelPanel extends JPanel {
                 }
             }
 
-            this.clearCenter();
+            this.clearCenter(da);
             this.executor.changeDocking(da, this.centerDock, new Position(0));
 
         } else {
@@ -662,14 +661,19 @@ public class DezibelPanel extends JPanel {
         }
     }
 
-    public void clearCenter() {
+    private void clearCenter(Dockable newDa) {
         if (this.centerDock.getDockableCount() > 0) {
-            
             //refresh panels to clear selection and to load new data
-            if(this.centerDock.getDockable(0).getContent() instanceof PlaylistPanel){
+            if ((this.centerDock.getDockable(0).getContent() instanceof PlaylistPanel)
+                    && !(newDa.getContent() instanceof PlaylistPanel)) {
                 this.refresh(UpdateEntity.PLAYLIST);
             }//TODO Andere Panels beim schließen bestimmter Komponenten aktualisieren
-            
+            this.clearCenter();
+        }
+    }
+
+    public void clearCenter() {
+        if (this.centerDock.getDockableCount() > 0) {
             // close the dockable at centerposition
             this.executor.changeDocking(this.centerDock.getDockable(this.centerDock.getDockableCount() - 1), null, new Position(0));
         }
