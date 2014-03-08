@@ -2,6 +2,7 @@ package de.dezibel.gui;
 
 import de.dezibel.control.LabelControl;
 import de.dezibel.control.ProfileControl;
+import de.dezibel.data.Comment;
 import de.dezibel.data.Label;
 import de.dezibel.data.News;
 import de.dezibel.data.User;
@@ -104,6 +105,7 @@ public class ProfilPanel extends DragablePanel {
     private AlbumTableModel albumModellUpload;
     private AlbumTableModel albumModellFavo;
     private NewsSideTableModel newsModell;
+    private JTextArea taComments;
 
     /**
      * Constructor of the ProfilPanel class.
@@ -156,10 +158,6 @@ public class ProfilPanel extends DragablePanel {
         this.tfCity.setText(profileControler.getCity(currentUser));
         this.tfCountry.setText(profileControler.getCountry(currentUser));
         this.tfAboutMe.setText(profileControler.getAboutMe(currentUser));
-        this.followerModell.setData(profileControler.getFollowers(currentUser));
-        this.commentModell.setData(profileControler.getCreatedComments(currentUser));
-        this.labelModellManaged.setData(profileControler.getManagedLabels(currentUser));
-        this.labelModellPublishing.setData(profileControler.getPublishingLabels(currentUser));
 
         if (currentUser == profileControler.getLoggedInUser()) {
             btnFollow.setVisible(false);
@@ -467,18 +465,60 @@ public class ProfilPanel extends DragablePanel {
         commentModell = new CommentTableModel();
         tComments = new JTable(commentModell);
         tComments.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        
+        taComments = new JTextArea();
+        taComments.setLineWrap(true);
+        taComments.setWrapStyleWord(true);
+        JScrollPane sptaComments = new JScrollPane(taComments);
+        taComments.setEditable(false);
 
         tablePanel = new JScrollPane(tComments);
         tablePanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        BorderLayout fLayout = new BorderLayout();
-        pnComments.setLayout(fLayout);
-        pnComments.add(tablePanel, BorderLayout.CENTER);
+
+        pnComments.add(tablePanel);
+        pnComments.add(sptaComments);
+        
+        GroupLayout layout = new GroupLayout(pnComments);
+        layout.setHorizontalGroup(layout
+                .createParallelGroup(GroupLayout.Alignment.CENTER, true)
+                .addGroup(
+                        GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(tablePanel, 128, 128, 2000))
+                .addGroup(
+                        GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(sptaComments, 128, 128, 2000))
+        );
+
+        layout.setVerticalGroup(layout.createParallelGroup(
+                GroupLayout.Alignment.CENTER, true)
+                .addGroup(layout.createSequentialGroup()
+                        .addGroup(
+                                layout.createParallelGroup(GroupLayout.Alignment.LEADING, true)
+                                .addComponent(tablePanel, 100, 100, 1000))
+                        .addGroup(
+                                layout.createParallelGroup(GroupLayout.Alignment.TRAILING, true)
+                                .addComponent(sptaComments, 100, 100, 1000))
+                )
+        );
+
+        layout.setAutoCreateContainerGaps(true);
+        layout.setAutoCreateGaps(true);
+        pnComments.setLayout(layout);
+
+        tComments.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Comment c = (Comment) commentModell.getValueAt(tComments.getSelectedRow(), -1);
+                taComments.setText(c.getText());
+            }
+        });
     }
 
     private void createNewsComponents() {
 
         newsModell = new NewsSideTableModel();
         tNews = new JTable(newsModell);
+        tNews.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         JScrollPane sptNews = new JScrollPane(tNews);
         sptNews.getViewport().setView(tNews);
