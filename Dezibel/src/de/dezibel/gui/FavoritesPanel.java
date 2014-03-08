@@ -1,4 +1,3 @@
-
 package de.dezibel.gui;
 
 import de.dezibel.data.Database;
@@ -18,7 +17,7 @@ import javax.swing.JTable;
  *
  * @author Aris, Tristan
  */
-public class FavoritesPanel extends DragablePanel{
+public class FavoritesPanel extends DragablePanel {
 
     private JLabel lbTitel;
     private JScrollPane scrollPane1;
@@ -26,9 +25,7 @@ public class FavoritesPanel extends DragablePanel{
     private JTable tblFavoritesUser;
     private JTable tblFavoritesLabel;
     private FavoritesTableModelUser ftmu;
-   private FavoritesTableModelLabel ftml;
-
-     
+    private FavoritesTableModelLabel ftml;
     private JPopupMenu currentPopupMenu;
     private User currentUser;
 
@@ -36,17 +33,18 @@ public class FavoritesPanel extends DragablePanel{
         super(parent);
         createComponents();
         createLayout();
-
+        this.setBackground(DezibelColor.PanelBackground);
     }
+
     @Override
     public void refresh() {
         if (Database.getInstance().getLoggedInUser() != null) {
-        LinkedList<Playlist> myPlaylists = Database.getInstance().getLoggedInUser()
-                .getCreatedPlaylists();
-        LinkedList<Playlist> favoritePlaylists = Database.getInstance().getLoggedInUser()
-                .getFavoritePlaylists();
-        myPlaylists.addAll(favoritePlaylists);
-        //mltm.setData(myPlaylists);
+            LinkedList<Playlist> myPlaylists = Database.getInstance().getLoggedInUser()
+                    .getCreatedPlaylists();
+            LinkedList<Playlist> favoritePlaylists = Database.getInstance().getLoggedInUser()
+                    .getFavoritePlaylists();
+            myPlaylists.addAll(favoritePlaylists);
+            //mltm.setData(myPlaylists);
         }
     }
 
@@ -68,25 +66,27 @@ public class FavoritesPanel extends DragablePanel{
                             tblFavoritesUser.getSelectedRow(), -1);
                     parent.showProfile(u);
                 }
-            }            
+            }
         });
-        
+
         tblFavoritesLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
-                   User u = (User) ftmu.getValueAt(
+                    User u = (User) ftmu.getValueAt(
                             tblFavoritesLabel.getSelectedRow(), -1);
                     //parent.showProfile(u);
-                   // TODO: Implement showProfile for Label
+                    // TODO: Implement showProfile for Label
                 }
-            }            
+            }
         });
 
     }
 
     private void createLayout() {
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        this.lbTitel.setAlignmentX(CENTER_ALIGNMENT);
+        this.lbTitel.setFont(DezibelFont.SIDEPANEL_TITLE);
         this.add(lbTitel);
         this.add(scrollPane1);
         this.add(scrollPane2);
@@ -96,9 +96,9 @@ public class FavoritesPanel extends DragablePanel{
         this.currentUser = newUser;
         this.refresh();
     }
-	@Override
-	public void reset() {
-		// TODO Auto-generated method stub
-		
-	}
+
+    @Override
+    public void reset() {
+        // TODO Auto-generated method stub
+    }
 }
