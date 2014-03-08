@@ -164,7 +164,7 @@ public class DezibelPanel extends JPanel {
 	 * player-panel docked at the bottom and a profil-panel at the center.
 	 */
 	public void showWorkspace() {
-        ((MyListsPanel) pnMyList).refresh(); //TODO!! QUICK&DIRTY: Aufruf an richtige Stelle setzen
+        ((MyListsPanel) pnMyList).refresh();
         this.createMenubar();
 		frame.setJMenuBar(menuBar);
 		this.showSidebars();
@@ -222,10 +222,12 @@ public class DezibelPanel extends JPanel {
 
         // Set the frame properties and show it.
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation((screenSize.width - 600) / 2,
-                (screenSize.height - 800) / 2);
-        frame.setSize(800, 600);
+//        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+//        frame.setLocation((screenSize.width - 600) / 2,
+//                (screenSize.height - 800) / 2);
+        frame.setSize(1024, 768);
+        frame.setMinimumSize(new Dimension(800, 600)); //TODO: sinnvolle Minimalgröße?
+        frame.setLocationRelativeTo(null);
 
         // Create the panel and add it to the frame.
         DezibelPanel panel = new DezibelPanel(frame);
@@ -233,7 +235,6 @@ public class DezibelPanel extends JPanel {
 
         // Show.
         frame.setVisible(true);
-        frame.setMinimumSize(new Dimension(800, 600));
     }
 
     /**
