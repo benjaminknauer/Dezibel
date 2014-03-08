@@ -139,6 +139,9 @@ public class ProfilPanel extends DragablePanel {
     public void refresh() {
 
         tabPanel.setSelectedIndex(0);
+        
+        taNews.setText("");
+        taComments.setText("");
 
         if (!(currentUser.isArtist())) {
             this.tfPseudonym.setVisible(false);
@@ -158,6 +161,7 @@ public class ProfilPanel extends DragablePanel {
         this.tfCity.setText(profileControler.getCity(currentUser));
         this.tfCountry.setText(profileControler.getCountry(currentUser));
         this.tfAboutMe.setText(profileControler.getAboutMe(currentUser));
+        
 
         if (currentUser == profileControler.getLoggedInUser()) {
             btnFollow.setVisible(false);
@@ -745,7 +749,6 @@ public class ProfilPanel extends DragablePanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String labelName = JOptionPane.showInputDialog("Wählen Sie einen Namen für Ihr Label:");
-                System.out.print(labelName);
                 if (labelName != null && labelName.length() > 0) {
                     labelControler.createLabel(currentUser, labelName);
                     labelControler.promoteUserToLabelManager(currentUser);
@@ -803,4 +806,5 @@ public class ProfilPanel extends DragablePanel {
 		// TODO Auto-generated method stub
 
     }
+    
 }
