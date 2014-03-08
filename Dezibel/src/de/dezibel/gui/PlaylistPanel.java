@@ -13,6 +13,7 @@ import javax.swing.JTable;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JScrollPane;
@@ -59,10 +60,8 @@ public class PlaylistPanel extends DragablePanel {
                             tblPlaylistMedia.getSelectedRow(), -1);
                     if (m != null) {
                         //TODO Song an der Anfang der Queue
-                        Player.getInstance().clearPlaylist();
-                        Player.getInstance().addMedium(m);
-
-                        Player.getInstance().play();
+                        Player.getInstance().addMediumAsNext(m);
+                        Player.getInstance().next();
                     }
                 }
             }

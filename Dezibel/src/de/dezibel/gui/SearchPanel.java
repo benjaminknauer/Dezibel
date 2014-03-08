@@ -1,6 +1,8 @@
 package de.dezibel.gui;
 
 import de.dezibel.control.Search;
+import de.dezibel.data.Medium;
+import de.dezibel.player.Player;
 
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -50,12 +52,10 @@ public class SearchPanel extends DragablePanel {
     private AlbumTableModel tableModelAlbum;
     private JScrollPane tablePanel;
     private GroupLayout layout;
-
     private JPanel pnSortingMedium;
     private JPanel pnSortingUser;
     private JPanel pnSortingLabel;
     private JPanel pnSortingAlbum;
-
     private JPopupMenu currentPopupMenu;
 
     public SearchPanel(DezibelPanel parent) {
@@ -112,6 +112,21 @@ public class SearchPanel extends DragablePanel {
                     showPopup(me);
                 }
             }
+            
+            // play song when clicked twice
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+                    if (tableResults.getModel() instanceof MediaTableModel) {
+                        Medium m = (Medium) tableResults.getModel().getValueAt(
+                                tableResults.getSelectedRow(), -1);
+                        if (m != null) {
+                            Player.getInstance().addMediumAsNext(m);
+                            Player.getInstance().next();
+                        }
+                    }
+                }
+            }
 
             private void showPopup(MouseEvent me) {
                 ContextMenu contextMenu = new ContextMenu(parent);
@@ -165,16 +180,16 @@ public class SearchPanel extends DragablePanel {
         layoutMedium.setHorizontalGroup(
                 layoutMedium.createParallelGroup()
                 .addGroup(layoutMedium.createSequentialGroup()
-                        .addComponent(lblSortingMedium)
-                        .addComponent(rbSongAlphabetical)
-                        .addComponent(rbRating)
-                        .addComponent(rbUploadDate)));
+                .addComponent(lblSortingMedium)
+                .addComponent(rbSongAlphabetical)
+                .addComponent(rbRating)
+                .addComponent(rbUploadDate)));
         layoutMedium.setVerticalGroup(layoutMedium.createParallelGroup()
                 .addGroup(layoutMedium.createParallelGroup()
-                        .addComponent(lblSortingMedium)
-                        .addComponent(rbSongAlphabetical)
-                        .addComponent(rbRating)
-                        .addComponent(rbUploadDate)));
+                .addComponent(lblSortingMedium)
+                .addComponent(rbSongAlphabetical)
+                .addComponent(rbRating)
+                .addComponent(rbUploadDate)));
         pnSortingMedium.setLayout(layoutMedium);
 
         GroupLayout layoutUser = new GroupLayout(pnSortingUser);
@@ -182,12 +197,12 @@ public class SearchPanel extends DragablePanel {
         layoutUser.setAutoCreateGaps(true);
         layoutUser.setHorizontalGroup(layoutUser.createParallelGroup()
                 .addGroup(layoutUser.createSequentialGroup()
-                        .addComponent(lblSortingUser)
-                        .addComponent(rbUserAlphabetical)));
+                .addComponent(lblSortingUser)
+                .addComponent(rbUserAlphabetical)));
         layoutUser.setVerticalGroup(layoutUser.createParallelGroup()
                 .addGroup(layoutUser.createParallelGroup()
-                        .addComponent(lblSortingUser)
-                        .addComponent(rbUserAlphabetical)));
+                .addComponent(lblSortingUser)
+                .addComponent(rbUserAlphabetical)));
         pnSortingUser.setLayout(layoutUser);
 
         GroupLayout layoutLabel = new GroupLayout(pnSortingLabel);
@@ -195,12 +210,12 @@ public class SearchPanel extends DragablePanel {
         layoutLabel.setAutoCreateGaps(true);
         layoutLabel.setHorizontalGroup(layoutLabel.createParallelGroup()
                 .addGroup(layoutLabel.createSequentialGroup()
-                        .addComponent(lblSortingLabel)
-                        .addComponent(rbLabelAlphabetical)));
+                .addComponent(lblSortingLabel)
+                .addComponent(rbLabelAlphabetical)));
         layoutLabel.setVerticalGroup(layoutLabel.createParallelGroup()
                 .addGroup(layoutLabel.createParallelGroup()
-                        .addComponent(lblSortingLabel)
-                        .addComponent(rbLabelAlphabetical)));
+                .addComponent(lblSortingLabel)
+                .addComponent(rbLabelAlphabetical)));
         pnSortingLabel.setLayout(layoutLabel);
 
         GroupLayout layoutPlaylist = new GroupLayout(pnSortingAlbum);
@@ -208,12 +223,12 @@ public class SearchPanel extends DragablePanel {
         layoutPlaylist.setAutoCreateGaps(true);
         layoutPlaylist.setHorizontalGroup(layoutPlaylist.createParallelGroup()
                 .addGroup(layoutPlaylist.createSequentialGroup()
-                        .addComponent(lblSortingAlbum)
-                        .addComponent(rbAlbumAlphabetical)));
+                .addComponent(lblSortingAlbum)
+                .addComponent(rbAlbumAlphabetical)));
         layoutPlaylist.setVerticalGroup(layoutPlaylist.createParallelGroup()
                 .addGroup(layoutPlaylist.createParallelGroup()
-                        .addComponent(lblSortingAlbum)
-                        .addComponent(rbAlbumAlphabetical)));
+                .addComponent(lblSortingAlbum)
+                .addComponent(rbAlbumAlphabetical)));
         pnSortingAlbum.setLayout(layoutPlaylist);
 
     }
@@ -225,31 +240,28 @@ public class SearchPanel extends DragablePanel {
         layout.setAutoCreateGaps(true);
         layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, true)
                 .addGroup(layout.createSequentialGroup()
-                        .addComponent(tfSearch, 256, 256, 256)
-                        .addComponent(cbFilter, 128, 128, 128)
-                        .addComponent(bnSearch, 80, 80, 80))
+                .addComponent(tfSearch, 256, 256, 256)
+                .addComponent(cbFilter, 128, 128, 128)
+                .addComponent(bnSearch, 80, 80, 80))
                 .addGroup(layout.createSequentialGroup()
-                        .addComponent(pnSorting))
+                .addComponent(pnSorting))
                 .addGroup(layout.createSequentialGroup()
-                        .addComponent(tablePanel))
-        );
+                .addComponent(tablePanel)));
 
         layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, true)
                 .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup()
-                                .addComponent(tfSearch, 32, 32, 32)
-                                .addComponent(cbFilter, 32, 32, 32)
-                                .addComponent(bnSearch, 32, 32, 32))
-                        .addComponent(pnSorting)
-                        .addComponent(tablePanel)
-                        .addGap(0, 10, 10000))
-        );
+                .addGroup(layout.createParallelGroup()
+                .addComponent(tfSearch, 32, 32, 32)
+                .addComponent(cbFilter, 32, 32, 32)
+                .addComponent(bnSearch, 32, 32, 32))
+                .addComponent(pnSorting)
+                .addComponent(tablePanel)
+                .addGap(0, 10, 10000)));
         this.setLayout(layout);
     }
 
     private void createListener() {
         cbFilter.addItemListener(new ItemListener() {
-
             public void itemStateChanged(ItemEvent e) {
                 CardLayout cl = (CardLayout) pnSorting.getLayout();
                 cl.show(pnSorting, (String) e.getItem());
@@ -271,7 +283,6 @@ public class SearchPanel extends DragablePanel {
         });
 
         bnSearch.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent arg0) {
 
@@ -318,15 +329,13 @@ public class SearchPanel extends DragablePanel {
         });
     }
 
-	@Override
-	public void reset() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void reset() {
+        // TODO Auto-generated method stub
+    }
 
-	@Override
-	public void refresh() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void refresh() {
+        // TODO Auto-generated method stub
+    }
 }
