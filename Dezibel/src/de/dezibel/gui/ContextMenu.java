@@ -103,7 +103,8 @@ public class ContextMenu {
             });
             currentPopupMenu.add(menuItemUpload);
         }
-
+        
+        JMenuItem menuItemShow = new JMenuItem("Eigenschaften anzeigen");
         JMenuItem menuItemPlay = new JMenuItem("Warteschlange");
         JMenuItem menuItemPlayNext = new JMenuItem("Als nächsten abspielen");
         JMenu menuRate = new JMenu("Bewerten");
@@ -116,6 +117,21 @@ public class ContextMenu {
         JMenuItem menuItemNewPlaylist = new JMenuItem("neue Wiedergabeliste");
         JMenuItem menuItemComment = new JMenuItem("Kommentieren");
 
+        
+        menuItemShow.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Medium m = (Medium) currentTableModel.getValueAt(
+                        currentTable.getSelectedRow(), -1);
+                if (m != null) {
+                    dp.showMedium(m);
+                }
+            }
+        });
+        
+        currentPopupMenu.add(menuItemShow);
+        
         menuItemPlay.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
