@@ -96,7 +96,10 @@ public class PlayerPanel extends DragablePanel {
         btnStop = new JButton("stop");
         btnNext = new JButton("next");
         volume = new JSlider(JSlider.VERTICAL, 0, 100, 50);
-
+        
+        // Add logo
+        lblCover.setIcon(new ImageIcon(this.getClass().getResource("/img/mini-logo.png")));
+        
         // Playlist
         mediaTableModel = new MediaTableModel();
         tablePlaylist = new JTable(mediaTableModel);
@@ -293,10 +296,10 @@ public class PlayerPanel extends DragablePanel {
                         if (img != null) {
                             lblCover.setIcon(new ImageIcon(img));
                         } else {
-                            lblCover.setIcon(new ImageIcon(this.getClass().getResource("/img/no_cover.png")));
+                            lblCover.setIcon(new ImageIcon(this.getClass().getResource("/img/mini-logo.png")));
                         }
                     } else {
-                        lblCover.setIcon(new ImageIcon(this.getClass().getResource("/img/no_album.png")));
+                        lblCover.setIcon(new ImageIcon(this.getClass().getResource("/img/mini-logo.png")));
                     }
                     lblTitle.setText(newMedium.getArtist().getPseudonym() + " - "
                             + newMedium.getTitle());
