@@ -188,8 +188,9 @@ public class LabelProfilPanel extends DragablePanel {
         tfName = new JTextField(25);
         tfName.setEnabled(false);
         taCompanyDetails = new JTextArea();
-        taCompanyDetails.setPreferredSize(new Dimension(150, 250));
         taCompanyDetails.setEnabled(false);
+        JScrollPane sptCompanyDetails = new JScrollPane(taCompanyDetails);
+        sptCompanyDetails.setPreferredSize(new Dimension(150, 250));
 
         btnEdit = new JButton("Bearbeiten");
         btnEdit.addActionListener(new ActionListener() {
@@ -223,7 +224,7 @@ public class LabelProfilPanel extends DragablePanel {
         addComponent(pnProfile, gbl, lbName, 0, 0);
         addComponent(pnProfile, gbl, tfName, 1, 0);
         addComponent(pnProfile, gbl, lbCompanyDetails, 0, 1);
-        addComponent(pnProfile, gbl, taCompanyDetails, 1, 1);
+        addComponent(pnProfile, gbl, sptCompanyDetails, 1, 1);
 
         gbc.fill = GridBagConstraints.NONE;
         gbc.insets = new Insets(10, 0, 0, 0);
