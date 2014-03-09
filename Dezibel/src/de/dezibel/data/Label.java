@@ -336,4 +336,13 @@ public class Label implements Lockable {
     public String toString() {
         return this.name;
     }
+    
+    public boolean hasApplied(User artist) {
+        for(Application currentApplication : applications) {
+            if(currentApplication.getUser().equals(artist)){
+                return true;
+            }
+        }
+        return false;
+    }
 }

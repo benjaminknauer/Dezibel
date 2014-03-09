@@ -132,7 +132,7 @@ public class PlaylistPanel extends DragablePanel {
     @Override
     public void refresh() {
         model.setData(currentPlaylist);
-        commentModel.setData(currentPlaylist.getComments().);
+        commentModel.setData(currentPlaylist.getComments());
         lbTitle = new JLabel(currentPlaylist.getTitle());
         String creatorString = currentPlaylist.getCreator().getPseudonym();
         if (creatorString == null || creatorString.trim().isEmpty()) {

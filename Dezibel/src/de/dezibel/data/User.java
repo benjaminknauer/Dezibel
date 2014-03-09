@@ -517,13 +517,13 @@ public class User implements Lockable {
         this.lockText = text;
         MailUtil.sendMail("Profil gesperrt",
                 "Hallo " + this.getFirstname() + ",\n\n"
-                        + "dein Profil wurde von einem Administrator gesperrt."
-                        + "Folgender Grund wurde angegeben:\n"
-                        + "--------------------------------------------------\n"
-                        + this.lockText + "\n"
-                        + "--------------------------------------------------\n"
-                        + "Bitte wende dich an einen Administrator, um weitere "
-                        + "Informationen zu bekommen.",
+                + "dein Profil wurde von einem Administrator gesperrt."
+                + "Folgender Grund wurde angegeben:\n"
+                + "--------------------------------------------------\n"
+                + this.lockText + "\n"
+                + "--------------------------------------------------\n"
+                + "Bitte wende dich an einen Administrator, um weitere "
+                + "Informationen zu bekommen.",
                 this.getEmail());
     }
 
@@ -534,7 +534,7 @@ public class User implements Lockable {
         this.locked = false;
         MailUtil.sendMail("Profil entsperrt",
                 "Hallo " + this.getFirstname() + ",\n\n"
-                        + "dein Profil wurde entsperrt.",
+                + "dein Profil wurde entsperrt.",
                 this.getEmail());
     }
 
@@ -702,5 +702,14 @@ public class User implements Lockable {
 
     public String toString() {
         return this.pseudonym;
+    }
+
+    public boolean hasApplied(Label label) {
+        for(Application currentApplication : sentApplications) {
+            if(currentApplication.getLabel().equals(label)){
+                return true;
+            }
+        }
+        return false;
     }
 }
