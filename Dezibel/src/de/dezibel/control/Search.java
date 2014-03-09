@@ -28,6 +28,7 @@ public class Search {
      * @return sorted LinkedList
      */
     public LinkedList<Medium> searchForMedia(String searchTerm, int sorting) {
+        boolean admin = Database.getInstance().getLoggedInUser().isAdmin();
         searchTerm = searchTerm.toLowerCase();
         LinkedList<Medium> media = Database.getInstance().getMedia();
         Comparator c;
@@ -49,7 +50,7 @@ public class Search {
         Iterator<Medium> it = media.iterator();
         while (it.hasNext()) {
             Medium tmp = it.next();
-            if(tmp.isLocked())
+            if(tmp.isLocked() && !admin)
                 continue;
             if(tmp.getTitle().toLowerCase().contains(searchTerm)) {
                 result.add(tmp);
@@ -78,6 +79,7 @@ public class Search {
      * @return sorted LinkedList
      */
     public LinkedList<User> searchForUsers(String searchTerm, int sorting) {
+        boolean admin = Database.getInstance().getLoggedInUser().isAdmin();
         searchTerm = searchTerm.toLowerCase();
         LinkedList<User> users = Database.getInstance().getUsers();
         Comparator c;
@@ -93,7 +95,7 @@ public class Search {
         Iterator<User> it = users.iterator();
         while (it.hasNext()) {
             User tmp = it.next();
-            if(tmp.isLocked())
+            if(tmp.isLocked() && !admin)
                 continue;
             if(tmp.getFirstname().toLowerCase().contains(searchTerm)) {
                 result.add(tmp);
@@ -133,6 +135,7 @@ public class Search {
      * @return sorted LinkedList
      */
     public LinkedList<Label> searchForLabels(String searchTerm, int sorting) {
+        boolean admin = Database.getInstance().getLoggedInUser().isAdmin();
         searchTerm = searchTerm.toLowerCase();
         LinkedList<Label> labels = Database.getInstance().getLabels();
         Comparator c;
@@ -148,7 +151,7 @@ public class Search {
         Iterator<Label> it = labels.iterator();
         while (it.hasNext()) {
             Label tmp = it.next();
-            if(tmp.isLocked())
+            if(tmp.isLocked() && !admin)
                 continue;
             if(tmp.getName().toLowerCase().contains(searchTerm))
                 result.add(tmp);
