@@ -39,6 +39,7 @@ public class Comment {
         this.author = author;
         this.creationDate = new Date();
         author.addCreatedComments(this);
+        this.commentable.comment(this);
     }
 
     /**

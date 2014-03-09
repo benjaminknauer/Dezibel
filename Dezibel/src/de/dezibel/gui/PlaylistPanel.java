@@ -1,5 +1,6 @@
 package de.dezibel.gui;
 
+import de.dezibel.data.Database;
 import de.dezibel.data.Medium;
 import de.dezibel.data.Playlist;
 import de.dezibel.player.Player;
@@ -24,10 +25,14 @@ public class PlaylistPanel extends DragablePanel {
 
     JLabel lbTitle;
     JLabel lbCreator;
+    JLabel lbComments;
     JTable tblPlaylistMedia;
     JScrollPane spPlaylistMedia;
+    JTable tblPlaylistComments;
+    JScrollPane spPlaylistComments;
     DezibelPanel dp;
     PlaylistMediaTableModel model;
+    CommentTableModel commentModel;
     JPopupMenu currentPopupMenu;
     Playlist currentPlaylist;
 
@@ -48,10 +53,16 @@ public class PlaylistPanel extends DragablePanel {
                     + currentPlaylist.getCreator().getLastname();
         }
         lbCreator = new JLabel(creatorString);
+        lbComments = new JLabel("Kommentare");
         model = new PlaylistMediaTableModel();
         model.setData(currentPlaylist);
         tblPlaylistMedia = new JTable(model);
         spPlaylistMedia = new JScrollPane(tblPlaylistMedia);
+        
+        commentModel = new CommentTableModel();
+        commentModel.setData(currentPlaylist.getComments());
+        tblPlaylistComments = new JTable(commentModel);
+        spPlaylistComments = new JScrollPane(tblPlaylistComments);
 
         tblPlaylistMedia.addMouseListener(new MouseAdapter() {
             @Override
@@ -110,14 +121,18 @@ public class PlaylistPanel extends DragablePanel {
 
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(0, 0, 0, 0);
-        gbc.weighty = 0.9;
+        gbc.weighty = 0.6;
         gbc.weightx = 1;
         this.add(spPlaylistMedia, gbc);
+        
+        gbc.weighty = 0.3;
+        this.add(spPlaylistComments,gbc);
     }
 
     @Override
     public void refresh() {
         model.setData(currentPlaylist);
+        commentModel.setData(currentPlaylist.getComments().);
         lbTitle = new JLabel(currentPlaylist.getTitle());
         String creatorString = currentPlaylist.getCreator().getPseudonym();
         if (creatorString == null || creatorString.trim().isEmpty()) {
