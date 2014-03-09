@@ -32,6 +32,7 @@ class ApplicationDialog extends JDialog {
     private JScrollPane sp;
     private JButton btApply;
     private JButton btCancel;
+    private JFrame frame;
 
     /**
      * Constructor
@@ -42,6 +43,7 @@ class ApplicationDialog extends JDialog {
         super(frame);
         setModal(true);
 
+        this.frame = frame;
         this.artist = artist;
         this.label = label;
         this.applicationFromArtist = applicationFromArtist;
@@ -86,17 +88,17 @@ class ApplicationDialog extends JDialog {
     
     private void createLayout(){
         this.setLayout(null);
-        lbYourApplication.setBounds(5, 5, 100, 32);
+        lbYourApplication.setBounds(303, 5, 100, 32);
         this.add(lbYourApplication);
-        sp.setBounds(5, 42, 250, 250);
+        sp.setBounds(5, 42, 700, 250);
         this.add(sp);
-        btApply.setBounds(5, 300, 120, 32);
+        btApply.setBounds(200, 300, 175, 32);
         this.add(btApply);
-        btCancel.setBounds(130, 300, 120, 32);
+        btCancel.setBounds(412, 300, 120, 32);
         this.add(btCancel);
 
-        this.setResizable(false);
-        this.setSize(265, 371);        
+        this.setResizable(false);   
+        this.setBounds(frame.getX() + (frame.getWidth()-715) / 2, frame.getY() + (frame.getHeight() - 371)/2, 715, 371);
     }
 
 }
