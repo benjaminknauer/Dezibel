@@ -1,5 +1,6 @@
 package de.dezibel.data;
 
+import de.dezibel.io.MailUtil;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -141,8 +142,9 @@ public class Label implements Lockable {
      */
     public void removeAlbum(Album album) {
         this.albums.remove(album);
-        if(album != null)
+        if (album != null) {
             album.removeLabel();
+        }
     }
 
     /**
@@ -150,14 +152,15 @@ public class Label implements Lockable {
      *
      * @param album album to be added
      */
-    public void addAlbum(Album album){
-        if(!this.albums.contains(album)){
+    public void addAlbum(Album album) {
+        if (!this.albums.contains(album)) {
             albums.add(album);
-            if(album != null)
+            if (album != null) {
                 album.setLabel(this);
+            }
         }
     }
-    
+
     /**
      * Completely deletes this label from the database and clears all its
      * associations. This will also automatically completely delete all news,
@@ -188,7 +191,7 @@ public class Label implements Lockable {
             removeAlbum(currentAlbum);
         }
         this.albums.clear();
-        for (User currentManager : (LinkedList<User>) this.labelManager.clone()){
+        for (User currentManager : (LinkedList<User>) this.labelManager.clone()) {
             removeManager(currentManager);
         }
         this.labelManager.clear();
@@ -249,6 +252,16 @@ public class Label implements Lockable {
     public void lock(String text) {
         this.isLocked = true;
         this.lockText = text;
+        for (User u : this.getLabelManagers()) {
+            MailUtil.sendMail("Label gesppert",
+                "Hallo " + u.getFirstname() + ",\n\n"
+                        + "das Label \"" + this.getName() + "\" wurde gesperrt."
+                        + "Folgender Grund wurde angegeben:\n\n"
+                        + this.lockText + "\n\n"
+                        + "Bitte wende dich an einen Administrator, um weitere "
+                        + "Informationen zu bekommen.",
+                u.getEmail());
+        }
     }
 
     /**
@@ -256,6 +269,12 @@ public class Label implements Lockable {
      */
     public void unlock() {
         this.isLocked = false;
+        for (User u : this.getLabelManagers()) {
+            MailUtil.sendMail("Label entsppert",
+                    "Hallo " + u.getFirstname() + ",\n\n"
+                    + "das Label \"" + this.getName() + "\" wurde entsperrt.",
+                    u.getEmail());
+        }
     }
 
     /**
@@ -311,7 +330,7 @@ public class Label implements Lockable {
     public boolean isMarkedForDeletion() {
         return markedForDeletion;
     }
-    
+
     public String toString() {
         return this.name;
     }

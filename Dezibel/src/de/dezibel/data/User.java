@@ -1,5 +1,6 @@
 package de.dezibel.data;
 
+import de.dezibel.io.MailUtil;
 import java.util.Date;
 import java.util.LinkedList;
 
@@ -514,7 +515,14 @@ public class User implements Lockable {
     public void lock(String text) {
         this.locked = true;
         this.lockText = text;
-        // TODO: Senden von E-Mails hinzufügen.
+        MailUtil.sendMail("Profil gesppert",
+                "Hallo " + this.getFirstname() + ",\n\n"
+                        + "dein Profil wurde von einem Administrator gesperrt."
+                        + "Folgender Grund wurde angegeben:\n\n"
+                        + this.lockText + "\n\n"
+                        + "Bitte wende dich an einen Administrator, um weitere "
+                        + "Informationen zu bekommen.",
+                this.getEmail());
     }
 
     /**
@@ -522,6 +530,10 @@ public class User implements Lockable {
      */
     public void unlock() {
         this.locked = false;
+        MailUtil.sendMail("Profil entsppert",
+                "Hallo " + this.getFirstname() + ",\n\n"
+                        + "dein Profil wurde entsperrt.",
+                this.getEmail());
     }
 
     /**
