@@ -3,6 +3,7 @@ package de.dezibel.gui;
 import de.dezibel.data.Comment;
 import java.util.LinkedList;
 import javax.swing.table.DefaultTableModel;
+import java.text.SimpleDateFormat;
 
 /**
  * Shows the information of albums in the ProfilPanel.
@@ -10,8 +11,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class CommentTableModel extends DefaultTableModel {
 
-    private String[] headlines = new String[]{"Kommentar"};
-    private Class<?>[] columnTypes = new Class<?>[]{String.class};
+    private String[] headlines = new String[]{"Kommentare", "von Benutzer", "erstellt am"};
+    private Class<?>[] columnTypes = new Class<?>[]{String.class, String.class, String.class};
 
     private Comment[] data;
 
@@ -48,6 +49,12 @@ public class CommentTableModel extends DefaultTableModel {
                     return c;
                 case 0:
                     return c.getText();
+                case 1:
+                    return c.getAuthor();
+                case 2:
+                     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+                     return sdf.format(c.getCreationDate());
+                            
             }
         }
 	return null;
