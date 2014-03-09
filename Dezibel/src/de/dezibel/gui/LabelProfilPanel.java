@@ -518,6 +518,28 @@ public class LabelProfilPanel extends DragablePanel {
                 taApplications.setText(a.getText());
             }
         });
+        
+        tApplications.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            private void showPopup(MouseEvent me) {
+                ContextMenu contextMenu = new ContextMenu(parent);
+                currentPopupMenu = contextMenu.getContextMenu(tApplications, me);
+                currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
+            }
+        });
     }
 
     @Override
