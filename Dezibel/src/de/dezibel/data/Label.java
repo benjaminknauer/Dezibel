@@ -253,7 +253,7 @@ public class Label implements Lockable {
         this.isLocked = true;
         this.lockText = text;
         for (User u : this.getLabelManagers()) {
-            MailUtil.sendMail("Label gesppert",
+            MailUtil.sendMail("Label gesperrt",
                 "Hallo " + u.getFirstname() + ",\n\n"
                         + "das Label \"" + this.getName() + "\" wurde gesperrt."
                         + "Folgender Grund wurde angegeben:\n"
@@ -272,7 +272,7 @@ public class Label implements Lockable {
     public void unlock() {
         this.isLocked = false;
         for (User u : this.getLabelManagers()) {
-            MailUtil.sendMail("Label entsppert",
+            MailUtil.sendMail("Label entsperrt",
                     "Hallo " + u.getFirstname() + ",\n\n"
                     + "das Label \"" + this.getName() + "\" wurde entsperrt.",
                     u.getEmail());

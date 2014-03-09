@@ -183,7 +183,7 @@ public class Medium implements Commentable, Lockable {
     public void lock(String text) {
         this.locked = true;
         this.lockText = text;
-        MailUtil.sendMail("Medium gesppert",
+        MailUtil.sendMail("Medium gesperrt",
                 "Hallo " + this.getArtist().getFirstname() + ",\n\n"
                         + "dein Medium \"" + this.getTitle() + "\" wurde gesperrt."
                         + "Folgender Grund wurde angegeben:\n"
@@ -201,7 +201,7 @@ public class Medium implements Commentable, Lockable {
     @Override
     public void unlock() {
         this.locked = false;
-        MailUtil.sendMail("Medium entsppert",
+        MailUtil.sendMail("Medium entsperrt",
                 "Hallo " + this.getArtist().getFirstname() + ",\n\n"
                         + "dein Medium \"" + this.getTitle() + "\" wurde entsperrt.",
                 this.getArtist().getEmail());

@@ -515,7 +515,7 @@ public class User implements Lockable {
     public void lock(String text) {
         this.locked = true;
         this.lockText = text;
-        MailUtil.sendMail("Profil gesppert",
+        MailUtil.sendMail("Profil gesperrt",
                 "Hallo " + this.getFirstname() + ",\n\n"
                         + "dein Profil wurde von einem Administrator gesperrt."
                         + "Folgender Grund wurde angegeben:\n"
@@ -532,7 +532,7 @@ public class User implements Lockable {
      */
     public void unlock() {
         this.locked = false;
-        MailUtil.sendMail("Profil entsppert",
+        MailUtil.sendMail("Profil entsperrt",
                 "Hallo " + this.getFirstname() + ",\n\n"
                         + "dein Profil wurde entsperrt.",
                 this.getEmail());
