@@ -6,6 +6,7 @@
 
 package de.dezibel.control;
 
+import de.dezibel.data.Application;
 import de.dezibel.data.Database;
 import de.dezibel.data.Label;
 import de.dezibel.data.User;
@@ -22,6 +23,14 @@ public class ApplicationControl {
     
     public void createApplication(boolean applicationFromArtist, String text, User artist, Label label){
         Database.getInstance().addApplication(applicationFromArtist, text, artist, label);
+    }
+    
+    public void acceptApplication(Application application){
+        application.accept();
+    }
+    
+    public void declineApplication(Application application) {
+        application.decline();
     }
     
 }
