@@ -53,16 +53,6 @@ public class FavoritesPanel extends DragablePanel {
         scrollPane = new JScrollPane(tblFavorites);
 
 
-        tblFavorites.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
-                    User u = (User) ftm.getValueAt(
-                            tblFavorites.getSelectedRow(), -1);
-                    parent.showProfile(u);
-                }
-            }
-        });
 
         tblFavorites.addMouseListener(new MouseAdapter() {
             @Override
@@ -73,14 +63,37 @@ public class FavoritesPanel extends DragablePanel {
                         User u = (User) ftm.getValueAt(
                                 tblFavorites.getSelectedRow(), -1);
                         parent.showProfile(u);
-                    } else if(ftm.getValueAt(tblFavorites.getSelectedRow(), -1) instanceof Label){
+                    } else if (ftm.getValueAt(tblFavorites.getSelectedRow(), -1) instanceof Label) {
                         Label l = (Label) ftm.getValueAt(
                                 tblFavorites.getSelectedRow(), -1);
                         parent.showProfile(l);
                     }
                 }
             }
+
+            @Override
+            public void mousePressed(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+            
+            private void showPopup(MouseEvent me) {
+                ContextMenu contextMenu = new ContextMenu(parent);
+                currentPopupMenu = contextMenu.getContextMenu(tblFavorites, me);
+                currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
+            }
+            
         });
+
+
 
     }
 
