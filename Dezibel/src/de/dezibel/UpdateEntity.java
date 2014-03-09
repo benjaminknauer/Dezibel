@@ -12,5 +12,6 @@ public enum UpdateEntity{
     MEDIUM,
     PLAYLIST,
     NEWS,
-    ALBUM
+    ALBUM,
+    FAVORITES;
 }

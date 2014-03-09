@@ -170,6 +170,7 @@ public class DezibelPanel extends JPanel {
         ((MyListsPanel) pnMyList).refresh();
         ((AdsPanel) pnAds).refresh();
         ((NewsSidePanel) pnNews).refresh();
+        ((FavoritesPanel) pnFavorites).refresh();
         this.createMenubar();
         frame.setJMenuBar(menuBar);
         this.showSidebars();
@@ -220,7 +221,8 @@ public class DezibelPanel extends JPanel {
                     PlaylistPanel pn = (PlaylistPanel) this.centerDock.getDockable(0).getContent();
                     pn.refresh();
                 }
-
+            case FAVORITES:
+                pnFavorites.refresh();
 
             default:
                 break;

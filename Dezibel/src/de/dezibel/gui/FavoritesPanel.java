@@ -1,6 +1,7 @@
 package de.dezibel.gui;
 
 import de.dezibel.data.Database;
+import de.dezibel.data.Label;
 import de.dezibel.data.Playlist;
 import de.dezibel.data.User;
 import java.awt.Color;
@@ -20,12 +21,9 @@ import javax.swing.JTable;
 public class FavoritesPanel extends DragablePanel {
 
     private JLabel lbTitel;
-    private JScrollPane scrollPane1;
-    private JScrollPane scrollPane2;
-    private JTable tblFavoritesUser;
-    private JTable tblFavoritesLabel;
-    private FavoritesTableModelUser ftmu;
-    private FavoritesTableModelLabel ftml;
+    private JScrollPane scrollPane;
+    private JTable tblFavorites;
+    private FavoritesTableModel ftm;
     private JPopupMenu currentPopupMenu;
     private User currentUser;
 
@@ -39,44 +37,47 @@ public class FavoritesPanel extends DragablePanel {
     @Override
     public void refresh() {
         if (Database.getInstance().getLoggedInUser() != null) {
-            LinkedList<Playlist> myPlaylists = Database.getInstance().getLoggedInUser()
-                    .getCreatedPlaylists();
-            LinkedList<Playlist> favoritePlaylists = Database.getInstance().getLoggedInUser()
-                    .getFavoritePlaylists();
-            myPlaylists.addAll(favoritePlaylists);
-            //mltm.setData(myPlaylists);
+            LinkedList<User> favorizedUsers = Database.getInstance().getLoggedInUser()
+                    .getFavorizedUsers();
+            LinkedList<Label> favorizedLabels = Database.getInstance().getLoggedInUser()
+                    .getFavorizedLabels();
+            ftm.setDataUser(favorizedUsers);
+            ftm.setDataLabel(favorizedLabels);
         }
     }
 
     private void createComponents() {
         lbTitel = new JLabel("Favorites");
-        ftmu = new FavoritesTableModelUser();
-        ftml = new FavoritesTableModelLabel();
-        tblFavoritesUser = new JTable(ftmu);
-        tblFavoritesLabel = new JTable(ftml);
-        scrollPane1 = new JScrollPane(tblFavoritesUser);
-        scrollPane2 = new JScrollPane(tblFavoritesLabel);
+        ftm = new FavoritesTableModel();
+        tblFavorites = new JTable(ftm);
+        scrollPane = new JScrollPane(tblFavorites);
 
 
-        tblFavoritesUser.addMouseListener(new MouseAdapter() {
+        tblFavorites.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
-                    User u = (User) ftmu.getValueAt(
-                            tblFavoritesUser.getSelectedRow(), -1);
+                    User u = (User) ftm.getValueAt(
+                            tblFavorites.getSelectedRow(), -1);
                     parent.showProfile(u);
                 }
             }
         });
 
-        tblFavoritesLabel.addMouseListener(new MouseAdapter() {
+        tblFavorites.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
-                    User u = (User) ftmu.getValueAt(
-                            tblFavoritesLabel.getSelectedRow(), -1);
-                    //parent.showProfile(u);
-                    // TODO: Implement showProfile for Label
+
+                    if (ftm.getValueAt(tblFavorites.getSelectedRow(), -1) instanceof User) {
+                        User u = (User) ftm.getValueAt(
+                                tblFavorites.getSelectedRow(), -1);
+                        parent.showProfile(u);
+                    } else if(ftm.getValueAt(tblFavorites.getSelectedRow(), -1) instanceof Label){
+                        Label l = (Label) ftm.getValueAt(
+                                tblFavorites.getSelectedRow(), -1);
+                        parent.showProfile(l);
+                    }
                 }
             }
         });
@@ -88,8 +89,7 @@ public class FavoritesPanel extends DragablePanel {
         this.lbTitel.setAlignmentX(CENTER_ALIGNMENT);
         this.lbTitel.setFont(DezibelFont.SIDEPANEL_TITLE);
         this.add(lbTitel);
-        this.add(scrollPane1);
-        this.add(scrollPane2);
+        this.add(scrollPane);
     }
 
     void setFavoiteUser(User newUser) {

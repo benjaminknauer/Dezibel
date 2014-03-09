@@ -1,5 +1,6 @@
 package de.dezibel.gui;
 
+import de.dezibel.UpdateEntity;
 import de.dezibel.control.LabelControl;
 import de.dezibel.data.Application;
 import de.dezibel.data.Label;
@@ -218,6 +219,7 @@ public class LabelProfilPanel extends DragablePanel {
                     profileControler.addFollower(currentLabel);
                 }
                 refresh();
+                parent.refresh(UpdateEntity.FAVORITES);
             }
         });
 
