@@ -4,6 +4,7 @@ import de.dezibel.UpdateEntity;
 import de.dezibel.control.AlbumControl;
 import de.dezibel.control.PlaylistControl;
 import de.dezibel.data.Album;
+import de.dezibel.data.Application;
 import de.dezibel.data.Database;
 import de.dezibel.data.Label;
 import de.dezibel.data.Medium;
@@ -80,6 +81,8 @@ public class ContextMenu {
             createPlaylistMenu();
         } else if (currentTableModel.getValueAt(rowNumber, -1) instanceof News) {
             createNewsMenu();
+        } else if (currentTableModel.getValueAt(rowNumber, -1) instanceof Application) {
+            createApplicationsMenu();
         }
         return currentPopupMenu;
     }
@@ -414,7 +417,9 @@ public class ContextMenu {
         menuItemShowLabel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO Labelprofil des ausgewählten Labels anzeigen
+                Label label = (Label) currentTableModel.getValueAt(
+                        currentTable.getSelectedRow(), -1);
+                dp.showProfile(label);
             }
         });
         currentPopupMenu.add(menuItemShowLabel);
@@ -585,5 +590,27 @@ public class ContextMenu {
             }
         });
         currentPopupMenu.add(menuItemComment);
+    }
+    
+    private void createApplicationsMenu() {
+        currentPopupMenu = new JPopupMenu();
+        final Application a = (Application) currentTableModel.getValueAt(
+                currentTable.getSelectedRow(), -1);
+        JMenuItem menuItemAccept = new JMenuItem("Akzeptieren");
+        JMenuItem menuItemDecline = new JMenuItem("Ablehnen");
+        menuItemAccept.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                a.accept();
+            }
+        });
+        currentPopupMenu.add(menuItemAccept);
+        menuItemDecline.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                a.decline();
+            }
+        });
+        currentPopupMenu.add(menuItemDecline);
     }
 }

@@ -347,11 +347,9 @@ public class ProfilPanel extends DragablePanel {
                 if (profileControler.getFavorizedUsers(profileControler.getLoggedInUser()).contains(
                         currentUser)) {
                     profileControler.removeFavoriteUser(currentUser);
-                    System.out.print("favo gelöscht");
                 } else if (!(profileControler.getFavorizedUsers(profileControler.getLoggedInUser()).contains(
                         currentUser))) {
                     profileControler.addToFavoriteUsers(currentUser);
-                    System.out.print("favo zugefügt");
                 }
                 refresh();
             }
@@ -770,6 +768,28 @@ public class ProfilPanel extends DragablePanel {
 
         scrManagedLabels = new JScrollPane(tLabelsManaged);
         pnLabels.setLayout(gbl);
+        
+         tLabelsManaged.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            private void showPopup(MouseEvent me) {
+                ContextMenu contextMenu = new ContextMenu(parent);
+                currentPopupMenu = contextMenu.getContextMenu(tLabelsManaged, me);
+                currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
+            }
+        });
 
         // Publishing Labels
         labelModellPublishing = new LabelTableModel();
@@ -778,6 +798,28 @@ public class ProfilPanel extends DragablePanel {
         tLabelsPublishing.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         scrPublishingLabels = new JScrollPane(tLabelsPublishing);
+        
+        tLabelsPublishing.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            private void showPopup(MouseEvent me) {
+                ContextMenu contextMenu = new ContextMenu(parent);
+                currentPopupMenu = contextMenu.getContextMenu(tLabelsPublishing, me);
+                currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
+            }
+        });
 
         gbc = new GridBagConstraints();
 

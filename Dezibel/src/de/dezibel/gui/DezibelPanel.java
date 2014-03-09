@@ -38,6 +38,7 @@ import de.dezibel.UpdateEntity;
 import de.dezibel.control.NewsControl;
 import de.dezibel.control.SaveControl;
 import de.dezibel.data.Database;
+import de.dezibel.data.Label;
 import de.dezibel.data.Medium;
 import de.dezibel.data.Playlist;
 import de.dezibel.data.User;
@@ -72,6 +73,7 @@ public class DezibelPanel extends JPanel {
     private DragablePanel pnMyList;
     private DragablePanel pnFavorites;
     private DragablePanel pnProfil;
+    private DragablePanel pnLabelProfil;
     private DragablePanel pnSearch;
     // Javadocking uses Dockable, to enable dragging and docking for childpanels
     // Any panel you want to drag and dock have to be in its own Dockable
@@ -83,6 +85,7 @@ public class DezibelPanel extends JPanel {
     private Dockable daFavorites;
     private Dockable daPlayer;
     private Dockable daProfil;
+    private Dockable daLabelProfil;
     private Dockable daSearch;
     // We uses a LineDock at the bottom,top,left and right where all panels can
     // be docked to.
@@ -125,6 +128,7 @@ public class DezibelPanel extends JPanel {
         pnMyList = new MyListsPanel(this);
         pnFavorites = new FavoritesPanel(this);
         pnProfil = new ProfilPanel(this);
+        pnLabelProfil = new LabelProfilPanel(this);
         pnSearch = new SearchPanel(this);
 
         pnLogin.setBackground(DezibelColor.Background);
@@ -180,6 +184,13 @@ public class DezibelPanel extends JPanel {
         pn.setUser(user);
         pn.setBackground(DezibelColor.Background);
         this.showAtCenter(daProfil);
+    }
+    
+    public void showProfile(Label label) {
+        LabelProfilPanel lpn = (LabelProfilPanel) pnLabelProfil;
+        lpn.setUser(label);
+        lpn.setBackground(DezibelColor.Background);
+        this.showAtCenter(daLabelProfil);
     }
 
     public void showPlaylist(Playlist list) {
@@ -288,6 +299,8 @@ public class DezibelPanel extends JPanel {
                 + DockingMode.TOP + DockingMode.HORIZONTAL_LINE);
         daProfil = new DefaultDockable("pnProfil", pnProfil, "Profil", null,
                 DockingMode.CENTER + DockingMode.SINGLE);
+        daLabelProfil = new DefaultDockable("pnLabelProfil", pnLabelProfil,
+                "Profil", null, DockingMode.CENTER + DockingMode.SINGLE);
 
         daSearch = new DefaultDockable("pnSearch", pnSearch, "Search", null,
                 DockingMode.CENTER + DockingMode.SINGLE + DockingMode.BOTTOM
@@ -704,6 +717,10 @@ public class DezibelPanel extends JPanel {
 
             if (daProfil.getDock() != null) {
                 daProfil.getDock().removeDockable(daProfil);
+            }
+            
+            if (daLabelProfil.getDock() != null) {
+                daLabelProfil.getDock().removeDockable(daLabelProfil);
             }
 
             if (daSearch.getDock() != null) {
