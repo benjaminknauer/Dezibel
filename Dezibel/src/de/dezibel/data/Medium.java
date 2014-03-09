@@ -2,6 +2,7 @@ package de.dezibel.data;
 
 import de.dezibel.io.MediumLoader;
 import de.dezibel.ErrorCode;
+import de.dezibel.io.MailUtil;
 import java.util.Date;
 import java.io.File;
 import java.util.LinkedList;
@@ -172,7 +173,7 @@ public class Medium implements Commentable, Lockable {
      */
     @Override
     public void lock() {
-        this.locked = true;
+        lock(null);
     }
 
     /**
@@ -182,7 +183,16 @@ public class Medium implements Commentable, Lockable {
     public void lock(String text) {
         this.locked = true;
         this.lockText = text;
-        // TODO: Add sending of emails.
+        MailUtil.sendMail("Medium gesperrt",
+                "Hallo " + this.getArtist().getFirstname() + ",\n\n"
+                        + "dein Medium \"" + this.getTitle() + "\" wurde gesperrt."
+                        + "Folgender Grund wurde angegeben:\n"
+                        + "--------------------------------------------------\n"
+                        + this.lockText + "\n"
+                        + "--------------------------------------------------\n"
+                        + "Bitte wende dich an einen Administrator, um weitere "
+                        + "Informationen zu bekommen.",
+                this.getArtist().getEmail());
     }
 
     /**
@@ -191,6 +201,10 @@ public class Medium implements Commentable, Lockable {
     @Override
     public void unlock() {
         this.locked = false;
+        MailUtil.sendMail("Medium entsperrt",
+                "Hallo " + this.getArtist().getFirstname() + ",\n\n"
+                        + "dein Medium \"" + this.getTitle() + "\" wurde entsperrt.",
+                this.getArtist().getEmail());
     }
 
     /**
