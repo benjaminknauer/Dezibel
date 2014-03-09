@@ -1,6 +1,7 @@
 package de.dezibel.gui;
 
 import de.dezibel.UpdateEntity;
+import de.dezibel.control.AdminControl;
 import de.dezibel.control.AlbumControl;
 import de.dezibel.control.PlaylistControl;
 import de.dezibel.data.Album;
@@ -12,6 +13,8 @@ import de.dezibel.data.News;
 import de.dezibel.data.Playlist;
 import de.dezibel.data.User;
 import de.dezibel.player.Player;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,7 +27,11 @@ import javax.swing.JTable;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 /**
  * Handles the right click actions for all panels
@@ -106,7 +113,7 @@ public class ContextMenu {
             });
             currentPopupMenu.add(menuItemUpload);
         }
-        
+
         JMenuItem menuItemShow = new JMenuItem("Eigenschaften anzeigen");
         JMenuItem menuItemPlay = new JMenuItem("Warteschlange");
         JMenuItem menuItemPlayNext = new JMenuItem("Als nächsten abspielen");
@@ -120,7 +127,6 @@ public class ContextMenu {
         JMenuItem menuItemNewPlaylist = new JMenuItem("neue Wiedergabeliste");
         JMenuItem menuItemComment = new JMenuItem("Kommentieren");
 
-        
         menuItemShow.addActionListener(new ActionListener() {
 
             @Override
@@ -132,9 +138,9 @@ public class ContextMenu {
                 }
             }
         });
-        
+
         currentPopupMenu.add(menuItemShow);
-        
+
         menuItemPlay.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -162,7 +168,7 @@ public class ContextMenu {
                 }
             }
         });
-        
+
         currentPopupMenu.add(menuItemPlayNext);
 
         menuItemRate1.addActionListener(new ActionListener() {
@@ -248,7 +254,7 @@ public class ContextMenu {
                 if (title != null && !title.isEmpty()) {
                     new PlaylistControl().createPlaylist(title,
                             (Medium) currentTableModel.getValueAt(
-                            currentTable.getSelectedRow(), -1));
+                                    currentTable.getSelectedRow(), -1));
                     dp.refresh(UpdateEntity.PLAYLIST);
                 }
             }
@@ -265,7 +271,7 @@ public class ContextMenu {
 
         if (Database.getInstance().getLoggedInUser()
                 .equals(((Medium) currentTableModel.getValueAt(
-                currentTable.getSelectedRow(), -1)).getArtist())) {
+                                currentTable.getSelectedRow(), -1)).getArtist())) {
             JMenu menuAddToAlbum = new JMenu("zu Album hinzufügen");
             JMenuItem menuItemNewAlbum = new JMenuItem("neues Album");
 
@@ -344,6 +350,52 @@ public class ContextMenu {
         });
 
         currentPopupMenu.add(menuItemComment);
+
+        // Admin controls
+        if (Database.getInstance().getLoggedInUser().isAdmin()) {
+            if (m.isLocked()) {
+                JMenuItem unlockItem = new JMenuItem("Entsperren");
+                unlockItem.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        int ret = JOptionPane.showConfirmDialog(currentTable.getParent(),
+                                "Soll das Medium wirklich entsperrt werden?",
+                                "Medium entsperren", JOptionPane.YES_NO_OPTION,
+                                JOptionPane.QUESTION_MESSAGE);
+                        if (ret == JOptionPane.YES_OPTION) {
+                            new AdminControl().unlock(m);
+                        }
+                    }
+                });
+                currentPopupMenu.add(unlockItem);
+            } else {
+                JMenuItem lockItem = new JMenuItem("Sperren");
+                lockItem.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        JPanel detailPanel = new JPanel();
+                        detailPanel.setLayout(new BorderLayout());
+                        JLabel lblReason = new JLabel("Grund: ");
+                        JTextArea txtReason = new JTextArea();
+                        JScrollPane scrollPane = new JScrollPane(txtReason);
+                        scrollPane.setPreferredSize(new Dimension(300, 320));
+                        detailPanel.add(lblReason, BorderLayout.NORTH);
+                        detailPanel.add(scrollPane, BorderLayout.SOUTH);
+                        int ret = JOptionPane.showConfirmDialog(currentTable.getParent(),
+                                detailPanel, "Medium sperren",
+                                JOptionPane.OK_CANCEL_OPTION,
+                                JOptionPane.PLAIN_MESSAGE);
+                        if (ret == JOptionPane.OK_OPTION) {
+                            new AdminControl().lock(m, txtReason.getText());
+                            JOptionPane.showMessageDialog(currentTable.getParent(),
+                                    "Das Medium wurde gesperrt!", "Medium gesperrt",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    }
+                });
+                currentPopupMenu.add(lockItem);
+            }
+        }
     }
 
     /**
@@ -395,6 +447,8 @@ public class ContextMenu {
      * Creates the UserPopupMenu which handles the right clicks on users
      */
     private void createUserMenu() {
+        final User selectedUser = (User) currentTableModel.getValueAt(currentTable.getSelectedRow(), -1);
+        
         currentPopupMenu = new JPopupMenu();
         JMenuItem menuItemShowUser = new JMenuItem("Anzeigen");
         menuItemShowUser.addActionListener(new ActionListener() {
@@ -406,12 +460,60 @@ public class ContextMenu {
             }
         });
         currentPopupMenu.add(menuItemShowUser);
+        
+        // Admin controls
+        if (Database.getInstance().getLoggedInUser().isAdmin()) {
+            if (selectedUser.isLocked()) {
+                JMenuItem unlockItem = new JMenuItem("Entsperren");
+                unlockItem.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        int ret = JOptionPane.showConfirmDialog(currentTable.getParent(),
+                                "Soll der Benutzer wirklich entsperrt werden?",
+                                "Benutzer entsperren", JOptionPane.YES_NO_OPTION,
+                                JOptionPane.QUESTION_MESSAGE);
+                        if (ret == JOptionPane.YES_OPTION) {
+                            new AdminControl().unlock(selectedUser);
+                        }
+                    }
+                });
+                currentPopupMenu.add(unlockItem);
+            } else {
+                JMenuItem lockItem = new JMenuItem("Sperren");
+                lockItem.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        JPanel detailPanel = new JPanel();
+                        detailPanel.setLayout(new BorderLayout());
+                        JLabel lblReason = new JLabel("Grund: ");
+                        JTextArea txtReason = new JTextArea();
+                        JScrollPane scrollPane = new JScrollPane(txtReason);
+                        scrollPane.setPreferredSize(new Dimension(300, 320));
+                        detailPanel.add(lblReason, BorderLayout.NORTH);
+                        detailPanel.add(scrollPane, BorderLayout.SOUTH);
+                        int ret = JOptionPane.showConfirmDialog(currentTable.getParent(),
+                                detailPanel, "Benutzer sperren",
+                                JOptionPane.OK_CANCEL_OPTION,
+                                JOptionPane.PLAIN_MESSAGE);
+                        if (ret == JOptionPane.OK_OPTION) {
+                            new AdminControl().lock(selectedUser, txtReason.getText());
+                            JOptionPane.showMessageDialog(currentTable.getParent(),
+                                    "Der Benutzer wurde gesperrt!", "Benutzer gesperrt",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    }
+                });
+                currentPopupMenu.add(lockItem);
+            }
+        }
     }
 
     /**
      * Creates the LabelPopupMenu which handles the right clicks on labels
      */
     private void createLabelMenu() {
+        final Label selectedLabel = (Label) currentTableModel.getValueAt(currentTable.getSelectedRow(), -1);
+        
         currentPopupMenu = new JPopupMenu();
         JMenuItem menuItemShowLabel = new JMenuItem("Anzeigen");
         menuItemShowLabel.addActionListener(new ActionListener() {
@@ -423,6 +525,52 @@ public class ContextMenu {
             }
         });
         currentPopupMenu.add(menuItemShowLabel);
+        
+        // Admin controls
+        if (Database.getInstance().getLoggedInUser().isAdmin()) {
+            if (selectedLabel.isLocked()) {
+                JMenuItem unlockItem = new JMenuItem("Entsperren");
+                unlockItem.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        int ret = JOptionPane.showConfirmDialog(currentTable.getParent(),
+                                "Soll das Label wirklich entsperrt werden?",
+                                "Label entsperren", JOptionPane.YES_NO_OPTION,
+                                JOptionPane.QUESTION_MESSAGE);
+                        if (ret == JOptionPane.YES_OPTION) {
+                            new AdminControl().unlock(selectedLabel);
+                        }
+                    }
+                });
+                currentPopupMenu.add(unlockItem);
+            } else {
+                JMenuItem lockItem = new JMenuItem("Sperren");
+                lockItem.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        JPanel detailPanel = new JPanel();
+                        detailPanel.setLayout(new BorderLayout());
+                        JLabel lblReason = new JLabel("Grund: ");
+                        JTextArea txtReason = new JTextArea();
+                        JScrollPane scrollPane = new JScrollPane(txtReason);
+                        scrollPane.setPreferredSize(new Dimension(300, 320));
+                        detailPanel.add(lblReason, BorderLayout.NORTH);
+                        detailPanel.add(scrollPane, BorderLayout.SOUTH);
+                        int ret = JOptionPane.showConfirmDialog(currentTable.getParent(),
+                                detailPanel, "Label sperren",
+                                JOptionPane.OK_CANCEL_OPTION,
+                                JOptionPane.PLAIN_MESSAGE);
+                        if (ret == JOptionPane.OK_OPTION) {
+                            new AdminControl().lock(selectedLabel, txtReason.getText());
+                            JOptionPane.showMessageDialog(currentTable.getParent(),
+                                    "Das Label wurde gesperrt!", "Label gesperrt",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    }
+                });
+                currentPopupMenu.add(lockItem);
+            }
+        }
     }
 
     /**
@@ -591,7 +739,7 @@ public class ContextMenu {
         });
         currentPopupMenu.add(menuItemComment);
     }
-    
+
     private void createApplicationsMenu() {
         currentPopupMenu = new JPopupMenu();
         final Application a = (Application) currentTableModel.getValueAt(
