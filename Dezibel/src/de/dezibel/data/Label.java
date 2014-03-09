@@ -256,8 +256,10 @@ public class Label implements Lockable {
             MailUtil.sendMail("Label gesppert",
                 "Hallo " + u.getFirstname() + ",\n\n"
                         + "das Label \"" + this.getName() + "\" wurde gesperrt."
-                        + "Folgender Grund wurde angegeben:\n\n"
-                        + this.lockText + "\n\n"
+                        + "Folgender Grund wurde angegeben:\n"
+                        + "--------------------------------------------------\n"
+                        + this.lockText + "\n"
+                        + "--------------------------------------------------\n"
                         + "Bitte wende dich an einen Administrator, um weitere "
                         + "Informationen zu bekommen.",
                 u.getEmail());

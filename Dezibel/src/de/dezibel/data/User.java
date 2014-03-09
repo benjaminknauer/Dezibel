@@ -518,8 +518,10 @@ public class User implements Lockable {
         MailUtil.sendMail("Profil gesppert",
                 "Hallo " + this.getFirstname() + ",\n\n"
                         + "dein Profil wurde von einem Administrator gesperrt."
-                        + "Folgender Grund wurde angegeben:\n\n"
-                        + this.lockText + "\n\n"
+                        + "Folgender Grund wurde angegeben:\n"
+                        + "--------------------------------------------------\n"
+                        + this.lockText + "\n"
+                        + "--------------------------------------------------\n"
                         + "Bitte wende dich an einen Administrator, um weitere "
                         + "Informationen zu bekommen.",
                 this.getEmail());

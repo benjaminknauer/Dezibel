@@ -186,8 +186,10 @@ public class Medium implements Commentable, Lockable {
         MailUtil.sendMail("Medium gesppert",
                 "Hallo " + this.getArtist().getFirstname() + ",\n\n"
                         + "dein Medium \"" + this.getTitle() + "\" wurde gesperrt."
-                        + "Folgender Grund wurde angegeben:\n\n"
-                        + this.lockText + "\n\n"
+                        + "Folgender Grund wurde angegeben:\n"
+                        + "--------------------------------------------------\n"
+                        + this.lockText + "\n"
+                        + "--------------------------------------------------\n"
                         + "Bitte wende dich an einen Administrator, um weitere "
                         + "Informationen zu bekommen.",
                 this.getArtist().getEmail());
