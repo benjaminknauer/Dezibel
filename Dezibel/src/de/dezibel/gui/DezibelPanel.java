@@ -205,6 +205,12 @@ public class DezibelPanel extends JPanel {
         pnMyList = new MyListsPanel(this);
         pnMyList.setBackground(DezibelColor.Background);
     }
+    
+    public void showSearch(){
+        SearchPanel sn = (SearchPanel) pnSearch;
+        sn.setBackground(DezibelColor.Background);
+        this.showAtCenter(daSearch);
+    }
 
     public void refresh(UpdateEntity ue) {
         switch (ue) {

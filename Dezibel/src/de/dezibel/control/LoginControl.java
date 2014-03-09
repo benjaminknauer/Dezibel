@@ -44,6 +44,15 @@ public class LoginControl {
     }
     
     /**
+     * Checks if the user account who is trying to lock in is currently
+     * locked.
+     * @return true, if user is locked, else false 
+     */
+    public boolean checkLock(){
+        return user.isLocked();
+    }
+    
+    /**
      * Sets the currently logged user 
      */
     public void markLoggedInUser() {

@@ -2,6 +2,7 @@ package de.dezibel.gui;
 
 import de.dezibel.control.LabelControl;
 import de.dezibel.control.ProfileControl;
+import de.dezibel.control.AdminControl;
 import de.dezibel.data.Comment;
 import de.dezibel.data.Label;
 import de.dezibel.data.News;
@@ -42,6 +43,7 @@ public class ProfilPanel extends DragablePanel {
     private static final long serialVersionUID = 1L;
     private ProfileControl profileControler;
     private LabelControl labelControler;
+    private AdminControl adminControler;
     private User currentUser;
     private boolean isLabelVisible;
 
@@ -69,6 +71,7 @@ public class ProfilPanel extends DragablePanel {
 
     private JButton btnFollow;
     private JButton btnEdit;
+    private JButton btnLock;
 
     private JTable tFollower;
     private FollowerTableModel followerModell;
@@ -124,6 +127,7 @@ public class ProfilPanel extends DragablePanel {
 
         this.profileControler = new ProfileControl();
         this.labelControler = new LabelControl();
+        this.adminControler = new AdminControl();
         this.currentUser = profileControler.getLoggedInUser();
     }
 
@@ -138,121 +142,140 @@ public class ProfilPanel extends DragablePanel {
 
     public void refresh() {
 
-        tabPanel.setSelectedIndex(0);
-        
-        taNews.setText("");
-        taComments.setText("");
+        if (currentUser.isLocked() && !(profileControler.getLoggedInUser().isAdmin())) {
+            JOptionPane.showMessageDialog(this, "Der Nutzer, dessen Profil Sie"
+                    + " aufzurufen versuchen ist temporär gesperrt. Das gewünschte"
+                    + "Profil kann daher leider zurzeit nicht aufgerufen werden!");
+                    parent.showSearch();
 
-        if (!(currentUser.isArtist())) {
-            this.tfPseudonym.setVisible(false);
-            this.lbPseudonym.setVisible(false);
         } else {
-            this.tfPseudonym.setVisible(true);
-            this.lbPseudonym.setVisible(true);
-        }
+            tabPanel.setSelectedIndex(0);
 
-        this.tfFirstName.setText(profileControler.getFirstName(currentUser));
-        this.tfLastName.setText(profileControler.getLastName(currentUser));
-        this.tfRole.setText(profileControler.getRole(currentUser));
-        this.tfPseudonym.setText(profileControler.getPseudonym(currentUser));
-        //this.tfGender.setText(profileControler.getGender(currentUser));
-        this.tfEmail.setText(profileControler.getEmail(currentUser));
-        this.tfBirthDate.setText(profileControler.getBirthDate(currentUser));
-        this.tfCity.setText(profileControler.getCity(currentUser));
-        this.tfCountry.setText(profileControler.getCountry(currentUser));
-        this.tfAboutMe.setText(profileControler.getAboutMe(currentUser));
-        
+            taNews.setText("");
+            taComments.setText("");
 
-        if (currentUser == profileControler.getLoggedInUser()) {
-            btnFollow.setVisible(false);
-        }
+            if (!(currentUser.isArtist())) {
+                this.tfPseudonym.setVisible(false);
+                this.lbPseudonym.setVisible(false);
+            } else {
+                this.tfPseudonym.setVisible(true);
+                this.lbPseudonym.setVisible(true);
+            }
 
-        if (currentUser != profileControler.getLoggedInUser()) {
-            btnFollow.setVisible(true);
-        }
+            this.tfFirstName.setText(profileControler.getFirstName(currentUser));
+            this.tfLastName.setText(profileControler.getLastName(currentUser));
+            this.tfRole.setText(profileControler.getRole(currentUser));
+            this.tfPseudonym.setText(profileControler.getPseudonym(currentUser));
+            //this.tfGender.setText(profileControler.getGender(currentUser));
+            this.tfEmail.setText(profileControler.getEmail(currentUser));
+            this.tfBirthDate.setText(profileControler.getBirthDate(currentUser));
+            this.tfCity.setText(profileControler.getCity(currentUser));
+            this.tfCountry.setText(profileControler.getCountry(currentUser));
+            this.tfAboutMe.setText(profileControler.getAboutMe(currentUser));
 
-        if (profileControler.getLoggedInUser() != currentUser) {
-            btnEdit.setVisible(false);
-        }
-        if (profileControler.getLoggedInUser() == currentUser) {
-            btnEdit.setVisible(true);
-        }
+            if (currentUser == profileControler.getLoggedInUser()) {
+                btnFollow.setVisible(false);
+            }
 
-        if (profileControler.getFavorizedUsers(profileControler.getLoggedInUser()).contains(
-                currentUser)) {
-            btnFollow.setText("Unfollow");
-        }
+            if (currentUser != profileControler.getLoggedInUser()) {
+                btnFollow.setVisible(true);
+            }
 
-        if (!(profileControler.getFavorizedUsers(profileControler.getLoggedInUser()).contains(
-                currentUser))) {
-            btnFollow.setText("Follow");
-        }
+            if (profileControler.getLoggedInUser() != currentUser) {
+                btnEdit.setVisible(false);
+            }
+            if (profileControler.getLoggedInUser() == currentUser) {
+                btnEdit.setVisible(true);
+            }
 
-        if (tfFirstName.isEnabled()) {
-            btnEdit.setText("Speichern");
-        }
+            if (profileControler.getFavorizedUsers(profileControler.getLoggedInUser()).contains(
+                    currentUser)) {
+                btnFollow.setText("Unfollow");
+            }
 
-        if (!(tfFirstName.isEnabled())) {
-            btnEdit.setText("Bearbeiten");
-        }
+            if (!(profileControler.getFavorizedUsers(profileControler.getLoggedInUser()).contains(
+                    currentUser))) {
+                btnFollow.setText("Follow");
+            }
 
-        if (currentUser.isLabelManager()) {
-            scrManagedLabels.setVisible(true);
-        } else {
-            scrManagedLabels.setVisible(false);
-        }
+            if (tfFirstName.isEnabled()) {
+                btnEdit.setText("Speichern");
+            }
 
-        if (currentUser.getPublishingLabels().isEmpty()) {
-            scrPublishingLabels.setVisible(false);
-        } else {
-            scrPublishingLabels.setVisible(true);
-        }
+            if (!(tfFirstName.isEnabled())) {
+                btnEdit.setText("Bearbeiten");
+            }
 
-        if (currentUser == profileControler.getLoggedInUser()) {
-            btnCreateLabel.setVisible(true);
-        } else {
-            btnCreateLabel.setVisible(false);
-        }
+            if (currentUser.isLabelManager()) {
+                scrManagedLabels.setVisible(true);
+            } else {
+                scrManagedLabels.setVisible(false);
+            }
 
-        if ((currentUser != profileControler.getLoggedInUser())
-                && !(currentUser.isLabelManager())
-                && currentUser.getPublishingLabels().isEmpty()) {
-            tabPanel.remove(pnLabels);
-            isLabelVisible = false;
-        } else if (!(isLabelVisible)) {
-            tabPanel.addTab("Labels", null, pnLabels);
-        }
+            if (currentUser.getPublishingLabels().isEmpty()) {
+                scrPublishingLabels.setVisible(false);
+            } else {
+                scrPublishingLabels.setVisible(true);
+            }
 
-        if (!(currentUser.isArtist())) {
-            tabPanel.remove(pnNews);
-            isNewsVisible = false;
-        } else if (!(isNewsVisible)) {
-            tabPanel.addTab("News", null, pnNews);
-        }
+            if (currentUser == profileControler.getLoggedInUser()) {
+                btnCreateLabel.setVisible(true);
+            } else {
+                btnCreateLabel.setVisible(false);
+            }
 
-        if (!(currentUser.isArtist())) {
-            spMedia.setVisible(false);
-            spAlbums.setVisible(false);
-            lbMediaUpload.setVisible(false);
-            lbAlbumsUpload.setVisible(false);
-        } else {
-            spMedia.setVisible(true);
-            spAlbums.setVisible(true);
-            lbMediaUpload.setVisible(true);
-            lbAlbumsUpload.setVisible(true);
-        }
+            if ((currentUser != profileControler.getLoggedInUser())
+                    && !(currentUser.isLabelManager())
+                    && currentUser.getPublishingLabels().isEmpty()) {
+                tabPanel.remove(pnLabels);
+                isLabelVisible = false;
+            } else if (!(isLabelVisible)) {
+                tabPanel.addTab("Labels", null, pnLabels);
+            }
 
-        followerModell.setData(profileControler.getFollowers(currentUser));
-        labelModellPublishing.setData(profileControler.getPublishingLabels(currentUser));
-        commentModell.setData(profileControler.getCreatedComments(currentUser));
-        labelModellManaged.setData(profileControler.getManagedLabels(currentUser));
-        playlistModellUpload.setData(profileControler.getCreatedPlaylists(currentUser));
-        playlistModellFavo.setData(profileControler.getFavorizedPlaylists(currentUser));
-        mediaModellUpload.setData(profileControler.getCreatedMediums(currentUser));
-        mediaModellFavo.setData(profileControler.getFavorizedMediums(currentUser));
-        albumModellUpload.setData(profileControler.getCreatedAlbums(currentUser));
-        albumModellFavo.setData(profileControler.getFavorizedAlbums(currentUser));
-        newsModell.setData(profileControler.getNews(currentUser));
+            if (!(currentUser.isArtist())) {
+                tabPanel.remove(pnNews);
+                isNewsVisible = false;
+            } else if (!(isNewsVisible)) {
+                tabPanel.addTab("News", null, pnNews);
+            }
+
+            if (!(currentUser.isArtist())) {
+                spMedia.setVisible(false);
+                spAlbums.setVisible(false);
+                lbMediaUpload.setVisible(false);
+                lbAlbumsUpload.setVisible(false);
+            } else {
+                spMedia.setVisible(true);
+                spAlbums.setVisible(true);
+                lbMediaUpload.setVisible(true);
+                lbAlbumsUpload.setVisible(true);
+            }
+
+            if (!(profileControler.getLoggedInUser().isAdmin()) || currentUser.isAdmin()) {
+                btnLock.setVisible(false);
+            } else {
+                btnLock.setVisible(true);
+            }
+
+            if (currentUser.isLocked()) {
+                btnLock.setText("Entsperren");
+            } else {
+                btnLock.setText("Sperren");
+            }
+
+            followerModell.setData(profileControler.getFollowers(currentUser));
+            labelModellPublishing.setData(profileControler.getPublishingLabels(currentUser));
+            commentModell.setData(profileControler.getCreatedComments(currentUser));
+            labelModellManaged.setData(profileControler.getManagedLabels(currentUser));
+            playlistModellUpload.setData(profileControler.getCreatedPlaylists(currentUser));
+            playlistModellFavo.setData(profileControler.getFavorizedPlaylists(currentUser));
+            mediaModellUpload.setData(profileControler.getCreatedMediums(currentUser));
+            mediaModellFavo.setData(profileControler.getFavorizedMediums(currentUser));
+            albumModellUpload.setData(profileControler.getCreatedAlbums(currentUser));
+            albumModellFavo.setData(profileControler.getFavorizedAlbums(currentUser));
+            newsModell.setData(profileControler.getNews(currentUser));
+        }
     }
 
     /**
@@ -355,6 +378,19 @@ public class ProfilPanel extends DragablePanel {
             }
         });
 
+        btnLock = new JButton("Sperren");
+        btnLock.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!(currentUser.isLocked())) {
+                    adminControler.lock(currentUser, "");
+                } else {
+                    adminControler.unlock(currentUser);
+                }
+                refresh();
+            }
+        });
+
         addComponent(pnProfile, gbl, lbFirstName, 0, 0);
         addComponent(pnProfile, gbl, tfFirstName, 1, 0);
         addComponent(pnProfile, gbl, lbLastName, 0, 1);
@@ -387,6 +423,10 @@ public class ProfilPanel extends DragablePanel {
         gbc.gridy = 10;
         gbl.setConstraints(btnFollow, gbc);
         pnProfile.add(btnFollow);
+        gbc.gridx = 2;
+        gbc.gridy = 10;
+        gbl.setConstraints(btnLock, gbc);
+        pnProfile.add(btnLock);
 
         setProfileTextfieldsEditable(false);
 
@@ -467,7 +507,7 @@ public class ProfilPanel extends DragablePanel {
         commentModell = new CommentTableModel();
         tComments = new JTable(commentModell);
         tComments.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
+
         taComments = new JTextArea();
         taComments.setLineWrap(true);
         taComments.setWrapStyleWord(true);
@@ -479,7 +519,7 @@ public class ProfilPanel extends DragablePanel {
 
         pnComments.add(tablePanel);
         pnComments.add(sptaComments);
-        
+
         GroupLayout layout = new GroupLayout(pnComments);
         layout.setHorizontalGroup(layout
                 .createParallelGroup(GroupLayout.Alignment.CENTER, true)
@@ -768,8 +808,8 @@ public class ProfilPanel extends DragablePanel {
 
         scrManagedLabels = new JScrollPane(tLabelsManaged);
         pnLabels.setLayout(gbl);
-        
-         tLabelsManaged.addMouseListener(new MouseAdapter() {
+
+        tLabelsManaged.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
@@ -798,7 +838,7 @@ public class ProfilPanel extends DragablePanel {
         tLabelsPublishing.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         scrPublishingLabels = new JScrollPane(tLabelsPublishing);
-        
+
         tLabelsPublishing.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent me) {
@@ -845,8 +885,8 @@ public class ProfilPanel extends DragablePanel {
 
     @Override
     public void reset() {
-		// TODO Auto-generated method stub
+        // TODO Auto-generated method stub
 
     }
-    
+
 }

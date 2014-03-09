@@ -146,9 +146,16 @@ public class LoginPanel extends DragablePanel {
         } else {
             if(loginControl.checkIfMailExists(this.tfMail.getText()))
                 if(loginControl.checkPassword(this.tfPassword.getText())) {
-                    loginControl.markLoggedInUser();
-                    this.clearTextFields();
-                    this.parent.showWorkspace();
+                    if(!(loginControl.checkLock())){
+                        loginControl.markLoggedInUser();
+                        this.clearTextFields();
+                        this.parent.showWorkspace();
+                    }
+                    else
+                        JOptionPane.showMessageDialog(this, 
+                                "Ihr Account ist temporär gesperrt",
+                                "Account gesperrt",
+                                JOptionPane.INFORMATION_MESSAGE);
                 }
                 else
                     JOptionPane.showMessageDialog(this, "Passwort falsch",
