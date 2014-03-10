@@ -306,6 +306,7 @@ public class PlayerPanel extends DragablePanel {
                     }
                     if (newMedium.isLocked()) {
                         lblTitle.setText("Medium gesperrt");
+                        lblCover.setIcon(new ImageIcon(this.getClass().getResource("/img/medium_locked.png")));
                     } else if (newMedium.isDeleted()) {
                         lblTitle.setText("Gelöscht: " + newMedium.getArtist().getPseudonym() + " - "
                                 + newMedium.getTitle());
