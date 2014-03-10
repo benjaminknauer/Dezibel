@@ -1,5 +1,6 @@
 package de.dezibel.gui;
 
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 
 import javax.swing.table.DefaultTableModel;
@@ -44,14 +45,14 @@ public class NewsSideTableModel extends DefaultTableModel {
 
 	    @Override
 	    public Object getValueAt(int row, int col) {
-	        if ((data != null) && (row >= 0) && (row < data.length)) {
-	        	News m = data[row];
+	        if (data != null && row >= 0 && row < data.length) {
+	            News c = data[row];
 	            switch (col) {
 	                case -1:
-	                    return m;
+	                    return c;
+	                    
 	                case 0:
-	                    return m.getTitle();
-	              
+	                    return c.getTitle();             
 	            }
 	        }
 		return null;
@@ -67,7 +68,7 @@ public class NewsSideTableModel extends DefaultTableModel {
 	     * @param data The data to display
 	     */
 	    public void setData(LinkedList<News> data) {
-	    	if (data == null) {
+	        if (data == null) {
 	            this.data = null;
 	        } else {
 	            this.data = new News[data.size()];
