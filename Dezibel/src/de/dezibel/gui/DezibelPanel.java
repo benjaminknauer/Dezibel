@@ -36,6 +36,7 @@ import com.javadocking.visualizer.SingleMaximizer;
 
 import de.dezibel.UpdateEntity;
 import de.dezibel.control.NewsControl;
+import de.dezibel.control.ProfileControl;
 import de.dezibel.control.SaveControl;
 import de.dezibel.data.Album;
 import de.dezibel.data.Database;
@@ -185,7 +186,18 @@ public class DezibelPanel extends JPanel {
         ProfilPanel pn = (ProfilPanel) pnProfil;
         pn.setUser(user);
         pn.setBackground(DezibelColor.Background);
-        this.showAtCenter(daProfil);
+        if(new ProfileControl().isLocked(((ProfilPanel
+                ) daProfil.getContent()).getUser()) && !(new ProfileControl(
+                ).getLoggedInUser().isAdmin())){
+            
+                     JOptionPane.showMessageDialog(this, "Der Nutzer, dessen Profil Sie"
+                    + " aufzurufen versuchen ist temporär gesperrt. Das gewünschte"
+                    + "Profil kann daher leider zurzeit nicht aufgerufen werden!");
+              
+        }
+        else {
+            this.showAtCenter(daProfil);
+        }
     }
     
     public void showProfile(Label label) {

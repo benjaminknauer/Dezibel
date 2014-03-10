@@ -331,11 +331,16 @@ public class SearchPanel extends DragablePanel {
 
     @Override
     public void reset() {
-        // TODO Auto-generated method stub
+        tableModelUser.setData(null);
+        tableModelSong.setData(null);
+        tableModelLabel.setData(null);
+        tableModelAlbum.setData(null);
+        tableResults.setModel(null);
+        tfSearch.setText("Suche...");
     }
 
     @Override
     public void refresh() {
-        // TODO Auto-generated method stub
+        // Nicht notwendig
     }
 }
