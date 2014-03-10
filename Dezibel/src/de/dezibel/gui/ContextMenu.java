@@ -783,6 +783,7 @@ public class ContextMenu {
             @Override
             public void actionPerformed(ActionEvent e) {
                 a.accept();
+                dp.refresh(UpdateEntity.APPLICATION);
             }
         });
         currentPopupMenu.add(menuItemAccept);
@@ -790,6 +791,7 @@ public class ContextMenu {
             @Override
             public void actionPerformed(ActionEvent e) {
                 a.decline();
+                dp.refresh(UpdateEntity.APPLICATION);
             }
         });
         currentPopupMenu.add(menuItemDecline);
