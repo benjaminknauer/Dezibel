@@ -187,6 +187,8 @@ public class DezibelPanel extends JPanel {
         this.executor.changeDocking(daPlayer, borderDock);
         ((ProfilPanel) daProfil.getContent()).setUser(Database.getInstance()
                 .getLoggedInUser());
+        
+        onGenre();
     }
 
     public void showProfile(User user) {
@@ -857,6 +859,11 @@ public class DezibelPanel extends JPanel {
         ud.setVisible(true);
     }
 
+    private void onGenre(){
+    	GenreDialog dl = new GenreDialog(frame);
+    	dl.setVisible(true);
+    }
+    
     private void onCreateNews() {
         NewsDialog nd = new NewsDialog(frame);
         nd.setVisible(true);
