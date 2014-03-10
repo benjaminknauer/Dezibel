@@ -12,12 +12,11 @@ import javax.swing.table.DefaultTableModel;
  */
 public class PlaylistMediaTableModel extends DefaultTableModel {
     private Playlist currentPlaylist;
-    private String[] headlines = new String[]{"","Künstler", "Titel", "Album", 
+    private String[] headlines = new String[]{"Künstler", "Titel", "Album", 
         "Genre", "Uploaddatum", "Bewertung"};
-    private Class<?>[] columnTypes = new Class<?>[]{Boolean.class, String.class, String.class,
+    private Class<?>[] columnTypes = new Class<?>[]{String.class, String.class,
         String.class, String.class, Date.class, Double.class};
     
-    private boolean[] selected;
     private Medium[] data;
 
     @Override
@@ -51,21 +50,19 @@ public class PlaylistMediaTableModel extends DefaultTableModel {
             switch (col) {
                 case -1:
                     return m;
-                case 0 :
-                    return selected[row]; 
-                case 1:
+                case 0:
                     return m.getArtist().getPseudonym();
-                case 2:
+                case 1:
                     return m.getTitle();
-                case 3:
+                case 2:
                     if (m.getAlbum() != null) return m.getAlbum().getTitle();
                     else return "";
-                case 4:
+                case 3:
                     if (m.getGenre() != null) return m.getGenre().getName();
                     else return "";
-                case 5:
+                case 4:
                     return m.getUploadDate();
-                case 6:
+                case 5:
                     // Round to 2 digits
                     return Math.round(m.getAvgRating() * 100) / 100;
             }
@@ -77,13 +74,7 @@ public class PlaylistMediaTableModel extends DefaultTableModel {
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return columnIndex == 0;
     }
-    
-    @Override
-    public void setValueAt(Object value, int row, int column){
-        if (data != null && row >= 0 && row < data.length) {
-            selected[row] = (Boolean) value;
-        }
-    }
+
     
     /**
      * Sets the data of this model.
@@ -93,11 +84,9 @@ public class PlaylistMediaTableModel extends DefaultTableModel {
         this.currentPlaylist = playlist;
         if (playlist == null) {
             this.data = null;
-            this.selected = null;
         } else {
             this.data = new Medium[playlist.getList().size()];
             playlist.getList().toArray(this.data);
-            this.selected = new boolean[playlist.getList().size()];
         }
         fireTableDataChanged();
     }
