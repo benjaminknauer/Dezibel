@@ -6,6 +6,7 @@ import de.dezibel.data.Medium;
 import de.dezibel.data.Playlist;
 import de.dezibel.player.Player;
 import java.awt.Font;
+import java.awt.FontMetrics;
 
 /**
  *
@@ -17,10 +18,15 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Point;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import javax.swing.JScrollPane;
 import javax.swing.JPopupMenu;
+import javax.swing.JTextArea;
+import javax.swing.table.DefaultTableCellRenderer;
 
 public class AlbumPanel extends DragablePanel {
 
@@ -61,6 +67,27 @@ public class AlbumPanel extends DragablePanel {
         commentModel.setData(currentAlbum.getComments());
         tblAlbumComments = new JTable(commentModel);
         spAlbumComments = new JScrollPane(tblAlbumComments);
+        
+        DefaultTableCellRenderer topRenderer = new DefaultTableCellRenderer();
+        topRenderer.setVerticalAlignment(javax.swing.JLabel.TOP);
+        tblAlbumComments.getColumnModel().getColumn(1).setCellRenderer(topRenderer);
+        tblAlbumComments.getColumnModel().getColumn(2).setCellRenderer(topRenderer);
+        tblAlbumComments.getColumnModel().getColumn(0).setMinWidth((int) (parent.getWidth() * 0.5) );
+        
+        tblAlbumComments.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent ce) {
+                resizeCommentRows();
+            }
+        });
+        tblAlbumComments.getTableHeader().addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent me) {
+                resizeCommentRows();
+            }
+        });
+        
+        
         TextAreaCellRenderer tacr = new TextAreaCellRenderer();
         tblAlbumComments.getColumnModel().getColumn(0).setCellRenderer(tacr);  
 
@@ -139,6 +166,24 @@ public class AlbumPanel extends DragablePanel {
         
         if(currentAlbum.getMediaList().isEmpty()){
             dp.clearCenter();
+        }
+    }
+    
+    private void resizeCommentRows() {
+        JTextArea textarea = (JTextArea) tblAlbumComments.getColumnModel()
+                .getColumn(0).getCellRenderer().getTableCellRendererComponent(
+                        tblAlbumComments, null, false, false, 0, 0);
+        FontMetrics fm = textarea.getFontMetrics(textarea.getFont());
+        int columnWidth = tblAlbumComments.getColumnModel().getColumn(0).getWidth();
+        for (int row = 0; row < tblAlbumComments.getRowCount(); row++) {
+            int lines = 0;
+            for (String s : ((String) tblAlbumComments.getValueAt(row, 0)).split("\n")) {
+                lines++;
+                if (fm.stringWidth(s) > columnWidth) {
+                    lines += fm.stringWidth(s) / columnWidth;
+                }
+            }
+            tblAlbumComments.setRowHeight(row, lines * fm.getHeight());
         }
     }
 

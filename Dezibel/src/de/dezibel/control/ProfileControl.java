@@ -643,4 +643,32 @@ public class ProfileControl {
     public boolean isLocked(User user){
         return user.isLocked();
     }
+    
+    /**
+     * Changes the given users password to the one given by the parameter.
+     *
+     * @param user user the profile belongs to
+     * @param password new password
+     */
+    public void setPassword(User user, String password) {
+        if (belongsToLoggedUser(user)) {
+            HashGenerator hg = new HashGenerator();
+            password = hg.hash(password);
+            user.setPassword(password);
+        }
+    }
+    
+    /**
+     * Checks if the given password of the user is correct.
+     * 
+     * @param user user the profile belongs to
+     * @param password password of the user
+     * @return true if the user is locked, false otherwise
+     */
+    public boolean checkPassword(User user, String password){
+        HashGenerator hg = new HashGenerator();
+        password = hg.hash(password);
+        return user.getPassword().equals(password);
+    }
+    
 }
