@@ -45,6 +45,7 @@ public class LabelProfilPanel extends DragablePanel {
     private JPanel pnFollower;
     private JPanel pnNews;
     private JPanel pnManagement;
+    private JPanel pnArtists;
     private GridBagLayout gbl;
     private GridBagConstraints gbc;
 
@@ -67,6 +68,7 @@ public class LabelProfilPanel extends DragablePanel {
     private MediaTableModel mediaModellUpload;
     private AlbumTableModel albumModellUpload;
     private NewsSideTableModel newsModell;
+    private ArtistTableModell artistModell;
     private JTextField tfName;
     private JTextArea taCompanyDetails;
     private FollowerTableModel managerModell;
@@ -77,6 +79,8 @@ public class LabelProfilPanel extends DragablePanel {
     private JTextArea taApplications;
     private boolean isApplicationsVisible;
     private JButton btnLock;
+    private JTable tArtists;
+    private JScrollPane sptArtist;
 
     /**
      * Constructor of the ProfilPanel class.
@@ -168,6 +172,7 @@ public class LabelProfilPanel extends DragablePanel {
             newsModell.setData(profileControler.getNews(currentLabel));
             managerModell.setData(profileControler.getManagers(currentLabel));
             applicationsModell.setData(profileControler.getApplications(currentLabel));
+            artistModell.setData(profileControler.getArtists(currentLabel));
         }
     }
 
@@ -195,6 +200,9 @@ public class LabelProfilPanel extends DragablePanel {
         this.pnManagement = new JPanel();
         this.createManagementComponents();
         tabPanel.addTab("Manager", null, pnManagement);
+        this.pnArtists = new JPanel();
+        this.createArtistsComponents();
+        tabPanel.addTab("Künstler", null, pnArtists);
         this.pnApplications = new JPanel();
         this.createApplicationsComponents();
         tabPanel.addTab("Bewerbungen", null, pnApplications);
@@ -546,6 +554,39 @@ public class LabelProfilPanel extends DragablePanel {
     public void reset() {
         // TODO Auto-generated method stub
 
+    }
+
+    private void createArtistsComponents() {
+        artistModell = new ArtistTableModell();
+        tArtists = new JTable(artistModell);
+        tArtists.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        tArtists.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            private void showPopup(MouseEvent me) {
+                ContextMenu contextMenu = new ContextMenu(parent);
+                currentPopupMenu = contextMenu.getContextMenu(tArtists, me);
+                currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
+            }
+        });
+
+        sptArtist = new JScrollPane(tArtists);
+        BorderLayout fLayout = new BorderLayout();
+        pnArtists.setLayout(fLayout);
+        pnArtists.add(sptArtist, BorderLayout.CENTER);
     }
 
 }
