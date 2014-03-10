@@ -532,6 +532,7 @@ public class ProfilPanel extends DragablePanel {
         commentModell = new CommentTableModel();
         tComments = new JTable(commentModell);
         tComments.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tComments.removeColumn(tComments.getColumn("von Benutzer"));
 
         taComments = new JTextArea();
         taComments.setLineWrap(true);
@@ -906,6 +907,10 @@ public class ProfilPanel extends DragablePanel {
         gbc.weighty = 0.1;
         gbl.setConstraints(btnCreateLabel, gbc);
         pnLabels.add(btnCreateLabel);
+    }
+    
+    private void createApplicationComponents() {
+        
     }
 
     @Override

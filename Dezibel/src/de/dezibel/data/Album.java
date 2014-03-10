@@ -5,13 +5,10 @@ import de.dezibel.io.ImageLoader;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 /**
@@ -42,10 +39,9 @@ public class Album implements Commentable {
     private boolean markedForDeletion = false;
 
     /**
-     * Creates a new non empty Album with the given
-     * <code>medium</code>,
-     * <code>title</code>.
-     * <code>label</code> is set as the publisher of the Album.
+     * Creates a new non empty Album with the given <code>medium</code>,
+     * <code>title</code>. <code>label</code> is set as the publisher of the
+     * Album.
      *
      * @param medium The first Medium in the Album.
      * @param title The Album's title.
@@ -65,10 +61,8 @@ public class Album implements Commentable {
     }
 
     /**
-     * Creates a new non empty Album with the given
-     * <code>medium</code>,
-     * <code>title</code>.
-     * <code>user</code> is set as the creator of the Album.
+     * Creates a new non empty Album with the given <code>medium</code>,
+     * <code>title</code>. <code>user</code> is set as the creator of the Album.
      *
      * @param medium The first Medium in the Album.
      * @param title The Album's title.
@@ -116,8 +110,7 @@ public class Album implements Commentable {
     /**
      * Adds the given medium to this album's media list. Does nothing if there
      * already is a medium with the same filepath. Do not use this to add a new
-     * Medium to the album. Use
-     * <code>addNewMedium</code> instead.
+     * Medium to the album. Use <code>addNewMedium</code> instead.
      *
      * @param medium The medium to be added to this album's media list.
      */
@@ -253,16 +246,15 @@ public class Album implements Commentable {
         }
         this.coverPath = uploadPath;
         // Scale image to standard dimension
-        BufferedImage dest = new BufferedImage(128, 128, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g2 = dest.createGraphics();
-        g2.drawImage(getCover(), 0, 0, 128, 128, Color.WHITE, null);
-        g2.dispose();
         try {
-            ImageIO.write(dest, "jpg", new File(this.coverPath));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            File f = new File(this.coverPath);
-            if (f.exists()) f.delete();
+            BufferedImage image = ImageIO.read(new File(this.coverPath));
+            Image smallerImg = image.getScaledInstance(128, 128, Image.SCALE_SMOOTH);
+            BufferedImage img = new BufferedImage(128, 128, BufferedImage.TYPE_INT_RGB);
+            Graphics2D g2d = (Graphics2D) img.createGraphics();
+            g2d.drawImage(smallerImg, 0, 0, null);
+            g2d.dispose();
+            ImageIO.write(img, "png", new File(this.coverPath));
+        } catch (Exception ex) {
             return ErrorCode.UPLOAD_ERROR;
         }
         return ErrorCode.SUCCESS;

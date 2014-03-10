@@ -1,7 +1,6 @@
 package de.dezibel.data;
 
 import de.dezibel.ErrorCode;
-import de.dezibel.control.HashGenerator;
 import de.dezibel.io.XStreamAdapter;
 import java.util.Date;
 import java.util.LinkedList;
@@ -36,7 +35,7 @@ public class Database {
     /**
      * The amount of Lists in data.
      */
-    private int listCount = 10;
+    private final int listCount = 10;
 
     private LinkedList<User> users;
     private LinkedList<Label> labels;
@@ -49,8 +48,8 @@ public class Database {
     private LinkedList<Application> applications;
     private LinkedList<Genre> genres;
 
-    private String topGenreName = "topGenre";
-
+    private final String topGenreName = "topGenre";
+    
     private User loggedInUser;
     
     /**
@@ -122,7 +121,7 @@ public class Database {
 
         // Create topGenre
         this.genres.add(new Genre(topGenreName, null));
-        
+            
         // TODO Entfernen: Testdaten (Tobias, Richard)
 //        this.addGenre("Electro", this.getTopGenre());
 //        Genre ge = this.getGenres().get(this.getGenres().size() - 1);
@@ -423,6 +422,9 @@ public class Database {
     /**
      * Adds a new News created by the User specified by <code>author</code>.
      *
+     * @param title the Title
+     * @param text the text
+     * @param author the author of the news
      * @return ErrorCode
      * @pre <code>title</code> and <code>text</code> must not be null or the
      * empty String. <code>author</code> must not be null.
@@ -437,6 +439,9 @@ public class Database {
     /**
      * Adds a new News created by the Label specified by <code>author</code>.
      *
+     * @param title the title
+     * @param text the text
+     * @param author the author of the news
      * @return ErrorCode
      * @pre <code>title</code> and <code>text</code> must not be null or the
      * empty String. <code>author</code> must not be null.
