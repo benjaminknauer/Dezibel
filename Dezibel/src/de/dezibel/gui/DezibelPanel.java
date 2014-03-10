@@ -239,6 +239,11 @@ public class DezibelPanel extends JPanel {
     }
     
     public void showAlbum(Album album){
+        AlbumPanel pnAlbum = new AlbumPanel(this, album);
+        pnAlbum.setBackground(DezibelColor.Background);
+        Dockable daAlbum = new DefaultDockable("pnAlbum", pnAlbum, "Album", null,
+                DockingMode.CENTER + DockingMode.SINGLE);
+        this.showAtCenter(daAlbum);
     	
     }
 

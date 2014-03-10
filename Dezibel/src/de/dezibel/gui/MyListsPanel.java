@@ -86,7 +86,7 @@ public class MyListsPanel extends DragablePanel {
 
         scrollPane.getViewport().setBackground(dp.getBackground());
         ((DefaultTableCellRenderer) tblPlaylists.getDefaultRenderer(Object.class)).setBackground(dp.getBackground());
-        tblPlaylists.setSelectionBackground(new Color(0, 153, 255));
+        //tblPlaylists.setSelectionBackground(new Color(0, 153, 255));
         tblPlaylists.setShowGrid(false);
         tblPlaylists.setFocusable(false);
 

@@ -180,6 +180,7 @@ public class ContextMenu {
                 Database.getInstance().getLoggedInUser().removeFavoriteMedium(m);
                 menuItemRate1.setSelected(true);
                 currentTableModel.fireTableCellUpdated(currentTable.getSelectedRow(), 5);
+                dp.refresh(UpdateEntity.FAVORITES);
             }
         });
         
@@ -192,6 +193,7 @@ public class ContextMenu {
                 Database.getInstance().getLoggedInUser().removeFavoriteMedium(m);
                 menuItemRate2.setSelected(true);
                 currentTableModel.fireTableCellUpdated(currentTable.getSelectedRow(), 5);
+                dp.refresh(UpdateEntity.FAVORITES);
             }
         });
         
@@ -204,6 +206,7 @@ public class ContextMenu {
                 Database.getInstance().getLoggedInUser().removeFavoriteMedium(m);
                 menuItemRate3.setSelected(true);
                 currentTableModel.fireTableCellUpdated(currentTable.getSelectedRow(), 5);
+                dp.refresh(UpdateEntity.FAVORITES);
             }
         });
         
@@ -216,6 +219,7 @@ public class ContextMenu {
                 Database.getInstance().getLoggedInUser().removeFavoriteMedium(m);
                 menuItemRate4.setSelected(true);
                 currentTableModel.fireTableCellUpdated(currentTable.getSelectedRow(), 5);
+                dp.refresh(UpdateEntity.FAVORITES);
             }
         });
         
@@ -228,6 +232,7 @@ public class ContextMenu {
                 Database.getInstance().getLoggedInUser().addFavoriteMedium(m);
                 menuItemRate5.setSelected(true);
                 currentTableModel.fireTableCellUpdated(currentTable.getSelectedRow(), 5);
+                dp.refresh(UpdateEntity.FAVORITES);
             }
         });
         
@@ -783,6 +788,7 @@ public class ContextMenu {
         currentPopupMenu = new JPopupMenu();
         final Application a = (Application) currentTableModel.getValueAt(
                 currentTable.getSelectedRow(), -1);
+        
         JMenuItem menuItemAccept = new JMenuItem("Akzeptieren");
         JMenuItem menuItemDecline = new JMenuItem("Ablehnen");
         menuItemAccept.addActionListener(new ActionListener() {
