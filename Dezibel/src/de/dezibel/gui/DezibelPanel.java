@@ -705,8 +705,8 @@ public class DezibelPanel extends JPanel {
                 }
             });
             menuShow.add(cbMenuItem);
-            
             JMenu menuUpload = new JMenu("Upload");
+            menuUpload.setIcon(new ImageIcon(this.getClass().getResource("/img/upload24x24.png")));
             JMenuItem itemUpload = new JMenuItem("Upload");
             menuUpload.add(itemUpload);
 
