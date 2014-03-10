@@ -48,6 +48,10 @@ public class Genre {
         
         markedForDeletion = true;
 
+        for (Medium currentMedium : media) 
+            currentMedium.setGenre(this.superGenre);
+        media.clear();
+        
         // Handle all sub-genres
         for (Genre currentGenre : subGenres) {
             currentGenre.setSuperGenre(null);
@@ -104,8 +108,10 @@ public class Genre {
      * @post !self.hasMedium(medium)
      */
     public void removeMedium(Medium medium) {
+        if(!this.media.contains(medium))
+            return;
         this.media.remove(medium);
-        medium.setGenre(null);
+        medium.removeGenre();
     }
 
     /**

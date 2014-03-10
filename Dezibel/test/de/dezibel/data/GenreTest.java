@@ -106,7 +106,7 @@ public class GenreTest {
         genre4.removeMedium(med1);
         assertTrue(genre4.getMedia().contains(med2));
         assertFalse(genre4.getMedia().contains(med1));
-        assertEquals(null, med1.getGenre());
+        assertEquals(Database.getInstance().getTopGenre(), med1.getGenre());
     }
 
     /**
