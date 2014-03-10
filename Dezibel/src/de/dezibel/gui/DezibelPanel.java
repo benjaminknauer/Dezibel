@@ -283,6 +283,9 @@ public class DezibelPanel extends JPanel {
             case ALBUM:
             	pnProfil.refresh();
             	pnLabelProfil.refresh();
+                
+            case RECOMMENDATIONS:
+                pnAds.refresh();
             	
             default:
                 break;

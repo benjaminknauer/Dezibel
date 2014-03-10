@@ -1,17 +1,21 @@
 package de.dezibel.gui;
 
+import de.dezibel.UpdateEntity;
 import de.dezibel.data.Database;
 import de.dezibel.data.Playlist;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.awt.Color;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
+import java.awt.event.FocusAdapter;
 
 /**
  *
@@ -53,7 +57,17 @@ public class MyListsPanel extends DragablePanel {
         mltm = new MyListsTableModel();
         tblPlaylists = new JTable(mltm);
         scrollPane = new JScrollPane(tblPlaylists);
+        
+        tblPlaylists.addFocusListener(new FocusAdapter() {
 
+            @Override
+            public void focusGained(FocusEvent e) {
+                dp.refresh(UpdateEntity.NEWS);
+                dp.refresh(UpdateEntity.FAVORITES);
+                dp.refresh(UpdateEntity.RECOMMENDATIONS);
+            }
+
+        });
 
         tblPlaylists.addMouseListener(new MouseAdapter() {
             @Override
@@ -85,10 +99,7 @@ public class MyListsPanel extends DragablePanel {
         });
 
         scrollPane.getViewport().setBackground(dp.getBackground());
-        ((DefaultTableCellRenderer) tblPlaylists.getDefaultRenderer(Object.class)).setBackground(dp.getBackground());
-        //tblPlaylists.setSelectionBackground(new Color(0, 153, 255));
         tblPlaylists.setShowGrid(false);
-        tblPlaylists.setFocusable(false);
 
 
     }

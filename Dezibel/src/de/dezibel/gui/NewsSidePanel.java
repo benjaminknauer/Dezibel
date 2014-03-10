@@ -1,5 +1,6 @@
 package de.dezibel.gui;
 
+import de.dezibel.UpdateEntity;
 import de.dezibel.control.NewsControl;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -9,6 +10,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import de.dezibel.control.NewsControl;
 import de.dezibel.data.News;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 /**
  * Panel for displaying the 15 latest news from favorised 
@@ -47,6 +50,18 @@ public class NewsSidePanel extends DragablePanel {
         spNews.setViewportView(tblNews);
 
         spNews.setBackground(DezibelColor.PanelBackground);
+        
+        tblNews.addFocusListener(new FocusAdapter() {
+
+            @Override
+            public void focusGained(FocusEvent e) {
+                parent.refresh(UpdateEntity.PLAYLIST);
+                parent.refresh(UpdateEntity.FAVORITES);
+                parent.refresh(UpdateEntity.RECOMMENDATIONS);
+            }
+
+        });
+        
         tblNews.addMouseListener(new MouseAdapter() {
 
             @Override

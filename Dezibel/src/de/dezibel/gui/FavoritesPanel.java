@@ -1,10 +1,13 @@
 package de.dezibel.gui;
 
+import de.dezibel.UpdateEntity;
 import de.dezibel.data.Database;
 import de.dezibel.data.Label;
 import de.dezibel.data.Playlist;
 import de.dezibel.data.User;
 import java.awt.Color;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
@@ -52,7 +55,16 @@ public class FavoritesPanel extends DragablePanel {
         tblFavorites = new JTable(ftm);
         scrollPane = new JScrollPane(tblFavorites);
 
+        tblFavorites.addFocusListener(new FocusAdapter() {
 
+            @Override
+            public void focusGained(FocusEvent e) {
+                parent.refresh(UpdateEntity.NEWS);
+                parent.refresh(UpdateEntity.PLAYLIST);
+                parent.refresh(UpdateEntity.RECOMMENDATIONS);
+            }
+
+        });
 
         tblFavorites.addMouseListener(new MouseAdapter() {
             @Override

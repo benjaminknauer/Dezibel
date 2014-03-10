@@ -1,11 +1,14 @@
 package de.dezibel.gui;
 
+import de.dezibel.UpdateEntity;
 import de.dezibel.control.AdsControl;
 import de.dezibel.data.Medium;
 import de.dezibel.player.Player;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.BoxLayout;
@@ -56,6 +59,17 @@ public class AdsPanel extends DragablePanel {
         this.add(scrollPane);
         btnRefresh.setAlignmentX(CENTER_ALIGNMENT);
         this.add(btnRefresh);
+        
+        tableRecommendations.addFocusListener(new FocusAdapter() {
+
+            @Override
+            public void focusGained(FocusEvent e) {
+                parent.refresh(UpdateEntity.NEWS);
+                parent.refresh(UpdateEntity.FAVORITES);
+                parent.refresh(UpdateEntity.PLAYLIST);
+            }
+
+        });
 
         tableRecommendations.addMouseListener(new MouseAdapter() {
             @Override
