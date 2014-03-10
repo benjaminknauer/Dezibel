@@ -46,9 +46,6 @@ public class NewsPanel extends DragablePanel {
     public NewsPanel(DezibelPanel parent) {
         super(parent);
         this.createNewsPanel();
-    //    this.createComponents();
-      //  this.createLayout();
-      //  this.setBackground(DezibelColor.PanelBackground);
     } 
     public  void createNewsPanel(){
         
@@ -145,12 +142,10 @@ public class NewsPanel extends DragablePanel {
 
     @Override
     public void reset() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void refresh() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
