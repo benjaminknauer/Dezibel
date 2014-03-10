@@ -17,6 +17,8 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 
 /**
  * Control Class to manage the access and editing of profile data.
@@ -252,7 +254,7 @@ public class ProfileControl {
      * @param bDate users new birthdate
      */
     public void setBirthDate(User user, String bDate) {
-        if (bDate != "") {
+        if (!(bDate.equals(""))) {
             if (belongsToLoggedUser(user)) {
                 Date birthDate;
                 try {
@@ -260,6 +262,11 @@ public class ProfileControl {
                             Locale.GERMAN).parse(bDate);
                     user.setBirthdate(birthDate);
                 } catch (ParseException ex) {
+                    JOptionPane.showMessageDialog(new JPopupMenu(), "Datum nicht "
+                            + "gespeichert ! Geburts"
+                            + "datum entspricht nicht der gängigen Formatierungen.\n"
+                            + "Bitte wie im folgenden Beispiel angeben: "
+                            + "01.01.2014");
                     Logger.getLogger(ProfileControl.class.getName()).log(Level.SEVERE,
                             null, ex);
                 }
@@ -643,4 +650,32 @@ public class ProfileControl {
     public boolean isLocked(User user){
         return user.isLocked();
     }
+    
+    /**
+     * Changes the given users password to the one given by the parameter.
+     *
+     * @param user user the profile belongs to
+     * @param password new password
+     */
+    public void setPassword(User user, String password) {
+        if (belongsToLoggedUser(user)) {
+            HashGenerator hg = new HashGenerator();
+            password = hg.hash(password);
+            user.setPassword(password);
+        }
+    }
+    
+    /**
+     * Checks if the given password of the user is correct.
+     * 
+     * @param user user the profile belongs to
+     * @param password password of the user
+     * @return true if the user is locked, false otherwise
+     */
+    public boolean checkPassword(User user, String password){
+        HashGenerator hg = new HashGenerator();
+        password = hg.hash(password);
+        return user.getPassword().equals(password);
+    }
+    
 }
