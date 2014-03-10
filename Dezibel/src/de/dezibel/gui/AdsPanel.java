@@ -56,21 +56,6 @@ public class AdsPanel extends DragablePanel {
         btnRefresh.setAlignmentX(CENTER_ALIGNMENT);
         this.add(btnRefresh);
         
-        //TODO Die anderen Panels verwenden alle BoxLayout (kann aber wieder geändert werden ;) )
-//        GroupLayout layout = new GroupLayout(this);
-//        layout.setHorizontalGroup(layout.createParallelGroup()
-//                .addComponent(scrollPane)
-//                .addGap(10)
-//                .addComponent(btnRefresh, GroupLayout.Alignment.CENTER)
-//                .addGap(10)
-//        );
-//        layout.setVerticalGroup(layout.createSequentialGroup()
-//                .addComponent(scrollPane)
-//                .addGap(10)
-//                .addComponent(btnRefresh)
-//                .addGap(10)
-//        );
-//        setLayout(layout);
         
         tableRecommendations.addMouseListener(new MouseAdapter() {
             @Override

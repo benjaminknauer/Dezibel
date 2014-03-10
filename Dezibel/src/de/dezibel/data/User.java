@@ -76,53 +76,6 @@ public class User implements Lockable {
         favorizedAlbums = new LinkedList<>();
     }
 
-    // TODO: Mails in notify methoden versenden.
-    /**
-     * Informs the user about a new news by a favorite.
-     *
-     * @param news someone else's new news
-     */
-    public void notify(News news) {
-
-    }
-
-    /**
-     * Informs the user about a new medium by a favorite.
-     *
-     * @param medium someone else's new medium
-     */
-    public void notify(Medium medium) {
-
-    }
-
-    /**
-     * Informs the user about a new album by a favorite.
-     *
-     * @param album someone else's new album
-     */
-    public void notify(Album album) {
-
-    }
-
-    /**
-     * Informs the user about a new playlist by a favorite.
-     *
-     * @param playlist someone else's new playlist
-     */
-    public void notify(Playlist playlist) {
-
-    }
-
-    /**
-     * Informs the user about a new artist of a favorized label.
-     *
-     * @param label favorized label
-     * @param artist new artist of favorized label
-     */
-    public void notify(Label label, User artist) {
-
-    }
-
     /**
      * Adds a new album to the artists list of created albums.
      *
