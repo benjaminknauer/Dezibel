@@ -17,7 +17,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 /**
- *
+ * Dialog to create a medium
+ * 
  * @author Bastian
  */
 public class GenreDialog extends JDialog {
@@ -28,14 +29,18 @@ public class GenreDialog extends JDialog {
     private JComboBox<Genre> superGenre;
 
     /**
-     *
-     * @param frame
+     * Constructor
+     * 
+     * @param frame the frame to block
      */
     public GenreDialog(JFrame frame) {
         super(frame);
         uc = new UploadControl();
     }
 
+    /**
+     * Initializes the dialog frame
+     */
     public void init() {
         setTitle("Genre erstellen");
 
