@@ -475,6 +475,7 @@ public class ContextMenu {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         new ApplicationDialog(dp.getFrame(), selectedUser, currentLabel, false).setVisible(true);
+                        dp.refresh(UpdateEntity.APPLICATION);
                     }
                 });
                 recruitForLabelMenu.add(currentLabelMenuItem);
@@ -554,6 +555,7 @@ public class ContextMenu {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     new ApplicationDialog(dp.getFrame(), Database.getInstance().getLoggedInUser(), selectedLabel, true).setVisible(true);
+                    dp.refresh(UpdateEntity.APPLICATION);
                 }
             });
             currentPopupMenu.add(menuItemApply);
