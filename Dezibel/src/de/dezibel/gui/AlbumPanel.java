@@ -1,5 +1,6 @@
 package de.dezibel.gui;
 
+import de.dezibel.UpdateEntity;
 import de.dezibel.data.Album;
 import de.dezibel.data.Database;
 import de.dezibel.data.Medium;
@@ -18,11 +19,15 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
@@ -34,6 +39,8 @@ public class AlbumPanel extends DragablePanel {
     JLabel lbCreator;
     JLabel lbComments;
     JTable tblAlbumMedia;
+    JButton btnComment;
+    JButton btnFavorite;
     JScrollPane spAlbumMedia;
     JTable tblAlbumComments;
     JScrollPane spAlbumComments;
@@ -55,25 +62,63 @@ public class AlbumPanel extends DragablePanel {
         this.currentAlbum = currentAlbum;
         lbTitle = new JLabel(currentAlbum.getTitle());
         String creatorString = currentAlbum.getArtist().getPseudonym();
-        
+
         lbCreator = new JLabel(creatorString);
         lbComments = new JLabel("Kommentare");
         model = new AlbumMediaTableModel();
         model.setData(currentAlbum);
         tblAlbumMedia = new JTable(model);
         spAlbumMedia = new JScrollPane(tblAlbumMedia);
-        
+
+        btnComment = new JButton(new ImageIcon(this.getClass().getResource("/img/icons/commentIcon.png")));
+        btnComment.setOpaque(false);
+        btnComment.setBorderPainted(false);
+        btnComment.setContentAreaFilled(false);
+        btnComment.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                CommentDialog cd = new CommentDialog(dp.getFrame());
+                cd.commentAlbum(AlbumPanel.this.currentAlbum);
+                cd.setVisible(true);
+            }
+        });
+        btnFavorite = new JButton(new ImageIcon(this.getClass().getResource("/img/icons/favoriteFalse.png")));
+
+        if (Database.getInstance().getLoggedInUser().getFavoriteAlbums().contains(currentAlbum)) {
+            btnFavorite.setIcon(new ImageIcon(this.getClass().getResource("/img/icons/favoriteTrue.png")));
+        } else {
+            btnFavorite.setIcon(new ImageIcon(this.getClass().getResource("/img/icons/favoriteFalse.png")));
+        }
+
+
+        btnFavorite.setOpaque(false);
+        btnFavorite.setBorderPainted(false);
+        btnFavorite.setContentAreaFilled(false);
+        btnFavorite.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                if (Database.getInstance().getLoggedInUser().getFavoriteAlbums().contains(AlbumPanel.this.currentAlbum)) {
+                    Database.getInstance().getLoggedInUser().removeFavoriteAlbum(AlbumPanel.this.currentAlbum);
+                    btnFavorite.setIcon(new ImageIcon(this.getClass().getResource("/img/icons/favoriteFalse.png")));
+                } else {
+                    Database.getInstance().getLoggedInUser().addFavoriteAlbum(AlbumPanel.this.currentAlbum);
+                    btnFavorite.setIcon(new ImageIcon(this.getClass().getResource("/img/icons/favoriteTrue.png")));
+                }
+                dp.refresh(UpdateEntity.PLAYLIST);
+            }
+        });
+
         commentModel = new CommentTableModel();
         commentModel.setData(currentAlbum.getComments());
         tblAlbumComments = new JTable(commentModel);
         spAlbumComments = new JScrollPane(tblAlbumComments);
-        
+
         DefaultTableCellRenderer topRenderer = new DefaultTableCellRenderer();
         topRenderer.setVerticalAlignment(javax.swing.JLabel.TOP);
         tblAlbumComments.getColumnModel().getColumn(1).setCellRenderer(topRenderer);
         tblAlbumComments.getColumnModel().getColumn(2).setCellRenderer(topRenderer);
-        tblAlbumComments.getColumnModel().getColumn(0).setMinWidth((int) (parent.getWidth() * 0.5) );
-        
+        tblAlbumComments.getColumnModel().getColumn(0).setMinWidth((int) (parent.getWidth() * 0.5));
+
         tblAlbumComments.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent ce) {
@@ -86,10 +131,10 @@ public class AlbumPanel extends DragablePanel {
                 resizeCommentRows();
             }
         });
-        
-        
+
+
         TextAreaCellRenderer tacr = new TextAreaCellRenderer();
-        tblAlbumComments.getColumnModel().getColumn(0).setCellRenderer(tacr);  
+        tblAlbumComments.getColumnModel().getColumn(0).setCellRenderer(tacr);
 
         tblAlbumMedia.addMouseListener(new MouseAdapter() {
             @Override
@@ -133,13 +178,21 @@ public class AlbumPanel extends DragablePanel {
         GridBagLayout gbl = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
         this.setLayout(gbl);
-        
+
         lbTitle.setFont(DezibelFont.CENTERPANEL_TITLE);
         lbCreator.setFont(DezibelFont.CENTERPANEL_TITLE);
 
         gbc.weighty = 0.1;
         gbc.insets = new Insets(0, 30, 0, 0);
         this.add(lbTitle, gbc);
+
+        gbc.insets = new Insets(0, 0, 0, 0);
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.weightx = 1;
+        this.add(btnComment, gbc);
+
+        gbc.anchor = GridBagConstraints.WEST;
+        this.add(btnFavorite, gbc);
 
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.insets = new Insets(0, 0, 0, 30);
@@ -151,9 +204,9 @@ public class AlbumPanel extends DragablePanel {
         gbc.weighty = 0.6;
         gbc.weightx = 1;
         this.add(spAlbumMedia, gbc);
-        
+
         gbc.weighty = 0.3;
-        this.add(spAlbumComments,gbc);
+        this.add(spAlbumComments, gbc);
     }
 
     @Override
@@ -163,16 +216,23 @@ public class AlbumPanel extends DragablePanel {
         lbTitle = new JLabel(currentAlbum.getTitle());
         String creatorString = currentAlbum.getArtist().getPseudonym();
         lbCreator = new JLabel(creatorString);
-        
-        if(currentAlbum.getMediaList().isEmpty()){
+
+
+        if (Database.getInstance().getLoggedInUser().getFavoriteAlbums().contains(currentAlbum)) {
+            btnFavorite.setIcon(new ImageIcon(this.getClass().getResource("/img/icons/favoriteTrue.png")));
+        } else {
+            btnFavorite.setIcon(new ImageIcon(this.getClass().getResource("/img/icons/favoriteFalse.png")));
+        }
+
+        if (currentAlbum.getMediaList().isEmpty()) {
             dp.clearCenter();
         }
     }
-    
+
     private void resizeCommentRows() {
         JTextArea textarea = (JTextArea) tblAlbumComments.getColumnModel()
                 .getColumn(0).getCellRenderer().getTableCellRendererComponent(
-                        tblAlbumComments, null, false, false, 0, 0);
+                tblAlbumComments, null, false, false, 0, 0);
         FontMetrics fm = textarea.getFontMetrics(textarea.getFont());
         int columnWidth = tblAlbumComments.getColumnModel().getColumn(0).getWidth();
         for (int row = 0; row < tblAlbumComments.getRowCount(); row++) {
@@ -187,9 +247,8 @@ public class AlbumPanel extends DragablePanel {
         }
     }
 
-	@Override
-	public void reset() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void reset() {
+        // TODO Auto-generated method stub
+    }
 }
