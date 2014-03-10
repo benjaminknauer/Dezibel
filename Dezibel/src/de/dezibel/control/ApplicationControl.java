@@ -12,15 +12,19 @@ import de.dezibel.data.Label;
 import de.dezibel.data.User;
 
 /**
- *
+ * Controls functions concerning the application feature.
  * @author Henner
  */
 public class ApplicationControl {
     
-    public ApplicationControl(){
-        
-    }
-    
+    /**
+     * Creates a new application with the given parameters. If a label manager applied
+     * on his own label, no acception is needed.
+     * @param applicationFromArtist true, if the artist created the application, else false
+     * @param text The text of the application
+     * @param artist The assigned artist
+     * @param label The assigned label
+     */
     public void createApplication(boolean applicationFromArtist, String text, User artist, Label label){
         // A label-manager's application does not need to be accepted.
         if(label.getLabelManagers().contains(artist)){
@@ -31,10 +35,18 @@ public class ApplicationControl {
         Database.getInstance().addApplication(applicationFromArtist, text, artist, label);
     }
     
+    /**
+     * Accepts the submitted application.
+     * @param application The application to accept
+     */
     public void acceptApplication(Application application){
         application.accept();
     }
     
+    /**
+     * Declines the submitted application.
+     * @param application The application to decline
+     */
     public void declineApplication(Application application) {
         application.decline();
     }
