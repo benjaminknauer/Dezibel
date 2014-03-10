@@ -652,6 +652,7 @@ public class ContextMenu {
                     Player.getInstance().addMedialist(a.getMediaList());
                     Player.getInstance().play();
                 }
+                dp.refresh(UpdateEntity.ALBUM);
             }
         });
         currentPopupMenu.add(menuItemQueue);
@@ -675,6 +676,7 @@ public class ContextMenu {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         a.delete();
+                        dp.refresh(UpdateEntity.ALBUM);
                     }
                 });
                 currentPopupMenu.add(menuItemDelete);
@@ -777,11 +779,13 @@ public class ContextMenu {
      * playlistpanel to the MediumPopupMenu
      */
     private void addPlaylistPanelMenuItems() {
+        
+        final Playlist p = ((PlaylistMediaTableModel) currentTableModel).getCurrentPlaylist();
+        if (p.getCreator() == Database.getInstance().getLoggedInUser()){
         JMenuItem deleteMediumAt = new JMenuItem("Nur hier entfernen");
         deleteMediumAt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Playlist p = ((PlaylistMediaTableModel) currentTableModel).getCurrentPlaylist();
                 if (p != null) {
                     new PlaylistControl().removeMediumAt(p, currentTable.getSelectedRow());
                     dp.refresh(UpdateEntity.PLAYLIST);
@@ -804,6 +808,7 @@ public class ContextMenu {
 
         currentPopupMenu.add(removeMediumFromPlaylist);
         currentPopupMenu.add(deleteMediumAt);
+        }
     }
 
     /**
