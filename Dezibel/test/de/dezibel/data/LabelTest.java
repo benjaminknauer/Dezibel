@@ -138,7 +138,7 @@ public class LabelTest {
         testMedium2 = new Medium("TestMedium2", this.artist, "path2");
         Album testAlbum1, testAlbum2;
         testAlbum1 = new Album(testMedium1, "TestAlbum1", this.label);
-        testAlbum2 = new Album(testMedium2, "TestAlbum2", this.artist);       
+        testAlbum2 = new Album(testMedium2, "TestAlbum2", this.artist, true);       
         
         this.label.addAlbum(testAlbum2);
         this.label.removeAlbum(testAlbum1);
@@ -168,7 +168,7 @@ public class LabelTest {
         testMedium2 = new Medium("TestMedium2", this.artist, "path2");
         Album testAlbum1, testAlbum2;
         testAlbum1 = new Album(testMedium1, "TestAlbum1", this.label);
-        testAlbum2 = new Album(testMedium2, "TestAlbum2", this.artist);
+        testAlbum2 = new Album(testMedium2, "TestAlbum2", this.artist, true);
         
         this.label.addAlbum(testAlbum2);
         

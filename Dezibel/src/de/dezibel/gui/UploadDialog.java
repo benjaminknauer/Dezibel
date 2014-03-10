@@ -1,13 +1,16 @@
 package de.dezibel.gui;
 
+import de.dezibel.control.AlbumControl;
 import de.dezibel.control.UploadControl;
 import de.dezibel.data.Album;
 import de.dezibel.data.Genre;
 import de.dezibel.data.Label;
 import de.dezibel.data.Medium;
 import de.dezibel.data.User;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -16,7 +19,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileFilter;
 
 /**
  * Dialog to upload a medium
@@ -116,8 +121,67 @@ public final class UploadDialog extends JDialog {
                 } else if (medium == null) {
                     Object albumSelection = cbAlbum.getSelectedItem();
                     Album album;
+                    String newAlbumName = null;
+                    String coverPath = null;
                     if (albumSelection instanceof String) {
-                        // TODO - Neues Album anlegen
+                        // Get attributes for new album
+                        JPanel panel = new JPanel();
+                        JLabel lbAlbumTitle = new JLabel("Titel des Albums");
+                        JTextField tfAlbumTitle = new JTextField("");
+
+                        JLabel lbFilePath = new JLabel("Album-Cover");
+                        final JTextField tfFilePath = new JTextField("");
+                        tfFilePath.setEditable(false);
+
+                        JButton btnFilePath = new JButton("...");
+                        btnFilePath.addActionListener(new ActionListener() {
+
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                JFileChooser fc = new JFileChooser();
+                                fc.setFileFilter(new FileFilter() {
+
+                                    @Override
+                                    public boolean accept(File f) {
+                                        return f.isDirectory() || f.getPath().endsWith(".jpg")
+                                                || f.getPath().endsWith(".jpeg")
+                                                || f.getPath().endsWith(".png")
+                                                || f.getPath().endsWith(".bmp");
+                                    }
+
+                                    @Override
+                                    public String getDescription() {
+                                        return "nur Bilddateien";
+                                    }
+                                });
+                                int returnVal = fc.showOpenDialog(UploadDialog.this);
+                                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                                    tfFilePath.setText(fc.getSelectedFile().getAbsolutePath());
+                                }
+                            }
+                        });
+                        panel.setLayout(null);
+                        lbAlbumTitle.setBounds(10, 5, 200, 32);
+                        panel.add(lbAlbumTitle);
+                        tfAlbumTitle.setBounds(10, 42, 250, 32);
+                        panel.add(tfAlbumTitle);
+
+                        lbFilePath.setBounds(10, 79, 200, 32);
+                        panel.add(lbFilePath);
+                        tfFilePath.setBounds(10, 116, 220, 32);
+                        panel.add(tfFilePath);
+
+                        btnFilePath.setBounds(225, 118, 40, 28);
+                        panel.add(btnFilePath);
+                        
+                        panel.setPreferredSize(new Dimension(270, 215));
+
+                        int ret = JOptionPane.showConfirmDialog(UploadDialog.this, panel,
+                                "Neues Album anlegen", JOptionPane.OK_CANCEL_OPTION);
+                        if (ret == JOptionPane.OK_OPTION) {
+                            newAlbumName = tfAlbumTitle.getText().trim();
+                            coverPath = tfFilePath.getText();
+                        }
                         album = null;
                     } else {
                         album = (Album) cbAlbum.getSelectedItem();
@@ -126,7 +190,7 @@ public final class UploadDialog extends JDialog {
                             (tfUpload.getText().isEmpty() ? null : tfUpload.getText()),
                             (Genre) cbGenre.getSelectedItem(),
                             (Label) cbLabel.getSelectedItem(),
-                            album)) {
+                            album, newAlbumName, coverPath)) {
                         case SUCCESS:
                             JOptionPane.showMessageDialog(UploadDialog.this, "Das Medium wurde erfolgreich erstellt!", "Erfolg", JOptionPane.INFORMATION_MESSAGE);
                             UploadDialog.this.dispose();

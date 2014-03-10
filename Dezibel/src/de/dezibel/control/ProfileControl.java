@@ -484,7 +484,7 @@ public class ProfileControl {
      * @param cover path to albums cover
      */
     public void createAlbum(User user, Medium medium, String title, String cover) {
-        Database.getInstance().addAlbum(medium, title, user, cover);
+        Database.getInstance().addAlbum(medium, title, user, cover, true);
     }
 
     /**

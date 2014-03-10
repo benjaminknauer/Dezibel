@@ -11,9 +11,9 @@ import de.dezibel.control.NewsControl;
 import de.dezibel.data.News;
 
 /**
- *
+ * Panel for displaying the 15 latest news from favorised 
+ * users/labels in the sidebar.
  * @author Pascal
- *
  */
 public class NewsSidePanel extends DragablePanel {
 
@@ -22,7 +22,12 @@ public class NewsSidePanel extends DragablePanel {
     private JTable tblNews;
     private JScrollPane spNews;
     private NewsSideTableModel model;
-
+    
+    /**
+     * Creates the panel with its components.
+     * Background-Color is set to <code>DezibelColor.Panelbackground</code>
+     * @param parent
+     */
     public NewsSidePanel(DezibelPanel parent) {
         super(parent);
 
@@ -30,7 +35,10 @@ public class NewsSidePanel extends DragablePanel {
         this.createLayout();
         this.setBackground(DezibelColor.PanelBackground);
     }
-
+    
+    /**
+     * Help function to create all components
+     */
     private void createComponents() {
         lbTitle = new JLabel("Neuigkeiten");
         model = new NewsSideTableModel();
@@ -43,18 +51,22 @@ public class NewsSidePanel extends DragablePanel {
 
             @Override
             public void mouseClicked(MouseEvent e) {
+ 
                 if (e.getClickCount() == 2) {
                     News n = (News) model.getValueAt(
                             tblNews.getSelectedRow(), -1);
                     if (n != null) {
-                        onDoubleClick();
+                        onDoubleClick(n);
                     }
                 }
 
             }
         });
     }
-
+    
+    /**
+     * Help function to create the layout
+     */
     private void createLayout() {
         this.removeAll();
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -64,11 +76,19 @@ public class NewsSidePanel extends DragablePanel {
         this.add(spNews);
     }
 
-    private void onDoubleClick() {
-        //TODO hier funktion beim DezibelPanel erstellen die die News anzeigt
-        System.out.println("Double-Clicked on News");
+    /**
+     * This function is called, if the user clicks on a news.
+     * The function <code>showNews()</code> is called from <code>DezibelPanel</code>
+     * @param n The selected news in the list
+     */
+    private void onDoubleClick(News n) {
+        this.parent.showNews(n);
     }
-
+    
+    @Override
+    /**
+     * Clears all news in the current list.
+     */
     public void reset() {
         int i = model.getRowCount() - 1;
 
@@ -77,7 +97,8 @@ public class NewsSidePanel extends DragablePanel {
             i--;
         }
     }
-
+    
+    @Override
     /**
      * Refresh all user-information, displayed on the panel See
      * <code>DragablePanel</code>
@@ -85,22 +106,25 @@ public class NewsSidePanel extends DragablePanel {
     public void refresh() {
         this.reset();
         NewsControl controller = new NewsControl();
-        NewsSideTableModel model = new NewsSideTableModel();
         model.setData(controller.searchForNews());
         this.tblNews.setModel(model);
     }
-
+    
+    @Override
     public void onTopBottom() {
 
     }
-
+    
+    @Override
     public void onLeftRight() {
 
     }
-
+    
+    @Override
     public void onCenter() {
     }
-
+    
+    @Override
     public void onExternalized() {
 
     }
