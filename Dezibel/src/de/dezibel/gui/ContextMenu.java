@@ -480,8 +480,10 @@ public class ContextMenu {
                 });
                 recruitForLabelMenu.add(currentLabelMenuItem);
             }
-            if(recruitForLabelMenu.getComponentCount() < 1)
+            if(recruitForLabelMenu.getMenuComponentCount() < 1){
                 currentPopupMenu.remove(recruitForLabelMenu);
+            }
+ 
         }
 
         // Admin controls
