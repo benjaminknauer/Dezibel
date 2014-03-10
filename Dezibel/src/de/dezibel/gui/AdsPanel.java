@@ -18,29 +18,30 @@ import javax.swing.JPopupMenu;
 
 /**
  * Shows recommendations.
+ *
  * @author Richard
  */
 public class AdsPanel extends DragablePanel {
-    
+
     private RecommendationsTableModel tableModelRecommendations;
     private AdsControl control;
     private JLabel lbTitle;
     JTable tableRecommendations;
-    
+
     public AdsPanel(DezibelPanel parent) {
         super(parent);
         this.control = new AdsControl();
         init();
         this.setBackground(DezibelColor.PanelBackground);
     }
-    
+
     public void init() {
         tableModelRecommendations = new RecommendationsTableModel();
         tableModelRecommendations.setData(control.getRecommendedMedia());
         lbTitle = new JLabel("Empfehlungen");
         tableRecommendations = new JTable(tableModelRecommendations);
         JScrollPane scrollPane = new JScrollPane(tableRecommendations);
-        
+
         JButton btnRefresh = new JButton("Empfehlungen neu abrufen");
         btnRefresh.addActionListener(new ActionListener() {
             @Override
@@ -55,23 +56,7 @@ public class AdsPanel extends DragablePanel {
         this.add(scrollPane);
         btnRefresh.setAlignmentX(CENTER_ALIGNMENT);
         this.add(btnRefresh);
-        
-        //TODO Die anderen Panels verwenden alle BoxLayout (kann aber wieder geändert werden ;) )
-//        GroupLayout layout = new GroupLayout(this);
-//        layout.setHorizontalGroup(layout.createParallelGroup()
-//                .addComponent(scrollPane)
-//                .addGap(10)
-//                .addComponent(btnRefresh, GroupLayout.Alignment.CENTER)
-//                .addGap(10)
-//        );
-//        layout.setVerticalGroup(layout.createSequentialGroup()
-//                .addComponent(scrollPane)
-//                .addGap(10)
-//                .addComponent(btnRefresh)
-//                .addGap(10)
-//        );
-//        setLayout(layout);
-        
+
         tableRecommendations.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -98,7 +83,7 @@ public class AdsPanel extends DragablePanel {
                     showPopup(me);
                 }
             }
-            
+
             private void showPopup(MouseEvent me) {
                 JPopupMenu currentPopupMenu;
                 ContextMenu contextMenu = new ContextMenu(parent);
@@ -108,16 +93,15 @@ public class AdsPanel extends DragablePanel {
         });
     }
 
-	@Override
-	public void reset() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void reset() {
+	// Nicht notwendig
+    }
 
-	@Override
-	public void refresh() {
-		tableModelRecommendations.setData(control.getRecommendedMedia());
-		
-	}
-    
+    @Override
+    public void refresh() {
+        tableModelRecommendations.setData(control.getRecommendedMedia());
+
+    }
+
 }

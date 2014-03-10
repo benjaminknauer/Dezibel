@@ -8,7 +8,7 @@ import javax.swing.table.DefaultTableModel;
  * Shows the information of users in the ProfilPanel.
  * @author Richard, Tobias
  */
-public class ArtistTableModell extends DefaultTableModel {
+public class ArtistTableModel extends DefaultTableModel {
 
     private String[] headlines = new String[]{"Vorname", "Nachname", "Künstlername"};
     private Class<?>[] columnTypes = new Class<?>[]{String.class, String.class, String.class};

@@ -86,7 +86,6 @@ public class Database {
     }
 
     //TODO Initialisierung vervollstaendigen?
-    //TODO Methode private machen. Im Moment public für Tests.
     
     /**
      * Initialisizes the database with all the entity data it stores.
@@ -137,7 +136,6 @@ public class Database {
      *
      * @post If there is no data to load then (self.data == null)
      */
-    //TODO Methode private machen. Im Moment public für Tests.
     public void load() {
         data = xStreamer.load();
         if (data == null) {

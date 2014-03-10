@@ -143,10 +143,10 @@ public final class UploadDialog extends JDialog {
 
                                     @Override
                                     public boolean accept(File f) {
-                                        return f.isDirectory() || f.getPath().endsWith(".jpg")
-                                                || f.getPath().endsWith(".jpeg")
-                                                || f.getPath().endsWith(".png")
-                                                || f.getPath().endsWith(".bmp");
+                                        return f.isDirectory() || f.getPath().toLowerCase().endsWith(".jpg")
+                                                || f.getPath().toLowerCase().endsWith(".jpeg")
+                                                || f.getPath().toLowerCase().endsWith(".png")
+                                                || f.getPath().toLowerCase().endsWith(".bmp");
                                     }
 
                                     @Override

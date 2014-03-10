@@ -71,7 +71,7 @@ public class LabelProfilPanel extends DragablePanel {
     private MediaTableModel mediaModellUpload;
     private AlbumTableModel albumModellUpload;
     private NewsSideTableModel newsModell;
-    private ArtistTableModell artistModell;
+    private ArtistTableModel artistModell;
     private JTextField tfName;
     private JTextArea taCompanyDetails;
     private FollowerTableModel managerModell;
@@ -123,11 +123,7 @@ public class LabelProfilPanel extends DragablePanel {
                 tfName.setText(profileControler.getName(currentLabel));
                 taCompanyDetails.setText(profileControler.getCompanyDetails(currentLabel));
 
-                if (profileControler.getManagers(currentLabel).contains(profileControler.getLoggedInUser())) {
-                    btnFollow.setVisible(false);
-                } else {
-                    btnFollow.setVisible(true);
-                }
+                btnFollow.setVisible(true);
 
                 if (profileControler.getManagers(currentLabel).contains(profileControler.getLoggedInUser())) {
                     btnEdit.setVisible(true);
@@ -281,7 +277,7 @@ public class LabelProfilPanel extends DragablePanel {
         gbl.setConstraints(btnEdit, gbc);
         pnProfile.add(btnEdit);
         gbc.gridx = 1;
-        gbc.gridy = 10;
+        gbc.gridy = 11;
         gbl.setConstraints(btnFollow, gbc);
         pnProfile.add(btnFollow);
     }
@@ -648,7 +644,7 @@ public class LabelProfilPanel extends DragablePanel {
     }
 
     private void createArtistsComponents() {
-        artistModell = new ArtistTableModell();
+        artistModell = new ArtistTableModel();
         tArtists = new JTable(artistModell);
         tArtists.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
