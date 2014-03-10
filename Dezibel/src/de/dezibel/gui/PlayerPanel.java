@@ -26,6 +26,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.UIDefaults;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
@@ -160,6 +161,7 @@ public class PlayerPanel extends DragablePanel {
         });
         // Renderer that shows the currently playing song
         tablePlaylist.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            UIDefaults defaults = javax.swing.UIManager.getDefaults();
             public Component getTableCellRendererComponent(
                     JTable table, Object color,
                     boolean isSelected, boolean hasFocus,
@@ -168,14 +170,18 @@ public class PlayerPanel extends DragablePanel {
                 if (table.getSelectedRow() == row) {
                     if (player.getCurrentIndex() == row) {
                         this.setBackground(new Color(123, 223, 153));
+                        this.setForeground(Color.BLACK);
                     } else {
-                        this.setBackground(new Color(184, 207, 229));
+                        this.setBackground(defaults.getColor("List.selectionBackground"));
+                        this.setForeground(defaults.getColor("List.selectionForeground"));
                     }
                 } else {
                     if (player.getCurrentIndex() == row) {
                         this.setBackground(Color.GREEN.brighter().brighter());
+                        this.setForeground(Color.BLACK);
                     } else {
                         this.setBackground(Color.WHITE);
+                        this.setForeground(Color.BLACK);
                     }
                 }
                 return this;
@@ -183,6 +189,7 @@ public class PlayerPanel extends DragablePanel {
         });
         tablePlaylist.setDefaultRenderer(Date.class, new DefaultTableCellRenderer() {
             private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy");
+            UIDefaults defaults = javax.swing.UIManager.getDefaults();
 
             public Component getTableCellRendererComponent(
                     JTable table, Object color,
@@ -191,14 +198,18 @@ public class PlayerPanel extends DragablePanel {
                 if (table.getSelectedRow() == row) {
                     if (player.getCurrentIndex() == row) {
                         this.setBackground(new Color(123, 223, 153));
+                        this.setForeground(Color.BLACK);
                     } else {
-                        this.setBackground(new Color(184, 207, 229));
+                        this.setBackground(defaults.getColor("List.selectionBackground"));
+                        this.setForeground(defaults.getColor("List.selectionForeground"));
                     }
                 } else {
                     if (player.getCurrentIndex() == row) {
                         this.setBackground(Color.GREEN.brighter().brighter());
+                        this.setForeground(Color.BLACK);
                     } else {
                         this.setBackground(Color.WHITE);
+                        this.setForeground(Color.BLACK);
                     }
                 }
                 if (table.getModel().getValueAt(row, column) == null) {
@@ -210,6 +221,7 @@ public class PlayerPanel extends DragablePanel {
             }
         });
         tablePlaylist.setDefaultRenderer(Double.class, new DefaultTableCellRenderer() {
+            UIDefaults defaults = javax.swing.UIManager.getDefaults();
             public Component getTableCellRendererComponent(
                     JTable table, Object color,
                     boolean isSelected, boolean hasFocus,
@@ -218,14 +230,18 @@ public class PlayerPanel extends DragablePanel {
                 if (table.getSelectedRow() == row) {
                     if (player.getCurrentIndex() == row) {
                         this.setBackground(new Color(123, 223, 153));
+                        this.setForeground(Color.BLACK);
                     } else {
-                        this.setBackground(new Color(184, 207, 229));
+                        this.setBackground(defaults.getColor("List.selectionBackground"));
+                        this.setForeground(defaults.getColor("List.selectionForeground"));
                     }
                 } else {
                     if (player.getCurrentIndex() == row) {
                         this.setBackground(Color.GREEN.brighter().brighter());
+                        this.setForeground(Color.BLACK);
                     } else {
                         this.setBackground(Color.WHITE);
+                        this.setForeground(Color.BLACK);
                     }
                 }
                 this.setHorizontalAlignment(SwingConstants.RIGHT);

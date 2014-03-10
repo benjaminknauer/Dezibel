@@ -261,8 +261,8 @@ public class ContextMenu {
                     new PlaylistControl().createPlaylist(title,
                             (Medium) currentTableModel.getValueAt(
                                     currentTable.getSelectedRow(), -1));
-                    dp.refresh(UpdateEntity.PLAYLIST);
                 }
+                dp.refresh(UpdateEntity.PLAYLIST);
             }
         });
         
@@ -288,6 +288,7 @@ public class ContextMenu {
                             currentTable.getSelectedRow(), -1)).setVisible(true);
                     dp.refresh(UpdateEntity.ALBUM);
                 }
+                
             });
             
             currentPopupMenu.add(menuAddToAlbum);
@@ -705,10 +706,22 @@ public class ContextMenu {
             }
         });
         
+        JMenuItem menuItemFavorize = new JMenuItem("Favorisieren");
+        menuItemFavorize.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (p != null) {
+                    Database.getInstance().getLoggedInUser().addFavoritePlaylist(p);
+                    dp.refresh(UpdateEntity.PLAYLIST);
+                }
+            }
+        });
+        
         currentPopupMenu.add(menuItemShow);
         currentPopupMenu.add(menuItemQueue);
         currentPopupMenu.add(menuItemRename);
         currentPopupMenu.add(menuItemDelete);
+        currentPopupMenu.add(menuItemFavorize);
         
         currentPopupMenu.add(menuItemQueue);
         menuItemComment.addActionListener(new ActionListener() {
