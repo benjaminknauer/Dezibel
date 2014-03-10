@@ -4,7 +4,9 @@ import de.dezibel.data.Database;
 import de.dezibel.data.Medium;
 import de.dezibel.data.Playlist;
 import de.dezibel.player.Player;
+import java.awt.Component;
 import java.awt.Font;
+import java.awt.FontMetrics;
 
 /**
  *
@@ -16,10 +18,16 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Point;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import static java.awt.image.ImageObserver.WIDTH;
+import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JPopupMenu;
+import javax.swing.JTextArea;
 
 public class PlaylistPanel extends DragablePanel {
 
@@ -58,14 +66,25 @@ public class PlaylistPanel extends DragablePanel {
         model.setData(currentPlaylist);
         tblPlaylistMedia = new JTable(model);
         spPlaylistMedia = new JScrollPane(tblPlaylistMedia);
-        
+
         commentModel = new CommentTableModel();
         commentModel.setData(currentPlaylist.getComments());
         tblPlaylistComments = new JTable(commentModel);
-        tblPlaylistComments.setRowHeight(50);
+        tblPlaylistComments.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent ce) {
+                resizeCommentRows();
+            }
+        });
+        tblPlaylistComments.getTableHeader().addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent me) {
+                resizeCommentRows();
+            }
+        });
         TextAreaCellRenderer tacr = new TextAreaCellRenderer();
-        tblPlaylistComments.getColumnModel().getColumn(0).setCellRenderer(tacr);   
-
+        tblPlaylistComments.getColumnModel().getColumn(0).setCellRenderer(tacr);
+        //resizeCommentRows();
 
         //tblPlaylistComments.setRowHeight(50);
         spPlaylistComments = new JScrollPane(tblPlaylistComments);
@@ -105,14 +124,13 @@ public class PlaylistPanel extends DragablePanel {
             }
         });
 
-
     }
 
     private void createLayout() {
         GridBagLayout gbl = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
         this.setLayout(gbl);
-        
+
         lbTitle.setFont(DezibelFont.CENTERPANEL_TITLE);
         lbCreator.setFont(DezibelFont.CENTERPANEL_TITLE);
 
@@ -130,9 +148,9 @@ public class PlaylistPanel extends DragablePanel {
         gbc.weighty = 0.6;
         gbc.weightx = 1;
         this.add(spPlaylistMedia, gbc);
-        
+
         gbc.weighty = 0.3;
-        this.add(spPlaylistComments,gbc);
+        this.add(spPlaylistComments, gbc);
     }
 
     @Override
@@ -146,15 +164,33 @@ public class PlaylistPanel extends DragablePanel {
                     + currentPlaylist.getCreator().getLastname();
         }
         lbCreator = new JLabel(creatorString);
-        
-        if(currentPlaylist.getList().isEmpty()){
+
+        if (currentPlaylist.getList().isEmpty()) {
             dp.clearCenter();
         }
     }
 
-	@Override
-	public void reset() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void reset() {
+        // TODO Auto-generated method stub
+
+    }
+
+    private void resizeCommentRows() {
+        JTextArea textarea = (JTextArea) tblPlaylistComments.getColumnModel()
+                .getColumn(0).getCellRenderer().getTableCellRendererComponent(
+                        tblPlaylistComments, null, false, false, 0, 0);
+        FontMetrics fm = textarea.getFontMetrics(textarea.getFont());
+        int columnWidth = tblPlaylistComments.getColumnModel().getColumn(0).getWidth();
+        for (int row = 0; row < tblPlaylistComments.getRowCount(); row++) {
+            int lines = 0;
+            for (String s : ((String) tblPlaylistComments.getValueAt(row, 0)).split("\n")) {
+                lines++;
+                if (fm.stringWidth(s) > columnWidth) {
+                    lines += fm.stringWidth(s) / columnWidth;
+                }
+            }
+            tblPlaylistComments.setRowHeight(row, lines * fm.getHeight());
+        }
+    }
 }
