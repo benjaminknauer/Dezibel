@@ -8,20 +8,25 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import de.dezibel.control.NewsControl;
+import de.dezibel.data.Database;
+import de.dezibel.data.Label;
 import de.dezibel.data.News;
+import de.dezibel.data.User;
 import static java.awt.Component.CENTER_ALIGNMENT;
 import java.awt.Container;
+import java.util.LinkedList;
 import javax.swing.GroupLayout;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 /**
  *
- * @author Pascal
+ * @author Aris, Tristan
  *
  */
 public class NewsPanel extends DragablePanel {
 
+    private News currentNews;
     private static final long serialVersionUID = 1L;
     private JLabel lbnews;
     private JLabel lbAutor ;
@@ -36,10 +41,13 @@ public class NewsPanel extends DragablePanel {
     private JTextArea taText;
     
     private JTable tNews;
+    private NewsPanelTableModel nptm;
     private JScrollPane spNews1;
     private JScrollPane spNews2;
     private NewsSideTableModel model;
     private Container pnNews;
+    
+    LinkedList<News> allNews;
     
     
 
@@ -54,10 +62,20 @@ public class NewsPanel extends DragablePanel {
       lbDatum = new JLabel("Datum");
       lbTitel = new JLabel("Titel");
       tfAutor = new JTextField();  
-      tfDatum = new JTextField();    
-      tfTitel  = new JTextField();    
-      taText = new JTextArea();   
-      tNews = new JTable();
+      tfAutor.setEditable(false);
+      tfDatum = new JTextField();  
+      tfDatum.setEditable(false);
+      tfTitel  = new JTextField(); 
+      tfTitel.setEditable(false);
+      taText = new JTextArea();  
+      taText.setEditable(false);
+      tNews = new JTable(nptm){
+            public boolean isCellEditable(int rowIndex, int vColIndex) {
+                return false;
+            }
+      };
+      nptm = new NewsPanelTableModel();
+      tNews.getTableHeader().setVisible(false);
       
       // Table News scrollpane 
       spNews1 = new JScrollPane();
@@ -68,6 +86,21 @@ public class NewsPanel extends DragablePanel {
       spNews2.getViewport().setView(taText);
           
       
+      tNews.addMouseListener(new MouseAdapter() {  
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            if (e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON1) {
+                if (nptm.getValueAt(tNews.getSelectedRow(), -1) instanceof News) {
+                    currentNews = (News) nptm.getValueAt(
+                            tNews.getSelectedRow(), -1);
+                    showCurrentNews();
+                } 
+            }
+        }
+      });
+      
+      
+              
       GroupLayout layout = new GroupLayout(pnNews);
       layout.setHorizontalGroup(layout
             .createSequentialGroup( )
@@ -140,12 +173,24 @@ public class NewsPanel extends DragablePanel {
         pnNews.setLayout(layout);
     }
 
+    public void showCurrentNews() {       
+        tfTitel.setText(currentNews.getTitle());
+        tfAutor.setText(currentNews.getAuthor().getFirstname());
+        tfDatum.setText(currentNews.getCreationDate().toString());
+        taText.setText(currentNews.getText());
+    }
+    
     @Override
     public void reset() {
     }
 
     @Override
     public void refresh() {
+        if (Database.getInstance().getLoggedInUser() != null) {
+            /*LinkedList<News>  = Database.getInstance().getLoggedInUser()
+                    .getFavorizedUsers();
+            nptm.setDataNews(favorizedUsers);*/
+        }
     }
 
 }
