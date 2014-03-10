@@ -1,7 +1,10 @@
 package de.dezibel.gui;
 
 import de.dezibel.control.Search;
+import de.dezibel.data.Album;
+import de.dezibel.data.Label;
 import de.dezibel.data.Medium;
+import de.dezibel.data.User;
 import de.dezibel.player.Player;
 
 import java.awt.CardLayout;
@@ -117,12 +120,31 @@ public class SearchPanel extends DragablePanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
-                    if (tableResults.getModel() instanceof MediaTableModel) {
-                        Medium m = (Medium) tableResults.getModel().getValueAt(
+                    Object selectedItem = tableResults.getModel().getValueAt(
                                 tableResults.getSelectedRow(), -1);
+                    if (tableResults.getModel() instanceof MediaTableModel) {
+                        Medium m = (Medium) selectedItem;
                         if (m != null) {
                             Player.getInstance().addMediumAsNext(m);
                             Player.getInstance().next();
+                        }
+                    } else if (tableResults.getModel() instanceof UserTableModel) {
+                        User u = (User) selectedItem;
+                        if(u != null) {
+                            parent.showProfile(u);
+                            return;
+                        }
+                    } else if (tableResults.getModel() instanceof LabelTableModel) {
+                        Label l = (Label) selectedItem;
+                        if(l != null) {
+                            parent.showProfile(l);
+                            return;
+                        }
+                    } else if (tableResults.getModel() instanceof AlbumTableModel) {
+                        Album a = (Album) selectedItem;
+                        if(a != null) {
+                            parent.showAlbum(a);
+                            return;
                         }
                     }
                 }

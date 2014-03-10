@@ -5,6 +5,7 @@ import de.dezibel.control.LabelControl;
 import de.dezibel.control.ProfileControl;
 import de.dezibel.control.AdminControl;
 import de.dezibel.data.Album;
+import de.dezibel.data.Application;
 import de.dezibel.data.Comment;
 import de.dezibel.data.Label;
 import de.dezibel.data.Medium;
@@ -1124,6 +1125,18 @@ public class ProfilPanel extends DragablePanel {
         this.tApplications.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         
         this.tApplications.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                if(me.getClickCount() == 2 && (me.getButton() == MouseEvent.BUTTON1)) {
+                    Application a = (Application) applicationsModel.getValueAt(tApplications.getSelectedRow(), -1);
+                    if(a != null) {
+                        if(a.getLabel() != null) {
+                            parent.showProfile(a.getLabel());
+                        }
+                    }
+                }
+            }
+            
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {

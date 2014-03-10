@@ -43,6 +43,7 @@ import de.dezibel.data.Album;
 import de.dezibel.data.Database;
 import de.dezibel.data.Label;
 import de.dezibel.data.Medium;
+import de.dezibel.data.News;
 import de.dezibel.data.Playlist;
 import de.dezibel.data.User;
 
@@ -71,7 +72,7 @@ public class DezibelPanel extends JPanel {
     private DragablePanel pnLogin;
     private DragablePanel pnRegister;
     private DragablePanel pnPlayer;
-    private DragablePanel pnNews;
+    private DragablePanel pnSideNews;
     private DragablePanel pnAds;
     private DragablePanel pnMyList;
     private DragablePanel pnFavorites;
@@ -126,7 +127,7 @@ public class DezibelPanel extends JPanel {
         pnLogin = new LoginPanel(this);
         pnRegister = new RegistrationPanel(this);
         pnPlayer = new PlayerPanel(this);
-        pnNews = new NewsSidePanel(this);
+        pnSideNews = new NewsSidePanel(this);
         pnAds = new AdsPanel(this);
         pnMyList = new MyListsPanel(this);
         pnFavorites = new FavoritesPanel(this);
@@ -137,7 +138,7 @@ public class DezibelPanel extends JPanel {
         pnLogin.setBackground(DezibelColor.Background);
         pnRegister.setBackground(DezibelColor.Background);
         pnPlayer.setBackground(DezibelColor.Background);
-        pnNews.setBackground(DezibelColor.Background);
+        pnSideNews.setBackground(DezibelColor.Background);
         pnAds.setBackground(DezibelColor.Background);
         pnMyList.setBackground(DezibelColor.Background);
         pnFavorites.setBackground(DezibelColor.Background);
@@ -172,7 +173,7 @@ public class DezibelPanel extends JPanel {
     public void showWorkspace() {
         ((MyListsPanel) pnMyList).refresh();
         ((AdsPanel) pnAds).refresh();
-        ((NewsSidePanel) pnNews).refresh();
+        ((NewsSidePanel) pnSideNews).refresh();
         ((FavoritesPanel) pnFavorites).refresh();
         this.createMenubar();
         frame.setJMenuBar(menuBar);
@@ -246,7 +247,11 @@ public class DezibelPanel extends JPanel {
         this.showAtCenter(daAlbum);
     	
     }
-
+    
+    public void showNews(News n){
+    	System.out.println("News soll hier angezeigt werden!");
+    }
+    
     public void refresh(UpdateEntity ue) {
         switch (ue) {
             case PLAYLIST:
@@ -255,16 +260,23 @@ public class DezibelPanel extends JPanel {
                     PlaylistPanel pn = (PlaylistPanel) this.centerDock.getDockable(0).getContent();
                     pn.refresh();
                 }
+                pnProfil.refresh();
                 break;
             case FAVORITES:
                 pnFavorites.refresh();
                 pnProfil.refresh();
+                pnSideNews.refresh();
                 break;
                 
             case APPLICATION:
             	pnProfil.refresh();
             	pnLabelProfil.refresh();
             	break;
+            	
+            case ALBUM:
+            	pnProfil.refresh();
+            	pnLabelProfil.refresh();
+            	
             default:
                 break;
         }
@@ -329,7 +341,7 @@ public class DezibelPanel extends JPanel {
                 null, DockingMode.CENTER);
 
         // Panels that can be docked at left/right border
-        daNews = new DefaultDockable("pnNews", pnNews, "News", null,
+        daNews = new DefaultDockable("pnNews", pnSideNews, "News", null,
                 DockingMode.LEFT + DockingMode.RIGHT
                 + DockingMode.VERTICAL_LINE);
         daAds = new DefaultDockable("pnAds", pnAds, "Ads", null,
@@ -691,6 +703,10 @@ public class DezibelPanel extends JPanel {
                 }
             });
 
+            if((Database.getInstance().getLoggedInUser().isArtist() == false) ||
+            		(Database.getInstance().getLoggedInUser().isLabelManager() == false))
+            		itemCreateNews.setEnabled(false);
+            
             menuNews.add(itemCreateNews);
             menuBar.add(menuShow);
             menuBar.add(menuGoTo);
@@ -790,13 +806,14 @@ public class DezibelPanel extends JPanel {
             pnLogin.reset();
             pnRegister.reset();
             pnPlayer.reset();
-            pnNews.reset();
+            pnSideNews.reset();
             pnAds.reset();
             pnMyList.reset();
             pnFavorites.reset();
             pnProfil.reset();
             pnSearch.reset();
             pnPlayer.reset();
+            Database.getInstance().save();
             this.showLogin();
         }
     }

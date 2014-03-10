@@ -206,6 +206,12 @@ public class Genre {
         return markedForDeletion;
     }
     
+    /**
+     * Returns the name of this genre and a number of dashes to show the genre
+     * hierarchy.
+     * @return The name of this genre and a number of dashes to show the genre
+     *          hierarchy
+     */
     public String toString() {
         Genre superGenre = this.getSuperGenre();
         String resultName = ">" + this.name;

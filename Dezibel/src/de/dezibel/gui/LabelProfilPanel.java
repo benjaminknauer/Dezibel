@@ -605,7 +605,15 @@ public class LabelProfilPanel extends DragablePanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 Application a = (Application) applicationsModell.getValueAt(
-                        tApplications.getSelectedRow(), -1);
+                tApplications.getSelectedRow(), -1);                
+                if(e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+                    if(a != null) {
+                        if(a.getLabel() != null) {
+                            parent.showProfile(a.getLabel());
+                            return;
+                        }
+                    }
+                }
                 taApplications.setText(a.getText());
             }
         });
