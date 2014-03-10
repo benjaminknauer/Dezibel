@@ -62,6 +62,12 @@ public class PlaylistPanel extends DragablePanel {
         commentModel = new CommentTableModel();
         commentModel.setData(currentPlaylist.getComments());
         tblPlaylistComments = new JTable(commentModel);
+        tblPlaylistComments.setRowHeight(50);
+        TextAreaCellRenderer tacr = new TextAreaCellRenderer();
+        tblPlaylistComments.getColumnModel().getColumn(0).setCellRenderer(tacr);   
+
+
+        //tblPlaylistComments.setRowHeight(50);
         spPlaylistComments = new JScrollPane(tblPlaylistComments);
 
         tblPlaylistMedia.addMouseListener(new MouseAdapter() {
