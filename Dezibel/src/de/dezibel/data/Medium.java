@@ -18,7 +18,9 @@ import java.util.Iterator;
 public class Medium implements Commentable, Lockable {
 
     private static final MediumLoader mediumLoader = new MediumLoader();
-    private String path;
+    private String path = this.getClass().getResource("/sfx/not_available.wav").getPath();
+    // Temporarily saves the path, while the medium is locked
+    private String pathOnLock;
     private String title;
     private Album album;
     private Date uploadDate;
@@ -46,18 +48,18 @@ public class Medium implements Commentable, Lockable {
     public Medium(String title, User artist, String path) {
         this.title = title;
         this.artist = artist;
-        this.path = path;
 
         this.ratingList = new HashMap<>();
         this.commentList = new LinkedList<>();
         this.playlistList = new LinkedList<>();
 
-        if (path != null) {
+        if (path != null && !path.isEmpty()) {
+            this.path = path;
             this.upload(path);
-        }
-        else
-            Database.getInstance().addNews("Ankündigung", artist.getPseudonym() 
+        } else {
+            Database.getInstance().addNews("Ankündigung", artist.getPseudonym()
                     + " wird bald " + title + " veröffentlichen!", artist);
+        }
         artist.addCreatedMedium(this);
     }
 
@@ -69,6 +71,14 @@ public class Medium implements Commentable, Lockable {
      */
     public boolean isAvailable() {
         return !(this.isLocked()) && !(this.deleted) && this.isMediumSet();
+    }
+    
+    /**
+     * Returns if this medium is deleted.
+     * @return true, if the medium is deleted, else false
+     */
+    public boolean isDeleted() {
+        return this.deleted;
     }
 
     /**
@@ -99,6 +109,7 @@ public class Medium implements Commentable, Lockable {
      */
     public void markAsDeleted() {
         this.deleted = true;
+        this.path = this.getClass().getResource("/sfx/not_available.wav").getPath();
     }
 
     /**
@@ -183,15 +194,17 @@ public class Medium implements Commentable, Lockable {
     public void lock(String text) {
         this.locked = true;
         this.lockText = text;
+        this.pathOnLock = this.path;
+        this.path = this.getClass().getResource("/sfx/not_available.wav").getPath();
         MailUtil.sendMail("Medium gesperrt",
                 "Hallo " + this.getArtist().getFirstname() + ",\n\n"
-                        + "dein Medium \"" + this.getTitle() + "\" wurde gesperrt."
-                        + "Folgender Grund wurde angegeben:\n"
-                        + "--------------------------------------------------\n"
-                        + this.lockText + "\n"
-                        + "--------------------------------------------------\n"
-                        + "Bitte wende dich an einen Administrator, um weitere "
-                        + "Informationen zu bekommen.",
+                + "dein Medium \"" + this.getTitle() + "\" wurde gesperrt."
+                + "Folgender Grund wurde angegeben:\n"
+                + "--------------------------------------------------\n"
+                + this.lockText + "\n"
+                + "--------------------------------------------------\n"
+                + "Bitte wende dich an einen Administrator, um weitere "
+                + "Informationen zu bekommen.",
                 this.getArtist().getEmail());
     }
 
@@ -201,9 +214,10 @@ public class Medium implements Commentable, Lockable {
     @Override
     public void unlock() {
         this.locked = false;
+        this.path = this.pathOnLock;
         MailUtil.sendMail("Medium entsperrt",
                 "Hallo " + this.getArtist().getFirstname() + ",\n\n"
-                        + "dein Medium \"" + this.getTitle() + "\" wurde entsperrt.",
+                + "dein Medium \"" + this.getTitle() + "\" wurde entsperrt.",
                 this.getArtist().getEmail());
     }
 
@@ -213,11 +227,12 @@ public class Medium implements Commentable, Lockable {
      * @param list new playlist which should contain medium
      */
     public void addPlaylist(Playlist list) {
-        if(addingPL)
+        if (addingPL) {
             return;
+        }
         this.addingPL = true;
         this.playlistList.add(list);
-        
+
         list.addMedium(this);
 
         this.addingPL = false;
@@ -242,27 +257,28 @@ public class Medium implements Commentable, Lockable {
      * @post playlistLists size is reduced by 1 and list.contains(this) is false
      */
     public void removePlaylist(Playlist list) {
-        if(!removingPL){
-            removingPL = true;  
-            
+        if (!removingPL) {
+            removingPL = true;
+
             this.playlistList.remove(list);
             list.removeMedium(this);
-            
+
             removingPL = false;
         }
     }
-    
+
     /**
      * Removes association to the album the medium was associated with.
      */
     public void removeAlbum() {
-        if(album == null)
+        if (album == null) {
             return;
+        }
         Album a = this.album;
         this.album = null;
-        a.removeMedium(this);        
+        a.removeMedium(this);
     }
-    
+
     /**
      * @see Commentable#getComments()
      */
@@ -300,14 +316,17 @@ public class Medium implements Commentable, Lockable {
     }
 
     public void setAlbum(Album album) {
-        if(this.settingAlbum)
+        if (this.settingAlbum) {
             return;
+        }
         this.settingAlbum = true;
-        if(this.album != null)
+        if (this.album != null) {
             this.album.removeMedium(this);
+        }
         this.album = album;
-        if(album != null)
+        if (album != null) {
             album.addMedium(this);
+        }
         this.settingAlbum = false;
     }
 
@@ -357,5 +376,5 @@ public class Medium implements Commentable, Lockable {
     public LinkedList<Playlist> getPlaylistList() {
         return (LinkedList<Playlist>) this.playlistList.clone();
     }
-    
+
 }

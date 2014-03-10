@@ -25,10 +25,10 @@ import javax.swing.JTextField;
 public class LoginPanel extends DragablePanel {
 
     private static final long serialVersionUID = 1L;
-    private JPanel pnLoginPanel;
-    private JLabel labelLogo;
-    private JLabel labelMail;
-    private JLabel labelPassword;
+    private final JPanel pnLoginPanel;
+    private final JLabel labelLogo;
+    private final JLabel labelMail;
+    private final JLabel labelPassword;
     private JTextField tfMail;
     private JPasswordField tfPassword;
     private JButton bnLogin;

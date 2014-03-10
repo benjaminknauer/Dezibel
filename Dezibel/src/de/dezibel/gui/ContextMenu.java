@@ -466,7 +466,7 @@ public class ContextMenu {
             currentPopupMenu.add(recruitForLabelMenu);
             
             for (final Label currentLabel : Database.getInstance().getLoggedInUser().getManagedLabels()) {
-                if(selectedUser.hasApplied(currentLabel))
+                if(selectedUser.hasApplied(currentLabel) || selectedUser.hasPublisher(currentLabel))
                     continue;
                 
                 JMenuItem currentLabelMenuItem = new JMenuItem(currentLabel.getName());
@@ -475,11 +475,15 @@ public class ContextMenu {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         new ApplicationDialog(dp.getFrame(), selectedUser, currentLabel, false).setVisible(true);
+                        dp.refresh(UpdateEntity.APPLICATION);
                     }
                 });
                 recruitForLabelMenu.add(currentLabelMenuItem);
             }
-            
+            if(recruitForLabelMenu.getMenuComponentCount() < 1){
+                currentPopupMenu.remove(recruitForLabelMenu);
+            }
+ 
         }
 
         // Admin controls
@@ -547,13 +551,15 @@ public class ContextMenu {
         });
         currentPopupMenu.add(menuItemShowLabel);
         
-        if (Database.getInstance().getLoggedInUser().isArtist() && !Database.getInstance().getLoggedInUser().hasApplied(selectedLabel)) {
+        if (Database.getInstance().getLoggedInUser().isArtist() && !Database.getInstance().getLoggedInUser().hasApplied(selectedLabel) 
+                && !Database.getInstance().getLoggedInUser().hasPublisher(selectedLabel)) {
             JMenuItem menuItemApply = new JMenuItem("Als Künstler bewerben");
             menuItemApply.addActionListener(new ActionListener() {
                 
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     new ApplicationDialog(dp.getFrame(), Database.getInstance().getLoggedInUser(), selectedLabel, true).setVisible(true);
+                    dp.refresh(UpdateEntity.APPLICATION);
                 }
             });
             currentPopupMenu.add(menuItemApply);
