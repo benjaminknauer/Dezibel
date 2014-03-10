@@ -3,6 +3,7 @@ package de.dezibel.gui;
 import de.dezibel.UpdateEntity;
 import de.dezibel.control.AdminControl;
 import de.dezibel.control.LabelControl;
+import de.dezibel.data.Album;
 import de.dezibel.data.Application;
 import de.dezibel.data.Label;
 import de.dezibel.data.Medium;
@@ -458,6 +459,7 @@ public class LabelProfilPanel extends DragablePanel {
                     }
                 }
             }
+            @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
                     showPopup(me);
@@ -482,10 +484,10 @@ public class LabelProfilPanel extends DragablePanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
-                    User u = (User) albumModellUpload.getValueAt(
+                    Album a = (Album) albumModellUpload.getValueAt(
                             tAlbums.getSelectedRow(), -1);
-                    if (u != null) {
-                        parent.showProfile(u);
+                    if (a != null) {
+                        parent.showAlbum(a);
                     }
                 }
             }

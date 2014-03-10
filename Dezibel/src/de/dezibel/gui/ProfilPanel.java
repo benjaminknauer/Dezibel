@@ -4,9 +4,14 @@ import de.dezibel.UpdateEntity;
 import de.dezibel.control.LabelControl;
 import de.dezibel.control.ProfileControl;
 import de.dezibel.control.AdminControl;
+import de.dezibel.data.Album;
 import de.dezibel.data.Comment;
+import de.dezibel.data.Label;
+import de.dezibel.data.Medium;
 import de.dezibel.data.News;
+import de.dezibel.data.Playlist;
 import de.dezibel.data.User;
+import de.dezibel.player.Player;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
@@ -509,6 +514,16 @@ public class ProfilPanel extends DragablePanel {
 
         tFollower.addMouseListener(new MouseAdapter() {
             @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+                    User u = (User) followerModell.getValueAt(
+                            tFollower.getSelectedRow(), -1);
+                    if (u != null) {
+                        parent.showProfile(u);
+                    }
+                }
+            }
+            @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
                     showPopup(me);
@@ -705,6 +720,16 @@ public class ProfilPanel extends DragablePanel {
 
         tFavoPlaylists.addMouseListener(new MouseAdapter() {
             @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+                    Playlist p = (Playlist) playlistModellFavo.getValueAt(
+                            tFavoPlaylists.getSelectedRow(), -1);
+                    if (p != null) {
+                        parent.showPlaylist(p);
+                    }
+                }
+            }
+            @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
                     showPopup(me);
@@ -727,6 +752,17 @@ public class ProfilPanel extends DragablePanel {
         });
 
         tFavoMedia.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+                    Medium m = (Medium) mediaModellFavo.getValueAt(
+                            tFavoMedia.getSelectedRow(), -1);
+                    if (m != null) {
+                        Player.getInstance().addMediumAsNext(m);
+                        Player.getInstance().next();
+                    }
+                }
+            }
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
@@ -751,6 +787,16 @@ public class ProfilPanel extends DragablePanel {
         });
         
         tFavoAlbums.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+                    Album a = (Album) albumModellFavo.getValueAt(
+                            tFavoAlbums.getSelectedRow(), -1);
+                    if (a != null) {
+                        parent.showAlbum(a);
+                    }
+                }
+            }
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
@@ -838,6 +884,16 @@ public class ProfilPanel extends DragablePanel {
         
         tUploadPlaylists.addMouseListener(new MouseAdapter() {
             @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+                    Playlist p = (Playlist) playlistModellUpload.getValueAt(
+                            tUploadPlaylists.getSelectedRow(), -1);
+                    if (p != null) {
+                        parent.showPlaylist(p);
+                    }
+                }
+            }
+            @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
                     showPopup(me);
@@ -862,6 +918,17 @@ public class ProfilPanel extends DragablePanel {
         
         tUploadMedia.addMouseListener(new MouseAdapter() {
             @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+                    Medium m = (Medium) mediaModellUpload.getValueAt(
+                            tUploadMedia.getSelectedRow(), -1);
+                    if (m != null) {
+                        Player.getInstance().addMediumAsNext(m);
+                        Player.getInstance().next();
+                    }
+                }
+            }
+            @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
                     showPopup(me);
@@ -885,6 +952,16 @@ public class ProfilPanel extends DragablePanel {
         });
         
         tUploadAlbums.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+                    Album a = (Album) albumModellUpload.getValueAt(
+                            tUploadAlbums.getSelectedRow(), -1);
+                    if (a != null) {
+                        parent.showAlbum(a);
+                    }
+                }
+            }
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
@@ -941,6 +1018,15 @@ public class ProfilPanel extends DragablePanel {
 
         tLabelsManaged.addMouseListener(new MouseAdapter() {
             @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+                    Label l = (Label) labelModellManaged.getValueAt(
+                            tLabelsManaged.getSelectedRow(), -1);
+                    if (l != null) {
+                        parent.showProfile(l);
+                    }
+                }
+            }
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
                     showPopup(me);
@@ -970,6 +1056,16 @@ public class ProfilPanel extends DragablePanel {
         scrPublishingLabels = new JScrollPane(tLabelsPublishing);
 
         tLabelsPublishing.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+                    Label l = (Label) labelModellPublishing.getValueAt(
+                            tLabelsPublishing.getSelectedRow(), -1);
+                    if (l != null) {
+                        parent.showProfile(l);
+                    }
+                }
+            }
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
