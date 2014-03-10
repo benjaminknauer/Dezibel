@@ -496,6 +496,26 @@ public class ContextMenu {
 
         }
 
+        if (Database.getInstance().getLoggedInUser().isLabelManager()) {
+            JMenu menuItemManager = new JMenu("Als Labelmanager einstellen");
+
+            MenuItem currentMenuItem;
+            for (final Label currentLabel : Database.getInstance().getLoggedInUser().getManagedLabels()) {
+                currentMenuItem = new MenuItem(currentLabel.getName(), currentLabel);
+                currentMenuItem.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        User u = (User) currentTableModel.getValueAt(
+                                currentTable.getSelectedRow(), -1);
+                        u.addManagerLabel(currentLabel);
+                    }
+                });
+                menuItemManager.add(currentMenuItem);
+            }
+
+            currentPopupMenu.add(menuItemManager);
+        }
+
         // Admin controls
         if (Database.getInstance().getLoggedInUser().isAdmin()) {
             if (selectedUser.isLocked()) {

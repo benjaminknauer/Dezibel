@@ -1,10 +1,13 @@
 package de.dezibel.gui;
 
+import de.dezibel.UpdateEntity;
+import de.dezibel.control.PlaylistControl;
 import de.dezibel.data.Database;
 import de.dezibel.data.Medium;
 import de.dezibel.data.Playlist;
 import de.dezibel.player.Player;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 
@@ -23,19 +26,24 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import static java.awt.image.ImageObserver.WIDTH;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.JButton;
+import javax.swing.ImageIcon;
 
 public class PlaylistPanel extends DragablePanel {
 
     JLabel lbTitle;
     JLabel lbCreator;
     JLabel lbComments;
-
+    JButton btnComment;
+    JButton btnFavorite;
     JTable tblPlaylistMedia;
     JScrollPane spPlaylistMedia;
     JTable tblPlaylistComments;
@@ -64,6 +72,43 @@ public class PlaylistPanel extends DragablePanel {
         }
         lbCreator = new JLabel(creatorString);
         lbComments = new JLabel("Kommentare");
+        lbCreator.setHorizontalAlignment(JLabel.RIGHT);
+        btnComment = new JButton(new ImageIcon(this.getClass().getResource("/img/icons/commentIcon.png")));
+        btnComment.setOpaque(false);
+        btnComment.setBorderPainted(false);
+        btnComment.setContentAreaFilled(false);
+        btnComment.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                CommentDialog cd = new CommentDialog(dp.getFrame());
+                cd.commentPlaylists(PlaylistPanel.this.currentPlaylist);
+                cd.setVisible(true);
+            }
+        });
+        btnFavorite = new JButton(new ImageIcon(this.getClass().getResource("/img/icons/favoriteFalse.png")));
+
+        if (Database.getInstance().getLoggedInUser().getFavoritePlaylists().contains(currentPlaylist)) {
+            btnFavorite.setIcon(new ImageIcon(this.getClass().getResource("/img/icons/favoriteTrue.png")));
+        } else {
+            btnFavorite.setIcon(new ImageIcon(this.getClass().getResource("/img/icons/favoriteFalse.png")));
+        }
+
+        btnFavorite.setOpaque(false);
+        btnFavorite.setBorderPainted(false);
+        btnFavorite.setContentAreaFilled(false);
+        btnFavorite.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                if (Database.getInstance().getLoggedInUser().getFavoritePlaylists().contains(PlaylistPanel.this.currentPlaylist)) {
+                    Database.getInstance().getLoggedInUser().removeFavoritePlaylist(PlaylistPanel.this.currentPlaylist);
+                    btnFavorite.setIcon(new ImageIcon(this.getClass().getResource("/img/icons/favoriteFalse.png")));
+                } else {
+                    Database.getInstance().getLoggedInUser().addFavoritePlaylist(PlaylistPanel.this.currentPlaylist);
+                    btnFavorite.setIcon(new ImageIcon(this.getClass().getResource("/img/icons/favoriteTrue.png")));
+                }
+                dp.refresh(UpdateEntity.PLAYLIST);
+            }
+        });
         model = new PlaylistMediaTableModel();
         model.setData(currentPlaylist);
         tblPlaylistMedia = new JTable(model);
@@ -90,12 +135,12 @@ public class PlaylistPanel extends DragablePanel {
         tblPlaylistComments.setFocusable(false);
         tblPlaylistComments.setRowSelectionAllowed(false);
         spPlaylistComments = new JScrollPane(tblPlaylistComments);
-        
+
         DefaultTableCellRenderer topRenderer = new DefaultTableCellRenderer();
         topRenderer.setVerticalAlignment(javax.swing.JLabel.TOP);
         tblPlaylistComments.getColumnModel().getColumn(1).setCellRenderer(topRenderer);
         tblPlaylistComments.getColumnModel().getColumn(2).setCellRenderer(topRenderer);
-        tblPlaylistComments.getColumnModel().getColumn(0).setMinWidth((int) (parent.getWidth() * 0.5) );
+        tblPlaylistComments.getColumnModel().getColumn(0).setMinWidth((int) (parent.getWidth() * 0.5));
         tblPlaylistMedia.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -134,6 +179,7 @@ public class PlaylistPanel extends DragablePanel {
     }
 
     private void createLayout() {
+
         GridBagLayout gbl = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
         this.setLayout(gbl);
@@ -145,6 +191,15 @@ public class PlaylistPanel extends DragablePanel {
         gbc.insets = new Insets(0, 30, 0, 0);
         this.add(lbTitle, gbc);
 
+        gbc.insets = new Insets(0, 0, 0, 0);
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.weightx = 1;
+        this.add(btnComment, gbc);
+
+        gbc.anchor = GridBagConstraints.WEST;
+        this.add(btnFavorite, gbc);
+
+        gbc.weightx = 0;
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.insets = new Insets(0, 0, 0, 30);
         gbc.anchor = GridBagConstraints.EAST;
@@ -158,6 +213,12 @@ public class PlaylistPanel extends DragablePanel {
 
         gbc.weighty = 0.3;
         this.add(spPlaylistComments, gbc);
+
+
+        int minWidth = (int) Math.max(lbCreator.getPreferredSize()
+                .getWidth(), lbTitle.getPreferredSize().getWidth());
+        lbCreator.setMinimumSize(new Dimension(minWidth, 32));
+        lbTitle.setMinimumSize(new Dimension(minWidth, 32));
     }
 
     @Override
@@ -172,6 +233,16 @@ public class PlaylistPanel extends DragablePanel {
         }
         lbCreator = new JLabel(creatorString);
 
+        int minWidth = Math.max(lbCreator.getWidth(), lbTitle.getWidth());
+        lbCreator.setMinimumSize(new Dimension(minWidth, 32));
+        lbTitle.setMinimumSize(new Dimension(minWidth, 32));
+
+        if (Database.getInstance().getLoggedInUser().getFavoritePlaylists().contains(currentPlaylist)) {
+            btnFavorite.setIcon(new ImageIcon(this.getClass().getResource("/img/icons/favoriteTrue.png")));
+        } else {
+            btnFavorite.setIcon(new ImageIcon(this.getClass().getResource("/img/icons/favoriteFalse.png")));
+        }
+
         if (currentPlaylist.getList().isEmpty()) {
             dp.clearCenter();
         }
@@ -180,13 +251,12 @@ public class PlaylistPanel extends DragablePanel {
     @Override
     public void reset() {
         // TODO Auto-generated method stub
-
     }
 
     private void resizeCommentRows() {
         JTextArea textarea = (JTextArea) tblPlaylistComments.getColumnModel()
                 .getColumn(0).getCellRenderer().getTableCellRendererComponent(
-                        tblPlaylistComments, null, false, false, 0, 0);
+                tblPlaylistComments, null, false, false, 0, 0);
         FontMetrics fm = textarea.getFontMetrics(textarea.getFont());
         int columnWidth = tblPlaylistComments.getColumnModel().getColumn(0).getWidth();
         for (int row = 0; row < tblPlaylistComments.getRowCount(); row++) {

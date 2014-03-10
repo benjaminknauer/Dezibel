@@ -17,6 +17,8 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 
 /**
  * Control Class to manage the access and editing of profile data.
@@ -252,7 +254,7 @@ public class ProfileControl {
      * @param bDate users new birthdate
      */
     public void setBirthDate(User user, String bDate) {
-        if (bDate != "") {
+        if (!(bDate.equals(""))) {
             if (belongsToLoggedUser(user)) {
                 Date birthDate;
                 try {
@@ -260,6 +262,11 @@ public class ProfileControl {
                             Locale.GERMAN).parse(bDate);
                     user.setBirthdate(birthDate);
                 } catch (ParseException ex) {
+                    JOptionPane.showMessageDialog(new JPopupMenu(), "Datum nicht "
+                            + "gespeichert ! Geburts"
+                            + "datum entspricht nicht der gängigen Formatierungen.\n"
+                            + "Bitte wie im folgenden Beispiel angeben: "
+                            + "01.01.2014");
                     Logger.getLogger(ProfileControl.class.getName()).log(Level.SEVERE,
                             null, ex);
                 }
