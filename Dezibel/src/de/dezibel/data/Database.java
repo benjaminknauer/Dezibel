@@ -120,6 +120,31 @@ public class Database {
 
         // Create topGenre
         this.genres.add(new Genre(topGenreName, null));
+        // TODO - Testdaten löschen
+        Genre sub1 = new Genre("Subgenre 1", this.getTopGenre());
+        this.genres.add(sub1);
+        Genre sub2 = new Genre("Subgenre 2", this.getTopGenre());
+        this.genres.add(sub2);
+        Genre sub3 = new Genre("Subgenre 3", this.getTopGenre());
+        this.genres.add(sub3);
+        Genre sub4 = new Genre("Subgenre 4", this.getTopGenre());
+        this.genres.add(sub4);
+        this.genres.add(new Genre("Subsubgenre 1.1", sub1));
+        this.genres.add(new Genre("Subsubgenre 1.2", sub1));
+        this.genres.add(new Genre("Subsubgenre 1.3", sub1));
+        this.genres.add(new Genre("Subsubgenre 1.4", sub1));
+        this.genres.add(new Genre("Subsubgenre 2.1", sub2));
+        this.genres.add(new Genre("Subsubgenre 2.2", sub2));
+        this.genres.add(new Genre("Subsubgenre 2.3", sub2));
+        this.genres.add(new Genre("Subsubgenre 2.4", sub2));
+        this.genres.add(new Genre("Subsubgenre 3.1", sub3));
+        this.genres.add(new Genre("Subsubgenre 3.2", sub3));
+        this.genres.add(new Genre("Subsubgenre 3.3", sub3));
+        this.genres.add(new Genre("Subsubgenre 3.4", sub3));
+        this.genres.add(new Genre("Subsubgenre 4.1", sub4));
+        this.genres.add(new Genre("Subsubgenre 4.2", sub4));
+        this.genres.add(new Genre("Subsubgenre 4.3", sub4));
+        this.genres.add(new Genre("Subsubgenre 4.4", sub4));
     }
 
     /**

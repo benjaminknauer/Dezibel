@@ -195,13 +195,17 @@ public class Genre {
         if (this.equals(Database.getInstance().getTopGenre())) {
             return;
         }
-        this.superGenre.removeSubGenre(this);
+        this.superGenre.subGenres.remove(this);
         this.superGenre = superGenre;
         superGenre.addSubGenre(this);
     }
 
     public Genre getSuperGenre() {
         return this.superGenre;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getName() {
