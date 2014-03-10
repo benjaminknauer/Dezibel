@@ -4,6 +4,7 @@ import de.dezibel.UpdateEntity;
 import de.dezibel.control.LabelControl;
 import de.dezibel.control.ProfileControl;
 import de.dezibel.control.AdminControl;
+import de.dezibel.control.HashGenerator;
 import de.dezibel.data.Album;
 import de.dezibel.data.Application;
 import de.dezibel.data.Comment;
@@ -31,6 +32,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -94,6 +96,9 @@ public class ProfilPanel extends DragablePanel {
     private JTable tFavoAlbums;
     private JTable tUploadAlbums;
     private JLabel lbPseudonym;
+    private JLabel lbOldPassword;
+    private JLabel lbNewPassword;
+    private JLabel lbRepeatNewPassword;
     private JTable tNews;
     private JTable tApplications;
     private JTextArea taNews;
@@ -119,6 +124,9 @@ public class ProfilPanel extends DragablePanel {
     
     private int showTabNr;
     private boolean isApplicationVisible;
+    private JPasswordField tfOldPassword;
+    private JPasswordField tfRepeatNewPassword;
+    private JPasswordField tfNewPassword;
 
     /**
      * Constructor of the ProfilPanel class.
@@ -170,6 +178,9 @@ public class ProfilPanel extends DragablePanel {
                 this.lbPseudonym.setVisible(true);
             }
 
+            this.tfOldPassword.setText("");
+            this.tfNewPassword.setText("");
+            this.tfRepeatNewPassword.setText("");
             this.tfFirstName.setText(profileControler.getFirstName(currentUser));
             this.tfLastName.setText(profileControler.getLastName(currentUser));
             this.tfRole.setText(profileControler.getRole(currentUser));
@@ -346,6 +357,9 @@ public class ProfilPanel extends DragablePanel {
         JLabel lbCity = new JLabel("Stadt:");
         JLabel lbCountry = new JLabel("Land:");
         JLabel lbAboutMe = new JLabel("Über mich:");
+        lbOldPassword = new JLabel("Altes Passwort:");
+        lbNewPassword = new JLabel("Neues Passwort:");
+        lbRepeatNewPassword = new JLabel("Neues Passwort wiederholen:");
 
         tfFirstName = new JTextField(25);
         tfLastName = new JTextField(25);
@@ -358,6 +372,9 @@ public class ProfilPanel extends DragablePanel {
         tfCity = new JTextField(25);
         tfCountry = new JTextField(25);
         tfAboutMe = new JTextField(25);
+        tfOldPassword = new JPasswordField(25);
+        tfNewPassword = new JPasswordField(25);
+        tfRepeatNewPassword = new JPasswordField(25);
 
         btnEdit = new JButton("Bearbeiten");
         btnEdit.addActionListener(new ActionListener() {
@@ -374,6 +391,22 @@ public class ProfilPanel extends DragablePanel {
                     profileControler.setCity(currentUser, tfCity.getText());
                     profileControler.setCountry(currentUser, tfCountry.getText());
                     profileControler.setAboutMe(currentUser, tfAboutMe.getText());
+                    if (!(tfOldPassword.getText().equals(""))){
+                        if (profileControler.checkPassword(currentUser, tfOldPassword.getText())){
+                            if (!(tfNewPassword.getText().equals(""))){
+                            
+                                if (tfRepeatNewPassword.getText().equals(tfNewPassword.getText())){
+                                    profileControler.setPassword(profileControler.getLoggedInUser(), tfNewPassword.getText());
+                                } else {
+                                    JOptionPane.showMessageDialog(parent, "Passwörter stimmen nicht überein!");
+                                }
+                            } else {
+                                JOptionPane.showMessageDialog(parent, "Kein neues Passwort eingegeben!");
+                            }
+                        } else {
+                                JOptionPane.showMessageDialog(parent, "Altes Passwort stimmt nicht!");
+                            }
+                    }
                     setProfileTextfieldsEditable(false);
                 } else {
                     setProfileTextfieldsEditable(true);
@@ -457,20 +490,26 @@ public class ProfilPanel extends DragablePanel {
         addComponent(pnProfile, gbl, tfCountry, 1, 8);
         addComponent(pnProfile, gbl, lbAboutMe, 0, 9);
         addComponent(pnProfile, gbl, tfAboutMe, 1, 9);
+        addComponent(pnProfile, gbl, lbOldPassword, 0, 10);
+        addComponent(pnProfile, gbl, tfOldPassword, 1, 10);
+        addComponent(pnProfile, gbl, lbNewPassword, 0, 11);
+        addComponent(pnProfile, gbl, tfNewPassword, 1, 11);
+        addComponent(pnProfile, gbl, lbRepeatNewPassword, 0, 12);
+        addComponent(pnProfile, gbl, tfRepeatNewPassword, 1, 12);
 
         gbc.fill = GridBagConstraints.NONE;
         gbc.insets = new Insets(10, 0, 0, 0);
         gbc.anchor = GridBagConstraints.WEST;
         gbc.gridx = 1;
-        gbc.gridy = 10;
+        gbc.gridy = 13;
         gbl.setConstraints(btnEdit, gbc);
         pnProfile.add(btnEdit);
         gbc.gridx = 1;
-        gbc.gridy = 10;
+        gbc.gridy = 13;
         gbl.setConstraints(btnFollow, gbc);
         pnProfile.add(btnFollow);
         gbc.gridx = 2;
-        gbc.gridy = 10;
+        gbc.gridy = 13;
         gbl.setConstraints(btnLock, gbc);
         pnProfile.add(btnLock);
 
@@ -494,6 +533,12 @@ public class ProfilPanel extends DragablePanel {
         tfCity.setEnabled(enabled);
         tfCountry.setEnabled(enabled);
         tfAboutMe.setEnabled(enabled);
+        lbOldPassword.setVisible(enabled);
+        tfOldPassword.setVisible(enabled);
+        lbNewPassword.setVisible(enabled);
+        tfNewPassword.setVisible(enabled);
+        lbRepeatNewPassword.setVisible(enabled);
+        tfRepeatNewPassword.setVisible(enabled);
     }
 
     /**
