@@ -86,7 +86,6 @@ public class Database {
     }
 
     //TODO Initialisierung vervollstaendigen?
-    //TODO Methode private machen. Im Moment public für Tests.
     
     /**
      * Initialisizes the database with all the entity data it stores.
@@ -121,25 +120,6 @@ public class Database {
 
         // Create topGenre
         this.genres.add(new Genre(topGenreName, null));
-            
-        // TODO Entfernen: Testdaten (Tobias, Richard)
-//        this.addGenre("Electro", this.getTopGenre());
-//        Genre ge = this.getGenres().get(this.getGenres().size() - 1);
-//        this.addGenre("Rock", this.getTopGenre());
-//        Genre g = this.getGenres().get(this.getGenres().size() - 1);
-//        this.addGenre("Hard Rock", g);
-//        g = this.getGenres().get(this.getGenres().size() - 1);
-//        this.addGenre("Nicht ganz so Hard Rock", g);
-//        this.addGenre("Mega Hard Rock", g);
-//        g = this.getGenres().get(this.getGenres().size() - 2);
-//        this.addGenre("Kuschelrock", g);
-//        g = this.getGenres().get(this.getGenres().size() - 1);
-//        this.addUser("richard-schulze@online.de", "Richard", "Schulze",
-//                new HashGenerator().hash("1"), new Date(), "Münster", "Deutschland", true);
-//        User u = this.getUsers().get(this.getUsers().size() - 1);
-//        u.setPseudonym("DVBBS & Borgeous");
-//        this.addMedium("Tsunami", u, "C:\\DVBBS & Borgeous - Tsunami.mp3", ge, null, null);
-//        this.addMedium("Alarm01", u, "C:\\Alarm01.wav", g, null, null);
     }
 
     /**
@@ -156,7 +136,6 @@ public class Database {
      *
      * @post If there is no data to load then (self.data == null)
      */
-    //TODO Methode private machen. Im Moment public für Tests.
     public void load() {
         data = xStreamer.load();
         if (data == null) {
@@ -394,7 +373,6 @@ public class Database {
      * @pre <code>title</code>, <code>artist</code>, <code>genre</code> must not be null.
      * @post A new Medium object has been created and added to the database.
      */
-    // TODO Fehler beseitigen: Medium wird nicht in die Liste aufgenommen, wenn genre=null (Richard, Tobias)
     public ErrorCode addMedium(String title, User artist, String path, Genre genre, Label label) {
         Medium m = new Medium(title, artist, path);
         
@@ -406,6 +384,22 @@ public class Database {
         return ErrorCode.SUCCESS;
     }
     
+    /**
+     * Makes the Database add a new Medium with the given information and adds
+     * the meidum to the submitted album. The <code>path</code> may be null
+     * which will make the new Medium a placeholder Medium.
+     *
+     * @param title The medium's title.
+     * @param artist The medium's artist.
+     * @param path The path to the Medium's file that will be uploaded to the
+     * Database. May be null to create a placeholder Medium.
+     * @param genre The medium's genre.
+     * @param label The medium's label. Set to null if you don't wish to set one.
+     * @param album The Album to add the medium to
+     * @return ErrorCode
+     * @pre <code>title</code>, <code>artist</code>, <code>genre</code> must not be null.
+     * @post A new Medium object has been created and added to the database.
+     */
     public ErrorCode addMediumToAlbum(String title, User artist, String path, Genre genre, Label label, Album album) {
         Medium m = new Medium(title, artist, path);
         
