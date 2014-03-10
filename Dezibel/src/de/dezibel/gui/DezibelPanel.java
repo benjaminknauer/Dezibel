@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import com.javadocking.DockingExecutor;
 import com.javadocking.DockingManager;
@@ -55,6 +56,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.Color;
 
 /**
  * This is the main class of our UI. It uses a docking library, called "Sanaware
@@ -611,14 +613,14 @@ public class DezibelPanel extends JPanel {
     }
     
     private void createMenubar() {
+        UIManager.put("MenuItem.selectionForeground", Color.BLUE);
         if (this.menuBar == null) {
             JMenu menuShow;
             JCheckBoxMenuItem cbMenuItem;
             menuBar = new JMenuBar();
             JMenuItem menuLogout = new JMenuItem("Logout",new ImageIcon(this.getClass().getResource("/img/logout24x24.png")));
             menuLogout.setHorizontalAlignment(SwingConstants.CENTER);
-            menuLogout.setIconTextGap(0);
-            menuLogout.setContentAreaFilled(false);
+
             
             menuBar.add(menuLogout);
             menuShow = new JMenu("Anzeige");
@@ -707,7 +709,7 @@ public class DezibelPanel extends JPanel {
             menuShow.add(cbMenuItem);
             JMenu menuUpload = new JMenu("Upload");
             menuUpload.setIcon(new ImageIcon(this.getClass().getResource("/img/upload24x24.png")));
-            JMenuItem itemUpload = new JMenuItem("Upload");
+            JMenuItem itemUpload = new JMenuItem("Upload", new ImageIcon(this.getClass().getResource("/img/upload24x24.png")));
             menuUpload.add(itemUpload);
 
             itemUpload.addActionListener(new ActionListener() {
@@ -719,7 +721,7 @@ public class DezibelPanel extends JPanel {
  
             JMenu menuNews = new JMenu("Neuigkeiten");
             menuNews.setIcon(new ImageIcon(this.getClass().getResource("/img/news24x24.png")));
-            itemCreateNews  = new JMenuItem("Erstellen");
+            itemCreateNews  = new JMenuItem("News schreiben", new ImageIcon(this.getClass().getResource("/img/news24x24.png")));
             itemCreateNews.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -732,10 +734,10 @@ public class DezibelPanel extends JPanel {
             		itemCreateNews.setEnabled(false);
             
             // Ausloggen, Upload,
-            menuNews.add(itemCreateNews);
+            //menuNews.add(itemCreateNews);
+            menuBar.add(itemUpload);
+            menuBar.add(itemCreateNews);
             menuBar.add(menuShow);
-            menuBar.add(menuUpload);
-            menuBar.add(menuNews);
             
         }
     }
