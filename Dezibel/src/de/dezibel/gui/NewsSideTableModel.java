@@ -3,10 +3,12 @@ package de.dezibel.gui;
 import java.util.LinkedList;
 
 import javax.swing.table.DefaultTableModel;
+
+import de.dezibel.data.Comment;
 import de.dezibel.data.News;
 
 /**
- * 
+ * This class is used by NewsSidePanel for the News-JTable
  * @author Pascal
  *
  */
@@ -42,8 +44,8 @@ public class NewsSideTableModel extends DefaultTableModel {
 
 	    @Override
 	    public Object getValueAt(int row, int col) {
-	        if (data != null && row >= 0 && row < data.length) {
-	            News m = data[row];
+	        if ((data != null) && (row >= 0) && (row < data.length)) {
+	        	News m = data[row];
 	            switch (col) {
 	                case -1:
 	                    return m;
@@ -65,7 +67,7 @@ public class NewsSideTableModel extends DefaultTableModel {
 	     * @param data The data to display
 	     */
 	    public void setData(LinkedList<News> data) {
-	        if (data == null) {
+	    	if (data == null) {
 	            this.data = null;
 	        } else {
 	            this.data = new News[data.size()];

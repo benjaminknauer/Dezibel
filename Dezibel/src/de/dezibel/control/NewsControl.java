@@ -10,7 +10,7 @@ import de.dezibel.data.News;
 import de.dezibel.data.User;
 
 /**
- * 
+ * Creates and reads news.
  * @author Pascal
  *
  */
