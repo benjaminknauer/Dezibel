@@ -6,6 +6,7 @@ import de.dezibel.data.Comment;
 import de.dezibel.data.Playlist;
 import de.dezibel.data.Medium;
 import de.dezibel.data.Album;
+import de.dezibel.data.Application;
 import de.dezibel.data.Label;
 import de.dezibel.data.News;
 
@@ -627,6 +628,10 @@ public class ProfileControl {
         if (belongsToLoggedUser(user)) {
             user.removeFavoriteMedium(medium);
         }
+    }
+    
+    public LinkedList<Application> getApplications(User user) {
+        return user.getApplications();
     }
     
     /**
