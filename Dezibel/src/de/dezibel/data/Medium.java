@@ -18,7 +18,9 @@ import java.util.Iterator;
 public class Medium implements Commentable, Lockable {
 
     private static final MediumLoader mediumLoader = new MediumLoader();
-    private String path = this.getClass().getResource("/sfx/not_available.wav").toString();
+    private String path = this.getClass().getResource("/sfx/not_available.wav").getPath();
+    // Temporarily saves the path, while the medium is locked
+    private String pathOnLock;
     private String title;
     private Album album;
     private Date uploadDate;
@@ -51,7 +53,7 @@ public class Medium implements Commentable, Lockable {
         this.commentList = new LinkedList<>();
         this.playlistList = new LinkedList<>();
 
-        if (path != null || !path.isEmpty()) {
+        if (path != null && !path.isEmpty()) {
             this.path = path;
             this.upload(path);
         } else {
@@ -69,6 +71,14 @@ public class Medium implements Commentable, Lockable {
      */
     public boolean isAvailable() {
         return !(this.isLocked()) && !(this.deleted) && this.isMediumSet();
+    }
+    
+    /**
+     * Returns if this medium is deleted.
+     * @return true, if the medium is deleted, else false
+     */
+    public boolean isDeleted() {
+        return this.deleted;
     }
 
     /**
@@ -99,6 +109,7 @@ public class Medium implements Commentable, Lockable {
      */
     public void markAsDeleted() {
         this.deleted = true;
+        this.path = this.getClass().getResource("/sfx/not_available.wav").getPath();
     }
 
     /**
@@ -183,6 +194,8 @@ public class Medium implements Commentable, Lockable {
     public void lock(String text) {
         this.locked = true;
         this.lockText = text;
+        this.pathOnLock = this.path;
+        this.path = this.getClass().getResource("/sfx/not_available.wav").getPath();
         MailUtil.sendMail("Medium gesperrt",
                 "Hallo " + this.getArtist().getFirstname() + ",\n\n"
                 + "dein Medium \"" + this.getTitle() + "\" wurde gesperrt."
@@ -201,6 +214,7 @@ public class Medium implements Commentable, Lockable {
     @Override
     public void unlock() {
         this.locked = false;
+        this.path = this.pathOnLock;
         MailUtil.sendMail("Medium entsperrt",
                 "Hallo " + this.getArtist().getFirstname() + ",\n\n"
                 + "dein Medium \"" + this.getTitle() + "\" wurde entsperrt.",

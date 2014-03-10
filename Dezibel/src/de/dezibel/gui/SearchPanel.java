@@ -335,7 +335,6 @@ public class SearchPanel extends DragablePanel {
         tableModelSong.setData(null);
         tableModelLabel.setData(null);
         tableModelAlbum.setData(null);
-        tableResults.setModel(null);
         tfSearch.setText("Suche...");
     }
 
