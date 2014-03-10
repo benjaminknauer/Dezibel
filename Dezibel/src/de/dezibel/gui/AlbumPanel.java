@@ -61,6 +61,8 @@ public class AlbumPanel extends DragablePanel {
         commentModel.setData(currentAlbum.getComments());
         tblAlbumComments = new JTable(commentModel);
         spAlbumComments = new JScrollPane(tblAlbumComments);
+        TextAreaCellRenderer tacr = new TextAreaCellRenderer();
+        tblAlbumComments.getColumnModel().getColumn(0).setCellRenderer(tacr);  
 
         tblAlbumMedia.addMouseListener(new MouseAdapter() {
             @Override

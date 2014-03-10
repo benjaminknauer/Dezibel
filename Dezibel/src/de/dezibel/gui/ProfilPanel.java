@@ -4,15 +4,19 @@ import de.dezibel.UpdateEntity;
 import de.dezibel.control.LabelControl;
 import de.dezibel.control.ProfileControl;
 import de.dezibel.control.AdminControl;
+import de.dezibel.data.Album;
+import de.dezibel.data.Application;
 import de.dezibel.data.Comment;
 import de.dezibel.data.Label;
+import de.dezibel.data.Medium;
 import de.dezibel.data.News;
+import de.dezibel.data.Playlist;
 import de.dezibel.data.User;
+import de.dezibel.player.Player;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -33,11 +37,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumnModel;
-import javax.swing.tree.DefaultTreeCellEditor;
 
 public class ProfilPanel extends DragablePanel {
 
@@ -56,6 +55,7 @@ public class ProfilPanel extends DragablePanel {
     private JPanel pnComments;
     private JPanel pnNews;
     private JPanel pnLabels;
+    private JPanel pnApplications;
     private GridBagLayout gbl;
     private GridBagConstraints gbc;
 
@@ -85,6 +85,7 @@ public class ProfilPanel extends DragablePanel {
     private JScrollPane tablePanel;
     private JScrollPane scrManagedLabels;
     private JScrollPane scrPublishingLabels;
+    private JScrollPane scrApplications;
     private JLabel lbPlaylist;
     private JTable tFavoPlaylists;
     private JTable tUploadPlaylists;
@@ -94,6 +95,7 @@ public class ProfilPanel extends DragablePanel {
     private JTable tUploadAlbums;
     private JLabel lbPseudonym;
     private JTable tNews;
+    private JTable tApplications;
     private JTextArea taNews;
 
     private JPopupMenu currentPopupMenu;
@@ -112,9 +114,11 @@ public class ProfilPanel extends DragablePanel {
     private AlbumTableModel albumModellUpload;
     private AlbumTableModel albumModellFavo;
     private NewsSideTableModel newsModell;
+    private ApplicationToArtistTableModel applicationsModel;
     private JTextArea taComments;
     
     private int showTabNr;
+    private boolean isApplicationVisible;
 
     /**
      * Constructor of the ProfilPanel class.
@@ -243,6 +247,13 @@ public class ProfilPanel extends DragablePanel {
             } else if (!(isNewsVisible)) {
                 tabPanel.addTab("News", null, pnNews);
             }
+            
+             if (!(currentUser.equals(profileControler.getLoggedInUser()))) {
+                tabPanel.remove(pnApplications);
+                isApplicationVisible = false;
+            } else if (!(isApplicationVisible)) {
+                tabPanel.addTab("Bewerbungen", null, pnApplications);
+            }
 
             if (!(currentUser.isArtist())) {
                 spMedia.setVisible(false);
@@ -279,6 +290,7 @@ public class ProfilPanel extends DragablePanel {
             albumModellUpload.setData(profileControler.getCreatedAlbums(currentUser));
             albumModellFavo.setData(profileControler.getFavorizedAlbums(currentUser));
             newsModell.setData(profileControler.getNews(currentUser));
+            applicationsModel.setData(profileControler.getApplications(currentUser));
         }
     }
 
@@ -313,6 +325,9 @@ public class ProfilPanel extends DragablePanel {
         this.pnLabels = new JPanel();
         this.createLabelsComponents();
         tabPanel.addTab("Labels", null, pnLabels);
+        this.pnApplications = new JPanel();
+        this.createApplicationComponents();
+        tabPanel.addTab("Bewerbungen", null, pnApplications);
     }
 
     /**
@@ -507,6 +522,16 @@ public class ProfilPanel extends DragablePanel {
         tFollower.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         tFollower.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+                    User u = (User) followerModell.getValueAt(
+                            tFollower.getSelectedRow(), -1);
+                    if (u != null) {
+                        parent.showProfile(u);
+                    }
+                }
+            }
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
@@ -704,6 +729,16 @@ public class ProfilPanel extends DragablePanel {
 
         tFavoPlaylists.addMouseListener(new MouseAdapter() {
             @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+                    Playlist p = (Playlist) playlistModellFavo.getValueAt(
+                            tFavoPlaylists.getSelectedRow(), -1);
+                    if (p != null) {
+                        parent.showPlaylist(p);
+                    }
+                }
+            }
+            @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
                     showPopup(me);
@@ -726,6 +761,17 @@ public class ProfilPanel extends DragablePanel {
         });
 
         tFavoMedia.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+                    Medium m = (Medium) mediaModellFavo.getValueAt(
+                            tFavoMedia.getSelectedRow(), -1);
+                    if (m != null) {
+                        Player.getInstance().addMediumAsNext(m);
+                        Player.getInstance().next();
+                    }
+                }
+            }
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
@@ -750,6 +796,16 @@ public class ProfilPanel extends DragablePanel {
         });
         
         tFavoAlbums.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+                    Album a = (Album) albumModellFavo.getValueAt(
+                            tFavoAlbums.getSelectedRow(), -1);
+                    if (a != null) {
+                        parent.showAlbum(a);
+                    }
+                }
+            }
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
@@ -837,6 +893,16 @@ public class ProfilPanel extends DragablePanel {
         
         tUploadPlaylists.addMouseListener(new MouseAdapter() {
             @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+                    Playlist p = (Playlist) playlistModellUpload.getValueAt(
+                            tUploadPlaylists.getSelectedRow(), -1);
+                    if (p != null) {
+                        parent.showPlaylist(p);
+                    }
+                }
+            }
+            @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
                     showPopup(me);
@@ -861,6 +927,17 @@ public class ProfilPanel extends DragablePanel {
         
         tUploadMedia.addMouseListener(new MouseAdapter() {
             @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+                    Medium m = (Medium) mediaModellUpload.getValueAt(
+                            tUploadMedia.getSelectedRow(), -1);
+                    if (m != null) {
+                        Player.getInstance().addMediumAsNext(m);
+                        Player.getInstance().next();
+                    }
+                }
+            }
+            @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
                     showPopup(me);
@@ -884,6 +961,16 @@ public class ProfilPanel extends DragablePanel {
         });
         
         tUploadAlbums.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+                    Album a = (Album) albumModellUpload.getValueAt(
+                            tUploadAlbums.getSelectedRow(), -1);
+                    if (a != null) {
+                        parent.showAlbum(a);
+                    }
+                }
+            }
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
@@ -940,6 +1027,15 @@ public class ProfilPanel extends DragablePanel {
 
         tLabelsManaged.addMouseListener(new MouseAdapter() {
             @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+                    Label l = (Label) labelModellManaged.getValueAt(
+                            tLabelsManaged.getSelectedRow(), -1);
+                    if (l != null) {
+                        parent.showProfile(l);
+                    }
+                }
+            }
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
                     showPopup(me);
@@ -969,6 +1065,16 @@ public class ProfilPanel extends DragablePanel {
         scrPublishingLabels = new JScrollPane(tLabelsPublishing);
 
         tLabelsPublishing.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+                    Label l = (Label) labelModellPublishing.getValueAt(
+                            tLabelsPublishing.getSelectedRow(), -1);
+                    if (l != null) {
+                        parent.showProfile(l);
+                    }
+                }
+            }
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
@@ -1013,7 +1119,57 @@ public class ProfilPanel extends DragablePanel {
     }
     
     private void createApplicationComponents() {
+        this.applicationsModel = new ApplicationToArtistTableModel();
+        this.tApplications = new JTable(applicationsModel);
+        this.scrApplications = new JScrollPane(tApplications);
+        this.tApplications.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         
+        this.tApplications.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                if(me.getClickCount() == 2 && (me.getButton() == MouseEvent.BUTTON1)) {
+                    Application a = (Application) applicationsModel.getValueAt(tApplications.getSelectedRow(), -1);
+                    if(a != null) {
+                        if(a.getLabel() != null) {
+                            parent.showProfile(a.getLabel());
+                        }
+                    }
+                }
+            }
+            
+            @Override
+            public void mousePressed(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            private void showPopup(MouseEvent me) {
+                ContextMenu contextMenu = new ContextMenu(parent);
+                currentPopupMenu = contextMenu.getContextMenu(tApplications, me);
+                currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
+            }
+        });
+        
+        gbl = new GridBagLayout();
+        pnApplications.setLayout(gbl);
+        gbc = new GridBagConstraints();
+
+        gbc.insets = new Insets(0, 5, 0, 5);
+        gbc.fill = GridBagConstraints.BOTH;
+
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+
+        gbl.setConstraints(scrApplications, gbc);
+        pnApplications.add(scrApplications);
     }
 
     @Override
