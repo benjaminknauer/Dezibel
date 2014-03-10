@@ -147,7 +147,7 @@ public class ProfilPanel extends DragablePanel {
             JOptionPane.showMessageDialog(this, "Der Nutzer, dessen Profil Sie"
                     + " aufzurufen versuchen ist temporär gesperrt. Das gewünschte"
                     + "Profil kann daher leider zurzeit nicht aufgerufen werden!");
-                    parent.showSearch();
+            parent.showSearch();
 
         } else {
             tabPanel.setSelectedIndex(0);
@@ -385,9 +385,32 @@ public class ProfilPanel extends DragablePanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!(currentUser.isLocked())) {
-                    adminControler.lock(currentUser, "");
+                    JPanel detailPanel = new JPanel();
+                    detailPanel.setLayout(new BorderLayout());
+                    JLabel lblReason = new JLabel("Grund: ");
+                    JTextArea txtReason = new JTextArea();
+                    JScrollPane scrollPane = new JScrollPane(txtReason);
+                    scrollPane.setPreferredSize(new Dimension(300, 320));
+                    detailPanel.add(lblReason, BorderLayout.NORTH);
+                    detailPanel.add(scrollPane, BorderLayout.SOUTH);
+                    int ret = JOptionPane.showConfirmDialog(ProfilPanel.this,
+                            detailPanel, "Medium sperren",
+                            JOptionPane.OK_CANCEL_OPTION,
+                            JOptionPane.PLAIN_MESSAGE);
+                    if (ret == JOptionPane.OK_OPTION) {
+                        new AdminControl().lock(currentUser, txtReason.getText());
+                        JOptionPane.showMessageDialog(ProfilPanel.this,
+                                "Das Medium wurde gesperrt!", "Medium gesperrt",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    }
                 } else {
-                    adminControler.unlock(currentUser);
+                    int ret = JOptionPane.showConfirmDialog(ProfilPanel.this,
+                            "Soll das Medium wirklich entsperrt werden?",
+                            "Medium entsperren", JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE);
+                    if (ret == JOptionPane.YES_OPTION) {
+                        new AdminControl().unlock(currentUser);
+                    }
                 }
                 refresh();
             }
