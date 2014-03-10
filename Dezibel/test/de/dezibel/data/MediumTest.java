@@ -173,15 +173,11 @@ public class MediumTest {
         Comment comment1 = new Comment("Test1", instance, loggedUser);
         Comment comment2 = new Comment("Test2", instance, loggedUser);
         
-        LinkedList expResult = new LinkedList();
-        expResult.add(comment1);
-        expResult.add(comment2);
-        
         instance.comment(comment1);
         instance.comment(comment2);
         
-        LinkedList result = instance.getComments();
-        assertEquals(expResult, result);
+        assertEquals(instance.getComments().get(0), comment1);
+        assertEquals(instance.getComments().get(1), comment2);
     }
 
     /**
