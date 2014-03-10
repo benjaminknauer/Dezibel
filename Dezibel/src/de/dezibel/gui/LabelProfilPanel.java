@@ -71,7 +71,7 @@ public class LabelProfilPanel extends DragablePanel {
     private MediaTableModel mediaModellUpload;
     private AlbumTableModel albumModellUpload;
     private NewsSideTableModel newsModell;
-    private ArtistTableModell artistModell;
+    private ArtistTableModel artistModell;
     private JTextField tfName;
     private JTextArea taCompanyDetails;
     private FollowerTableModel managerModell;
@@ -644,7 +644,7 @@ public class LabelProfilPanel extends DragablePanel {
     }
 
     private void createArtistsComponents() {
-        artistModell = new ArtistTableModell();
+        artistModell = new ArtistTableModel();
         tArtists = new JTable(artistModell);
         tArtists.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
