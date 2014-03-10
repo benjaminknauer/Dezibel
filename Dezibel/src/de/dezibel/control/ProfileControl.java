@@ -628,4 +628,14 @@ public class ProfileControl {
             user.removeFavoriteMedium(medium);
         }
     }
+    
+    /**
+     * Checks if the given user is locked.
+     * 
+     * @param user user the profile belongs to
+     * @return true if the user is locked, false otherwise
+     */
+    public boolean isLocked(User user){
+        return user.isLocked();
+    }
 }

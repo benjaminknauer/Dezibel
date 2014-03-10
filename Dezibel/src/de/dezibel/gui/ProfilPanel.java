@@ -143,13 +143,8 @@ public class ProfilPanel extends DragablePanel {
 
     public void refresh() {
 
-        if (currentUser.isLocked() && !(profileControler.getLoggedInUser().isAdmin())) {
-            JOptionPane.showMessageDialog(this, "Der Nutzer, dessen Profil Sie"
-                    + " aufzurufen versuchen ist temporär gesperrt. Das gewünschte"
-                    + "Profil kann daher leider zurzeit nicht aufgerufen werden!");
-            parent.showSearch();
-
-        } else {
+        if (!(currentUser.isLocked() && !(profileControler.getLoggedInUser(
+        ).isAdmin()))) {
             tabPanel.setSelectedIndex(0);
 
             taNews.setText("");
@@ -532,6 +527,7 @@ public class ProfilPanel extends DragablePanel {
         commentModell = new CommentTableModel();
         tComments = new JTable(commentModell);
         tComments.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tComments.removeColumn(tComments.getColumn("von Benutzer"));
 
         taComments = new JTextArea();
         taComments.setLineWrap(true);
