@@ -18,7 +18,7 @@ public class AlbumControl {
     
     public void createAlbum(String title, Medium firstMedium, String coverPath){
                Database.getInstance().addAlbum(firstMedium, title, Database.getInstance()
-                .getLoggedInUser(), coverPath);
+                .getLoggedInUser(), coverPath, true);
     }
     
     public void addMediumToAlbum(Medium medium, Album album){

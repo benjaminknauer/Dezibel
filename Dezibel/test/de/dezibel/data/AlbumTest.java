@@ -191,7 +191,7 @@ public class AlbumTest{
         assertTrue(albumTest.isMarkedForDeletion());
         
         // Label is not creator -> album does not get deleted
-        Album albumTest2 = new Album(medium1, "Test1", loggedUser);
+        Album albumTest2 = new Album(medium1, "Test1", loggedUser, true);
         assertNull(albumTest2.getLabel());
         
         albumTest2.setLabel(publisher);

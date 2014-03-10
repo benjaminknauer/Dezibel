@@ -183,12 +183,13 @@ public class Database {
      * @param title The album's title.
      * @param creator The artist who created the album.
      * @param coverPath Path to an Image file with the album's cover which then will be uploaded.
+     * @param copyMedium true, if the medium should be copied, else false
      * @return ErrorCode
      * @pre self.medium != null && self.title != null && self.creator != null
      * @post The new Album object is in the database.
      */
-    public ErrorCode addAlbum(Medium medium, String title, User creator, String coverPath){
-        Album a = new Album(medium, title, creator);
+    public ErrorCode addAlbum(Medium medium, String title, User creator, String coverPath, boolean copyMedium){
+        Album a = new Album(medium, title, creator, copyMedium);
         this.albums.add(a);
         if(coverPath != null)
             a.uploadCover(coverPath);

@@ -244,7 +244,7 @@ public class MediumTest {
     public void testGetAlbum() {
         System.out.println("getAlbum");
         
-        Album album = new Album(instance, "Mein Album", loggedUser);
+        Album album = new Album(instance, "Mein Album", loggedUser, true);
         instance.setAlbum(album);
 
         assertEquals(album.getTitle(), instance.getAlbum().getTitle());
@@ -258,7 +258,7 @@ public class MediumTest {
     @Test
     public void testSetAlbum() {
         System.out.println("setAlbum");
-        Album album = new Album(instance, "Mein Album", loggedUser);
+        Album album = new Album(instance, "Mein Album", loggedUser, true);
         
         instance.setAlbum(album);
 

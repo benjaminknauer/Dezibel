@@ -5,6 +5,7 @@ import de.dezibel.data.Album;
 import de.dezibel.data.Database;
 import de.dezibel.data.Genre;
 import de.dezibel.data.Label;
+import de.dezibel.data.Medium;
 import de.dezibel.data.User;
 import java.awt.Component;
 import java.util.ArrayList;
@@ -34,16 +35,27 @@ public class UploadControl {
      * @param genre The genre of the song
      * @param label The publishing label
      * @param album The album to add this song to
+     * @param newAlbumName The name for the album if it has to be created
+     * @param coverPath The path of the cover if the album has to be created
      * @return Returns a fitting error code
      */
-    public ErrorCode upload(String title, User user, String path, Genre genre, Label label, Album album) {
+    public ErrorCode upload(String title, User user, String path, Genre genre, Label label, Album album,
+            String newAlbumName, String coverPath) {
         if (!user.isArtist()) {
             return ErrorCode.USER_IS_NOT_ARTIST;
         }
         if (album != null) {
             return db.addMediumToAlbum(title, user, path, genre, label, album);
+        } else {
+            if (newAlbumName == null || newAlbumName.isEmpty()) {
+                return db.addMedium(title, user, path, genre, label);
+            } else {
+                db.addMedium(title, user, path, genre, label);
+                Medium m = db.getMedia().get(db.getMedia().size() - 1);
+                db.addAlbum(m, newAlbumName, user, coverPath, false);
+                return ErrorCode.SUCCESS;
+            }
         }
-        return db.addMedium(title, user, path, genre, label);
     }
 
     /**
@@ -118,7 +130,7 @@ public class UploadControl {
      */
     public Label[] getSelectableLabels() {
         User u = db.getLoggedInUser();
-        ArrayList<Label> result = new ArrayList<Label>();
+        Set<Label> result = new HashSet<>();
         result.add(null);
         result.addAll(u.getManagedLabels());
         result.addAll(u.getPublishingLabels());
@@ -134,7 +146,7 @@ public class UploadControl {
      */
     public Album[] getSelectableAlbums() {
         User u = db.getLoggedInUser();
-        Set<Album> result = new HashSet<Album>();
+        Set<Album> result = new HashSet<>();
         result.add(null);
         result.addAll(u.getCreatedAlbums());
         for (Label l : u.getManagedLabels()) {
