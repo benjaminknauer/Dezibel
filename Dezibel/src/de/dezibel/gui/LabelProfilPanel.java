@@ -112,62 +112,65 @@ public class LabelProfilPanel extends DragablePanel {
     @Override
     public void refresh() {
 
-        if (currentLabel.isLocked() && !(profileControler.getLoggedInUser().isAdmin())) {
-            tabPanel.setSelectedIndex(0);
+        if (currentLabel != null) {
 
-            tfName.setText(profileControler.getName(currentLabel));
-            taCompanyDetails.setText(profileControler.getCompanyDetails(currentLabel));
+            if (!(currentLabel.isLocked() && !(profileControler.getLoggedInUser().isAdmin()))) {
+                tabPanel.setSelectedIndex(0);
 
-            if (profileControler.getManagers(currentLabel).contains(profileControler.getLoggedInUser())) {
-                btnFollow.setVisible(false);
-            } else {
-                btnFollow.setVisible(true);
+                tfName.setText(profileControler.getName(currentLabel));
+                taCompanyDetails.setText(profileControler.getCompanyDetails(currentLabel));
+
+                if (profileControler.getManagers(currentLabel).contains(profileControler.getLoggedInUser())) {
+                    btnFollow.setVisible(false);
+                } else {
+                    btnFollow.setVisible(true);
+                }
+
+                if (profileControler.getManagers(currentLabel).contains(profileControler.getLoggedInUser())) {
+                    btnEdit.setVisible(true);
+                } else {
+                    btnEdit.setVisible(false);
+                }
+
+                if (profileControler.getFollowers(currentLabel).contains(profileControler.getLoggedInUser())) {
+                    btnFollow.setText("Unfollow");
+                } else {
+                    btnFollow.setText("Follow");
+                }
+
+                if (taCompanyDetails.isEnabled()) {
+                    btnEdit.setText("Speichern");
+                } else {
+                    btnEdit.setText("Bearbeiten");
+                }
+
+                if (!(profileControler.belongsToLoggedUser(currentLabel))) {
+                    tabPanel.remove(pnApplications);
+                    isApplicationsVisible = false;
+                } else if (!(isApplicationsVisible)) {
+                    tabPanel.addTab("Bewerbungen", null, pnApplications);
+                }
+
+                if (!(profileControler.getLoggedInUser().isAdmin())) {
+                    btnLock.setVisible(false);
+                } else {
+                    btnLock.setVisible(true);
+                }
+
+                if (currentLabel.isLocked()) {
+                    btnLock.setText("Entsperren");
+                } else {
+                    btnLock.setText("Sperren");
+                }
+
+                followerModell.setData(profileControler.getFollowers(currentLabel));
+                mediaModellUpload.setData(profileControler.getAssociatedMediums(currentLabel));
+                albumModellUpload.setData(profileControler.getCreatedAlbums(currentLabel));
+                newsModell.setData(profileControler.getNews(currentLabel));
+                managerModell.setData(profileControler.getManagers(currentLabel));
+                applicationsModell.setData(profileControler.getApplications(currentLabel));
+                artistModell.setData(profileControler.getArtists(currentLabel));
             }
-
-            if (profileControler.getManagers(currentLabel).contains(profileControler.getLoggedInUser())) {
-                btnEdit.setVisible(true);
-            } else {
-                btnEdit.setVisible(false);
-            }
-
-            if (profileControler.getFollowers(currentLabel).contains(profileControler.getLoggedInUser())) {
-                btnFollow.setText("Unfollow");
-            } else {
-                btnFollow.setText("Follow");
-            }
-
-            if (taCompanyDetails.isEnabled()) {
-                btnEdit.setText("Speichern");
-            } else {
-                btnEdit.setText("Bearbeiten");
-            }
-
-            if (!(profileControler.belongsToLoggedUser(currentLabel))) {
-                tabPanel.remove(pnApplications);
-                isApplicationsVisible = false;
-            } else if (!(isApplicationsVisible)) {
-                tabPanel.addTab("Bewerbungen", null, pnApplications);
-            }
-
-            if (!(profileControler.getLoggedInUser().isAdmin())) {
-                btnLock.setVisible(false);
-            } else {
-                btnLock.setVisible(true);
-            }
-
-            if (currentLabel.isLocked()) {
-                btnLock.setText("Entsperren");
-            } else {
-                btnLock.setText("Sperren");
-            }
-
-            followerModell.setData(profileControler.getFollowers(currentLabel));
-            mediaModellUpload.setData(profileControler.getAssociatedMediums(currentLabel));
-            albumModellUpload.setData(profileControler.getCreatedAlbums(currentLabel));
-            newsModell.setData(profileControler.getNews(currentLabel));
-            managerModell.setData(profileControler.getManagers(currentLabel));
-            applicationsModell.setData(profileControler.getApplications(currentLabel));
-            artistModell.setData(profileControler.getArtists(currentLabel));
         }
     }
 
@@ -440,6 +443,16 @@ public class LabelProfilPanel extends DragablePanel {
         tManager.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         tManager.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+                    User u = (User) managerModell.getValueAt(
+                            tManager.getSelectedRow(), -1);
+                    if (u != null) {
+                        parent.showProfile(u);
+                    }
+                }
+            }
+
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
