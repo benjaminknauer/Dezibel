@@ -4,8 +4,6 @@ import java.util.LinkedList;
 import de.dezibel.data.Medium;
 import de.dezibel.data.Playlist;
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -97,9 +95,10 @@ public class Player {
             this.player.seek(new Duration(pos * 1000));
         }
     }
-    
+
     /**
      * Moves the song at source index one position up.
+     *
      * @param index The index that has to be moved up
      */
     public void moveUp(int index) {
@@ -114,9 +113,10 @@ public class Player {
             this.notifyObserver();
         }
     }
-    
+
     /**
      * Moves the song at source index one position down.
+     *
      * @param index The index that has to be moved down
      */
     public void moveDown(int index) {
@@ -140,12 +140,7 @@ public class Player {
         if (this.currentPlaylist.size() > 0) {
             this.currentPosition = (++this.currentPosition) % this.currentPlaylist.size();
             Medium newMedium = this.currentPlaylist.get(this.currentPosition);
-            if (newMedium.isAvailable()) {
-                this.createPlayer(newMedium);
-            } else {
-                // TODO - Sperrung bzw. Löschung für 3 Sekunden anzeigen
-                // Eventuell durch eigene Sperr- bzw. Lösch-Medien realisieren.
-            }
+            this.createPlayer(newMedium);
             this.play();
         }
     }
@@ -161,13 +156,7 @@ public class Player {
                 this.currentPosition = this.currentPlaylist.size() - 1;
             }
             Medium newMedium = this.currentPlaylist.get(this.currentPosition);
-            if (newMedium.isAvailable()) {
-                this.createPlayer(newMedium);
-            } else {
-                // TODO - Sperrung bzw. Löschung für 3 Sekunden anzeigen
-                // Eventuell durch eigene Sperr- bzw. Lösch-Medien realisieren.
-            }
-            this.play();
+            this.createPlayer(newMedium);
         }
     }
 
@@ -272,7 +261,7 @@ public class Player {
             this.notifyObserver();
         }
     }
-    
+
     /**
      * Adds a medium to the currentPlaylist
      *
@@ -371,7 +360,7 @@ public class Player {
     }
 
     /**
-     * Creates a MediaPlayer object for the given medium.
+     * Creates a MediaPlayer object for the given medium, if the medium has a file
      *
      * @param medium The medium to create a player for
      * @return The created player
