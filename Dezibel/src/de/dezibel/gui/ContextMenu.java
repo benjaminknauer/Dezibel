@@ -788,6 +788,9 @@ public class ContextMenu {
         currentPopupMenu = new JPopupMenu();
         final Application a = (Application) currentTableModel.getValueAt(
                 currentTable.getSelectedRow(), -1);
+        if((a.isFromArtist() && Database.getInstance().getLoggedInUser().equals(a.getUser())) || (!a.isFromArtist() && Database.getInstance().getLoggedInUser().getManagedLabels().contains(a.getLabel()))){
+            return;
+        }
         JMenuItem menuItemAccept = new JMenuItem("Akzeptieren");
         JMenuItem menuItemDecline = new JMenuItem("Ablehnen");
         menuItemAccept.addActionListener(new ActionListener() {
