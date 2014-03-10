@@ -110,6 +110,8 @@ public class ProfilPanel extends DragablePanel {
     private AlbumTableModel albumModellFavo;
     private NewsSideTableModel newsModell;
     private JTextArea taComments;
+    
+    private int showTabNr;
 
     /**
      * Constructor of the ProfilPanel class.
@@ -130,10 +132,13 @@ public class ProfilPanel extends DragablePanel {
         this.labelControler = new LabelControl();
         this.adminControler = new AdminControl();
         this.currentUser = profileControler.getLoggedInUser();
+        
+        showTabNr = 0;
     }
 
     public void setUser(User newUser) {
         this.currentUser = newUser;
+        showTabNr = 0;
         this.refresh();
     }
 
@@ -355,6 +360,7 @@ public class ProfilPanel extends DragablePanel {
                 } else {
                     setProfileTextfieldsEditable(true);
                 }
+                showTabNr = 0;
                 refresh();
             }
         });
@@ -370,6 +376,7 @@ public class ProfilPanel extends DragablePanel {
                         currentUser))) {
                     profileControler.addToFavoriteUsers(currentUser);
                 }
+                showTabNr = 0;
                 refresh();
                 parent.refresh(UpdateEntity.FAVORITES);
             }
@@ -407,6 +414,7 @@ public class ProfilPanel extends DragablePanel {
                         new AdminControl().unlock(currentUser);
                     }
                 }
+                showTabNr = 0;
                 refresh();
             }
         });
@@ -732,7 +740,7 @@ public class ProfilPanel extends DragablePanel {
                 ContextMenu contextMenu = new ContextMenu(parent);
                 currentPopupMenu = contextMenu.getContextMenu(tMedia, me);
                 currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
-
+                showTabNr = 2;
             }
 
         });
@@ -811,8 +819,8 @@ public class ProfilPanel extends DragablePanel {
                 if (labelName != null && labelName.length() > 0) {
                     labelControler.createLabel(currentUser, labelName);
                     labelControler.promoteUserToLabelManager(currentUser);
+                    showTabNr = 5;
                     refresh();
-                    tabPanel.setSelectedIndex(5);
                 } else {
                     JOptionPane.showMessageDialog(parent, "Eingabefeld war leer!"
                             + " Es wurde kein neues Label erstellt.");

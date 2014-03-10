@@ -37,6 +37,7 @@ import com.javadocking.visualizer.SingleMaximizer;
 import de.dezibel.UpdateEntity;
 import de.dezibel.control.NewsControl;
 import de.dezibel.control.ProfileControl;
+import de.dezibel.control.LabelControl;
 import de.dezibel.control.SaveControl;
 import de.dezibel.data.Album;
 import de.dezibel.data.Database;
@@ -204,7 +205,18 @@ public class DezibelPanel extends JPanel {
         LabelProfilPanel lpn = (LabelProfilPanel) pnLabelProfil;
         lpn.setUser(label);
         lpn.setBackground(DezibelColor.Background);
-        this.showAtCenter(daLabelProfil);
+        if(new LabelControl().isLocked(((LabelProfilPanel
+                ) daLabelProfil.getContent()).getLabel()) && !(new LabelControl(
+                ).getLoggedInUser().isAdmin())){
+            
+                     JOptionPane.showMessageDialog(this, "Das Label, dessen Profil Sie"
+                    + " aufzurufen versuchen ist temporär gesperrt. Das gewünschte"
+                    + "Profil kann daher leider zurzeit nicht aufgerufen werden!");
+              
+        }
+        else {
+            this.showAtCenter(daProfil);
+        }
     }
 
     public void showPlaylist(Playlist list) {
@@ -227,6 +239,11 @@ public class DezibelPanel extends JPanel {
     }
     
     public void showAlbum(Album album){
+        AlbumPanel pnAlbum = new AlbumPanel(this, album);
+        pnAlbum.setBackground(DezibelColor.Background);
+        Dockable daAlbum = new DefaultDockable("pnAlbum", pnAlbum, "Album", null,
+                DockingMode.CENTER + DockingMode.SINGLE);
+        this.showAtCenter(daAlbum);
     	
     }
 
