@@ -14,6 +14,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import com.javadocking.DockingExecutor;
@@ -106,6 +107,7 @@ public class DezibelPanel extends JPanel {
     private SingleDock centerDock;
     private DockingExecutor executor;
     private boolean addLeft;
+    private JMenuItem itemCreateNews;
 
     /**
      * Constructor of the panel
@@ -282,6 +284,11 @@ public class DezibelPanel extends JPanel {
             	
             default:
                 break;
+        }
+        if(Database.getInstance().getLoggedInUser().isArtist() || 
+        		Database.getInstance().getLoggedInUser().isLabelManager()){
+        	if(itemCreateNews != null)
+        		itemCreateNews.setEnabled(true);
         }
     }
 
@@ -597,27 +604,64 @@ public class DezibelPanel extends JPanel {
             this.executor.changeDocking(bar, dockR, new Position(0));
         }
     }
-
+    
     private void createMenubar() {
         if (this.menuBar == null) {
             JMenu menuShow;
-            JMenuItem itemLogout;
             JCheckBoxMenuItem cbMenuItem;
             menuBar = new JMenuBar();
-            JMenu menuLogout = new JMenu("Ausloggen");
-
+            JMenuItem menuLogout = new JMenuItem(new ImageIcon(this.getClass().getResource("/img/logout24x24.png")));
+            menuLogout.setHorizontalAlignment(SwingConstants.CENTER);
+            menuLogout.setIconTextGap(0);
+            menuLogout.setContentAreaFilled(false);
+            
             menuBar.add(menuLogout);
             menuShow = new JMenu("Anzeige");
+            menuShow.setIcon(new ImageIcon(this.getClass().getResource("/img/view24x24.png")));
             menuBar.add(menuShow);
-            itemLogout = new JMenuItem("Ausloggen");
-            menuLogout.add(itemLogout);
-            itemLogout.addActionListener(new ActionListener() {
+            menuLogout.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
                     onLogout();
                 }
             });
-
+            
+            ImageIcon icon;
+            JButton bn;
+            JMenuItem ibn;
+            icon = new ImageIcon(this.getClass().getResource("/img/profil24x24.png"));
+            ibn = new JMenuItem("",icon);
+            ibn.setContentAreaFilled(false);
+            ibn.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					onGoTo(daProfil);
+				}
+            });
+            menuBar.add(ibn);
+            
+            icon = new ImageIcon(this.getClass().getResource("/img/search24x24.png"));
+            ibn = new JMenuItem("",icon);
+            ibn.setContentAreaFilled(false);
+            ibn.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					onGoTo(daSearch);
+				}
+            });
+            menuBar.add(ibn);
+            
+            icon = new ImageIcon(this.getClass().getResource("/img/player24x24.png"));
+            ibn = new JMenuItem("",icon);
+            ibn.setContentAreaFilled(false);
+            ibn.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					onGoTo(daPlayer);
+				}
+            });
+            menuBar.add(ibn);
+            
             cbMenuItem = new JCheckBoxMenuItem("Neuigkeiten");
             cbMenuItem.setSelected(true);
             cbMenuItem.addActionListener(new ActionListener() {
@@ -656,7 +700,7 @@ public class DezibelPanel extends JPanel {
                 }
             });
             menuShow.add(cbMenuItem);
-
+            
             JMenu menuUpload = new JMenu("Upload");
             JMenuItem itemUpload = new JMenuItem("Upload");
             menuUpload.add(itemUpload);
@@ -667,38 +711,10 @@ public class DezibelPanel extends JPanel {
                     onUpload();
                 }
             });
-
-            JMenuItem itemProfile = new JMenuItem("Profil");
-            itemProfile.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    showProfile(Database.getInstance().getLoggedInUser());
-                }
-            });
-
-            JMenuItem itemSearch = new JMenuItem("Suchen");
-            itemSearch.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onGoTo(daSearch);
-                }
-            });
-
-            JMenuItem itemPlayer = new JMenuItem("Player");
-            itemPlayer.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    onGoTo(daPlayer);
-                }
-            });
-
-            JMenu menuGoTo = new JMenu("Gehe zu..");
-            menuGoTo.add(itemSearch);
-            menuGoTo.add(itemProfile);
-            menuGoTo.add(itemPlayer);
-
+ 
             JMenu menuNews = new JMenu("Neuigkeiten");
-            JMenuItem itemCreateNews = new JMenuItem("Erstellen");
+            menuNews.setIcon(new ImageIcon(this.getClass().getResource("/img/news24x24.png")));
+            itemCreateNews  = new JMenuItem("Erstellen");
             itemCreateNews.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -710,15 +726,11 @@ public class DezibelPanel extends JPanel {
             		(Database.getInstance().getLoggedInUser().isLabelManager() == false))
             		itemCreateNews.setEnabled(false);
             
+            // Ausloggen, Upload,
             menuNews.add(itemCreateNews);
             menuBar.add(menuShow);
-            menuBar.add(menuGoTo);
             menuBar.add(menuUpload);
             menuBar.add(menuNews);
-            JButton test1 = new JButton("Test");
-            test1.setOpaque(false);
-            test1.setIcon(new ImageIcon(""));
-            menuBar.add(new JButton("Test"));
             
         }
     }
