@@ -345,4 +345,13 @@ public class Label implements Lockable {
         }
         return false;
     }
+    
+    public boolean hasArtist(User artist) {
+        for(User currentUser : artists){
+            if(currentUser.equals(artist)){
+                return true;
+            }
+        }
+        return false;
+    }
 }

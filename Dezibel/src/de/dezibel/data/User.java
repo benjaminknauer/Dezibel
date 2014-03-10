@@ -712,4 +712,13 @@ public class User implements Lockable {
         }
         return false;
     }
+    
+    public boolean hasPublisher(Label label) {
+        for(Label currentLabel : publishingLabels) {
+            if(currentLabel.equals(label)){
+                return true;
+            }
+        }
+        return false;        
+    }
 }

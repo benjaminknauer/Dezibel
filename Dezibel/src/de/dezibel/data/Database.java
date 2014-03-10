@@ -115,7 +115,7 @@ public class Database {
         data[9] = genres;
 
         // Create default administrator.
-        this.addUser("admin@dezibel.de", "admin", "admin", "e429a540296393d7b12828291172f7e9",
+        this.addUser("admin@dezibel-music.de", "admin", "admin", "e429a540296393d7b12828291172f7e9",
                 new Date(), null, null, (Math.random() < 0.5));
         this.users.get(0).promoteToAdmin();
 

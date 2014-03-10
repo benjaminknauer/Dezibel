@@ -5,7 +5,6 @@ import de.dezibel.player.Player;
 import de.dezibel.player.PlayerObserver;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -84,7 +83,7 @@ public class PlayerPanel extends DragablePanel {
 
         // Add title label
         lblTitle = new JLabel();
-        
+
         // Add seeker
         lblElapsedTime = new JLabel();
         slider = new JSlider(0, 1000, 0);
@@ -96,10 +95,10 @@ public class PlayerPanel extends DragablePanel {
         btnStop = new JButton("stop");
         btnNext = new JButton("next");
         volume = new JSlider(JSlider.VERTICAL, 0, 100, 50);
-        
+
         // Add logo
         lblCover.setIcon(new ImageIcon(this.getClass().getResource("/img/mini-logo.png")));
-        
+
         // Playlist
         mediaTableModel = new MediaTableModel();
         tablePlaylist = new JTable(mediaTableModel);
@@ -202,7 +201,11 @@ public class PlayerPanel extends DragablePanel {
                         this.setBackground(Color.WHITE);
                     }
                 }
-                this.setText(dateFormatter.format(table.getModel().getValueAt(row, column)));
+                if (table.getModel().getValueAt(row, column) == null) {
+                    this.setText("");
+                } else {
+                    this.setText(dateFormatter.format(table.getModel().getValueAt(row, column)));
+                }
                 return this;
             }
         });
@@ -301,8 +304,16 @@ public class PlayerPanel extends DragablePanel {
                     } else {
                         lblCover.setIcon(new ImageIcon(this.getClass().getResource("/img/mini-logo.png")));
                     }
-                    lblTitle.setText(newMedium.getArtist().getPseudonym() + " - "
-                            + newMedium.getTitle());
+                    if (newMedium.isLocked()) {
+                        lblTitle.setText("Medium gesperrt");
+                        lblCover.setIcon(new ImageIcon(this.getClass().getResource("/img/medium_locked.png")));
+                    } else if (newMedium.isDeleted()) {
+                        lblTitle.setText("Gelöscht: " + newMedium.getArtist().getPseudonym() + " - "
+                                + newMedium.getTitle());
+                    } else {
+                        lblTitle.setText(newMedium.getArtist().getPseudonym() + " - "
+                                + newMedium.getTitle());
+                    }
                     volume.setValue(player.getVolume());
                     mediaTableModel.setData(player.getPlaylist());
                     SwingUtilities.invokeLater(new Runnable() {
@@ -500,16 +511,15 @@ public class PlayerPanel extends DragablePanel {
         createCenterLayout();
     }
 
-	@Override
-	public void reset() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void reset() {
+        this.player.stop();
+        this.player.clearPlaylist();
+    }
 
-	@Override
-	public void refresh() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void refresh() {
+        // Nicht notwendig
+    }
 
 }

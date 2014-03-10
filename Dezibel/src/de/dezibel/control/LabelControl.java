@@ -238,6 +238,16 @@ public class LabelControl {
     public LinkedList<Application> getApplications(Label label) {
         return label.getApplications();
     }
+    
+    /**
+     * Checks if the given label is locked.
+     * 
+     * @param label label the profile belongs to
+     * @return true if the label is locked, false otherwise
+     */
+    public boolean isLocked(Label label){
+        return label.isLocked();
+    }
 
     
 }
