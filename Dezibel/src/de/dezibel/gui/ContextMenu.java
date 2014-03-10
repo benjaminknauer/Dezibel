@@ -3,6 +3,7 @@ package de.dezibel.gui;
 import de.dezibel.UpdateEntity;
 import de.dezibel.control.AdminControl;
 import de.dezibel.control.AlbumControl;
+import de.dezibel.control.ApplicationControl;
 import de.dezibel.control.PlaylistControl;
 import de.dezibel.data.Album;
 import de.dezibel.data.Application;
@@ -796,7 +797,7 @@ public class ContextMenu {
         menuItemAccept.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                a.accept();
+                new ApplicationControl().acceptApplication(a);
                 dp.refresh(UpdateEntity.APPLICATION);
             }
         });
@@ -804,7 +805,7 @@ public class ContextMenu {
         menuItemDecline.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                a.decline();
+                new ApplicationControl().declineApplication(a);
                 dp.refresh(UpdateEntity.APPLICATION);
             }
         });
