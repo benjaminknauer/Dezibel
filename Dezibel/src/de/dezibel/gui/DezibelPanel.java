@@ -37,6 +37,7 @@ import com.javadocking.visualizer.SingleMaximizer;
 import de.dezibel.UpdateEntity;
 import de.dezibel.control.NewsControl;
 import de.dezibel.control.SaveControl;
+import de.dezibel.data.Album;
 import de.dezibel.data.Database;
 import de.dezibel.data.Label;
 import de.dezibel.data.Medium;
@@ -212,6 +213,10 @@ public class DezibelPanel extends JPanel {
         sn.setBackground(DezibelColor.Background);
         this.showAtCenter(daSearch);
     }
+    
+    public void showAlbum(Album album){
+    	
+    }
 
     public void refresh(UpdateEntity ue) {
         switch (ue) {
@@ -221,9 +226,14 @@ public class DezibelPanel extends JPanel {
                     PlaylistPanel pn = (PlaylistPanel) this.centerDock.getDockable(0).getContent();
                     pn.refresh();
                 }
+                break;
             case FAVORITES:
                 pnFavorites.refresh();
-
+                break;
+                
+            case APPLICATION:
+            	pnProfil.refresh();
+            	break;
             default:
                 break;
         }
@@ -486,6 +496,12 @@ public class DezibelPanel extends JPanel {
 
             @Override
             public void dockingWillChange(DockingEvent e) {
+            	if(e.getDestinationDock() == centerDock){
+            		if(centerDock.getDockableCount() > 0){
+            			clearCenter();
+            			executor.changeDocking(daPlayer, borderDock);
+            		}
+            	}
             }
         });
     }

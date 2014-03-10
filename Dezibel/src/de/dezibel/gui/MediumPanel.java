@@ -23,16 +23,21 @@ import de.dezibel.data.Medium;
 import de.dezibel.data.User;
 
 /**
- * 
+ * A small panel, which shows the medium details
+ * Comments can be selected and the comment-text will be displayed in a
+ * separate text-area.
  * @author Pascal
  *
  */
 public class MediumPanel extends DragablePanel {
 
+	// ref. to clickable properties for displaying them in other panels.
 	private Medium currentMedium;
 	private User	artist;
 	private Label 	label;
+	private Album	album;
 	
+	// Labels for properties
 	private JLabel 	lbTitle;
     private JLabel 	lbAlbum;
     private JLabel 	lbUploadDate;
@@ -42,6 +47,7 @@ public class MediumPanel extends DragablePanel {
     private JLabel 	lbLabel;
     private JLabel lbComments;
     
+    // Labels that will be filled with the medium-properties
     private JLabel 	lbInfoTitle;
     private JLabel 	lbInfoAlbum;
     private JLabel 	lbInfoUploadDate;
@@ -65,6 +71,9 @@ public class MediumPanel extends DragablePanel {
 	}
 
 	@Override
+	/**
+	 * @see de.dezibel.gui.DragablePanel#reset()
+	 */
 	public void reset() {
 		currentMedium = null;
 		artist = null;
@@ -82,6 +91,9 @@ public class MediumPanel extends DragablePanel {
 	}
 
 	@Override
+	/**
+	 * @see de.dezibel.gui.DragablePanel#refresh()
+	 */
 	public void refresh() {
 		if(currentMedium != null)
 		{
@@ -95,15 +107,19 @@ public class MediumPanel extends DragablePanel {
 			commentsModel.clear();
 			commentDetail.setText("");
 			
-			if(currentMedium.getArtist() != null)
+			if(currentMedium.getArtist() != null){
+				artist = currentMedium.getArtist();
 				lbInfoArtist.setText(currentMedium.getArtist().getPseudonym());
+			}
 			else
 				lbInfoArtist.setText("-");
 			
 			lbInfoTitle.setText(currentMedium.getTitle());
 			
-			if(currentMedium.getAlbum() != null)
+			if(currentMedium.getAlbum() != null){
+				album = currentMedium.getAlbum();
 				lbInfoAlbum.setText(currentMedium.getAlbum().getTitle());
+			}
 			else
 				lbInfoAlbum.setText("-");
 			
@@ -112,8 +128,10 @@ public class MediumPanel extends DragablePanel {
 			else
 				lbInfoGenre.setText("-");
 			
-			if(currentMedium.getLabel() != null)
+			if(currentMedium.getLabel() != null){
+				label = currentMedium.getLabel();
 				lbInfoLabel.setText(currentMedium.getLabel().getName());
+			}
 			else
 				lbInfoLabel.setText("-");
 			
@@ -141,6 +159,9 @@ public class MediumPanel extends DragablePanel {
 	}
 
 	
+	/**
+	 * Help function for creating all components needed by this panel
+	 */
 	private void createComponents(){
 		details = new LinkedList<String>();
 		lbArtist = new JLabel("Künstler:");
@@ -186,6 +207,9 @@ public class MediumPanel extends DragablePanel {
 	    spCommentArea = new JScrollPane(commentDetail);
 	}
 	
+	/**
+	 * Help function to create the panel layout using GroupLayout
+	 */
 	private void createLayout(){
 		GroupLayout layout = new GroupLayout(this);
 		
@@ -249,7 +273,38 @@ public class MediumPanel extends DragablePanel {
 		this.setLayout(layout);
 	}
 	
+	/**
+	 * This function is called, when the user changed the selection in the commentlist.
+	 * The comment-details will be displayed in a JTextArea.
+	 */
 	private void onCommentChanged(){
 		this.commentDetail.setText(this.details.get(comments.getSelectedIndex()));
+	}
+	
+	/**
+	 * This function is called, when the user click on the artist of the
+	 * current displayed media.
+	 */
+	private void onClickUser(){
+		if(artist != null)
+			this.parent.showProfile(artist);
+	}
+	
+	/**
+	 * This function is called, when the user click on the album of the
+	 * current displayed media.
+	 */
+	private void onClickAlbum(){
+		if(album != null)
+			this.parent.showAlbum(album);
+	}
+	
+	/**
+	 * This function is called, when the user click on the label of the
+	 * current displayed media.
+	 */
+	private void onClickLabel(){
+		if(label != null)
+			this.parent.showProfile(label);
 	}
 }
