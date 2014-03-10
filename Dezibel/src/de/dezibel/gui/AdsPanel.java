@@ -42,7 +42,7 @@ public class AdsPanel extends DragablePanel {
         tableRecommendations = new JTable(tableModelRecommendations);
         JScrollPane scrollPane = new JScrollPane(tableRecommendations);
 
-        JButton btnRefresh = new JButton("Empfehlungen neu abrufen");
+        JButton btnRefresh = new JButton("stöbern");
         btnRefresh.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
