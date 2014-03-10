@@ -466,7 +466,7 @@ public class ContextMenu {
             currentPopupMenu.add(recruitForLabelMenu);
             
             for (final Label currentLabel : Database.getInstance().getLoggedInUser().getManagedLabels()) {
-                if(selectedUser.hasApplied(currentLabel))
+                if(selectedUser.hasApplied(currentLabel) || selectedUser.hasPublisher(currentLabel))
                     continue;
                 
                 JMenuItem currentLabelMenuItem = new JMenuItem(currentLabel.getName());
@@ -480,7 +480,8 @@ public class ContextMenu {
                 });
                 recruitForLabelMenu.add(currentLabelMenuItem);
             }
-            
+            if(recruitForLabelMenu.getComponentCount() < 1)
+                currentPopupMenu.remove(recruitForLabelMenu);
         }
 
         // Admin controls
@@ -548,7 +549,8 @@ public class ContextMenu {
         });
         currentPopupMenu.add(menuItemShowLabel);
         
-        if (Database.getInstance().getLoggedInUser().isArtist() && !Database.getInstance().getLoggedInUser().hasApplied(selectedLabel)) {
+        if (Database.getInstance().getLoggedInUser().isArtist() && !Database.getInstance().getLoggedInUser().hasApplied(selectedLabel) 
+                && !Database.getInstance().getLoggedInUser().hasPublisher(selectedLabel)) {
             JMenuItem menuItemApply = new JMenuItem("Als Künstler bewerben");
             menuItemApply.addActionListener(new ActionListener() {
                 
