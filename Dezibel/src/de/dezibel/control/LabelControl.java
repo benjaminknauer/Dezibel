@@ -16,7 +16,7 @@ import de.dezibel.data.User;
 import java.util.LinkedList;
 
 /**
- *
+ * Manages label functions.
  * @author Bastian, Alexander
  */
 public class LabelControl {
@@ -31,6 +31,10 @@ public class LabelControl {
         Database.getInstance().addLabel(user, name);
     }
     
+    /**
+     * Promotes the submitted user to label manager.
+     * @param user The user to promote
+     */
     public void promoteUserToLabelManager(User user) {
             user.promoteToLabelManager();
     }

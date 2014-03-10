@@ -1,12 +1,15 @@
 package de.dezibel.gui;
 
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 
 import javax.swing.table.DefaultTableModel;
+
+import de.dezibel.data.Comment;
 import de.dezibel.data.News;
 
 /**
- * 
+ * This class is used by NewsSidePanel for the News-JTable
  * @author Pascal
  *
  */
@@ -43,13 +46,13 @@ public class NewsSideTableModel extends DefaultTableModel {
 	    @Override
 	    public Object getValueAt(int row, int col) {
 	        if (data != null && row >= 0 && row < data.length) {
-	            News m = data[row];
+	            News c = data[row];
 	            switch (col) {
 	                case -1:
-	                    return m;
+	                    return c;
+	                    
 	                case 0:
-	                    return m.getTitle();
-	              
+	                    return c.getTitle();             
 	            }
 	        }
 		return null;

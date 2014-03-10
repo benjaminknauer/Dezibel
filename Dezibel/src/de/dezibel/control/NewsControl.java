@@ -10,16 +10,12 @@ import de.dezibel.data.News;
 import de.dezibel.data.User;
 
 /**
- *
+ * Controls the news functions.
  * @author Pascal
- *
  */
 public class NewsControl {
 
     private int maxNumberOfNews = 15;
-
-    public NewsControl() {
-    }
 
     /**
      * Creates a new News with the given, title and text. Creator will be the
