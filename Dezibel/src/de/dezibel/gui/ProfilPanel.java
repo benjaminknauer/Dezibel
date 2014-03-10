@@ -86,9 +86,12 @@ public class ProfilPanel extends DragablePanel {
     private JScrollPane scrManagedLabels;
     private JScrollPane scrPublishingLabels;
     private JLabel lbPlaylist;
-    private JTable tPlaylists;
-    private JTable tMedia;
-    private JTable tAlbums;
+    private JTable tFavoPlaylists;
+    private JTable tUploadPlaylists;
+    private JTable tFavoMedia;
+    private JTable tUploadMedia;
+    private JTable tFavoAlbums;
+    private JTable tUploadAlbums;
     private JLabel lbPseudonym;
     private JTable tNews;
     private JTextArea taNews;
@@ -150,7 +153,7 @@ public class ProfilPanel extends DragablePanel {
 
         if (!(currentUser.isLocked() && !(profileControler.getLoggedInUser(
         ).isAdmin()))) {
-            tabPanel.setSelectedIndex(0);
+            tabPanel.setSelectedIndex(showTabNr);
 
             taNews.setText("");
             taComments.setText("");
@@ -645,31 +648,31 @@ public class ProfilPanel extends DragablePanel {
         playlistModellFavo = new MyListsTableModel();
         lbPlaylist = new JLabel("Wiedergabe Listen");
         lbPlaylist.setHorizontalAlignment(JLabel.CENTER);
-        tPlaylists = new JTable(playlistModellFavo);
-        tPlaylists.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tFavoPlaylists = new JTable(playlistModellFavo);
+        tFavoPlaylists.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        JScrollPane spPlaylists = new JScrollPane(tPlaylists);
-        spPlaylists.getViewport().setView(tPlaylists);
+        JScrollPane spPlaylists = new JScrollPane(tFavoPlaylists);
+        spPlaylists.getViewport().setView(tFavoPlaylists);
         pnFavorites.add(spPlaylists);
 
         mediaModellFavo = new MediaTableModel();
         lbMediaFavo = new JLabel("Media");
         lbMediaFavo.setHorizontalAlignment(JLabel.CENTER);
-        tMedia = new JTable(mediaModellFavo);
-        tMedia.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tFavoMedia = new JTable(mediaModellFavo);
+        tFavoMedia.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        JScrollPane spMedia = new JScrollPane(tMedia);
-        spMedia.getViewport().setView(tMedia);
+        JScrollPane spMedia = new JScrollPane(tFavoMedia);
+        spMedia.getViewport().setView(tFavoMedia);
         pnFavorites.add(spMedia);
 
         albumModellFavo = new AlbumTableModel();
         lbAlbumsFavo = new JLabel("Alben");
         lbAlbumsFavo.setHorizontalAlignment(JLabel.CENTER);
-        tAlbums = new JTable(albumModellFavo);
-        tAlbums.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tFavoAlbums = new JTable(albumModellFavo);
+        tFavoAlbums.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         JScrollPane spAlbums = new JScrollPane();
-        spAlbums.getViewport().setView(tAlbums);
+        spAlbums.getViewport().setView(tFavoAlbums);
         pnFavorites.add(spAlbums);
 
         GroupLayout layout = new GroupLayout(pnFavorites);
@@ -699,7 +702,7 @@ public class ProfilPanel extends DragablePanel {
         layout.setAutoCreateGaps(true);
         pnFavorites.setLayout(layout);
 
-        tPlaylists.addMouseListener(new MouseAdapter() {
+        tFavoPlaylists.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
@@ -716,12 +719,13 @@ public class ProfilPanel extends DragablePanel {
 
             private void showPopup(MouseEvent me) {
                 ContextMenu contextMenu = new ContextMenu(parent);
-                currentPopupMenu = contextMenu.getContextMenu(tPlaylists, me);
+                currentPopupMenu = contextMenu.getContextMenu(tFavoPlaylists, me);
                 currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
+                showTabNr = 2;
             }
         });
 
-        tMedia.addMouseListener(new MouseAdapter() {
+        tFavoMedia.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
@@ -738,7 +742,31 @@ public class ProfilPanel extends DragablePanel {
 
             private void showPopup(MouseEvent me) {
                 ContextMenu contextMenu = new ContextMenu(parent);
-                currentPopupMenu = contextMenu.getContextMenu(tMedia, me);
+                currentPopupMenu = contextMenu.getContextMenu(tFavoMedia, me);
+                currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
+                showTabNr = 2;
+            }
+
+        });
+        
+        tFavoAlbums.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            private void showPopup(MouseEvent me) {
+                ContextMenu contextMenu = new ContextMenu(parent);
+                currentPopupMenu = contextMenu.getContextMenu(tFavoAlbums, me);
                 currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
                 showTabNr = 2;
             }
@@ -752,31 +780,31 @@ public class ProfilPanel extends DragablePanel {
         lbPlaylist = new JLabel("Wiedergabe Listen");
         lbPlaylist.setHorizontalAlignment(JLabel.CENTER);
         playlistModellUpload = new MyListsTableModel();
-        tPlaylists = new JTable(playlistModellUpload);
-        tPlaylists.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tUploadPlaylists = new JTable(playlistModellUpload);
+        tUploadPlaylists.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        JScrollPane spPlaylists = new JScrollPane(tPlaylists);
-        spPlaylists.getViewport().setView(tPlaylists);
+        JScrollPane spPlaylists = new JScrollPane(tUploadPlaylists);
+        spPlaylists.getViewport().setView(tUploadPlaylists);
         pnUploads.add(spPlaylists);
-        // pnUploads.add(tPlaylists);
+        // pnUploads.add(tUploadPlaylists);
 
         mediaModellUpload = new MediaTableModel();
-        tMedia = new JTable(mediaModellUpload);
-        tMedia.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tUploadMedia = new JTable(mediaModellUpload);
+        tUploadMedia.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         lbMediaUpload = new JLabel("Media");
         lbMediaUpload.setHorizontalAlignment(JLabel.CENTER);
 
-        spMedia = new JScrollPane(tMedia);
-        spMedia.getViewport().setView(tMedia);
+        spMedia = new JScrollPane(tUploadMedia);
+        spMedia.getViewport().setView(tUploadMedia);
         pnUploads.add(spMedia);
 
         albumModellUpload = new AlbumTableModel();
-        tAlbums = new JTable(albumModellUpload);
-        tAlbums.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tUploadAlbums = new JTable(albumModellUpload);
+        tUploadAlbums.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         spAlbums = new JScrollPane();
         lbAlbumsUpload = new JLabel("Alben");
         lbAlbumsUpload.setHorizontalAlignment(JLabel.CENTER);
-        spAlbums.getViewport().setView(tAlbums);
+        spAlbums.getViewport().setView(tUploadAlbums);
         pnUploads.add(spAlbums);
 
         GroupLayout layout = new GroupLayout(pnUploads);
@@ -806,6 +834,78 @@ public class ProfilPanel extends DragablePanel {
         layout.setAutoCreateGaps(true);
         pnUploads.setLayout(layout);
 
+        
+        tUploadPlaylists.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            private void showPopup(MouseEvent me) {
+                ContextMenu contextMenu = new ContextMenu(parent);
+                currentPopupMenu = contextMenu.getContextMenu(tUploadPlaylists, me);
+                currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
+                showTabNr = 1;
+            }
+
+        });
+        
+        tUploadMedia.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            private void showPopup(MouseEvent me) {
+                ContextMenu contextMenu = new ContextMenu(parent);
+                currentPopupMenu = contextMenu.getContextMenu(tUploadMedia, me);
+                currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
+                showTabNr = 1;
+            }
+
+        });
+        
+        tUploadAlbums.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+                if (me.isPopupTrigger()) {
+                    showPopup(me);
+                }
+            }
+
+            private void showPopup(MouseEvent me) {
+                ContextMenu contextMenu = new ContextMenu(parent);
+                currentPopupMenu = contextMenu.getContextMenu(tUploadAlbums, me);
+                currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
+                showTabNr = 1;
+            }
+
+        });
     }
 
     private void createLabelsComponents() {
