@@ -177,8 +177,8 @@ public class DezibelPanel extends JPanel {
         this.createMenubar();
         frame.setJMenuBar(menuBar);
         this.showSidebars();
-        //this.showAtCenter(daPlayer);
         this.showAtCenter(daSearch);
+        this.executor.changeDocking(daPlayer, borderDock);
         ((ProfilPanel) daProfil.getContent()).setUser(Database.getInstance()
                 .getLoggedInUser());
     }
@@ -202,7 +202,7 @@ public class DezibelPanel extends JPanel {
     }
     
     public void showProfile(Label label) {
-        LabelProfilPanel lpn = (LabelProfilPanel) pnLabelProfil;
+    	LabelProfilPanel lpn = (LabelProfilPanel) pnLabelProfil;
         lpn.setUser(label);
         lpn.setBackground(DezibelColor.Background);
         if(new LabelControl().isLocked(((LabelProfilPanel
@@ -215,7 +215,7 @@ public class DezibelPanel extends JPanel {
               
         }
         else {
-            this.showAtCenter(daProfil);
+            this.showAtCenter(daLabelProfil);
         }
     }
 
@@ -253,10 +253,12 @@ public class DezibelPanel extends JPanel {
                 break;
             case FAVORITES:
                 pnFavorites.refresh();
+                pnProfil.refresh();
                 break;
                 
             case APPLICATION:
             	pnProfil.refresh();
+            	pnLabelProfil.refresh();
             	break;
             default:
                 break;
