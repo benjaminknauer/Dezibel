@@ -117,6 +117,7 @@ public class ProfilPanel extends DragablePanel {
     private JTextArea taComments;
     
     private int showTabNr;
+    private boolean isApplicationVisible;
 
     /**
      * Constructor of the ProfilPanel class.
@@ -244,6 +245,13 @@ public class ProfilPanel extends DragablePanel {
                 isNewsVisible = false;
             } else if (!(isNewsVisible)) {
                 tabPanel.addTab("News", null, pnNews);
+            }
+            
+             if (!(currentUser.equals(profileControler.getLoggedInUser()))) {
+                tabPanel.remove(pnApplications);
+                isApplicationVisible = false;
+            } else if (!(isApplicationVisible)) {
+                tabPanel.addTab("Bewerbungen", null, pnApplications);
             }
 
             if (!(currentUser.isArtist())) {
