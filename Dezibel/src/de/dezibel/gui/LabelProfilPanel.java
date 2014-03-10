@@ -113,11 +113,6 @@ public class LabelProfilPanel extends DragablePanel {
     public void refresh() {
 
         if (currentLabel.isLocked() && !(profileControler.getLoggedInUser().isAdmin())) {
-            JOptionPane.showMessageDialog(this, "Das Label, dessen Profil Sie"
-                    + " aufzurufen versuchen ist temporär gesperrt. Das gewünschte"
-                    + "Profil kann daher leider zurzeit nicht aufgerufen werden!");
-            parent.showSearch();
-        } else {
             tabPanel.setSelectedIndex(0);
 
             tfName.setText(profileControler.getName(currentLabel));
@@ -526,7 +521,7 @@ public class LabelProfilPanel extends DragablePanel {
                 taApplications.setText(a.getText());
             }
         });
-        
+
         tApplications.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent me) {
