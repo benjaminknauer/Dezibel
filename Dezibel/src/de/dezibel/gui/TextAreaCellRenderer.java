@@ -26,7 +26,7 @@ public class TextAreaCellRenderer implements TableCellRenderer {
 
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
             int row, int column) {
-        if (table.getSelectedRow() == row) {
+        if (table.getSelectedRow() == row && table.isFocusable()) {
             textarea.setBackground(defaults.getColor("List.selectionBackground"));
             textarea.setForeground(defaults.getColor("List.selectionForeground"));
         } else {

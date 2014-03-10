@@ -28,12 +28,14 @@ import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
+import javax.swing.table.DefaultTableCellRenderer;
 
 public class PlaylistPanel extends DragablePanel {
 
     JLabel lbTitle;
     JLabel lbCreator;
     JLabel lbComments;
+
     JTable tblPlaylistMedia;
     JScrollPane spPlaylistMedia;
     JTable tblPlaylistComments;
@@ -84,11 +86,16 @@ public class PlaylistPanel extends DragablePanel {
         });
         TextAreaCellRenderer tacr = new TextAreaCellRenderer();
         tblPlaylistComments.getColumnModel().getColumn(0).setCellRenderer(tacr);
-        //resizeCommentRows();
 
-        //tblPlaylistComments.setRowHeight(50);
+        tblPlaylistComments.setFocusable(false);
+        tblPlaylistComments.setRowSelectionAllowed(false);
         spPlaylistComments = new JScrollPane(tblPlaylistComments);
-
+        
+        DefaultTableCellRenderer topRenderer = new DefaultTableCellRenderer();
+        topRenderer.setVerticalAlignment(javax.swing.JLabel.TOP);
+        tblPlaylistComments.getColumnModel().getColumn(1).setCellRenderer(topRenderer);
+        tblPlaylistComments.getColumnModel().getColumn(2).setCellRenderer(topRenderer);
+        tblPlaylistComments.getColumnModel().getColumn(0).setMinWidth((int) (parent.getWidth() * 0.5) );
         tblPlaylistMedia.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -190,7 +197,7 @@ public class PlaylistPanel extends DragablePanel {
                     lines += fm.stringWidth(s) / columnWidth;
                 }
             }
-            tblPlaylistComments.setRowHeight(row, lines * fm.getHeight());
+            tblPlaylistComments.setRowHeight(row, lines * fm.getHeight() + 20);
         }
     }
 }
