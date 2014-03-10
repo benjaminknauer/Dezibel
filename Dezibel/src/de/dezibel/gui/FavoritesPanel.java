@@ -16,6 +16,8 @@ import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -54,24 +56,13 @@ public class FavoritesPanel extends DragablePanel {
         ftm = new FavoritesTableModel();
         tblFavorites = new JTable(ftm);
         scrollPane = new JScrollPane(tblFavorites);
-
-        tblFavorites.addFocusListener(new FocusAdapter() {
+        
+        tblFavorites.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
             @Override
-            public void focusGained(FocusEvent e) {
-                parent.refresh(UpdateEntity.NEWS);
-                parent.refresh(UpdateEntity.PLAYLIST);
-                parent.refresh(UpdateEntity.RECOMMENDATIONS);
-            }
-
-        });
-
-        tblFavorites.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
-
-                    if (ftm.getValueAt(tblFavorites.getSelectedRow(), -1) instanceof User) {
+            public void valueChanged(ListSelectionEvent e) {
+                if(tblFavorites.getSelectedRow() != -1){
+                if (ftm.getValueAt(tblFavorites.getSelectedRow(), -1) instanceof User) {
                         User u = (User) ftm.getValueAt(
                                 tblFavorites.getSelectedRow(), -1);
                         parent.showProfile(u);
@@ -82,6 +73,19 @@ public class FavoritesPanel extends DragablePanel {
                     }
                 }
             }
+
+        });
+
+        tblFavorites.addFocusListener(new FocusAdapter() {
+            
+            @Override
+            public void focusLost(FocusEvent e){
+                tblFavorites.clearSelection();
+            }
+            
+        });
+
+        tblFavorites.addMouseListener(new MouseAdapter() {
 
             @Override
             public void mousePressed(MouseEvent me) {
@@ -102,6 +106,7 @@ public class FavoritesPanel extends DragablePanel {
                 currentPopupMenu = contextMenu.getContextMenu(tblFavorites, me);
                 currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
             }
+
             
         });
 

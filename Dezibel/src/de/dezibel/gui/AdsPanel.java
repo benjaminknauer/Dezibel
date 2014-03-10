@@ -2,6 +2,7 @@ package de.dezibel.gui;
 
 import de.dezibel.UpdateEntity;
 import de.dezibel.control.AdsControl;
+import de.dezibel.data.Label;
 import de.dezibel.data.Medium;
 import de.dezibel.player.Player;
 import java.awt.Dimension;
@@ -18,6 +19,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  * Shows recommendations.
@@ -60,15 +63,25 @@ public class AdsPanel extends DragablePanel {
         btnRefresh.setAlignmentX(CENTER_ALIGNMENT);
         this.add(btnRefresh);
         
+        tableRecommendations.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if(tableRecommendations.getSelectedRow() != -1){
+                Medium m = (Medium) tableModelRecommendations.getValueAt(
+                                tableRecommendations.getSelectedRow(), -1);
+                        parent.showMedium(m);
+                }
+            }
+        });
+        
         tableRecommendations.addFocusListener(new FocusAdapter() {
 
             @Override
-            public void focusGained(FocusEvent e) {
-                parent.refresh(UpdateEntity.NEWS);
-                parent.refresh(UpdateEntity.FAVORITES);
-                parent.refresh(UpdateEntity.PLAYLIST);
+            public void focusLost(FocusEvent e) {
+                tableRecommendations.clearSelection();
+                
             }
-
         });
 
         tableRecommendations.addMouseListener(new MouseAdapter() {

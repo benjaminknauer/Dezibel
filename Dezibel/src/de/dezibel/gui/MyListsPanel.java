@@ -16,6 +16,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.event.FocusAdapter;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -58,24 +60,27 @@ public class MyListsPanel extends DragablePanel {
         tblPlaylists = new JTable(mltm);
         scrollPane = new JScrollPane(tblPlaylists);
         
-        tblPlaylists.addFocusListener(new FocusAdapter() {
+        tblPlaylists.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
             @Override
-            public void focusGained(FocusEvent e) {
-                dp.refresh(UpdateEntity.NEWS);
-                dp.refresh(UpdateEntity.FAVORITES);
-                dp.refresh(UpdateEntity.RECOMMENDATIONS);
-            }
-
-        });
-
-        tblPlaylists.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
+            public void valueChanged(ListSelectionEvent e) {
+                if(tblPlaylists.getSelectedRow() != -1){
                 Playlist p = (Playlist) mltm.getValueAt(
                         tblPlaylists.getSelectedRow(), -1);
                 dp.showPlaylist(p);
             }
+            }
+        });
+        
+        tblPlaylists.addFocusListener(new FocusAdapter() {
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                tblPlaylists.clearSelection();
+            }
+        });
+
+        tblPlaylists.addMouseListener(new MouseAdapter() {
 
             @Override
             public void mousePressed(MouseEvent me) {
@@ -98,8 +103,6 @@ public class MyListsPanel extends DragablePanel {
             }
         });
 
-        scrollPane.getViewport().setBackground(dp.getBackground());
-        tblPlaylists.setShowGrid(false);
 
 
     }

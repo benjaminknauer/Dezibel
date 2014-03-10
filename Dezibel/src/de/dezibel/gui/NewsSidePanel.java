@@ -12,10 +12,13 @@ import de.dezibel.control.NewsControl;
 import de.dezibel.data.News;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
- * Panel for displaying the 15 latest news from favorised 
- * users/labels in the sidebar.
+ * Panel for displaying the 15 latest news from favorised users/labels in the
+ * sidebar.
+ *
  * @author Pascal
  */
 public class NewsSidePanel extends DragablePanel {
@@ -25,10 +28,11 @@ public class NewsSidePanel extends DragablePanel {
     private JTable tblNews;
     private JScrollPane spNews;
     private NewsSideTableModel model;
-    
+
     /**
-     * Creates the panel with its components.
-     * Background-Color is set to <code>DezibelColor.Panelbackground</code>
+     * Creates the panel with its components. Background-Color is set to
+     * <code>DezibelColor.Panelbackground</code>
+     *
      * @param parent
      */
     public NewsSidePanel(DezibelPanel parent) {
@@ -38,7 +42,7 @@ public class NewsSidePanel extends DragablePanel {
         this.createLayout();
         this.setBackground(DezibelColor.PanelBackground);
     }
-    
+
     /**
      * Help function to create all components
      */
@@ -50,35 +54,32 @@ public class NewsSidePanel extends DragablePanel {
         spNews.setViewportView(tblNews);
 
         spNews.setBackground(DezibelColor.PanelBackground);
-        
-        tblNews.addFocusListener(new FocusAdapter() {
 
+        tblNews.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
-            public void focusGained(FocusEvent e) {
-                parent.refresh(UpdateEntity.PLAYLIST);
-                parent.refresh(UpdateEntity.FAVORITES);
-                parent.refresh(UpdateEntity.RECOMMENDATIONS);
-            }
-
-        });
-        
-        tblNews.addMouseListener(new MouseAdapter() {
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
- 
-                if (e.getClickCount() == 2) {
-                    News n = (News) model.getValueAt(
-                            tblNews.getSelectedRow(), -1);
-                    if (n != null) {
-                        onDoubleClick(n);
-                    }
+            public void valueChanged(ListSelectionEvent e) {
+                if(tblNews.getSelectedRow() != -1){
+                News n = (News) model.getValueAt(
+                        tblNews.getSelectedRow(), -1);
+                if (n != null) {
+                    onClick(n);
                 }
-
             }
+            }
+        });
+
+        tblNews.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e){
+                tblNews.clearSelection();
+            }
+        });
+
+        tblNews.addMouseListener(new MouseAdapter() {
+            //TODO Rechtsklick??
         });
     }
-    
+
     /**
      * Help function to create the layout
      */
@@ -92,14 +93,16 @@ public class NewsSidePanel extends DragablePanel {
     }
 
     /**
-     * This function is called, if the user clicks on a news.
-     * The function <code>showNews()</code> is called from <code>DezibelPanel</code>
+     * This function is called, if the user clicks on a news. The function
+     * <code>showNews()</code> is called from
+     * <code>DezibelPanel</code>
+     *
      * @param n The selected news in the list
      */
-    private void onDoubleClick(News n) {
+    private void onClick(News n) {
         this.parent.showNews(n);
     }
-    
+
     @Override
     /**
      * Clears all news in the current list.
@@ -112,7 +115,7 @@ public class NewsSidePanel extends DragablePanel {
             i--;
         }
     }
-    
+
     @Override
     /**
      * Refresh all user-information, displayed on the panel See
@@ -124,24 +127,20 @@ public class NewsSidePanel extends DragablePanel {
         model.setData(controller.searchForNews());
         this.tblNews.setModel(model);
     }
-    
+
     @Override
     public void onTopBottom() {
-
     }
-    
+
     @Override
     public void onLeftRight() {
-
     }
-    
+
     @Override
     public void onCenter() {
     }
-    
+
     @Override
     public void onExternalized() {
-
     }
-
 }
