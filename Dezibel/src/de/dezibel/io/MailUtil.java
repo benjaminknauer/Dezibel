@@ -12,12 +12,14 @@ import javax.mail.internet.MimeMessage;
 
 /**
  * Utilityclass for sending emails.
+ *
  * @author Richard
  */
 public abstract class MailUtil {
 
     /**
-     * Send a mail with the given parameters.
+     * Send a mail with the given parameters. Starts a new thread so other
+     * threads will not be blocked.
      *
      * @param subject The subject of the mail
      * @param text The text to send
@@ -27,37 +29,42 @@ public abstract class MailUtil {
      * ErrorCode.SUCCESS</p> if there are no errors. Otherwise a fitting
      * ErrorCodde will be returned.
      */
-    public static ErrorCode sendMail(String subject, String text, String recipient) {
-        try {
-            String host = "smtp.strato.de";
-            int port = 465;
-            String user = "info@dezibel-music.de";
-            String pass = "dezibel2014";
-
-            Properties props = new Properties();
-            props.put("mail.smtp.auth", "true");
-            props.put("mail.smtp.socketFactory.port", "465");
-            props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-
-            Session session = Session.getDefaultInstance(props);
-            Transport transport = session.getTransport("smtp");
-            transport.connect(host, port, user, pass);
-
-            Address[] addresses = InternetAddress.parse(recipient);
-            Message message=new MimeMessage(session);
-            message.setFrom(new InternetAddress(user));
-            message.setRecipients(Message.RecipientType.TO, addresses);
-            message.setSubject(subject);
-            message.setText(text);
-            
-            transport.sendMessage(message, addresses);
-            transport.close();
-            
-            return ErrorCode.SUCCESS;
-        } catch (MessagingException ex) {
-            ex.printStackTrace();
+    public static ErrorCode sendMail(final String subject, final String text, final String recipient) {
+        if (!recipient.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")) {
             return ErrorCode.MAILING_ERROR;
         }
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    String host = "smtp.strato.de";
+                    int port = 465;
+                    String user = "info@dezibel-music.de";
+                    String pass = "dezibel2014";
+
+                    Properties props = new Properties();
+                    props.put("mail.smtp.auth", "true");
+                    props.put("mail.smtp.socketFactory.port", "465");
+                    props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+
+                    Session session = Session.getDefaultInstance(props);
+                    Transport transport = session.getTransport("smtp");
+                    transport.connect(host, port, user, pass);
+
+                    Address[] addresses = InternetAddress.parse(recipient);
+                    Message message = new MimeMessage(session);
+                    message.setFrom(new InternetAddress(user));
+                    message.setRecipients(Message.RecipientType.TO, addresses);
+                    message.setSubject(subject);
+                    message.setText(text);
+
+                    transport.sendMessage(message, addresses);
+                    transport.close();
+                } catch (MessagingException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }).start();
+        return ErrorCode.SUCCESS;
     }
 
 }
