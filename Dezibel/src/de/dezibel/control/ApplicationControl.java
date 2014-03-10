@@ -22,6 +22,12 @@ public class ApplicationControl {
     }
     
     public void createApplication(boolean applicationFromArtist, String text, User artist, Label label){
+        // A label-manager's application does not need to be accepted.
+        if(label.getLabelManagers().contains(artist)){
+            artist.addArtistLabel(label);
+            label.addArtist(artist);
+            return;
+        }
         Database.getInstance().addApplication(applicationFromArtist, text, artist, label);
     }
     
