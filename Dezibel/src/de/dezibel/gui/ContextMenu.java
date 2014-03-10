@@ -783,6 +783,7 @@ public class ContextMenu {
         currentPopupMenu = new JPopupMenu();
         final Application a = (Application) currentTableModel.getValueAt(
                 currentTable.getSelectedRow(), -1);
+        
         JMenuItem menuItemAccept = new JMenuItem("Akzeptieren");
         JMenuItem menuItemDecline = new JMenuItem("Ablehnen");
         menuItemAccept.addActionListener(new ActionListener() {
