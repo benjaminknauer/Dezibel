@@ -5,7 +5,6 @@ import de.dezibel.player.Player;
 import de.dezibel.player.PlayerObserver;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -305,8 +304,16 @@ public class PlayerPanel extends DragablePanel {
                     } else {
                         lblCover.setIcon(new ImageIcon(this.getClass().getResource("/img/mini-logo.png")));
                     }
-                    lblTitle.setText(newMedium.getArtist().getPseudonym() + " - "
-                            + newMedium.getTitle());
+                    if (newMedium.isLocked()) {
+                        lblTitle.setText("Medium gesperrt");
+                        lblCover.setIcon(new ImageIcon(this.getClass().getResource("/img/medium_locked.png")));
+                    } else if (newMedium.isDeleted()) {
+                        lblTitle.setText("Gelöscht: " + newMedium.getArtist().getPseudonym() + " - "
+                                + newMedium.getTitle());
+                    } else {
+                        lblTitle.setText(newMedium.getArtist().getPseudonym() + " - "
+                                + newMedium.getTitle());
+                    }
                     volume.setValue(player.getVolume());
                     mediaTableModel.setData(player.getPlaylist());
                     SwingUtilities.invokeLater(new Runnable() {
@@ -506,7 +513,7 @@ public class PlayerPanel extends DragablePanel {
 
     @Override
     public void reset() {
-	this.player.stop();
+        this.player.stop();
         this.player.clearPlaylist();
     }
 
