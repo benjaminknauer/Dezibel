@@ -615,7 +615,7 @@ public class DezibelPanel extends JPanel {
             JMenu menuShow;
             JCheckBoxMenuItem cbMenuItem;
             menuBar = new JMenuBar();
-            JMenuItem menuLogout = new JMenuItem(new ImageIcon(this.getClass().getResource("/img/logout24x24.png")));
+            JMenuItem menuLogout = new JMenuItem("Logout",new ImageIcon(this.getClass().getResource("/img/logout24x24.png")));
             menuLogout.setHorizontalAlignment(SwingConstants.CENTER);
             menuLogout.setIconTextGap(0);
             menuLogout.setContentAreaFilled(false);
@@ -635,7 +635,7 @@ public class DezibelPanel extends JPanel {
             JButton bn;
             JMenuItem ibn;
             icon = new ImageIcon(this.getClass().getResource("/img/profil24x24.png"));
-            ibn = new JMenuItem("",icon);
+            ibn = new JMenuItem("Profil",icon);
             ibn.setContentAreaFilled(false);
             ibn.addActionListener(new ActionListener(){
 				@Override
@@ -646,7 +646,7 @@ public class DezibelPanel extends JPanel {
             menuBar.add(ibn);
             
             icon = new ImageIcon(this.getClass().getResource("/img/search24x24.png"));
-            ibn = new JMenuItem("",icon);
+            ibn = new JMenuItem("Suche",icon);
             ibn.setContentAreaFilled(false);
             ibn.addActionListener(new ActionListener(){
 				@Override
@@ -657,7 +657,7 @@ public class DezibelPanel extends JPanel {
             menuBar.add(ibn);
             
             icon = new ImageIcon(this.getClass().getResource("/img/player24x24.png"));
-            ibn = new JMenuItem("",icon);
+            ibn = new JMenuItem("Player",icon);
             ibn.setContentAreaFilled(false);
             ibn.addActionListener(new ActionListener(){
 				@Override
