@@ -9,6 +9,7 @@ public enum ErrorCode {
     LABEL_NAME_DUPLICATE,
     NO_GENRE_SET,
     MAILING_ERROR,
-    USER_IS_NOT_ARTIST
+    USER_IS_NOT_ARTIST,
+    NEWS_CREATION_ERROR
     
 }
