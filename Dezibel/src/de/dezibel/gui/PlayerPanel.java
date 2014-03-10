@@ -84,7 +84,7 @@ public class PlayerPanel extends DragablePanel {
 
         // Add title label
         lblTitle = new JLabel();
-        
+
         // Add seeker
         lblElapsedTime = new JLabel();
         slider = new JSlider(0, 1000, 0);
@@ -96,10 +96,10 @@ public class PlayerPanel extends DragablePanel {
         btnStop = new JButton("stop");
         btnNext = new JButton("next");
         volume = new JSlider(JSlider.VERTICAL, 0, 100, 50);
-        
+
         // Add logo
         lblCover.setIcon(new ImageIcon(this.getClass().getResource("/img/mini-logo.png")));
-        
+
         // Playlist
         mediaTableModel = new MediaTableModel();
         tablePlaylist = new JTable(mediaTableModel);
@@ -202,7 +202,11 @@ public class PlayerPanel extends DragablePanel {
                         this.setBackground(Color.WHITE);
                     }
                 }
-                this.setText(dateFormatter.format(table.getModel().getValueAt(row, column)));
+                if (table.getModel().getValueAt(row, column) == null) {
+                    this.setText("");
+                } else {
+                    this.setText(dateFormatter.format(table.getModel().getValueAt(row, column)));
+                }
                 return this;
             }
         });
@@ -500,16 +504,15 @@ public class PlayerPanel extends DragablePanel {
         createCenterLayout();
     }
 
-	@Override
-	public void reset() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void reset() {
+	this.player.stop();
+        this.player.clearPlaylist();
+    }
 
-	@Override
-	public void refresh() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void refresh() {
+        // Nicht notwendig
+    }
 
 }
