@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -11,6 +13,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
 import com.javadocking.DockingExecutor;
@@ -712,6 +715,11 @@ public class DezibelPanel extends JPanel {
             menuBar.add(menuGoTo);
             menuBar.add(menuUpload);
             menuBar.add(menuNews);
+            JButton test1 = new JButton("Test");
+            test1.setOpaque(false);
+            test1.setIcon(new ImageIcon(""));
+            menuBar.add(new JButton("Test"));
+            
         }
     }
 
