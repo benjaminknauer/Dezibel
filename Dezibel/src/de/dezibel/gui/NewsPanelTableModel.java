@@ -6,27 +6,84 @@
 
 package de.dezibel.gui;
 
+import de.dezibel.data.Label;
+import de.dezibel.data.News;
+import de.dezibel.data.User;
+import java.util.LinkedList;
 import javax.swing.GroupLayout;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Tristan
+ * @author Aris, Tristan
  */
 
-public class NewsPanelTableModel extends DragablePanel {
+public class NewsPanelTableModel extends DefaultTableModel {
+    
+    private String[] headlines = new String[]{"Title","Author","CreationDate","Text"};
+    private Class<?>[] columnTypes = new Class<?>[]{String.class};
+    private News[] dataNews;
 
-    public NewsPanelTableModel(DezibelPanel parent) {
-        super(parent);
+    @Override
+    public int getColumnCount() {
+        return headlines.length;
     }
 
     @Override
-    public void reset() {
+    public Class<?> getColumnClass(int columnIndex) {
+        return columnTypes[columnIndex];
     }
 
     @Override
-    public void refresh() {
+    public String getColumnName(int columnIndex) {
+        return headlines[columnIndex];
     }
-    
-    
-    
+
+    @Override
+    public int getRowCount() {
+        if (dataNews == null) {
+            return 0;
+        } else if(dataNews == null){
+                return dataNews.length;
+        }
+        return dataNews.length;
+    }
+
+    @Override
+    public Object getValueAt(int row, int col) {
+        if (dataNews != null && row >= 0 && row < dataNews.length) {
+            News n = dataNews[row];
+            switch (col) {
+                case -1:
+                    return n;
+                case 0:
+                    return n.getTitle();
+            }
+        }        
+        return null;
+    }
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return false;
+    }
+
+    /**
+     * Sets the data of this model.
+     *
+     * @param data The data to display
+     */
+    public void setDataNews(LinkedList<User> data) {
+        if (data == null) {
+            this.dataNews = null;
+        } else {
+            this.dataNews = new News[data.size()];
+            data.toArray(this.dataNews);
+        }
+        fireTableDataChanged();
+    }
+
+    public void setHeader(String[] headlines) {
+        this.headlines = headlines;
+    }
 }

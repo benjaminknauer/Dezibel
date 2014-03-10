@@ -161,12 +161,14 @@ public class ProfilPanel extends DragablePanel {
         return this.currentUser;
     }
 
+    @Override
     public void refresh() {
 
         if (!(currentUser.isLocked() && !(profileControler.getLoggedInUser(
         ).isAdmin()))) {
+            
             tabPanel.setSelectedIndex(showTabNr);
-
+            
             taNews.setText("");
             taComments.setText("");
 

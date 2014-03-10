@@ -33,6 +33,7 @@ public class Medium implements Commentable, Lockable {
     private boolean addingPL;
     private boolean removingPL;
     private boolean settingAlbum;
+    private boolean settingGenre;
     private String lockText;
     private final HashMap<Integer, Rating> ratingList;
     private final LinkedList<Comment> commentList;
@@ -52,6 +53,7 @@ public class Medium implements Commentable, Lockable {
         this.ratingList = new HashMap<>();
         this.commentList = new LinkedList<>();
         this.playlistList = new LinkedList<>();
+        this.setGenre(Database.getInstance().getTopGenre());
 
         if (path != null && !path.isEmpty()) {
             this.path = path;
@@ -345,12 +347,36 @@ public class Medium implements Commentable, Lockable {
     public Genre getGenre() {
         return genre;
     }
+    
+    public void removeGenre() {
+        if(settingGenre)
+            return;
+        settingGenre = true;
+        this.genre.removeMedium(this);
+        this.genre = Database.getInstance().getTopGenre();
+        settingGenre = false;
+    }
 
     public void setGenre(Genre genre) {
+        if(settingGenre)
+            return;
+        settingGenre = true;
+        
+        if(genre == null) {
+            genre = Database.getInstance().getTopGenre();
+        }
+        
+        if(this.genre != null && this.genre.getMedia().contains(this)){
+            this.genre.removeMedium(this);
+        }
+        
         this.genre = genre;
+        
         if (!genre.getMedia().contains(this)) {
             genre.addMedium(this);
         }
+        
+        settingGenre = false;
     }
 
     public Label getLabel() {
