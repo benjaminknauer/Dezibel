@@ -1,17 +1,16 @@
 package de.dezibel.gui;
 
 import de.dezibel.UpdateEntity;
-import de.dezibel.control.PlaylistControl;
 import de.dezibel.data.Database;
 import de.dezibel.data.Medium;
 import de.dezibel.data.Playlist;
 import de.dezibel.player.Player;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.FontMetrics;
 
 /**
+ * Class for the Playlist Panel. Shows all information and media about a certain
+ * playlist in the center of dezibelpanel.
  *
  * @author Benny
  */
@@ -20,7 +19,6 @@ import javax.swing.JTable;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Point;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -28,8 +26,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import static java.awt.image.ImageObserver.WIDTH;
-import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
@@ -214,7 +210,6 @@ public class PlaylistPanel extends DragablePanel {
         gbc.weighty = 0.3;
         this.add(spPlaylistComments, gbc);
 
-
         int minWidth = (int) Math.max(lbCreator.getPreferredSize()
                 .getWidth(), lbTitle.getPreferredSize().getWidth());
         lbCreator.setMinimumSize(new Dimension(minWidth, 32));
@@ -256,7 +251,7 @@ public class PlaylistPanel extends DragablePanel {
     private void resizeCommentRows() {
         JTextArea textarea = (JTextArea) tblPlaylistComments.getColumnModel()
                 .getColumn(0).getCellRenderer().getTableCellRendererComponent(
-                tblPlaylistComments, null, false, false, 0, 0);
+                        tblPlaylistComments, null, false, false, 0, 0);
         FontMetrics fm = textarea.getFontMetrics(textarea.getFont());
         int columnWidth = tblPlaylistComments.getColumnModel().getColumn(0).getWidth();
         for (int row = 0; row < tblPlaylistComments.getRowCount(); row++) {

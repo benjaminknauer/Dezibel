@@ -4,7 +4,6 @@ import de.dezibel.UpdateEntity;
 import de.dezibel.control.LabelControl;
 import de.dezibel.control.ProfileControl;
 import de.dezibel.control.AdminControl;
-import de.dezibel.control.HashGenerator;
 import de.dezibel.data.Album;
 import de.dezibel.data.Application;
 import de.dezibel.data.Comment;
