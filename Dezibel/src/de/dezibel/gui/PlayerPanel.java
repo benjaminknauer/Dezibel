@@ -36,7 +36,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
- *
+ * The Panel class for the music player.
  * @author Tobias, Richard
  */
 public class PlayerPanel extends DragablePanel {
@@ -562,7 +562,7 @@ public class PlayerPanel extends DragablePanel {
 
     @Override
     public void refresh() {
-        // Nicht notwendig
+        // unused
     }
 
 }
