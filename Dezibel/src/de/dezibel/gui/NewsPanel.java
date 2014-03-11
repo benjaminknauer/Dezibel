@@ -14,6 +14,7 @@ import de.dezibel.data.News;
 import de.dezibel.data.User;
 import static java.awt.Component.CENTER_ALIGNMENT;
 import java.awt.Container;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import javax.swing.GroupLayout;
 import javax.swing.JTextArea;
@@ -185,7 +186,8 @@ public class NewsPanel extends DragablePanel {
         else{
             tfAutor.setText(currentNews.getAuthor().getFirstname());
         }
-        tfDatum.setText(currentNews.getCreationDate().toString());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
+        tfDatum.setText(sdf.format(currentNews.getCreationDate()));
         taText.setText(currentNews.getText());
     }
     
