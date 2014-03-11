@@ -41,10 +41,11 @@ public class UploadControl {
      * @param album The album to add this song to
      * @param newAlbumName The name for the album if it has to be created
      * @param coverPath The path of the cover if the album has to be created
+     * @param albumCreator The creator of the new album
      * @return Returns a fitting error code
      */
     public ErrorCode upload(String title, User user, String path, Genre genre, Label label, Album album,
-            String newAlbumName, String coverPath) {
+            String newAlbumName, String coverPath, Object albumCreator) {
         if (!user.isArtist()) {
             return ErrorCode.USER_IS_NOT_ARTIST;
         }
@@ -56,7 +57,11 @@ public class UploadControl {
             } else {
                 db.addMedium(title, user, path, genre, label);
                 Medium m = db.getMedia().get(db.getMedia().size() - 1);
-                db.addAlbum(m, newAlbumName, user, coverPath, false);
+                if (albumCreator instanceof User) {
+                    db.addAlbum(m, newAlbumName, (User) albumCreator, coverPath, false);
+                } else if (albumCreator instanceof Label) {
+                    db.addAlbum(m, newAlbumName, (Label) albumCreator, coverPath, false);
+                }
                 return ErrorCode.SUCCESS;
             }
         }
