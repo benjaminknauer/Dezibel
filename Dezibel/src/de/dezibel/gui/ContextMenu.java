@@ -310,13 +310,11 @@ public class ContextMenu {
                     }
                 });
                 menuAddToAlbum.add(currentMenuItem);
+                menuAddToAlbum.addSeparator();
             }
 
-            menuAddToAlbum.addSeparator();
 
             for (Label currentLabel : Database.getInstance().getLoggedInUser().getManagedLabels()) {
-                System.out.println(currentLabel);
-                System.out.println(currentLabel.getAlbums());
                 for (Album currentAlbum : currentLabel.getAlbums()) {
                     System.out.println(currentAlbum);
                     currentMenuItem = new MenuItem(currentAlbum.getTitle(), currentAlbum);
@@ -331,6 +329,7 @@ public class ContextMenu {
                     });
                     menuAddToAlbum.add(currentMenuItem);
                 }
+                menuAddToAlbum.addSeparator();
                 for (User currentArtist : currentLabel.getArtists()) {
                     for (Album currentAlbum : currentArtist.getCreatedAlbums()) {
 
@@ -345,8 +344,8 @@ public class ContextMenu {
                             }
                         });
                         menuAddToAlbum.add(currentMenuItem);
-                        menuAddToAlbum.addSeparator();
                     }
+                    menuAddToAlbum.addSeparator();
                 }
             }
 
