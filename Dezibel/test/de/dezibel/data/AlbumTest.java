@@ -41,7 +41,7 @@ public class AlbumTest{
         medium2 = new Medium("Funk Grooves", loggedUser, coverPathTest);
         medium2.setGenre(Database.getInstance().getTopGenre());
         publisher = new Label(loggedUser, "Regular Music Group");
-        albumTest = new Album(medium1, "First", publisher);       
+        albumTest = new Album(medium1, "First", publisher, true);       
         imageloader = new ImageLoader();
         mediaList = new LinkedList<>();
         testComment1 = new Comment("Hey Hey", albumTest, loggedUser);
