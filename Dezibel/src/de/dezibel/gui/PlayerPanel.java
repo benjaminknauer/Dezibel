@@ -531,6 +531,13 @@ public class PlayerPanel extends DragablePanel {
     public void reset() {
         this.player.stop();
         this.player.clearPlaylist();
+        btnPlayPause.setIcon(new ImageIcon(this.getClass().getResource("/img/icons/play.png")));
+        this.lblTitle.setText("");
+        this.lblElapsedTime.setText("");
+        this.lblTimeLeft.setText("");
+        this.mediaTableModel.setData(null);
+        this.lblCover.setIcon(new ImageIcon(this.getClass().getResource("/img/mini-logo.png")));
+        this.slider.setValue(0);
     }
 
     @Override
