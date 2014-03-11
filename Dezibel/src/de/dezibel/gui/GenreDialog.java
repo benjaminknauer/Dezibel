@@ -32,7 +32,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 /**
- * Dialog to create a medium
+ * Dialog to create a genre
  *
  * @author Bastian
  */
@@ -57,7 +57,7 @@ public class GenreDialog extends JDialog {
     /**
      * Creates the gui components.
      */
-    public void createComponents() {
+    private void createComponents() {
         setTitle("Genre bearbeiten");
         setModal(true);
 
@@ -137,7 +137,7 @@ public class GenreDialog extends JDialog {
     /**
      * Creates the layout.
      */
-    public void createLayout() {
+    private void createLayout() {
         GroupLayout layout = new GroupLayout(this.getContentPane());
         layout.setAutoCreateContainerGaps(true);
         layout.setAutoCreateGaps(true);
