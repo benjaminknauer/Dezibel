@@ -1,5 +1,6 @@
 package de.dezibel.gui;
 
+import de.dezibel.UpdateEntity;
 import de.dezibel.control.NewsControl;
 import de.dezibel.data.Database;
 import de.dezibel.data.Label;
@@ -26,14 +27,16 @@ class NewsDialog extends JDialog {
     private final NewsControl nc;
     JComboBox<Object> cbAuthor = new JComboBox<>();
     User loggedInUser = Database.getInstance().getLoggedInUser();
+    private final DezibelPanel dPanel;
 
     /**
      * Constructor
      *
      * @param frame The frame to block
      */
-    public NewsDialog(JFrame frame) {
+    public NewsDialog(JFrame frame, DezibelPanel dp) {
         super(frame);
+        dPanel = dp;
         setModal(true);
         nc = new NewsControl();
         this.init();
@@ -48,7 +51,7 @@ class NewsDialog extends JDialog {
         setTitle("Neuigkeiten erstellen");
 
         JLabel lbTitle = new JLabel("Titel");
-        JLabel lbAuhor = new JLabel("Author");
+        JLabel lbAuhor = new JLabel("Autor");
 
         if (loggedInUser.isArtist()) {
             cbAuthor.addItem(loggedInUser);
@@ -57,7 +60,7 @@ class NewsDialog extends JDialog {
             for (Label currentLabel : loggedInUser.getManagedLabels()) {
                 cbAuthor.addItem(currentLabel);
                 for (User currentArtist : currentLabel.getArtists()) {
-                    cbAuthor.addItem(currentLabel);
+                    cbAuthor.addItem(currentArtist);
                 }
             }
         }
@@ -74,6 +77,7 @@ class NewsDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 nc.createNews(cbAuthor.getSelectedItem(), tfTitle.getText(), taText.getText());
+                dPanel.refresh(UpdateEntity.NEWS);
                 NewsDialog.this.dispose();
             }
         });

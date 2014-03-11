@@ -296,6 +296,7 @@ public class DezibelPanel extends JPanel {
                 break;
                 
             case NEWS:
+                ((ProfilPanel)daProfil.getContent()).setTab(6);
                 pnProfil.refresh();
                 pnSideNews.refresh();
                 break;
@@ -327,8 +328,8 @@ public class DezibelPanel extends JPanel {
 //        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 //        frame.setLocation((screenSize.width - 600) / 2,
 //                (screenSize.height - 800) / 2);
-        frame.setSize(1024, 768);
-        frame.setMinimumSize(new Dimension(800, 600)); //TODO: sinnvolle Minimalgröße?
+        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        frame.setMinimumSize(new Dimension(1024, 700)); //TODO: sinnvolle Minimalgröße?
         frame.setLocationRelativeTo(null);
 
         // Create the panel and add it to the frame.
@@ -898,8 +899,7 @@ public class DezibelPanel extends JPanel {
     }
 
     private void onCreateNews() {
-        NewsDialog nd = new NewsDialog(frame);
-        this.refresh(UpdateEntity.NEWS);
+        NewsDialog nd = new NewsDialog(frame, this);
         nd.setVisible(true);
     }
 

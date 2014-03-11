@@ -176,7 +176,7 @@ public class ProfilPanel extends DragablePanel {
         if (!(currentUser.isLocked() && !(profileControler.getLoggedInUser(
         ).isAdmin()))) {
             
-            tabPanel.setSelectedIndex(showTabNr);
+            //tabPanel.setSelectedIndex(showTabNr);
             
             taNews.setText("");
             taComments.setText("");
@@ -313,6 +313,8 @@ public class ProfilPanel extends DragablePanel {
             albumModellFavo.setData(profileControler.getFavorizedAlbums(currentUser));
             newsModell.setData(profileControler.getNews(currentUser));
             applicationsModel.setData(profileControler.getApplications(currentUser));
+            
+            tabPanel.setSelectedIndex(showTabNr);
         }
     }
 
