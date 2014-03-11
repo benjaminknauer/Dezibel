@@ -290,6 +290,7 @@ public class DezibelPanel extends JPanel {
 
                 break;
             case MEDIUM:
+                ((ProfilPanel)daProfil.getContent()).setTab(1);
                 pnProfil.refresh();
                 pnLabelProfil.refresh();
                 break;
@@ -892,6 +893,7 @@ public class DezibelPanel extends JPanel {
 
     private void onCreateNews() {
         NewsDialog nd = new NewsDialog(frame);
+        this.refresh(UpdateEntity.NEWS);
         nd.setVisible(true);
     }
 
