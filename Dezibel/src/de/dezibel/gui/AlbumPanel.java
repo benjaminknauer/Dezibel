@@ -1,6 +1,5 @@
 package de.dezibel.gui;
 
-import com.sun.deploy.panel.JavaPanel;
 import de.dezibel.UpdateEntity;
 import de.dezibel.data.Album;
 import de.dezibel.data.Database;
