@@ -13,10 +13,13 @@ import de.dezibel.data.News;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
@@ -267,8 +270,6 @@ public class ProfileControl {
                             + "datum entspricht nicht der gängigen Formatierungen.\n"
                             + "Bitte wie im folgenden Beispiel angeben: "
                             + "01.01.2014");
-                    Logger.getLogger(ProfileControl.class.getName()).log(Level.SEVERE,
-                            null, ex);
                 }
             }
         }
@@ -676,6 +677,87 @@ public class ProfileControl {
         HashGenerator hg = new HashGenerator();
         password = hg.hash(password);
         return user.getPassword().equals(password);
+    }
+    
+    /**
+     * Checks if the given mail is already in use
+     * @param oldmail The old mail
+     * @param newmail The mail to check
+     * @return true, if the mail is already in use, else false
+     */
+    public boolean checkIfMailAlreadyInUse(String oldmail, String newmail) {
+        if (oldmail.equals(newmail)){
+            return false;
+        }
+        LinkedList<User> users = Database.getInstance().getUsers();
+        Iterator<User> it = users.iterator();
+        while (it.hasNext()) {
+            if (it.next().getEmail().equals(newmail)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * Checks if the given mail is valid
+     * @param mail The mail to check
+     * @return true, if the mail is valid, else false
+     */
+    public boolean checkIfMailValid(String mail) {
+        Pattern p;
+        p = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
+	Matcher m = p.matcher(mail);
+        return m.find();
+    }
+    
+    /**
+     * Checks if the given country is valid
+     * @param country The country to check
+     * @return true, if the mail is valid, else false
+     */
+    public boolean checkIfCountryValid(String country) {
+        Pattern p;
+        p = Pattern.compile("^([A-Za-z\\s]+){2,20}$");
+	Matcher m = p.matcher(country);
+        return m.find();
+    }
+    
+    /**
+     * Checks if the given names are valid
+     * @param firstName The firstName to check
+     * @param lastName The lastName to check
+     * @return true, if the names are valid, else false
+     */
+    public boolean checkIfNamesValid(String firstName, String lastName) {
+        Pattern p;
+        p = Pattern.compile("^([A-Za-z\\s]+){2,20}$");
+	Matcher m = p.matcher(firstName);
+        Matcher mm = p.matcher(lastName);
+        return m.find() && mm.find();
+    }
+    
+    /**
+     * Checks if the given password is valid
+     * @param password The password to check
+     * @return true, if the names are valid, else false
+     */
+    public boolean checkIfPWValid(String password) {
+        boolean number = false;
+        boolean letter = false;
+        if (password.length() > 5){
+            for (int i = 0; i < password.length(); i++){
+                if (Character.isLetter(password.charAt(i))){
+                    letter = true;
+                }
+                if (Character.isDigit(password.charAt(i))){
+                    number = true;
+                }
+            }
+            return letter && number;
+        } else {
+            return false;
+        }
     }
     
 }

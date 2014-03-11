@@ -16,8 +16,8 @@ public class AlbumMediaTableModel extends DefaultTableModel {
     private Album currentAlbum;
     private String[] headlines = new String[]{"Titel", "Künstler",  
         "Genre", "Uploaddatum", "Bewertung"};
-    private Class<?>[] columnTypes = new Class<?>[]{String.class, String.class,
-        String.class, String.class, Date.class};
+    private Class<?>[] columnTypes = new Class<?>[]{String.class,
+        String.class, String.class, Date.class, Double.class};
     
     private Medium[] data;
 

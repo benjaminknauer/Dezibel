@@ -137,7 +137,7 @@ public class LabelTest {
         testMedium1 = new Medium("TestMedium1", this.artist, "path");
         testMedium2 = new Medium("TestMedium2", this.artist, "path2");
         Album testAlbum1, testAlbum2;
-        testAlbum1 = new Album(testMedium1, "TestAlbum1", this.label);
+        testAlbum1 = new Album(testMedium1, "TestAlbum1", this.label, true);
         testAlbum2 = new Album(testMedium2, "TestAlbum2", this.artist, true);       
         
         this.label.addAlbum(testAlbum2);
@@ -167,7 +167,7 @@ public class LabelTest {
         testMedium1 = new Medium("TestMedium1", this.artist, "path");
         testMedium2 = new Medium("TestMedium2", this.artist, "path2");
         Album testAlbum1, testAlbum2;
-        testAlbum1 = new Album(testMedium1, "TestAlbum1", this.label);
+        testAlbum1 = new Album(testMedium1, "TestAlbum1", this.label, true);
         testAlbum2 = new Album(testMedium2, "TestAlbum2", this.artist, true);
         
         this.label.addAlbum(testAlbum2);
@@ -198,7 +198,7 @@ public class LabelTest {
         follower1.addFavoriteLabel(label);
         
         Medium medium1 = new Medium("Medium1", artist, "path");
-        Album album1 = new Album(medium1, "Album1", label);
+        Album album1 = new Album(medium1, "Album1", label, true);
         
         label.delete();
 
