@@ -33,12 +33,10 @@ public class NewsControl {
         if (creator == null) {
             creator = Database.getInstance().getLoggedInUser();
         } else if (creator instanceof User) {
-            News ne = new News(title, text, (User) creator);
-            ((User) creator).addNews(ne);
+            Database.getInstance().addNews(title, text, (User) creator);
             return ErrorCode.SUCCESS;
         } else if(creator instanceof Label){
-            News ne = new News(title, text, (Label) creator);
-            ((Label) creator).addNews(ne);
+            Database.getInstance().addNews(title, text, (Label) creator);
             return ErrorCode.SUCCESS;
         }
 
