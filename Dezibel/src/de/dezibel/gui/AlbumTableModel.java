@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Shows the information of albums in the searchpanel.
+ * TableModel for the albums table in the searchpanel.
  * @author Richard, Tobias
  */
 public class AlbumTableModel extends DefaultTableModel {

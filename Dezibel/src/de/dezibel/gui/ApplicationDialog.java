@@ -18,9 +18,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 /**
- * Dialog to comment
+ * Dialog to create an application
  *
- * @author Tobias
+ * @author Henner
  */
 class ApplicationDialog extends JDialog {
    

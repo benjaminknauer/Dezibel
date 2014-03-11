@@ -85,6 +85,8 @@ public class DezibelPanel extends JPanel {
     private DragablePanel pnProfil;
     private DragablePanel pnLabelProfil;
     private DragablePanel pnSearch;
+    private DragablePanel pnAlbum;
+    
     // Javadocking uses Dockable, to enable dragging and docking for childpanels
     // Any panel you want to drag and dock have to be in its own Dockable
     private Dockable daLogin;
@@ -243,7 +245,7 @@ public class DezibelPanel extends JPanel {
     }
 
     public void showAlbum(Album album) {
-        AlbumPanel pnAlbum = new AlbumPanel(this, album);
+        pnAlbum = new AlbumPanel(this, album);
         pnAlbum.setBackground(DezibelColor.Background);
         Dockable daAlbum = new DefaultDockable("pnAlbum", pnAlbum, "Album", null,
                 DockingMode.CENTER + DockingMode.SINGLE);
@@ -283,6 +285,9 @@ public class DezibelPanel extends JPanel {
             case ALBUM:
                 pnProfil.refresh();
                 pnLabelProfil.refresh();
+                if(pnAlbum != null){
+                    pnAlbum.refresh();
+                }
 
                 break;
             case RECOMMENDATIONS:

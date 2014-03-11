@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class NewsPanelTableModel extends DefaultTableModel {
     
-    private String[] headlines = new String[]{"Title","Author","CreationDate","Text"};
+    private String[] headlines = new String[]{"Title"};
     private Class<?>[] columnTypes = new Class<?>[]{String.class};
     private News[] dataNews;
 
@@ -42,11 +42,10 @@ public class NewsPanelTableModel extends DefaultTableModel {
     @Override
     public int getRowCount() {
         if (dataNews == null) {
-            return 0;
-        } else if(dataNews == null){
-                return dataNews.length;
+	            return 0;
+	} else {
+            return dataNews.length;
         }
-        return dataNews.length;
     }
 
     @Override
@@ -73,7 +72,7 @@ public class NewsPanelTableModel extends DefaultTableModel {
      *
      * @param data The data to display
      */
-    public void setDataNews(LinkedList<User> data) {
+    public void setDataNews(LinkedList<News> data) {
         if (data == null) {
             this.dataNews = null;
         } else {

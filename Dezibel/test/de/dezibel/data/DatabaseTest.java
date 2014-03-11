@@ -239,7 +239,7 @@ public class DatabaseTest {
         assertTrue(instance.getMedia().contains(medium));
         assertEquals(title, medium.getTitle());
         assertEquals(artist, medium.getArtist());
-        assertEquals(path, medium.getPath());
+        assertTrue(medium.getPath().endsWith("/sfx/not_available.wav"));
         assertEquals(genre, medium.getGenre());
         assertEquals(label, medium.getLabel());
     }

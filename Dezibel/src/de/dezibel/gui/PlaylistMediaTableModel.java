@@ -72,7 +72,7 @@ public class PlaylistMediaTableModel extends DefaultTableModel {
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return columnIndex == 0;
+        return false;
     }
 
     

@@ -110,7 +110,10 @@ public final class UploadDialog extends JDialog {
                 JFileChooser fc = new JFileChooser();
                 int returnVal = fc.showOpenDialog(UploadDialog.this);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    tfUpload.setText(fc.getSelectedFile().getAbsolutePath());
+                    if(upc.isPlayable(fc.getSelectedFile()))
+                        tfUpload.setText(fc.getSelectedFile().getAbsolutePath());
+                    else
+                        JOptionPane.showMessageDialog(UploadDialog.this, "Die Datei wird nicht abgespielt werden können!", "Mediumfehler", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

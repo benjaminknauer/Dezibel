@@ -47,13 +47,15 @@ public class NewsPanel extends DragablePanel {
     private NewsSideTableModel model;
     //private Container pnNews;
     
-    LinkedList<News> allNews;
-    
+    private LinkedList<News> allNews;
+   // LinkedList<de.dezibel.data.News> asdfas;
+    private NewsControl nc;
     
 
     public NewsPanel(DezibelPanel parent) {
         super(parent);
         this.createNewsPanel();
+        this.fillTable();
     } 
     public  void createNewsPanel(){ 
       lbnews = new JLabel("News");
@@ -68,12 +70,13 @@ public class NewsPanel extends DragablePanel {
       tfTitel.setEditable(false);
       taText = new JTextArea();  
       taText.setEditable(false);
-      tNews = new JTable(nptm){
+      nptm = new NewsPanelTableModel();
+      tNews = new JTable(nptm);/*{
             public boolean isCellEditable(int rowIndex, int vColIndex) {
                 return false;
             }
-      };
-      nptm = new NewsPanelTableModel();
+      };*/
+      
       tNews.getTableHeader().setVisible(false);
       
       // Table News scrollpane 
@@ -83,6 +86,9 @@ public class NewsPanel extends DragablePanel {
       // scrollpane fur taNews
       spNews2 = new JScrollPane();
       spNews2.getViewport().setView(taText);
+      
+      
+      
           
       
       tNews.addMouseListener(new MouseAdapter() {  
@@ -174,7 +180,12 @@ public class NewsPanel extends DragablePanel {
 
     public void showCurrentNews() {       
         tfTitel.setText(currentNews.getTitle());
-        tfAutor.setText(currentNews.getAuthor().getFirstname());
+        if(currentNews.isAuthorLabel()){
+            tfAutor.setText(currentNews.getLabel().getName());
+        }
+        else{
+            tfAutor.setText(currentNews.getAuthor().getFirstname());
+        }
         tfDatum.setText(currentNews.getCreationDate().toString());
         taText.setText(currentNews.getText());
     }
@@ -191,5 +202,15 @@ public class NewsPanel extends DragablePanel {
             nptm.setDataNews(favorizedUsers);*/
         }
     }
+
+    public void fillTable() {
+       allNews = new LinkedList<News>();
+       nc = new NewsControl();
+       
+       allNews = nc.searchForNews();
+       nptm.setDataNews(allNews);
+        
+    }
+   
 
 }
