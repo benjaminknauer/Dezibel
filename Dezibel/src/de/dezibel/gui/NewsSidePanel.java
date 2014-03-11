@@ -1,17 +1,20 @@
 package de.dezibel.gui;
 
-import de.dezibel.UpdateEntity;
 import de.dezibel.control.NewsControl;
+
 import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import de.dezibel.control.NewsControl;
+
 import de.dezibel.data.News;
+
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.util.LinkedList;
+
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -28,6 +31,7 @@ public class NewsSidePanel extends DragablePanel {
     private JTable tblNews;
     private JScrollPane spNews;
     private NewsSideTableModel model;
+    private int maxNumberOfNews = 15;
 
     /**
      * Creates the panel with its components. Background-Color is set to
@@ -58,20 +62,22 @@ public class NewsSidePanel extends DragablePanel {
         tblNews.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if(tblNews.getSelectedRow() != -1){
-                News n = (News) model.getValueAt(
-                        tblNews.getSelectedRow(), -1);
-                if (n != null) {
-                    onClick(n);
+                if (tblNews.getSelectedRow() != -1) {
+                    News n = (News) model.getValueAt(
+                            tblNews.getSelectedRow(), -1);
+                    if (n != null) {
+                        onClick(n);
+                    }
                 }
-            }
             }
         });
 
         tblNews.addFocusListener(new FocusAdapter() {
             @Override
-            public void focusLost(FocusEvent e){
-                tblNews.clearSelection();
+            public void focusLost(FocusEvent e) {
+                if (!e.isTemporary()) {
+                    tblNews.clearSelection();
+                }
             }
         });
 
@@ -122,9 +128,16 @@ public class NewsSidePanel extends DragablePanel {
      * <code>DragablePanel</code>
      */
     public void refresh() {
+        NewsControl controler = new NewsControl();
+        LinkedList<de.dezibel.data.News> newsList;
+        
         this.reset();
-        NewsControl controller = new NewsControl();
-        model.setData(controller.searchForNews());
+        newsList = controler.searchForNews();
+        while(newsList.size() > this.maxNumberOfNews)
+        	newsList.removeLast();
+        
+        model.setData(newsList);
+        
         this.tblNews.setModel(model);
     }
 

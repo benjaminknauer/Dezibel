@@ -189,7 +189,7 @@ public class DezibelPanel extends JPanel {
         this.executor.changeDocking(daPlayer, borderDock);
         ((ProfilPanel) daProfil.getContent()).setUser(Database.getInstance()
                 .getLoggedInUser());
-        
+
         onGenre();
     }
 
@@ -197,34 +197,28 @@ public class DezibelPanel extends JPanel {
         ProfilPanel pn = (ProfilPanel) pnProfil;
         pn.setUser(user);
         pn.setBackground(DezibelColor.Background);
-        if(new ProfileControl().isLocked(((ProfilPanel
-                ) daProfil.getContent()).getUser()) && !(new ProfileControl(
-                ).getLoggedInUser().isAdmin())){
-            
-                     JOptionPane.showMessageDialog(this, "Der Nutzer, dessen Profil Sie"
+        if (new ProfileControl().isLocked(((ProfilPanel) daProfil.getContent()).getUser()) && !(new ProfileControl().getLoggedInUser().isAdmin())) {
+
+            JOptionPane.showMessageDialog(this, "Der Nutzer, dessen Profil Sie"
                     + " aufzurufen versuchen ist temporär gesperrt. Das gewünschte"
                     + "Profil kann daher leider zurzeit nicht aufgerufen werden!");
-              
-        }
-        else {
+
+        } else {
             this.showAtCenter(daProfil);
         }
     }
-    
+
     public void showProfile(Label label) {
-    	LabelProfilPanel lpn = (LabelProfilPanel) pnLabelProfil;
+        LabelProfilPanel lpn = (LabelProfilPanel) pnLabelProfil;
         lpn.setUser(label);
         lpn.setBackground(DezibelColor.Background);
-        if(new LabelControl().isLocked(((LabelProfilPanel
-                ) daLabelProfil.getContent()).getLabel()) && !(new LabelControl(
-                ).getLoggedInUser().isAdmin())){
-            
-                     JOptionPane.showMessageDialog(this, "Das Label, dessen Profil Sie"
+        if (new LabelControl().isLocked(((LabelProfilPanel) daLabelProfil.getContent()).getLabel()) && !(new LabelControl().getLoggedInUser().isAdmin())) {
+
+            JOptionPane.showMessageDialog(this, "Das Label, dessen Profil Sie"
                     + " aufzurufen versuchen ist temporär gesperrt. Das gewünschte"
                     + "Profil kann daher leider zurzeit nicht aufgerufen werden!");
-              
-        }
-        else {
+
+        } else {
             this.showAtCenter(daLabelProfil);
         }
     }
@@ -241,26 +235,30 @@ public class DezibelPanel extends JPanel {
         pnMyList = new MyListsPanel(this);
         pnMyList.setBackground(DezibelColor.Background);
     }
-    
-    public void showSearch(){
+
+    public void showSearch() {
         SearchPanel sn = (SearchPanel) pnSearch;
         sn.setBackground(DezibelColor.Background);
         this.showAtCenter(daSearch);
     }
-    
-    public void showAlbum(Album album){
+
+    public void showAlbum(Album album) {
         AlbumPanel pnAlbum = new AlbumPanel(this, album);
         pnAlbum.setBackground(DezibelColor.Background);
         Dockable daAlbum = new DefaultDockable("pnAlbum", pnAlbum, "Album", null,
                 DockingMode.CENTER + DockingMode.SINGLE);
         this.showAtCenter(daAlbum);
-    	
+
     }
-    
-    public void showNews(News n){
-    	System.out.println("News soll hier angezeigt werden!");
+
+    public void showNews(News n) {
+        NewsPanel pnNews = new NewsPanel(this);
+        Dockable daNews = new DefaultDockable("pnNews", pnNews, "Neuigkeiten", null,
+                DockingMode.CENTER + DockingMode.SINGLE);
+        this.showAtCenter(daNews);
+
     }
-    
+
     public void refresh(UpdateEntity ue) {
         switch (ue) {
             case PLAYLIST:
@@ -276,26 +274,41 @@ public class DezibelPanel extends JPanel {
                 pnProfil.refresh();
                 pnSideNews.refresh();
                 break;
-                
+
             case APPLICATION:
-            	pnProfil.refresh();
-            	pnLabelProfil.refresh();
-            	break;
-            	
+                pnProfil.refresh();
+                pnLabelProfil.refresh();
+                break;
+
             case ALBUM:
-            	pnProfil.refresh();
-            	pnLabelProfil.refresh();
-                
+                pnProfil.refresh();
+                pnLabelProfil.refresh();
+
+                break;
             case RECOMMENDATIONS:
                 pnAds.refresh();
-            	
+
+                break;
+            case MEDIUM:
+                ((ProfilPanel)daProfil.getContent()).setTab(1);
+                pnProfil.refresh();
+                pnLabelProfil.refresh();
+                break;
+                
+            case NEWS:
+                ((ProfilPanel)daProfil.getContent()).setTab(6);
+                pnProfil.refresh();
+                pnSideNews.refresh();
+                break;
+                
             default:
                 break;
         }
-        if(Database.getInstance().getLoggedInUser().isArtist() || 
-        		Database.getInstance().getLoggedInUser().isLabelManager()){
-        	if(itemCreateNews != null)
-        		itemCreateNews.setEnabled(true);
+        if (Database.getInstance().getLoggedInUser().isArtist()
+                || Database.getInstance().getLoggedInUser().isLabelManager()) {
+            if (itemCreateNews != null) {
+                itemCreateNews.setEnabled(true);
+            }
         }
     }
 
@@ -315,8 +328,8 @@ public class DezibelPanel extends JPanel {
 //        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 //        frame.setLocation((screenSize.width - 600) / 2,
 //                (screenSize.height - 800) / 2);
-        frame.setSize(1024, 768);
-        frame.setMinimumSize(new Dimension(800, 600)); //TODO: sinnvolle Minimalgröße?
+        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        frame.setMinimumSize(new Dimension(1024, 700)); //TODO: sinnvolle Minimalgröße?
         frame.setLocationRelativeTo(null);
 
         // Create the panel and add it to the frame.
@@ -556,12 +569,12 @@ public class DezibelPanel extends JPanel {
 
             @Override
             public void dockingWillChange(DockingEvent e) {
-            	if(e.getDestinationDock() == centerDock){
-            		if(centerDock.getDockableCount() > 0){
-            			clearCenter();
-            			executor.changeDocking(daPlayer, borderDock);
-            		}
-            	}
+                if (e.getDestinationDock() == centerDock) {
+                    if (centerDock.getDockableCount() > 0) {
+                        clearCenter();
+                        executor.changeDocking(daPlayer, borderDock);
+                    }
+                }
             }
         });
     }
@@ -611,17 +624,17 @@ public class DezibelPanel extends JPanel {
             this.executor.changeDocking(bar, dockR, new Position(0));
         }
     }
-    
+
     private void createMenubar() {
         UIManager.put("MenuItem.selectionForeground", Color.BLUE);
         if (this.menuBar == null) {
             JMenu menuShow;
             JCheckBoxMenuItem cbMenuItem;
             menuBar = new JMenuBar();
-            JMenuItem menuLogout = new JMenuItem("Logout",new ImageIcon(this.getClass().getResource("/img/logout24x24.png")));
+            JMenuItem menuLogout = new JMenuItem("Logout", new ImageIcon(this.getClass().getResource("/img/logout24x24.png")));
             menuLogout.setHorizontalAlignment(SwingConstants.CENTER);
 
-            
+
             menuBar.add(menuLogout);
             menuShow = new JMenu("Anzeige");
             menuShow.setIcon(new ImageIcon(this.getClass().getResource("/img/view24x24.png")));
@@ -632,43 +645,44 @@ public class DezibelPanel extends JPanel {
                     onLogout();
                 }
             });
-            
+
             ImageIcon icon;
             JButton bn;
             JMenuItem ibn;
             icon = new ImageIcon(this.getClass().getResource("/img/profil24x24.png"));
-            ibn = new JMenuItem("Profil",icon);
+            ibn = new JMenuItem("Profil", icon);
             ibn.setContentAreaFilled(false);
-            ibn.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					onGoTo(daProfil);
-				}
+            ibn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent arg0) {
+                    ((ProfilPanel) daProfil.getContent()).setUser(Database.getInstance().getLoggedInUser());
+                    onGoTo(daProfil);
+                }
             });
             menuBar.add(ibn);
-            
+
             icon = new ImageIcon(this.getClass().getResource("/img/search24x24.png"));
-            ibn = new JMenuItem("Suche",icon);
+            ibn = new JMenuItem("Suche", icon);
             ibn.setContentAreaFilled(false);
-            ibn.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					onGoTo(daSearch);
-				}
+            ibn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent arg0) {
+                    onGoTo(daSearch);
+                }
             });
             menuBar.add(ibn);
-            
+
             icon = new ImageIcon(this.getClass().getResource("/img/player24x24.png"));
-            ibn = new JMenuItem("Player",icon);
+            ibn = new JMenuItem("Player", icon);
             ibn.setContentAreaFilled(false);
-            ibn.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					onGoTo(daPlayer);
-				}
+            ibn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent arg0) {
+                    onGoTo(daPlayer);
+                }
             });
             menuBar.add(ibn);
-            
+
             cbMenuItem = new JCheckBoxMenuItem("Neuigkeiten");
             cbMenuItem.setSelected(true);
             cbMenuItem.addActionListener(new ActionListener() {
@@ -718,10 +732,10 @@ public class DezibelPanel extends JPanel {
                     onUpload();
                 }
             });
- 
+
             JMenu menuNews = new JMenu("Neuigkeiten");
             menuNews.setIcon(new ImageIcon(this.getClass().getResource("/img/news24x24.png")));
-            itemCreateNews  = new JMenuItem("News schreiben", new ImageIcon(this.getClass().getResource("/img/news24x24.png")));
+            itemCreateNews = new JMenuItem("News schreiben", new ImageIcon(this.getClass().getResource("/img/news24x24.png")));
             itemCreateNews.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -729,16 +743,31 @@ public class DezibelPanel extends JPanel {
                 }
             });
 
-            if((Database.getInstance().getLoggedInUser().isArtist() == false) ||
-            		(Database.getInstance().getLoggedInUser().isLabelManager() == false))
-            		itemCreateNews.setEnabled(false);
-            
+            if ((Database.getInstance().getLoggedInUser().isArtist() == false)
+                    || (Database.getInstance().getLoggedInUser().isLabelManager() == false)) {
+                itemCreateNews.setEnabled(false);
+            }
+
             // Ausloggen, Upload,
             //menuNews.add(itemCreateNews);
             menuBar.add(itemUpload);
             menuBar.add(itemCreateNews);
+            if (Database.getInstance().getLoggedInUser().isAdmin()) {
+                JMenuItem itemManageGenres = new JMenuItem("Genres verwalten",
+                        new ImageIcon(this.getClass().getResource("/img/genre24x24.png")));
+                
+                itemManageGenres.addActionListener(new ActionListener() {
+
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        onGenre();
+                    }
+                });
+                
+                menuBar.add(itemManageGenres);
+            }
             menuBar.add(menuShow);
-            
+
         }
     }
 
@@ -816,7 +845,7 @@ public class DezibelPanel extends JPanel {
             if (daProfil.getDock() != null) {
                 daProfil.getDock().removeDockable(daProfil);
             }
-            
+
             if (daLabelProfil.getDock() != null) {
                 daLabelProfil.getDock().removeDockable(daLabelProfil);
             }
@@ -860,26 +889,26 @@ public class DezibelPanel extends JPanel {
     }
 
     private void onUpload() {
-        UploadDialog ud = new UploadDialog(frame, null, null);
+        UploadDialog ud = new UploadDialog(frame, null, null, this);
         ud.setVisible(true);
     }
 
-    private void onGenre(){
-    	GenreDialog dl = new GenreDialog(frame);
-    	dl.setVisible(true);
+    private void onGenre() {
+        GenreDialog dl = new GenreDialog(frame);
+        dl.setVisible(true);
     }
-    
+
     private void onCreateNews() {
-        NewsDialog nd = new NewsDialog(frame);
+        NewsDialog nd = new NewsDialog(frame, this);
         nd.setVisible(true);
     }
 
     public JFrame getFrame() {
         return this.frame;
     }
-    
-    public void showMedium(Medium medium){
-    	MediumPanel pnMedium = new MediumPanel(this, medium);
+
+    public void showMedium(Medium medium) {
+        MediumPanel pnMedium = new MediumPanel(this, medium);
         pnMedium.setBackground(DezibelColor.Background);
         Dockable daMedium = new DefaultDockable("pnMedium", pnMedium, "Medium", null,
                 DockingMode.CENTER + DockingMode.SINGLE);

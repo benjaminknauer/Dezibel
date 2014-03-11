@@ -108,7 +108,7 @@ public class ContextMenu {
             menuItemUpload.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    UploadDialog ud = new UploadDialog(dp.getFrame(), null, m);
+                    UploadDialog ud = new UploadDialog(dp.getFrame(), null, m, dp);
                     ud.setVisible(true);
                 }
             });

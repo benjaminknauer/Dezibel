@@ -80,7 +80,9 @@ public class Player {
         if (this.player != null) {
             this.player.stop();
             this.currentPosition = 0;
-            this.createPlayer(this.currentPlaylist.get(this.currentPosition));
+            if (this.currentPosition < this.currentPlaylist.size()) {
+                this.createPlayer(this.currentPlaylist.get(this.currentPosition));
+            }
             this.notifyObserver();
         }
     }
@@ -335,7 +337,9 @@ public class Player {
      */
     public void clearPlaylist() {
         this.stop();
-        this.currentPlaylist.clear();
+        this.player = null;
+        this.currentPosition = 0;
+        this.currentPlaylist = new LinkedList<>();
         this.notifyObserver();
     }
 

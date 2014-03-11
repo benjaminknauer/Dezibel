@@ -62,25 +62,25 @@ public class AdsPanel extends DragablePanel {
         this.add(scrollPane);
         btnRefresh.setAlignmentX(CENTER_ALIGNMENT);
         this.add(btnRefresh);
-        
-        tableRecommendations.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
+        tableRecommendations.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if(tableRecommendations.getSelectedRow() != -1){
-                Medium m = (Medium) tableModelRecommendations.getValueAt(
-                                tableRecommendations.getSelectedRow(), -1);
-                        parent.showMedium(m);
+                if (tableRecommendations.getSelectedRow() != -1) {
+                    Medium m = (Medium) tableModelRecommendations.getValueAt(
+                            tableRecommendations.getSelectedRow(), -1);
+                    parent.showMedium(m);
                 }
             }
         });
-        
-        tableRecommendations.addFocusListener(new FocusAdapter() {
 
+        tableRecommendations.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                tableRecommendations.clearSelection();
-                
+                if (!e.isTemporary()) {
+                    tableRecommendations.clearSelection();
+                }
+
             }
         });
 
@@ -122,7 +122,7 @@ public class AdsPanel extends DragablePanel {
 
     @Override
     public void reset() {
-	// Nicht notwendig
+        // Nicht notwendig
     }
 
     @Override
@@ -130,5 +130,4 @@ public class AdsPanel extends DragablePanel {
         tableModelRecommendations.setData(control.getRecommendedMedia());
 
     }
-
 }

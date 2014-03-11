@@ -49,7 +49,11 @@ public class MyListsPanel extends DragablePanel {
                     .getCreatedPlaylists();
             LinkedList<Playlist> favoritePlaylists = Database.getInstance().getLoggedInUser()
                     .getFavoritePlaylists();
-            myPlaylists.addAll(favoritePlaylists);
+            for (Playlist currentPlaylist : favoritePlaylists){
+                if (!(myPlaylists.contains(currentPlaylist))){
+                    myPlaylists.add(currentPlaylist);
+                }
+            }
             mltm.setData(myPlaylists);
         }
     }
@@ -59,29 +63,28 @@ public class MyListsPanel extends DragablePanel {
         mltm = new MyListsTableModel();
         tblPlaylists = new JTable(mltm);
         scrollPane = new JScrollPane(tblPlaylists);
-        
-        tblPlaylists.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
+        tblPlaylists.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if(tblPlaylists.getSelectedRow() != -1){
-                Playlist p = (Playlist) mltm.getValueAt(
-                        tblPlaylists.getSelectedRow(), -1);
-                dp.showPlaylist(p);
-            }
+                if (tblPlaylists.getSelectedRow() != -1) {
+                    Playlist p = (Playlist) mltm.getValueAt(
+                            tblPlaylists.getSelectedRow(), -1);
+                    dp.showPlaylist(p);
+                }
             }
         });
-        
-        tblPlaylists.addFocusListener(new FocusAdapter() {
 
+        tblPlaylists.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                tblPlaylists.clearSelection();
+                if (!e.isTemporary()) {
+                    tblPlaylists.clearSelection();
+                }
             }
         });
 
         tblPlaylists.addMouseListener(new MouseAdapter() {
-
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {

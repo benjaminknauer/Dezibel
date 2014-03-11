@@ -152,6 +152,15 @@ public class ProfilPanel extends DragablePanel {
         showTabNr = 0;
     }
 
+     /**
+     * Sets the tab which should be currently displayed.
+     * 
+     * @param tabNr nr of the tab which should be displayed
+     */
+    public void setTab(int tabNr){
+        showTabNr = tabNr;
+    }
+    
     public void setUser(User newUser) {
         this.currentUser = newUser;
         showTabNr = 0;
@@ -168,7 +177,7 @@ public class ProfilPanel extends DragablePanel {
         if (!(currentUser.isLocked() && !(profileControler.getLoggedInUser(
         ).isAdmin()))) {
             
-            tabPanel.setSelectedIndex(showTabNr);
+            //tabPanel.setSelectedIndex(showTabNr);
             
             taNews.setText("");
             taComments.setText("");
@@ -305,6 +314,8 @@ public class ProfilPanel extends DragablePanel {
             albumModellFavo.setData(profileControler.getFavorizedAlbums(currentUser));
             newsModell.setData(profileControler.getNews(currentUser));
             applicationsModel.setData(profileControler.getApplications(currentUser));
+            
+            tabPanel.setSelectedIndex(showTabNr);
         }
     }
 
