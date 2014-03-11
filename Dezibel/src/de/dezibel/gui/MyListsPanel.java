@@ -20,6 +20,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 /**
+ * Class representing the "MyPlylists" Side Panel in the MainPanel. Shows all of
+ * the user's created playlists.
  *
  * @author Benny
  */
@@ -32,6 +34,11 @@ public class MyListsPanel extends DragablePanel {
     private JPopupMenu currentPopupMenu;
     private DezibelPanel dp;
 
+    /**
+     * Constructor + parent container
+     *
+     * @param parent this object's parent
+     */
     public MyListsPanel(DezibelPanel parent) {
         super(parent);
         this.dp = parent;
@@ -39,18 +46,18 @@ public class MyListsPanel extends DragablePanel {
         createLayout();
         this.setBackground(DezibelColor.PanelBackground);
 
-
     }
 
     @Override
+
     public void refresh() {
         if (Database.getInstance().getLoggedInUser() != null) {
             LinkedList<Playlist> myPlaylists = Database.getInstance().getLoggedInUser()
                     .getCreatedPlaylists();
             LinkedList<Playlist> favoritePlaylists = Database.getInstance().getLoggedInUser()
                     .getFavoritePlaylists();
-            for (Playlist currentPlaylist : favoritePlaylists){
-                if (!(myPlaylists.contains(currentPlaylist))){
+            for (Playlist currentPlaylist : favoritePlaylists) {
+                if (!(myPlaylists.contains(currentPlaylist))) {
                     myPlaylists.add(currentPlaylist);
                 }
             }
@@ -58,6 +65,9 @@ public class MyListsPanel extends DragablePanel {
         }
     }
 
+    /**
+     * help method to create all components
+     */
     private void createComponents() {
         lbTitel = new JLabel("Wiedergabelisten");
         mltm = new MyListsTableModel();
@@ -106,10 +116,11 @@ public class MyListsPanel extends DragablePanel {
             }
         });
 
-
-
     }
 
+    /**
+     * Help method to align all components
+     */
     private void createLayout() {
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         lbTitel.setFont(DezibelFont.SIDEPANEL_TITLE);
