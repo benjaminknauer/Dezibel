@@ -36,7 +36,7 @@ public class RegistrationControl {
      */
     public boolean checkIfMailValid(String mail) {
         Pattern p;
-        p = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
+        p = Pattern.compile("^[öÖäÄüÜßA-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
 	Matcher m = p.matcher(mail);
         return m.find();
     }
@@ -49,7 +49,7 @@ public class RegistrationControl {
      */
     public boolean checkIfNamesValid(String firstName, String lastName) {
         Pattern p;
-        p = Pattern.compile("^([A-Za-z\\s]+){2,20}$");
+        p = Pattern.compile("^([öÖäÄüÜßA-Za-z-\\s]+){2,20}$");
 	Matcher m = p.matcher(firstName);
         Matcher mm = p.matcher(lastName);
         return m.find() && mm.find();
