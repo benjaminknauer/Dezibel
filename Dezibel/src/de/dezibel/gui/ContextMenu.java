@@ -286,7 +286,7 @@ public class ContextMenu {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     new CreateAlbumDialog(dp.getFrame(), (Medium) currentTableModel.getValueAt(
-                            currentTable.getSelectedRow(), -1)).setVisible(true);
+                            currentTable.getSelectedRow(), -1), dp).setVisible(true);
                     dp.refresh(UpdateEntity.ALBUM);
                 }
 

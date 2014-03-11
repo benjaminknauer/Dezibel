@@ -176,20 +176,30 @@ public class RegistrationPanel extends DragablePanel {
             JOptionPane.showMessageDialog(this, "Bitte füllen Sie alle Pflichtfelder",
                     "Pflichtfelder leer", JOptionPane.INFORMATION_MESSAGE);
         } else if (!this.regControl.checkIfMailAlreadyInUse(this.tfMail.getText())) {
-            if ((regControl.checkIfMailValid(this.tfMail.getText()))) {
-                if (this.tfPassword.getText().equals(this.tfPasswordRecap.getText())) {
-                    this.regControl.addUser(this.tfPassword.getText(),
-                            this.tfMail.getText(), this.tfFirstname.getText(), this.tfLastname.getText());
-                    MailUtil.sendMail("Registrierung auf Dezibel",
-                            "Hallo " + this.tfFirstname.getText() + ",\n\n"
-                            + "deine Registrierung war erfolgreich.",
-                            this.tfMail.getText());
-                    JOptionPane.showMessageDialog(this, "Ihr Konto wurde erfolgreich eingerichtet",
-                            "Registrierung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
-                    this.onBack();
+            if (this.regControl.checkIfMailValid(this.tfMail.getText())) {
+                if (regControl.checkIfNamesValid(this.tfFirstname.getText(), this.tfLastname.getText())) {
+                    if (this.tfPassword.getText().equals(this.tfPasswordRecap.getText())) {
+                        if (this.regControl.checkIfPWValid(this.tfPasswordRecap.getText())) {
+                            this.regControl.addUser(this.tfPassword.getText(),
+                                    this.tfMail.getText(), this.tfFirstname.getText(), this.tfLastname.getText());
+                            MailUtil.sendMail("Registrierung auf Dezibel",
+                                    "Hallo " + this.tfFirstname.getText() + ",\n\n"
+                                    + "deine Registrierung war erfolgreich.",
+                                    this.tfMail.getText());
+                            JOptionPane.showMessageDialog(this, "Ihr Konto wurde erfolgreich eingerichtet",
+                                    "Registrierung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
+                            this.onBack();
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Das Passwort muss mindestens sechs Zeichen lang sein und je mindestens eine Zahl und einen Buchstaben enthalten.",
+                                "Passwort", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Das Passwort ist nicht identisch",
+                                "Passwort", JOptionPane.INFORMATION_MESSAGE);
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(this, "Das Passwort ist nicht identisch",
-                            "Passwort", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Bitte gültige Namen eingeben",
+                            "Name ungültig", JOptionPane.INFORMATION_MESSAGE);
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Die eingegebene Email-Adresse ist ungültig",
@@ -217,13 +227,13 @@ public class RegistrationPanel extends DragablePanel {
 
     @Override
     public void reset() {
-		// TODO Auto-generated method stub
+        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void refresh() {
-		// TODO Auto-generated method stub
+        // TODO Auto-generated method stub
 
     }
 }

@@ -63,6 +63,7 @@ class NewsDialog extends JDialog {
                     cbAuthor.addItem(currentArtist);
                 }
             }
+            dPanel.refresh(UpdateEntity.NEWS);
         }
         final JTextField tfTitle = new JTextField();
         final JTextArea taText = new JTextArea();

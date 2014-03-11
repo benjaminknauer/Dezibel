@@ -4,6 +4,7 @@ import com.sun.scenario.effect.Effect;
 import de.dezibel.control.AlbumControl;
 import de.dezibel.data.Database;
 import de.dezibel.data.Medium;
+import de.dezibel.UpdateEntity;
 import java.awt.event.ActionEvent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -31,14 +32,16 @@ public class CreateAlbumDialog extends JDialog{
     private JButton btnCancel;
     
     private Medium medium;
+    private DezibelPanel dPanel;
     
     /**
      * Constructor.
      * @param frame parent frame
      * @param medium first medium in the album
      */
-    public CreateAlbumDialog(JFrame frame, Medium medium) {
+    public CreateAlbumDialog(JFrame frame, Medium medium, DezibelPanel dp) {
         super(frame);
+        dPanel = dp;
         this.setLocationRelativeTo(frame);
         this.medium = medium;
         
@@ -87,6 +90,7 @@ public class CreateAlbumDialog extends JDialog{
             @Override
             public void actionPerformed(ActionEvent e) {
                 new AlbumControl().createAlbum(tfAlbumTitle.getText(), medium, tfFilePath.getText());
+                dPanel.refresh(UpdateEntity.ALBUM);
                 CreateAlbumDialog.this.dispose();
             }
         }
