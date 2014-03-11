@@ -49,7 +49,11 @@ public class MyListsPanel extends DragablePanel {
                     .getCreatedPlaylists();
             LinkedList<Playlist> favoritePlaylists = Database.getInstance().getLoggedInUser()
                     .getFavoritePlaylists();
-            myPlaylists.addAll(favoritePlaylists);
+            for (Playlist currentPlaylist : favoritePlaylists){
+                if (!(myPlaylists.contains(currentPlaylist))){
+                    myPlaylists.add(currentPlaylist);
+                }
+            }
             mltm.setData(myPlaylists);
         }
     }
