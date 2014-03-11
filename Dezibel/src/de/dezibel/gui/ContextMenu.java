@@ -277,7 +277,7 @@ public class ContextMenu {
 
         User currentMediumArtist = ((Medium) currentTableModel.getValueAt(
                 currentTable.getSelectedRow(), -1)).getArtist();
-        
+
         if (Database.getInstance().getLoggedInUser() == currentMediumArtist
                 || isManagedArtist(currentMediumArtist)) {
             JMenu menuAddToAlbum = new JMenu("zu Album hinzufügen");
@@ -315,7 +315,10 @@ public class ContextMenu {
             menuAddToAlbum.addSeparator();
 
             for (Label currentLabel : Database.getInstance().getLoggedInUser().getManagedLabels()) {
+                System.out.println(currentLabel);
+                System.out.println(currentLabel.getAlbums());
                 for (Album currentAlbum : currentLabel.getAlbums()) {
+                    System.out.println(currentAlbum);
                     currentMenuItem = new MenuItem(currentAlbum.getTitle(), currentAlbum);
                     currentMenuItem.addActionListener(new ActionListener() {
                         @Override
@@ -328,9 +331,25 @@ public class ContextMenu {
                     });
                     menuAddToAlbum.add(currentMenuItem);
                 }
-                menuAddToAlbum.addSeparator();
+                for (User currentArtist : currentLabel.getArtists()) {
+                    for (Album currentAlbum : currentArtist.getCreatedAlbums()) {
+
+                        currentMenuItem = new MenuItem(currentAlbum.getTitle(), currentAlbum);
+                        currentMenuItem.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                new AlbumControl().addMediumToAlbum((Medium) currentTableModel.getValueAt(
+                                        currentTable.getSelectedRow(), -1),
+                                        (Album) ((MenuItem) e.getSource()).getEntity());
+                                dp.refresh(UpdateEntity.ALBUM);
+                            }
+                        });
+                        menuAddToAlbum.add(currentMenuItem);
+                        menuAddToAlbum.addSeparator();
+                    }
+                }
             }
-            
+
             currentPopupMenu.add(menuAddToAlbum);
         }
         MenuItem currentMenuItem;
