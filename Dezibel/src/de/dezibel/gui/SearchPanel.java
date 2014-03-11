@@ -61,6 +61,10 @@ public class SearchPanel extends DragablePanel {
     private JPanel pnSortingAlbum;
     private JPopupMenu currentPopupMenu;
 
+    /**
+     * Constructor.
+     * @param parent Parent component.
+     */
     public SearchPanel(DezibelPanel parent) {
         super(parent);
         this.createComponents();

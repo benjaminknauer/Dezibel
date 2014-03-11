@@ -6,17 +6,14 @@ package de.dezibel.gui;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.font.FontRenderContext;
-import java.awt.font.GlyphVector;
 import javax.swing.JTextArea;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.UIDefaults;
 
 /**
- *
+ * Class for the rendering of the comment table.
+ * Important ☺
  * @author Benny
  */
 public class TextAreaCellRenderer implements TableCellRenderer {
