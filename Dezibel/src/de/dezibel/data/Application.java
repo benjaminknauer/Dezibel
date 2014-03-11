@@ -73,7 +73,6 @@ public class Application {
      * declination.)
      */
     public void decline() {
-        delete();
         if (this.fromArtist) {
             MailUtil.sendMail("Bewerbung abgelehnt", "Deine Bewerbung beim Label \""
                     + this.label.getName() + "\" wurde abgelehnt.",
@@ -85,6 +84,7 @@ public class Application {
                         u.getEmail());
             }
         }
+        delete();
     }
 
     /**
