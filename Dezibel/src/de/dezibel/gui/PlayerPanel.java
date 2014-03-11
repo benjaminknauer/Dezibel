@@ -91,10 +91,10 @@ public class PlayerPanel extends DragablePanel {
         lblTimeLeft = new JLabel();
         slider.setBackground(DezibelColor.SliderBackground);
         // Add Buttons und volume slider
-        btnPrev = new JButton("prev");
-        btnPlayPause = new JButton("play");
-        btnStop = new JButton("stop");
-        btnNext = new JButton("next");
+        btnPrev = new JButton(new ImageIcon(this.getClass().getResource("/img/icons/prev.png")));
+        btnPlayPause = new JButton(new ImageIcon(this.getClass().getResource("/img/icons/play.png")));
+        btnStop = new JButton(new ImageIcon(this.getClass().getResource("/img/icons/stop.png")));
+        btnNext = new JButton(new ImageIcon(this.getClass().getResource("/img/icons/next.png")));
         volume = new JSlider(JSlider.VERTICAL, 0, 100, 50);
 
         // Add logo
@@ -277,10 +277,10 @@ public class PlayerPanel extends DragablePanel {
             public void actionPerformed(ActionEvent e) {
                 if (player.isPlaying()) {
                     player.pause();
-                    btnPlayPause.setText("Play");
+                    btnPlayPause.setIcon(new ImageIcon(this.getClass().getResource("/img/icons/play.png")));
                 } else {
                     player.play();
-                    btnPlayPause.setText("Pause");
+                    btnPlayPause.setIcon(new ImageIcon(this.getClass().getResource("/img/icons/pause.png")));
                 }
             }
         });
@@ -288,7 +288,7 @@ public class PlayerPanel extends DragablePanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 player.stop();
-                btnPlayPause.setText("Play");
+                btnPlayPause.setIcon(new ImageIcon(this.getClass().getResource("/img/icons/play.png")));
             }
         });
         btnNext.addActionListener(new ActionListener() {
@@ -335,9 +335,9 @@ public class PlayerPanel extends DragablePanel {
                     SwingUtilities.invokeLater(new Runnable() {
                         public void run() {
                             if (player.isPlaying()) {
-                                btnPlayPause.setText("Pause");
+                                btnPlayPause.setIcon(new ImageIcon(this.getClass().getResource("/img/icons/pause.png")));
                             } else {
-                                btnPlayPause.setText("Play");
+                                btnPlayPause.setIcon(new ImageIcon(this.getClass().getResource("/img/icons/play.png")));
                             }
                         }
                     });
