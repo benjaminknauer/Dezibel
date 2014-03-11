@@ -40,6 +40,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
+/**
+ * Class representing a User's profile page. The different information (Uploads, Favorites, General information) are shown in tabbed panels.
+ * @author Alex, Bastian, Benni, Henner
+ */
 public class ProfilPanel extends DragablePanel {
 
     private static final long serialVersionUID = 1L;
@@ -102,6 +106,7 @@ public class ProfilPanel extends DragablePanel {
     private JTable tNews;
     private JTable tApplications;
     private JTextArea taNews;
+    private JTextArea taApplications;
 
     private JPopupMenu currentPopupMenu;
     private JButton btnCreateLabel;
@@ -176,7 +181,7 @@ public class ProfilPanel extends DragablePanel {
         if (!(currentUser.isLocked() && !(profileControler.getLoggedInUser(
         ).isAdmin()))) {
             
-            tabPanel.setSelectedIndex(showTabNr);
+            //tabPanel.setSelectedIndex(showTabNr);
             
             taNews.setText("");
             taComments.setText("");
@@ -313,6 +318,8 @@ public class ProfilPanel extends DragablePanel {
             albumModellFavo.setData(profileControler.getFavorizedAlbums(currentUser));
             newsModell.setData(profileControler.getNews(currentUser));
             applicationsModel.setData(profileControler.getApplications(currentUser));
+            
+            tabPanel.setSelectedIndex(showTabNr);
         }
     }
 
@@ -1178,19 +1185,32 @@ public class ProfilPanel extends DragablePanel {
         this.applicationsModel = new ApplicationToArtistTableModel();
         this.tApplications = new JTable(applicationsModel);
         this.scrApplications = new JScrollPane(tApplications);
+        this.scrApplications.getViewport().setView(tApplications);
         this.tApplications.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+  
+        
+        
+        this.taApplications = new JTextArea();
+        this.taApplications.setLineWrap(true);
+        this.taApplications.setWrapStyleWord(true);
+        this.taApplications.setEditable(false);
+        JScrollPane sptaApplications = new JScrollPane(taApplications);
+        sptaApplications.getViewport().setView(taApplications);
+        
         
         this.tApplications.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
+                Application a = (Application) applicationsModel.getValueAt(tApplications.getSelectedRow(), -1);
                 if(me.getClickCount() == 2 && (me.getButton() == MouseEvent.BUTTON1)) {
-                    Application a = (Application) applicationsModel.getValueAt(tApplications.getSelectedRow(), -1);
                     if(a != null) {
                         if(a.getLabel() != null) {
                             parent.showProfile(a.getLabel());
                         }
                     }
                 }
+                if(a != null)
+                    taApplications.setText(a.getText());
             }
             
             @Override
@@ -1214,18 +1234,32 @@ public class ProfilPanel extends DragablePanel {
             }
         });
         
-        gbl = new GridBagLayout();
-        pnApplications.setLayout(gbl);
-        gbc = new GridBagConstraints();
+        GroupLayout layout = new GroupLayout(pnApplications);
+        layout.setHorizontalGroup(layout
+                .createParallelGroup(GroupLayout.Alignment.CENTER, true)
+                .addGroup(
+                        GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(scrApplications, 128, 128, 2000))
+                .addGroup(
+                        GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(sptaApplications, 128, 128, 2000))
+        );
 
-        gbc.insets = new Insets(0, 5, 0, 5);
-        gbc.fill = GridBagConstraints.BOTH;
+        layout.setVerticalGroup(layout.createParallelGroup(
+                GroupLayout.Alignment.CENTER, true)
+                .addGroup(layout.createSequentialGroup()
+                        .addGroup(
+                                layout.createParallelGroup(GroupLayout.Alignment.LEADING, true)
+                                .addComponent(scrApplications, 100, 100, 1000))
+                        .addGroup(
+                                layout.createParallelGroup(GroupLayout.Alignment.TRAILING, true)
+                                .addComponent(sptaApplications, 100, 100, 1000))
+                )
+        );
 
-        gbc.weightx = 1;
-        gbc.weighty = 1;
-
-        gbl.setConstraints(scrApplications, gbc);
-        pnApplications.add(scrApplications);
+        layout.setAutoCreateContainerGaps(true);
+        layout.setAutoCreateGaps(true);
+        pnApplications.setLayout(layout);
     }
 
     @Override

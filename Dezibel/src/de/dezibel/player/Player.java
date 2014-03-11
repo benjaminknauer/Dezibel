@@ -337,7 +337,9 @@ public class Player {
      */
     public void clearPlaylist() {
         this.stop();
-        this.currentPlaylist.clear();
+        this.player = null;
+        this.currentPosition = 0;
+        this.currentPlaylist = new LinkedList<>();
         this.notifyObserver();
     }
 

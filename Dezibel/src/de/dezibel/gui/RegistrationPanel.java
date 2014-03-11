@@ -16,10 +16,11 @@ import javax.swing.JTextField;
 
 /**
  * Panel to display and handle the registration process
- * 
+ *
  * @author Richard, Tobias, Pascal
  */
 public class RegistrationPanel extends DragablePanel {
+
     private static final long serialVersionUID = 1L;
     private JPanel pnMain;
     private JButton bnRegister;
@@ -37,9 +38,10 @@ public class RegistrationPanel extends DragablePanel {
     private JTextField tfLastname;
 
     private RegistrationControl regControl;
-    
+
     /**
      * Constructor
+     *
      * @param parent The parent panel
      */
     public RegistrationPanel(DezibelPanel parent) {
@@ -87,9 +89,10 @@ public class RegistrationPanel extends DragablePanel {
         this.tfFirstname = new JTextField();
         this.tfLastname = new JTextField();
     }
-    
+
     /**
      * Generates the layout and returns it
+     *
      * @return The layout to use
      */
     private GroupLayout createLayout() {
@@ -172,25 +175,27 @@ public class RegistrationPanel extends DragablePanel {
                 || this.tfLastname.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Bitte füllen Sie alle Pflichtfelder",
                     "Pflichtfelder leer", JOptionPane.INFORMATION_MESSAGE);
-        } 
-        else if (!this.regControl.checkIfMailAlreadyInUse(this.tfMail.getText())) {
-            if (this.tfPassword.getText().equals(this.tfPasswordRecap.getText())) {
-                this.regControl.addUser(this.tfPassword.getText(),
-                        this.tfMail.getText(),this.tfFirstname.getText(),this.tfLastname.getText());
-                MailUtil.sendMail("Registrierung auf Dezibel",
-                        "Hallo " + this.tfFirstname.getText() + ",\n\n"
-                                + "deine Registrierung war erfolgreich.",
-                        this.tfMail.getText());
-                JOptionPane.showMessageDialog(this, "Ihr Konto wurde erfolgreich eingerichtet",
-                        "Registrierung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
-                this.onBack();
+        } else if (!this.regControl.checkIfMailAlreadyInUse(this.tfMail.getText())) {
+            if ((regControl.checkIfMailValid(this.tfMail.getText()))) {
+                if (this.tfPassword.getText().equals(this.tfPasswordRecap.getText())) {
+                    this.regControl.addUser(this.tfPassword.getText(),
+                            this.tfMail.getText(), this.tfFirstname.getText(), this.tfLastname.getText());
+                    MailUtil.sendMail("Registrierung auf Dezibel",
+                            "Hallo " + this.tfFirstname.getText() + ",\n\n"
+                            + "deine Registrierung war erfolgreich.",
+                            this.tfMail.getText());
+                    JOptionPane.showMessageDialog(this, "Ihr Konto wurde erfolgreich eingerichtet",
+                            "Registrierung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
+                    this.onBack();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Das Passwort ist nicht identisch",
+                            "Passwort", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Die eingegebene Email-Adresse ist ungültig",
+                        "Email ungültig", JOptionPane.INFORMATION_MESSAGE);
             }
-            else {
-                JOptionPane.showMessageDialog(this, "Das Passwort ist nicht identisch",
-                        "Passwort", JOptionPane.INFORMATION_MESSAGE);
-            }
-        } 
-        else {
+        } else {
             JOptionPane.showMessageDialog(this, "Es existiert bereichts ein Konto zu dieser Email",
                     "Email existiert schon", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -210,15 +215,15 @@ public class RegistrationPanel extends DragablePanel {
         this.parent.showLogin();
     }
 
-	@Override
-	public void reset() {
+    @Override
+    public void reset() {
 		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void refresh() {
+    }
+
+    @Override
+    public void refresh() {
 		// TODO Auto-generated method stub
-		
-	}
+
+    }
 }
