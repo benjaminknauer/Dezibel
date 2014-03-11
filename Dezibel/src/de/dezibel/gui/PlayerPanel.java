@@ -5,6 +5,7 @@ import de.dezibel.player.Player;
 import de.dezibel.player.PlayerObserver;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -36,7 +37,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
- *
+ * The Panel class for the music player.
  * @author Tobias, Richard
  */
 public class PlayerPanel extends DragablePanel {
@@ -562,7 +563,13 @@ public class PlayerPanel extends DragablePanel {
 
     @Override
     public void refresh() {
-        // Nicht notwendig
+        // unused
+    }
+    
+    @Override
+    public void onExternalized() {
+        createCenterLayout();
+        this.setPreferredSize(new Dimension(600, 350));
     }
 
 }

@@ -186,7 +186,7 @@ public class LabelControl {
      * @param cover path to albums cover
      */
     public void createAlbum(Label label, Medium medium, String title, String cover) {
-        Database.getInstance().addAlbum(medium, title, label, cover);
+        Database.getInstance().addAlbum(medium, title, label, cover, true);
     }
 
     /**

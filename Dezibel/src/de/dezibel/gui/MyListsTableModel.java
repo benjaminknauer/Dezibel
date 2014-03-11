@@ -6,13 +6,9 @@ import java.util.LinkedList;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ * TableModel for playlists. Used in the "mylists" sidepanel.
  * @author Benny
  */
-
-
-
-
 public class MyListsTableModel extends DefaultTableModel {
 
     private String[] headlines = new String[]{"Titel"};

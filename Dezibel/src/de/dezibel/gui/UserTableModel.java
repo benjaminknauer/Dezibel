@@ -5,12 +5,13 @@ import java.util.LinkedList;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Shows the information of users in the searchpanel.
+ * TableModel for User in the searchpanel.
+ *
  * @author Richard, Tobias
  */
 public class UserTableModel extends DefaultTableModel {
 
-    private String[] headlines = new String[]{"Vorname", "Nachname", "Künstlername", 
+    private String[] headlines = new String[]{"Vorname", "Nachname", "Künstlername",
         "Stadt", "Land", "Email"};
     private Class<?>[] columnTypes = new Class<?>[]{String.class, String.class,
         String.class, String.class, String.class, String.class};
@@ -53,29 +54,42 @@ public class UserTableModel extends DefaultTableModel {
                 case 1:
                     return u.getLastname();
                 case 2:
-                    if (u.getPseudonym() != null) return u.getPseudonym();
-                    else return "";
+                    if (u.getPseudonym() != null) {
+                        return u.getPseudonym();
+                    } else {
+                        return "";
+                    }
                 case 3:
-                    if (u.getCity() != null) return u.getCity();
-                    else return "";
+                    if (u.getCity() != null) {
+                        return u.getCity();
+                    } else {
+                        return "";
+                    }
                 case 4:
-                    if (u.getCountry() != null) return u.getCountry();
-                    else return "";
+                    if (u.getCountry() != null) {
+                        return u.getCountry();
+                    } else {
+                        return "";
+                    }
                 case 5:
-                    if (u.getEmail() != null) return u.getEmail();
-                    else return "";
+                    if (u.getEmail() != null) {
+                        return u.getEmail();
+                    } else {
+                        return "";
+                    }
             }
         }
-	return null;
+        return null;
     }
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return false;
     }
-    
+
     /**
      * Sets the data of this model.
+     *
      * @param data The data to display
      */
     public void setData(LinkedList<User> data) {
@@ -87,5 +101,5 @@ public class UserTableModel extends DefaultTableModel {
         }
         fireTableDataChanged();
     }
-    
+
 }

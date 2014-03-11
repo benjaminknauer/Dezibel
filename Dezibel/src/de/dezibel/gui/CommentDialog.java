@@ -68,7 +68,7 @@ class CommentDialog extends JDialog {
         });
 
         this.setLayout(null);
-        lbYourComment.setBounds(5, 5, 100, 32);
+        lbYourComment.setBounds(5, 5, 200, 32);
         this.add(lbYourComment);
         sp.setBounds(5, 42, 250, 250);
         this.add(sp);

@@ -9,7 +9,7 @@ import de.dezibel.data.Comment;
 import de.dezibel.data.News;
 
 /**
- * This class is used by NewsSidePanel for the News-JTable
+ * TableModel for News in the NewsSidePanel. This class is used by NewsSidePanel for the News-JTable
  * @author Pascal
  *
  */

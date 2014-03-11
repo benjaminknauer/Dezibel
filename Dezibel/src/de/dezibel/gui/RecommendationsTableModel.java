@@ -1,11 +1,11 @@
 package de.dezibel.gui;
 
 import de.dezibel.data.Medium;
-import java.util.LinkedList;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Shows the information of media in the searchpanel.
+ * TableModel for media recommendations in the sidepanel
+ *
  * @author Richard, Tobias
  */
 public class RecommendationsTableModel extends DefaultTableModel {
@@ -52,21 +52,22 @@ public class RecommendationsTableModel extends DefaultTableModel {
                     return m.getTitle();
             }
         }
-	return null;
+        return null;
     }
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return false;
     }
-    
+
     /**
      * Sets the data of this model.
+     *
      * @param data The data to display
      */
     public void setData(Medium[] data) {
         this.data = data;
         fireTableDataChanged();
     }
-    
+
 }

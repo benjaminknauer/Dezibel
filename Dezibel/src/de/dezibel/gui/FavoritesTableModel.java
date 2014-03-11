@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Shows the information of labels in the searchpanel.
+ * TableModel for the favorized Users and Labels in the sidepanel
  *
  * @author Aris, Tristan
  */

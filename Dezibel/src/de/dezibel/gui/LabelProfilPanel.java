@@ -35,6 +35,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
+/**
+ * Class for the Profile Panel of a Label.
+ * @author Henner
+ */
 public class LabelProfilPanel extends DragablePanel {
 
     private static final long serialVersionUID = 1L;
@@ -87,7 +91,7 @@ public class LabelProfilPanel extends DragablePanel {
     private int showTabNr;
 
     /**
-     * Constructor of the ProfilPanel class.
+     * Constructor of the LabelProfilPanel class.
      *
      * @param parent
      */
@@ -319,6 +323,9 @@ public class LabelProfilPanel extends DragablePanel {
         cont.add(comp);
     }
 
+    /**
+     * Follower Tab
+     */
     private void createFollowerComponents() {
         followerModell = new FollowerTableModel();
         tFollower = new JTable(followerModell);
@@ -361,6 +368,9 @@ public class LabelProfilPanel extends DragablePanel {
         pnFollower.add(tablePanel, BorderLayout.CENTER);
     }
 
+    /**
+     * News Tab
+     */
     private void createNewsComponents() {
 
         newsModell = new NewsSideTableModel();
@@ -416,6 +426,9 @@ public class LabelProfilPanel extends DragablePanel {
         });
     }
 
+    /**
+     * Uploads Tab
+     */
     private void createUploadsComponents() {
 
         mediaModellUpload = new MediaTableModel();
@@ -525,6 +538,9 @@ public class LabelProfilPanel extends DragablePanel {
         });
     }
 
+    /**
+     * Manager Tab
+     */
     private void createManagementComponents() {
         managerModell = new FollowerTableModel();
         tManager = new JTable(managerModell);
@@ -568,6 +584,10 @@ public class LabelProfilPanel extends DragablePanel {
         pnManagement.add(tablePanel, BorderLayout.CENTER);
     }
 
+    
+    /**
+     * Applications Tab
+     */
     private void createApplicationsComponents() {
 
         applicationsModell = new ApplicationToLabelTableModel();
@@ -660,6 +680,9 @@ public class LabelProfilPanel extends DragablePanel {
 
     }
 
+    /**
+     * Artists Tab
+     */
     private void createArtistsComponents() {
         artistModell = new ArtistTableModel();
         tArtists = new JTable(artistModell);
