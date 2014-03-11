@@ -46,14 +46,19 @@ public class Album implements Commentable {
      * @param medium The first Medium in the Album.
      * @param title The Album's title.
      * @param publisher The label the Album is published under.
+     * @param copyMedium true, if the medium should be copied, else false
      */
-    public Album(Medium medium, String title, Label publisher) {
+    public Album(Medium medium, String title, Label publisher, boolean copyMedium) {
         if (Album.imageLoader == null) {
             Album.imageLoader = new ImageLoader();
         }
         this.mediaList = new LinkedList<>();
         this.comments = new LinkedList<>();
-        this.addNewMedium(medium);
+        if (copyMedium) {
+            this.addNewMedium(medium);
+        } else {
+            this.addMedium(medium);
+        }
         this.title = title;
         this.label = publisher;
         isAuthorLabel = true;
