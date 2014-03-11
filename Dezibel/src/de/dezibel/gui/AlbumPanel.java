@@ -86,7 +86,7 @@ public class AlbumPanel extends DragablePanel {
         btnComment.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                CommentDialog cd = new CommentDialog(dp.getFrame());
+                CommentDialog cd = new CommentDialog(dp.getFrame(), dp);
                 cd.commentAlbum(AlbumPanel.this.currentAlbum);
                 cd.setVisible(true);
             }

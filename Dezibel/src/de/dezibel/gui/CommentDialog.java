@@ -1,5 +1,6 @@
 package de.dezibel.gui;
 
+import de.dezibel.UpdateEntity;
 import de.dezibel.control.CommentControl;
 import de.dezibel.data.Album;
 import de.dezibel.data.Medium;
@@ -22,14 +23,16 @@ import javax.swing.JTextArea;
 class CommentDialog extends JDialog {
 
     private final CommentControl cc;
+    private final DezibelPanel dPanel;
 
     /**
      * Constructor
      *
      * @param frame The frame to block
      */
-    public CommentDialog(JFrame frame) {
+    public CommentDialog(JFrame frame, DezibelPanel dp) {
         super(frame);
+        dPanel = dp;
         setModal(true);
         cc = new CommentControl();
     }
@@ -97,6 +100,7 @@ class CommentDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cc.commentAlbum(a, taText.getText());
+                dPanel.refresh(UpdateEntity.ALBUM);
                 CommentDialog.this.dispose();
             }
         });

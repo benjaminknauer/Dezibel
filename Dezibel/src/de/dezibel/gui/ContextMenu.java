@@ -352,7 +352,7 @@ public class ContextMenu {
         menuItemComment.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CommentDialog cd = new CommentDialog(dp.getFrame());
+                CommentDialog cd = new CommentDialog(dp.getFrame(), dp);
                 cd.commentMedia(m);
                 cd.setVisible(true);
             }
@@ -680,7 +680,7 @@ public class ContextMenu {
         menuItemComment.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CommentDialog cd = new CommentDialog(dp.getFrame());
+                CommentDialog cd = new CommentDialog(dp.getFrame(), dp);
                 cd.commentAlbum(a);
                 cd.setVisible(true);
             }
@@ -798,7 +798,7 @@ public class ContextMenu {
         menuItemComment.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CommentDialog cd = new CommentDialog(dp.getFrame());
+                CommentDialog cd = new CommentDialog(dp.getFrame(), dp);
                 cd.commentPlaylists(p);
                 cd.setVisible(true);
             }
@@ -888,7 +888,7 @@ public class ContextMenu {
         menuItemComment.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CommentDialog cd = new CommentDialog(dp.getFrame());
+                CommentDialog cd = new CommentDialog(dp.getFrame(), dp);
                 cd.commentNews(n);
                 cd.setVisible(true);
             }
