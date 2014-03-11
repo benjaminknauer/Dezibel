@@ -151,6 +151,15 @@ public class ProfilPanel extends DragablePanel {
         showTabNr = 0;
     }
 
+     /**
+     * Sets the tab which should be currently displayed.
+     * 
+     * @param tabNr nr of the tab which should be displayed
+     */
+    public void setTab(int tabNr){
+        showTabNr = tabNr;
+    }
+    
     public void setUser(User newUser) {
         this.currentUser = newUser;
         showTabNr = 0;
