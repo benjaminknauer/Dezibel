@@ -1,5 +1,6 @@
 package de.dezibel.gui;
 
+import de.dezibel.UpdateEntity;
 import de.dezibel.control.AlbumControl;
 import de.dezibel.control.UploadControl;
 import de.dezibel.data.Album;
@@ -41,6 +42,7 @@ public final class UploadDialog extends JDialog {
 
     private final Label label;
     private final Medium medium;
+    private DezibelPanel dPanel;
 
     /**
      * Constructor
@@ -52,8 +54,9 @@ public final class UploadDialog extends JDialog {
      * @param medium is set if the medium already exists but contains no file
      * and you want to upload a file now
      */
-    public UploadDialog(JFrame frame, Label label, Medium medium) {
+    public UploadDialog(JFrame frame, Label label, Medium medium, DezibelPanel dp) {
         super(frame);
+        dPanel = dp;
         setModal(true);
         upc = new UploadControl();
         this.label = label;
@@ -213,6 +216,7 @@ public final class UploadDialog extends JDialog {
                             break;
                     }
                 }
+                dPanel.refresh(UpdateEntity.MEDIUM);
             }
         });
 

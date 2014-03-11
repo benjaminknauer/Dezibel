@@ -286,9 +286,15 @@ public class DezibelPanel extends JPanel {
             	pnProfil.refresh();
             	pnLabelProfil.refresh();
                 
+                break;
             case RECOMMENDATIONS:
                 pnAds.refresh();
-            	
+                
+                break;
+            case MEDIUM:
+                pnProfil.refresh();
+                pnLabelProfil.refresh();
+            	break;
             default:
                 break;
         }
@@ -860,7 +866,7 @@ public class DezibelPanel extends JPanel {
     }
 
     private void onUpload() {
-        UploadDialog ud = new UploadDialog(frame, null, null);
+        UploadDialog ud = new UploadDialog(frame, null, null, this);
         ud.setVisible(true);
     }
 
