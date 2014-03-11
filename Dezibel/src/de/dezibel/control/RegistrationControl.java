@@ -49,7 +49,7 @@ public class RegistrationControl {
      */
     public boolean checkIfNamesValid(String firstName, String lastName) {
         Pattern p;
-        p = Pattern.compile("^([A-Za-z\\s]+){3,20}$");
+        p = Pattern.compile("^([A-Za-z\\s]+){2,20}$");
 	Matcher m = p.matcher(firstName);
         Matcher mm = p.matcher(lastName);
         return m.find() && mm.find();
