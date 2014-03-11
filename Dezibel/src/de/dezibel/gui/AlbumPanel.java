@@ -6,6 +6,7 @@ import de.dezibel.data.Database;
 import de.dezibel.data.Medium;
 import de.dezibel.data.Playlist;
 import de.dezibel.player.Player;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 
@@ -27,6 +28,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JPopupMenu;
@@ -49,6 +51,8 @@ public class AlbumPanel extends DragablePanel {
     CommentTableModel commentModel;
     JPopupMenu currentPopupMenu;
     Album currentAlbum;
+    JLabel lbAlbumCover;
+
 
     public AlbumPanel(DezibelPanel parent, Album currentAlbum) {
         super(parent);
@@ -64,12 +68,17 @@ public class AlbumPanel extends DragablePanel {
         String creatorString = currentAlbum.getArtist().getPseudonym();
 
         lbCreator = new JLabel(creatorString);
+        lbCreator.setHorizontalAlignment(JLabel.RIGHT);
         lbComments = new JLabel("Kommentare");
         model = new AlbumMediaTableModel();
         model.setData(currentAlbum);
         tblAlbumMedia = new JTable(model);
         spAlbumMedia = new JScrollPane(tblAlbumMedia);
-
+        if(! (currentAlbum.getCoverPath() == null)){
+        lbAlbumCover = new JLabel(new ImageIcon(currentAlbum.getCover()));
+        } else{
+            lbAlbumCover = new JLabel(new ImageIcon(this.getClass().getResource("/img/mini-logo.png")));
+        }
         btnComment = new JButton(new ImageIcon(this.getClass().getResource("/img/icons/commentIcon.png")));
         btnComment.setOpaque(false);
         btnComment.setBorderPainted(false);
@@ -182,9 +191,10 @@ public class AlbumPanel extends DragablePanel {
         lbTitle.setFont(DezibelFont.CENTERPANEL_TITLE);
         lbCreator.setFont(DezibelFont.CENTERPANEL_TITLE);
 
-        gbc.weighty = 0.1;
+        gbc.anchor = GridBagConstraints.SOUTH;
+        //gbc.weighty = 0.1;
         gbc.insets = new Insets(0, 30, 0, 0);
-        this.add(lbTitle, gbc);
+        this.add(lbAlbumCover, gbc);
 
         gbc.insets = new Insets(0, 0, 0, 0);
         gbc.anchor = GridBagConstraints.EAST;
@@ -194,10 +204,16 @@ public class AlbumPanel extends DragablePanel {
         gbc.anchor = GridBagConstraints.WEST;
         this.add(btnFavorite, gbc);
 
+        gbc.weightx = 0;
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.insets = new Insets(0, 0, 0, 30);
         gbc.anchor = GridBagConstraints.EAST;
         this.add(lbCreator, gbc);
+        
+        gbc.weighty = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 30, 0, 0);
+        this.add(lbTitle, gbc);
 
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(0, 0, 0, 0);
@@ -207,6 +223,11 @@ public class AlbumPanel extends DragablePanel {
 
         gbc.weighty = 0.3;
         this.add(spAlbumComments, gbc);
+        
+         int minWidth = (int) Math.max(lbCreator.getPreferredSize()
+                .getWidth(), 128);
+        lbCreator.setMinimumSize(new Dimension(minWidth, 32));
+        lbTitle.setMinimumSize(new Dimension(minWidth, 32));
     }
 
     @Override
