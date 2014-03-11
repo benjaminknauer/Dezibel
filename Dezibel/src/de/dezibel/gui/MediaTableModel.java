@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Shows the information of media in the searchpanel.
+ * TableModel for media in the searchpanel.
  * @author Richard, Tobias
  */
 public class MediaTableModel extends DefaultTableModel {
