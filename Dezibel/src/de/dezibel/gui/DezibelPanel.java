@@ -191,8 +191,6 @@ public class DezibelPanel extends JPanel {
         this.executor.changeDocking(daPlayer, borderDock);
         ((ProfilPanel) daProfil.getContent()).setUser(Database.getInstance()
                 .getLoggedInUser());
-
-        onGenre();
     }
 
     public void showProfile(User user) {
