@@ -70,7 +70,7 @@ public class AlbumMediaTableModel extends DefaultTableModel {
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return columnIndex == 0;
+        return false;
     }
     
     
