@@ -37,7 +37,7 @@ import javax.swing.ListSelectionModel;
 
 /**
  * Class for the Profile Panel of a Label.
- * @author Henner
+ * @author Alexander, Henner
  */
 public class LabelProfilPanel extends DragablePanel {
 
@@ -211,7 +211,7 @@ public class LabelProfilPanel extends DragablePanel {
         tabPanel.addTab("Follower", null, pnFollower);
         this.pnNews = new JPanel();
         this.createNewsComponents();
-        tabPanel.addTab("Neuigkeiten", null, pnNews);
+        tabPanel.addTab("News", null, pnNews);
         this.pnManagement = new JPanel();
         this.createManagementComponents();
         tabPanel.addTab("Manager", null, pnManagement);
