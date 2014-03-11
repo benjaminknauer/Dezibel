@@ -5,6 +5,7 @@ import de.dezibel.player.Player;
 import de.dezibel.player.PlayerObserver;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -563,6 +564,12 @@ public class PlayerPanel extends DragablePanel {
     @Override
     public void refresh() {
         // unused
+    }
+    
+    @Override
+    public void onExternalized() {
+        createCenterLayout();
+        this.setPreferredSize(new Dimension(600, 350));
     }
 
 }
