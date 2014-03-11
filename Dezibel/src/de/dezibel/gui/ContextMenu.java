@@ -310,7 +310,6 @@ public class ContextMenu {
                     }
                 });
                 menuAddToAlbum.add(currentMenuItem);
-                menuAddToAlbum.addSeparator();
             }
 
 
@@ -329,7 +328,6 @@ public class ContextMenu {
                     });
                     menuAddToAlbum.add(currentMenuItem);
                 }
-                menuAddToAlbum.addSeparator();
                 for (User currentArtist : currentLabel.getArtists()) {
                     for (Album currentAlbum : currentArtist.getCreatedAlbums()) {
 
@@ -345,7 +343,6 @@ public class ContextMenu {
                         });
                         menuAddToAlbum.add(currentMenuItem);
                     }
-                    menuAddToAlbum.addSeparator();
                 }
             }
 
