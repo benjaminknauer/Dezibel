@@ -40,7 +40,9 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
 /**
- * Class representing a User's profile page. The different information (Uploads, Favorites, General information) are shown in tabbed panels.
+ * Class representing a User's profile page. The different information (Uploads,
+ * Favorites, General information) are shown in tabbed panels.
+ *
  * @author Alex, Bastian, Benni, Henner
  */
 public class ProfilPanel extends DragablePanel {
@@ -125,7 +127,7 @@ public class ProfilPanel extends DragablePanel {
     private NewsSideTableModel newsModell;
     private ApplicationToArtistTableModel applicationsModel;
     private JTextArea taComments;
-    
+
     private int showTabNr;
     private boolean isApplicationVisible;
     private JPasswordField tfOldPassword;
@@ -151,19 +153,19 @@ public class ProfilPanel extends DragablePanel {
         this.labelControler = new LabelControl();
         this.adminControler = new AdminControl();
         this.currentUser = profileControler.getLoggedInUser();
-        
+
         showTabNr = 0;
     }
 
-     /**
+    /**
      * Sets the tab which should be currently displayed.
-     * 
+     *
      * @param tabNr nr of the tab which should be displayed
      */
-    public void setTab(int tabNr){
+    public void setTab(int tabNr) {
         showTabNr = tabNr;
     }
-    
+
     public void setUser(User newUser) {
         this.currentUser = newUser;
         showTabNr = 0;
@@ -177,11 +179,9 @@ public class ProfilPanel extends DragablePanel {
     @Override
     public void refresh() {
 
-        if (!(currentUser.isLocked() && !(profileControler.getLoggedInUser(
-        ).isAdmin()))) {
-            
+        if (!(currentUser.isLocked() && !(profileControler.getLoggedInUser().isAdmin()))) {
+
             //tabPanel.setSelectedIndex(showTabNr);
-            
             taNews.setText("");
             taComments.setText("");
 
@@ -273,8 +273,8 @@ public class ProfilPanel extends DragablePanel {
             } else if (!(isNewsVisible)) {
                 tabPanel.addTab("News", null, pnNews);
             }
-            
-             if (!(currentUser.equals(profileControler.getLoggedInUser()))) {
+
+            if (!(currentUser.equals(profileControler.getLoggedInUser()))) {
                 tabPanel.remove(pnApplications);
                 isApplicationVisible = false;
             } else if (!(isApplicationVisible)) {
@@ -317,7 +317,7 @@ public class ProfilPanel extends DragablePanel {
             albumModellFavo.setData(profileControler.getFavorizedAlbums(currentUser));
             newsModell.setData(profileControler.getNews(currentUser));
             applicationsModel.setData(profileControler.getApplications(currentUser));
-            
+
             tabPanel.setSelectedIndex(showTabNr);
         }
     }
@@ -399,138 +399,246 @@ public class ProfilPanel extends DragablePanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (tfFirstName.isEnabled() && currentUser != null) {
-                    profileControler.setFirstName(currentUser, tfFirstName.getText());
-                    profileControler.setLastName(currentUser, tfLastName.getText());
-                    profileControler.setPseudonym(currentUser, tfPseudonym.getText());
-                    profileControler.setGender(currentUser, tfGender.getSelectedItem().toString());
-                    profileControler.setEmail(currentUser, tfEmail.getText());
-                    profileControler.setBirthDate(currentUser, tfBirthDate.getText());
-                    profileControler.setCity(currentUser, tfCity.getText());
-                    profileControler.setCountry(currentUser, tfCountry.getText());
-                    profileControler.setAboutMe(currentUser, tfAboutMe.getText());
-                    if (!(tfOldPassword.getText().equals(""))){
-                        if (profileControler.checkPassword(currentUser, tfOldPassword.getText())){
-                            if (!(tfNewPassword.getText().equals(""))){
-                            
-                                if (tfRepeatNewPassword.getText().equals(tfNewPassword.getText())){
-                                    profileControler.setPassword(profileControler.getLoggedInUser(), tfNewPassword.getText());
+                    String previousEmail = tfEmail.getText();
+                    if (!tfEmail.getText().isEmpty() && !tfFirstName.getText().isEmpty() && !tfLastName.getText().isEmpty()) {
+                        if (!tfOldPassword.getText().isEmpty() || !tfNewPassword.getText().isEmpty() || !tfRepeatNewPassword.getText().isEmpty()) {
+                            if (profileControler.checkPassword(currentUser, tfOldPassword.getText())) {
+                                if (!profileControler.checkIfMailAlreadyInUse(previousEmail, tfEmail.getText())) {
+                                    if (profileControler.checkIfMailValid(tfEmail.getText())) {
+                                        if (profileControler.checkIfNamesValid(tfFirstName.getText(), tfLastName.getText())) {
+                                            if (profileControler.checkIfCountryValid(tfCountry.getText())) {
+                                                if (tfNewPassword.getText().equals(tfRepeatNewPassword.getText())) {
+                                                    if (!(tfNewPassword.getText().equals(""))) {
+                                                        if (profileControler.checkIfPWValid(tfRepeatNewPassword.getText())) {
+                                                            profileControler.setFirstName(currentUser, tfFirstName.getText());
+                                                            profileControler.setLastName(currentUser, tfLastName.getText());
+                                                            profileControler.setPseudonym(currentUser, tfPseudonym.getText());
+                                                            profileControler.setGender(currentUser, tfGender.getSelectedItem().toString());
+                                                            profileControler.setEmail(currentUser, tfEmail.getText());
+                                                            profileControler.setBirthDate(currentUser, tfBirthDate.getText());
+                                                            profileControler.setCity(currentUser, tfCity.getText());
+                                                            profileControler.setCountry(currentUser, tfCountry.getText());
+                                                            profileControler.setAboutMe(currentUser, tfAboutMe.getText());
+                                                            profileControler.setPassword(profileControler.getLoggedInUser(), tfNewPassword.getText());
+                                                            setProfileTextfieldsEditable(false);
+                                                        } else {
+                                                            JOptionPane.showMessageDialog(parent, "Das Passwort muss mindestens sechs Zeichen lang sein und je mindestens eine Zahl und einen Buchstaben enthalten.",
+                                                                    "Passwort", JOptionPane.INFORMATION_MESSAGE);
+                                                        }
+                                                    } else {
+                                                        JOptionPane.showMessageDialog(parent, "Kein neues Passwort eingegeben!");
+                                                    }
+
+                                                } else {
+                                                    JOptionPane.showMessageDialog(parent, "Das Passwort ist nicht identisch",
+                                                            "Passwort", JOptionPane.INFORMATION_MESSAGE);
+                                                }
+                                            } else {
+                                                JOptionPane.showMessageDialog(parent, "Bitte gültiges Land eingeben",
+                                                        "Ungültiges Land", JOptionPane.INFORMATION_MESSAGE);
+                                            }
+                                        } else {
+                                            JOptionPane.showMessageDialog(parent, "Bitte gültige Namen eingeben",
+                                                    "Name ungültig", JOptionPane.INFORMATION_MESSAGE);
+                                        }
+                                    } else {
+                                        JOptionPane.showMessageDialog(parent, "Die eingegebene Email-Adresse ist ungültig",
+                                                "Email ungültig", JOptionPane.INFORMATION_MESSAGE);
+                                    }
                                 } else {
-                                    JOptionPane.showMessageDialog(parent, "Passwörter stimmen nicht überein!");
+                                    JOptionPane.showMessageDialog(parent, "Es existiert bereichts ein Konto zu dieser Email",
+                                            "Email existiert schon", JOptionPane.INFORMATION_MESSAGE);
                                 }
                             } else {
-                                JOptionPane.showMessageDialog(parent, "Kein neues Passwort eingegeben!");
-                            }
-                        } else {
                                 JOptionPane.showMessageDialog(parent, "Altes Passwort stimmt nicht!");
                             }
+                        } else {
+                            if (!profileControler.checkIfMailAlreadyInUse(previousEmail, tfEmail.getText())) {
+                                if (profileControler.checkIfMailValid(tfEmail.getText())) {
+                                    if (profileControler.checkIfNamesValid(tfFirstName.getText(), tfLastName.getText())) {
+                                        if (profileControler.checkIfCountryValid(tfCountry.getText())) {
+                                            profileControler.setFirstName(currentUser, tfFirstName.getText());
+                                            profileControler.setLastName(currentUser, tfLastName.getText());
+                                            profileControler.setPseudonym(currentUser, tfPseudonym.getText());
+                                            profileControler.setGender(currentUser, tfGender.getSelectedItem().toString());
+                                            profileControler.setEmail(currentUser, tfEmail.getText());
+                                            profileControler.setBirthDate(currentUser, tfBirthDate.getText());
+                                            profileControler.setCity(currentUser, tfCity.getText());
+                                            profileControler.setCountry(currentUser, tfCountry.getText());
+                                            profileControler.setAboutMe(currentUser, tfAboutMe.getText());
+                                            setProfileTextfieldsEditable(false);
+                                        } else {
+                                            JOptionPane.showMessageDialog(parent, "Bitte gültiges Land eingeben",
+                                                    "Ungültiges Land", JOptionPane.INFORMATION_MESSAGE);
+                                        }
+                                    } else {
+                                        JOptionPane.showMessageDialog(parent, "Bitte gültige Namen eingeben",
+                                                "Name ungültig", JOptionPane.INFORMATION_MESSAGE);
+                                    }
+                                } else {
+                                    JOptionPane.showMessageDialog(parent, "Die eingegebene Email-Adresse ist ungültig",
+                                            "Email ungültig", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                            } else {
+                                JOptionPane.showMessageDialog(parent, "Es existiert bereichts ein Konto zu dieser Email",
+                                        "Email existiert schon", JOptionPane.INFORMATION_MESSAGE);
+                            }
+
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(parent, "Bitte füllen Sie alle Pflichtfelder",
+                                "Pflichtfelder leer", JOptionPane.INFORMATION_MESSAGE);
                     }
-                    setProfileTextfieldsEditable(false);
+                    showTabNr = 0;
+                    refresh();
                 } else {
                     setProfileTextfieldsEditable(true);
+                    showTabNr = 0;
+                    refresh();
                 }
-                showTabNr = 0;
-                refresh();
             }
-        });
+        }
+        );
 
         btnFollow = new JButton("Follow");
-        btnFollow.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (profileControler.getFavorizedUsers(profileControler.getLoggedInUser()).contains(
-                        currentUser)) {
-                    profileControler.removeFavoriteUser(currentUser);
-                } else if (!(profileControler.getFavorizedUsers(profileControler.getLoggedInUser()).contains(
-                        currentUser))) {
-                    profileControler.addToFavoriteUsers(currentUser);
+
+        btnFollow.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e
+                    ) {
+                        if (profileControler.getFavorizedUsers(profileControler.getLoggedInUser()).contains(
+                                currentUser)) {
+                            profileControler.removeFavoriteUser(currentUser);
+                        } else if (!(profileControler.getFavorizedUsers(profileControler.getLoggedInUser()).contains(
+                                currentUser))) {
+                            profileControler.addToFavoriteUsers(currentUser);
+                        }
+                        showTabNr = 0;
+                        refresh();
+                        parent.refresh(UpdateEntity.FAVORITES);
+                    }
                 }
-                showTabNr = 0;
-                refresh();
-                parent.refresh(UpdateEntity.FAVORITES);
-            }
-        });
+        );
 
         btnLock = new JButton("Sperren");
-        btnLock.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!(currentUser.isLocked())) {
-                    JPanel detailPanel = new JPanel();
-                    detailPanel.setLayout(new BorderLayout());
-                    JLabel lblReason = new JLabel("Grund: ");
-                    JTextArea txtReason = new JTextArea();
-                    JScrollPane scrollPane = new JScrollPane(txtReason);
-                    scrollPane.setPreferredSize(new Dimension(300, 320));
-                    detailPanel.add(lblReason, BorderLayout.NORTH);
-                    detailPanel.add(scrollPane, BorderLayout.SOUTH);
-                    int ret = JOptionPane.showConfirmDialog(ProfilPanel.this,
-                            detailPanel, "Medium sperren",
-                            JOptionPane.OK_CANCEL_OPTION,
-                            JOptionPane.PLAIN_MESSAGE);
-                    if (ret == JOptionPane.OK_OPTION) {
-                        new AdminControl().lock(currentUser, txtReason.getText());
-                        JOptionPane.showMessageDialog(ProfilPanel.this,
-                                "Das Medium wurde gesperrt!", "Medium gesperrt",
-                                JOptionPane.INFORMATION_MESSAGE);
-                    }
-                } else {
-                    int ret = JOptionPane.showConfirmDialog(ProfilPanel.this,
-                            "Soll das Medium wirklich entsperrt werden?",
-                            "Medium entsperren", JOptionPane.YES_NO_OPTION,
-                            JOptionPane.QUESTION_MESSAGE);
-                    if (ret == JOptionPane.YES_OPTION) {
-                        new AdminControl().unlock(currentUser);
+
+        btnLock.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e
+                    ) {
+                        if (!(currentUser.isLocked())) {
+                            JPanel detailPanel = new JPanel();
+                            detailPanel.setLayout(new BorderLayout());
+                            JLabel lblReason = new JLabel("Grund: ");
+                            JTextArea txtReason = new JTextArea();
+                            JScrollPane scrollPane = new JScrollPane(txtReason);
+                            scrollPane.setPreferredSize(new Dimension(300, 320));
+                            detailPanel.add(lblReason, BorderLayout.NORTH);
+                            detailPanel.add(scrollPane, BorderLayout.SOUTH);
+                            int ret = JOptionPane.showConfirmDialog(ProfilPanel.this,
+                                    detailPanel, "Medium sperren",
+                                    JOptionPane.OK_CANCEL_OPTION,
+                                    JOptionPane.PLAIN_MESSAGE);
+                            if (ret == JOptionPane.OK_OPTION) {
+                                new AdminControl().lock(currentUser, txtReason.getText());
+                                JOptionPane.showMessageDialog(ProfilPanel.this,
+                                        "Das Medium wurde gesperrt!", "Medium gesperrt",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                            }
+                        } else {
+                            int ret = JOptionPane.showConfirmDialog(ProfilPanel.this,
+                                    "Soll das Medium wirklich entsperrt werden?",
+                                    "Medium entsperren", JOptionPane.YES_NO_OPTION,
+                                    JOptionPane.QUESTION_MESSAGE);
+                            if (ret == JOptionPane.YES_OPTION) {
+                                new AdminControl().unlock(currentUser);
+                            }
+                        }
+                        showTabNr = 0;
+                        refresh();
                     }
                 }
-                showTabNr = 0;
-                refresh();
-            }
-        });
+        );
 
-        addComponent(pnProfile, gbl, lbFirstName, 0, 0);
-        addComponent(pnProfile, gbl, tfFirstName, 1, 0);
-        addComponent(pnProfile, gbl, lbLastName, 0, 1);
-        addComponent(pnProfile, gbl, tfLastName, 1, 1);
-        addComponent(pnProfile, gbl, lbRole, 0, 2);
-        addComponent(pnProfile, gbl, tfRole, 1, 2);
-        addComponent(pnProfile, gbl, lbPseudonym, 0, 3);
-        addComponent(pnProfile, gbl, tfPseudonym, 1, 3);
-        addComponent(pnProfile, gbl, lbGender, 0, 4);
-        addComponent(pnProfile, gbl, tfGender, 1, 4);
-        addComponent(pnProfile, gbl, lbEmail, 0, 5);
-        addComponent(pnProfile, gbl, tfEmail, 1, 5);
-        addComponent(pnProfile, gbl, lbBirthDate, 0, 6);
-        addComponent(pnProfile, gbl, tfBirthDate, 1, 6);
-        addComponent(pnProfile, gbl, lbCity, 0, 7);
-        addComponent(pnProfile, gbl, tfCity, 1, 7);
-        addComponent(pnProfile, gbl, lbCountry, 0, 8);
-        addComponent(pnProfile, gbl, tfCountry, 1, 8);
-        addComponent(pnProfile, gbl, lbAboutMe, 0, 9);
-        addComponent(pnProfile, gbl, tfAboutMe, 1, 9);
-        addComponent(pnProfile, gbl, lbOldPassword, 0, 10);
-        addComponent(pnProfile, gbl, tfOldPassword, 1, 10);
-        addComponent(pnProfile, gbl, lbNewPassword, 0, 11);
-        addComponent(pnProfile, gbl, tfNewPassword, 1, 11);
-        addComponent(pnProfile, gbl, lbRepeatNewPassword, 0, 12);
-        addComponent(pnProfile, gbl, tfRepeatNewPassword, 1, 12);
+        addComponent(pnProfile, gbl, lbFirstName,
+                0, 0);
+        addComponent(pnProfile, gbl, tfFirstName,
+                1, 0);
+        addComponent(pnProfile, gbl, lbLastName,
+                0, 1);
+        addComponent(pnProfile, gbl, tfLastName,
+                1, 1);
+        addComponent(pnProfile, gbl, lbRole,
+                0, 2);
+        addComponent(pnProfile, gbl, tfRole,
+                1, 2);
+        addComponent(pnProfile, gbl, lbPseudonym,
+                0, 3);
+        addComponent(pnProfile, gbl, tfPseudonym,
+                1, 3);
+        addComponent(pnProfile, gbl, lbGender,
+                0, 4);
+        addComponent(pnProfile, gbl, tfGender,
+                1, 4);
+        addComponent(pnProfile, gbl, lbEmail,
+                0, 5);
+        addComponent(pnProfile, gbl, tfEmail,
+                1, 5);
+        addComponent(pnProfile, gbl, lbBirthDate,
+                0, 6);
+        addComponent(pnProfile, gbl, tfBirthDate,
+                1, 6);
+        addComponent(pnProfile, gbl, lbCity,
+                0, 7);
+        addComponent(pnProfile, gbl, tfCity,
+                1, 7);
+        addComponent(pnProfile, gbl, lbCountry,
+                0, 8);
+        addComponent(pnProfile, gbl, tfCountry,
+                1, 8);
+        addComponent(pnProfile, gbl, lbAboutMe,
+                0, 9);
+        addComponent(pnProfile, gbl, tfAboutMe,
+                1, 9);
+        addComponent(pnProfile, gbl, lbOldPassword,
+                0, 10);
+        addComponent(pnProfile, gbl, tfOldPassword,
+                1, 10);
+        addComponent(pnProfile, gbl, lbNewPassword,
+                0, 11);
+        addComponent(pnProfile, gbl, tfNewPassword,
+                1, 11);
+        addComponent(pnProfile, gbl, lbRepeatNewPassword,
+                0, 12);
+        addComponent(pnProfile, gbl, tfRepeatNewPassword,
+                1, 12);
 
         gbc.fill = GridBagConstraints.NONE;
         gbc.insets = new Insets(10, 0, 0, 0);
         gbc.anchor = GridBagConstraints.WEST;
         gbc.gridx = 1;
         gbc.gridy = 13;
+
         gbl.setConstraints(btnEdit, gbc);
+
         pnProfile.add(btnEdit);
         gbc.gridx = 1;
         gbc.gridy = 13;
+
         gbl.setConstraints(btnFollow, gbc);
+
         pnProfile.add(btnFollow);
         gbc.gridx = 2;
         gbc.gridy = 13;
+
         gbl.setConstraints(btnLock, gbc);
+
         pnProfile.add(btnLock);
 
-        setProfileTextfieldsEditable(false);
+        setProfileTextfieldsEditable(
+                false);
 
     }
 
@@ -594,6 +702,7 @@ public class ProfilPanel extends DragablePanel {
                     }
                 }
             }
+
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
@@ -800,6 +909,7 @@ public class ProfilPanel extends DragablePanel {
                     }
                 }
             }
+
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
@@ -834,6 +944,7 @@ public class ProfilPanel extends DragablePanel {
                     }
                 }
             }
+
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
@@ -856,7 +967,7 @@ public class ProfilPanel extends DragablePanel {
             }
 
         });
-        
+
         tFavoAlbums.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -868,6 +979,7 @@ public class ProfilPanel extends DragablePanel {
                     }
                 }
             }
+
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
@@ -952,7 +1064,6 @@ public class ProfilPanel extends DragablePanel {
         layout.setAutoCreateGaps(true);
         pnUploads.setLayout(layout);
 
-        
         tUploadPlaylists.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -964,6 +1075,7 @@ public class ProfilPanel extends DragablePanel {
                     }
                 }
             }
+
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
@@ -986,7 +1098,7 @@ public class ProfilPanel extends DragablePanel {
             }
 
         });
-        
+
         tUploadMedia.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -999,6 +1111,7 @@ public class ProfilPanel extends DragablePanel {
                     }
                 }
             }
+
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
@@ -1021,7 +1134,7 @@ public class ProfilPanel extends DragablePanel {
             }
 
         });
-        
+
         tUploadAlbums.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -1033,6 +1146,7 @@ public class ProfilPanel extends DragablePanel {
                     }
                 }
             }
+
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
@@ -1098,6 +1212,7 @@ public class ProfilPanel extends DragablePanel {
                     }
                 }
             }
+
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
                     showPopup(me);
@@ -1137,6 +1252,7 @@ public class ProfilPanel extends DragablePanel {
                     }
                 }
             }
+
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
@@ -1179,39 +1295,37 @@ public class ProfilPanel extends DragablePanel {
         gbl.setConstraints(btnCreateLabel, gbc);
         pnLabels.add(btnCreateLabel);
     }
-    
+
     private void createApplicationComponents() {
         this.applicationsModel = new ApplicationToArtistTableModel();
         this.tApplications = new JTable(applicationsModel);
         this.scrApplications = new JScrollPane(tApplications);
         this.scrApplications.getViewport().setView(tApplications);
         this.tApplications.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-  
-        
-        
+
         this.taApplications = new JTextArea();
         this.taApplications.setLineWrap(true);
         this.taApplications.setWrapStyleWord(true);
         this.taApplications.setEditable(false);
         JScrollPane sptaApplications = new JScrollPane(taApplications);
         sptaApplications.getViewport().setView(taApplications);
-        
-        
+
         this.tApplications.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
                 Application a = (Application) applicationsModel.getValueAt(tApplications.getSelectedRow(), -1);
-                if(me.getClickCount() == 2 && (me.getButton() == MouseEvent.BUTTON1)) {
-                    if(a != null) {
-                        if(a.getLabel() != null) {
+                if (me.getClickCount() == 2 && (me.getButton() == MouseEvent.BUTTON1)) {
+                    if (a != null) {
+                        if (a.getLabel() != null) {
                             parent.showProfile(a.getLabel());
                         }
                     }
                 }
-                if(a != null)
+                if (a != null) {
                     taApplications.setText(a.getText());
+                }
             }
-            
+
             @Override
             public void mousePressed(MouseEvent me) {
                 if (me.isPopupTrigger()) {
@@ -1232,7 +1346,7 @@ public class ProfilPanel extends DragablePanel {
                 currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
             }
         });
-        
+
         GroupLayout layout = new GroupLayout(pnApplications);
         layout.setHorizontalGroup(layout
                 .createParallelGroup(GroupLayout.Alignment.CENTER, true)
