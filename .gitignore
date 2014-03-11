@@ -4,6 +4,9 @@ Thumbs.db
 Dezibel/.classpath
 Dezibel/.project
 Dezibel/bin
+<<<<<<< HEAD
+�nderungen am Diagramm.txt
+=======
 Änderungen am Diagramm.txt
 
 _EndAbgabe/Screenshots fürs Handbuch/comment.png
@@ -21,3 +24,4 @@ _EndAbgabe/Screenshots fürs Handbuch/reg.png
 _EndAbgabe/Screenshots fürs Handbuch/suche.png
 
 _EndAbgabe/Screenshots fürs Handbuch/upload.png
+>>>>>>> df21f35d90048b3adafa2c958e54c4530fcabd1b
