@@ -47,6 +47,16 @@ public class NewsPanelTableModel extends DefaultTableModel {
             return dataNews.length;
         }
     }
+    
+    public int getNewsIndex(News n){
+        
+        for(int i = 0; i < dataNews.length; i++){
+            if(n.equals(dataNews[i])){
+                return i;
+            }
+        }
+        return -1;
+    }
 
     @Override
     public Object getValueAt(int row, int col) {

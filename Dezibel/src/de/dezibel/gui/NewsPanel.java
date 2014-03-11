@@ -52,10 +52,12 @@ public class NewsPanel extends DragablePanel {
     private NewsControl nc;
     
 
-    public NewsPanel(DezibelPanel parent) {
+    public NewsPanel(DezibelPanel parent , News currentNews) {
         super(parent);
+        this.currentNews = currentNews;
         this.createNewsPanel();
         this.fillTable();
+        this.showCurrentNews();
     } 
     public  void createNewsPanel(){ 
       lbnews = new JLabel("News");
@@ -178,7 +180,8 @@ public class NewsPanel extends DragablePanel {
         this.setLayout(layout);
     }
 
-    public void showCurrentNews() {       
+    public void showCurrentNews() {      
+        tNews.setRowSelectionInterval(nptm.getNewsIndex(currentNews), nptm.getNewsIndex(currentNews));
         tfTitel.setText(currentNews.getTitle());
         if(currentNews.isAuthorLabel()){
             tfAutor.setText(currentNews.getLabel().getName());
