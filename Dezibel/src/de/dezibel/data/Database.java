@@ -48,7 +48,7 @@ public class Database {
     private LinkedList<Application> applications;
     private LinkedList<Genre> genres;
 
-    private final String topGenreName = "topGenre";
+    private final String topGenreName = "Musik";
     
     private User loggedInUser;
     
@@ -118,33 +118,53 @@ public class Database {
                 new Date(), null, null, (Math.random() < 0.5));
         this.users.get(0).promoteToAdmin();
 
-        // Create topGenre
+        // Create basic genres
         this.genres.add(new Genre(topGenreName, null));
-        // TODO - Testdaten löschen
-        Genre sub1 = new Genre("Subgenre 1", this.getTopGenre());
-        this.genres.add(sub1);
-        Genre sub2 = new Genre("Subgenre 2", this.getTopGenre());
-        this.genres.add(sub2);
-        Genre sub3 = new Genre("Subgenre 3", this.getTopGenre());
-        this.genres.add(sub3);
-        Genre sub4 = new Genre("Subgenre 4", this.getTopGenre());
-        this.genres.add(sub4);
-        this.genres.add(new Genre("Subsubgenre 1.1", sub1));
-        this.genres.add(new Genre("Subsubgenre 1.2", sub1));
-        this.genres.add(new Genre("Subsubgenre 1.3", sub1));
-        this.genres.add(new Genre("Subsubgenre 1.4", sub1));
-        this.genres.add(new Genre("Subsubgenre 2.1", sub2));
-        this.genres.add(new Genre("Subsubgenre 2.2", sub2));
-        this.genres.add(new Genre("Subsubgenre 2.3", sub2));
-        this.genres.add(new Genre("Subsubgenre 2.4", sub2));
-        this.genres.add(new Genre("Subsubgenre 3.1", sub3));
-        this.genres.add(new Genre("Subsubgenre 3.2", sub3));
-        this.genres.add(new Genre("Subsubgenre 3.3", sub3));
-        this.genres.add(new Genre("Subsubgenre 3.4", sub3));
-        this.genres.add(new Genre("Subsubgenre 4.1", sub4));
-        this.genres.add(new Genre("Subsubgenre 4.2", sub4));
-        this.genres.add(new Genre("Subsubgenre 4.3", sub4));
-        this.genres.add(new Genre("Subsubgenre 4.4", sub4));
+        Genre jazz = new Genre("Jazz", this.getTopGenre());
+        this.genres.add(jazz);
+        this.genres.add(new Genre("Acid Jazz", jazz));
+        this.genres.add(new Genre("Modern Jazz", jazz));
+        this.genres.add(new Genre("Swing", jazz));
+        Genre elektroPop = new Genre("Elektronische Popmusik", this.getTopGenre());
+        this.genres.add(new Genre("Bitpop", elektroPop));
+        this.genres.add(new Genre("Chiptune", elektroPop));
+        this.genres.add(new Genre("Future Pop", elektroPop));
+        this.genres.add(new Genre("Synthiepop", elektroPop));
+        this.genres.add(elektroPop);
+        Genre dance = new Genre("Dance", this.getTopGenre());
+        this.genres.add(dance);
+        this.genres.add(new Genre("Disco", dance));
+        this.genres.add(new Genre("Freestyle", dance));
+        this.genres.add(new Genre("New Beat", dance));
+        Genre rock = new Genre("Rock", this.getTopGenre());
+        this.genres.add(rock);
+        Genre alternative = new Genre("Alternative", rock);
+        this.genres.add(alternative);
+        this.genres.add(new Genre("Alternative", alternative));
+        this.genres.add(new Genre("Hamburger Schule", alternative));
+        this.genres.add(new Genre("Indie Rock", alternative));
+        this.genres.add(new Genre("Shoegazing", alternative));
+        Genre deutschRock = new Genre("Deutschrock", rock);
+        this.genres.add(deutschRock);
+        this.genres.add(new Genre("Krautrock", deutschRock));
+        Genre hardRock = new Genre("Hard Rock", rock);
+        this.genres.add(hardRock);
+        this.genres.add(new Genre("Glam Rock", hardRock));
+        this.genres.add(new Genre("Grunge", hardRock));
+        Genre house = new Genre("House", this.getTopGenre());
+        this.genres.add(house);
+        this.genres.add(new Genre("Acid House", house));
+        this.genres.add(new Genre("Speed Garage", house));
+        this.genres.add(new Genre("Vocal House", house));
+        this.genres.add(new Genre("Electro House", house));
+        Genre spirit = new Genre("Spirituelle & Geistliche Musik", this.getTopGenre());
+        Genre gospel = new Genre("Gospel", spirit);
+        this.genres.add(gospel);
+        this.genres.add(new Genre("Praise and Warship", gospel));
+        this.genres.add(new Genre("Black Gospel", gospel));
+        this.genres.add(new Genre("Christliche Popmusik", spirit));
+        this.genres.add(new Genre("Chazzan", spirit));
+        this.genres.add(new Genre("Bhajan", spirit));
     }
 
     /**
