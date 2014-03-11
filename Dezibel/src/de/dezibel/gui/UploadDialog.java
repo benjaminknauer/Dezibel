@@ -78,6 +78,7 @@ public final class UploadDialog extends JDialog {
         final JTextField tfTitle = new JTextField();
         JLabel lbUpload = new JLabel("Datei");
         tfUpload = new JTextField();
+        tfUpload.setEditable(false);
         JButton btChoose = new JButton("...");
         JButton btUpload = new JButton("Upload");
         JButton btCancel = new JButton("Abbrechen");
