@@ -34,6 +34,10 @@ public class AdsPanel extends DragablePanel {
     private JLabel lbTitle;
     JTable tableRecommendations;
 
+    /**
+     * Creates an add panel with the given parent.
+     * @param parent This panel's parent component
+     */
     public AdsPanel(DezibelPanel parent) {
         super(parent);
         this.control = new AdsControl();
@@ -41,7 +45,8 @@ public class AdsPanel extends DragablePanel {
         this.setBackground(DezibelColor.PanelBackground);
     }
 
-    public void init() {
+    
+    private void init() {
         tableModelRecommendations = new RecommendationsTableModel();
         tableModelRecommendations.setData(control.getRecommendedMedia());
         lbTitle = new JLabel("Empfehlungen");
@@ -126,6 +131,9 @@ public class AdsPanel extends DragablePanel {
     }
 
     @Override
+    /**
+     * Reloads the recommendations from the database.
+     */
     public void refresh() {
         tableModelRecommendations.setData(control.getRecommendedMedia());
 

@@ -92,9 +92,25 @@ public class PlayerPanel extends DragablePanel {
         slider.setBackground(DezibelColor.SliderBackground);
         // Add Buttons und volume slider
         btnPrev = new JButton(new ImageIcon(this.getClass().getResource("/img/icons/prev.png")));
+        btnPrev.setOpaque(false);
+        btnPrev.setBorderPainted(false);
+        btnPrev.setContentAreaFilled(false);
+        btnPrev.setFocusable(false);
         btnPlayPause = new JButton(new ImageIcon(this.getClass().getResource("/img/icons/play.png")));
+        btnPlayPause.setOpaque(false);
+        btnPlayPause.setBorderPainted(false);
+        btnPlayPause.setContentAreaFilled(false);
+        btnPlayPause.setFocusable(false);
         btnStop = new JButton(new ImageIcon(this.getClass().getResource("/img/icons/stop.png")));
+        btnStop.setOpaque(false);
+        btnStop.setBorderPainted(false);
+        btnStop.setContentAreaFilled(false);
+        btnStop.setFocusable(false);
         btnNext = new JButton(new ImageIcon(this.getClass().getResource("/img/icons/next.png")));
+        btnNext.setOpaque(false);
+        btnNext.setBorderPainted(false);
+        btnNext.setContentAreaFilled(false);
+        btnNext.setFocusable(false);
         volume = new JSlider(JSlider.VERTICAL, 0, 100, 50);
 
         // Add logo
@@ -162,6 +178,7 @@ public class PlayerPanel extends DragablePanel {
         // Renderer that shows the currently playing song
         tablePlaylist.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             UIDefaults defaults = javax.swing.UIManager.getDefaults();
+
             public Component getTableCellRendererComponent(
                     JTable table, Object color,
                     boolean isSelected, boolean hasFocus,
@@ -222,6 +239,7 @@ public class PlayerPanel extends DragablePanel {
         });
         tablePlaylist.setDefaultRenderer(Double.class, new DefaultTableCellRenderer() {
             UIDefaults defaults = javax.swing.UIManager.getDefaults();
+
             public Component getTableCellRendererComponent(
                     JTable table, Object color,
                     boolean isSelected, boolean hasFocus,
@@ -275,12 +293,14 @@ public class PlayerPanel extends DragablePanel {
         btnPlayPause.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (player.isPlaying()) {
-                    player.pause();
-                    btnPlayPause.setIcon(new ImageIcon(this.getClass().getResource("/img/icons/play.png")));
-                } else {
-                    player.play();
-                    btnPlayPause.setIcon(new ImageIcon(this.getClass().getResource("/img/icons/pause.png")));
+                if (player.getCurrentMedium() != null) {
+                    if (player.isPlaying()) {
+                        player.pause();
+                        btnPlayPause.setIcon(new ImageIcon(this.getClass().getResource("/img/icons/play.png")));
+                    } else {
+                        player.play();
+                        btnPlayPause.setIcon(new ImageIcon(this.getClass().getResource("/img/icons/pause.png")));
+                    }
                 }
             }
         });

@@ -233,7 +233,7 @@ public class Player {
      * @return The current Medium
      */
     public Medium getCurrentMedium() {
-        if (this.currentPlaylist == null) {
+        if (this.currentPlaylist == null || this.currentPosition >= this.currentPlaylist.size()) {
             return null;
         } else {
             return this.currentPlaylist.get(this.currentPosition);
