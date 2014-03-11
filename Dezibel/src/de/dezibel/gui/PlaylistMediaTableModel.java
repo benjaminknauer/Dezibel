@@ -3,20 +3,21 @@ package de.dezibel.gui;
 import de.dezibel.data.Medium;
 import de.dezibel.data.Playlist;
 import java.util.Date;
-import java.util.LinkedList;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Shows the mediumobjects in a playlist.
+ * TableModel for mediaobject in the PlaylistPanel.
+ *
  * @author Benjamin Knauer, Henner
  */
 public class PlaylistMediaTableModel extends DefaultTableModel {
+
     private Playlist currentPlaylist;
-    private String[] headlines = new String[]{"Künstler", "Titel", "Album", 
+    private String[] headlines = new String[]{"Künstler", "Titel", "Album",
         "Genre", "Uploaddatum", "Bewertung"};
     private Class<?>[] columnTypes = new Class<?>[]{String.class, String.class,
         String.class, String.class, Date.class, Double.class};
-    
+
     private Medium[] data;
 
     @Override
@@ -55,11 +56,17 @@ public class PlaylistMediaTableModel extends DefaultTableModel {
                 case 1:
                     return m.getTitle();
                 case 2:
-                    if (m.getAlbum() != null) return m.getAlbum().getTitle();
-                    else return "";
+                    if (m.getAlbum() != null) {
+                        return m.getAlbum().getTitle();
+                    } else {
+                        return "";
+                    }
                 case 3:
-                    if (m.getGenre() != null) return m.getGenre().getName();
-                    else return "";
+                    if (m.getGenre() != null) {
+                        return m.getGenre().getName();
+                    } else {
+                        return "";
+                    }
                 case 4:
                     return m.getUploadDate();
                 case 5:
@@ -67,7 +74,7 @@ public class PlaylistMediaTableModel extends DefaultTableModel {
                     return Math.round(m.getAvgRating() * 100) / 100;
             }
         }
-	return null;
+        return null;
     }
 
     @Override
@@ -75,9 +82,9 @@ public class PlaylistMediaTableModel extends DefaultTableModel {
         return false;
     }
 
-    
     /**
      * Sets the data of this model.
+     *
      * @param playlist The data to display
      */
     public void setData(Playlist playlist) {
@@ -90,9 +97,9 @@ public class PlaylistMediaTableModel extends DefaultTableModel {
         }
         fireTableDataChanged();
     }
-    
-    public Playlist getCurrentPlaylist(){
+
+    public Playlist getCurrentPlaylist() {
         return currentPlaylist;
     }
-    
+
 }
