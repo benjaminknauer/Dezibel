@@ -17,8 +17,8 @@ import javafx.scene.chart.PieChart;
 import javax.swing.filechooser.FileFilter;
 
 /**
- * 
- * @author Benny
+ * Dialog for creating an album.
+ * @author Benny, Henner
  */
 public class CreateAlbumDialog extends JDialog{
     
@@ -32,6 +32,11 @@ public class CreateAlbumDialog extends JDialog{
     
     private Medium medium;
     
+    /**
+     * Constructor.
+     * @param frame parent frame
+     * @param medium first medium in the album
+     */
     public CreateAlbumDialog(JFrame frame, Medium medium) {
         super(frame);
         

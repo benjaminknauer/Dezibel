@@ -37,8 +37,7 @@ import javax.swing.JTextArea;
 /**
  * Handles the right click actions for all panels
  *
- *
- * @author Benny, Tobias
+ * @author Benny, Tobias, Henner, Bastian, Alex
  */
 public class ContextMenu {
 
