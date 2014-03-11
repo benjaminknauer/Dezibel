@@ -21,6 +21,7 @@ import javax.swing.event.ListSelectionListener;
 
 /**
  * Sidepanel for favorized users and labels
+ *
  * @author Aris, Tristan
  */
 public class FavoritesPanel extends DragablePanel {
@@ -34,7 +35,8 @@ public class FavoritesPanel extends DragablePanel {
 
     /**
      * Constructor with parent frame
-     * @param parent 
+     *
+     * @param parent
      */
     public FavoritesPanel(DezibelPanel parent) {
         super(parent);
@@ -60,13 +62,13 @@ public class FavoritesPanel extends DragablePanel {
         ftm = new FavoritesTableModel();
         tblFavorites = new JTable(ftm);
         scrollPane = new JScrollPane(tblFavorites);
-        
+
         tblFavorites.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if(tblFavorites.getSelectedRow() != -1){
-                if (ftm.getValueAt(tblFavorites.getSelectedRow(), -1) instanceof User) {
+                if (tblFavorites.getSelectedRow() != -1) {
+                    if (ftm.getValueAt(tblFavorites.getSelectedRow(), -1) instanceof User) {
                         User u = (User) ftm.getValueAt(
                                 tblFavorites.getSelectedRow(), -1);
                         parent.showProfile(u);
@@ -81,14 +83,14 @@ public class FavoritesPanel extends DragablePanel {
         });
 
         tblFavorites.addFocusListener(new FocusAdapter() {
-            
+
             @Override
-            public void focusLost(FocusEvent e){
-                if(! e.isTemporary()){
-                tblFavorites.clearSelection();
+            public void focusLost(FocusEvent e) {
+                if (!e.isTemporary()) {
+                    tblFavorites.clearSelection();
                 }
             }
-            
+
         });
 
         tblFavorites.addMouseListener(new MouseAdapter() {
@@ -106,7 +108,7 @@ public class FavoritesPanel extends DragablePanel {
                     showPopup(me);
                 }
             }
-            
+
             private void showPopup(MouseEvent me) {
                 System.out.println(tblFavorites.getSelectedRow());
                 ContextMenu contextMenu = new ContextMenu(parent);
@@ -114,10 +116,7 @@ public class FavoritesPanel extends DragablePanel {
                 currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());
             }
 
-            
         });
-
-
 
     }
 
@@ -129,7 +128,7 @@ public class FavoritesPanel extends DragablePanel {
         this.add(scrollPane);
     }
 
-    void setFavoiteUser(User newUser) {
+    public void setCurrentUser(User newUser) {
         this.currentUser = newUser;
         this.refresh();
     }
