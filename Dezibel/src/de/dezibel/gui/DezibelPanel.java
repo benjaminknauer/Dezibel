@@ -106,6 +106,7 @@ public class DezibelPanel extends JPanel {
 	private SingleDock centerDock;
 	private DockingExecutor executor;
 	private boolean addLeft;
+	// Needed to be private, cause it is usded in every call of refresh!
 	private JMenuItem itemCreateNews;
 
 	/**
@@ -126,9 +127,10 @@ public class DezibelPanel extends JPanel {
 				saveControl.save();
 			}
 		});
-
+		
+		// All Side-Panels will be added in the following order: left, right left right ....
 		this.addLeft = true;
-		// Create the content components.
+		// Create the content components from classes
 		pnLogin = new LoginPanel(this);
 		pnRegister = new RegistrationPanel(this);
 		pnPlayer = new PlayerPanel(this);
@@ -139,7 +141,8 @@ public class DezibelPanel extends JPanel {
 		pnProfil = new ProfilPanel(this);
 		pnLabelProfil = new LabelProfilPanel(this);
 		pnSearch = new SearchPanel(this);
-
+		
+		// Setting the background of each panel to DezibelColor.Background, maybe this will be used in future versions
 		pnLogin.setBackground(DezibelColor.Background);
 		pnRegister.setBackground(DezibelColor.Background);
 		pnPlayer.setBackground(DezibelColor.Background);
@@ -173,9 +176,11 @@ public class DezibelPanel extends JPanel {
 
 	/**
 	 * Creates the typical workspace, with sidebards on the right and left, the
-	 * player-panel docked at the bottom and a profil-panel at the center.
+	 * player-panel docked at the bottom, or at its last position and a profil-panel at the center.
+	 * And a beautiful menubar, a.k.a toolbar.
 	 */
 	public void showWorkspace() {
+		// Lets get the new content of the currently logged in user for the panels.
 		((MyListsPanel) pnMyList).refresh();
 		((AdsPanel) pnAds).refresh();
 		((NewsSidePanel) pnSideNews).refresh();
@@ -184,11 +189,18 @@ public class DezibelPanel extends JPanel {
 		frame.setJMenuBar(menuBar);
 		this.showSidebars();
 		this.showAtCenter(daSearch);
+		
+		// Change docking of the playerpanel
 		this.executor.changeDocking(daPlayer, borderDock);
 		((ProfilPanel) daProfil.getContent()).setUser(Database.getInstance()
 				.getLoggedInUser());
 	}
-
+	
+	/**
+	 * Shows the profil-panel, with the content of <code>user</code>
+	 * in the center. Every panel at the center will be removed from the centerdock.
+	 * @param user
+	 */
 	public void showProfile(User user) {
 		ProfilPanel pn = (ProfilPanel) pnProfil;
 		pn.setUser(user);
@@ -228,7 +240,11 @@ public class DezibelPanel extends JPanel {
 			this.showAtCenter(daLabelProfil);
 		}
 	}
-
+	
+	/**
+	 * Shows the playlist given by <code>list</code> in a PlaylistPanel at the center.
+	 * @param list The playlist the user wants to receive more information.
+	 */
 	public void showPlaylist(Playlist list) {
 		PlaylistPanel pnPlaylist = new PlaylistPanel(this, list);
 		pnPlaylist.setBackground(DezibelColor.Background);
@@ -237,17 +253,19 @@ public class DezibelPanel extends JPanel {
 		this.showAtCenter(daPlaylist);
 	}
 
-	public void showMyLists() {
-		pnMyList = new MyListsPanel(this);
-		pnMyList.setBackground(DezibelColor.Background);
-	}
-
+	/**
+	 * Show the search at the center.
+	 */
 	public void showSearch() {
 		SearchPanel sn = (SearchPanel) pnSearch;
 		sn.setBackground(DezibelColor.Background);
 		this.showAtCenter(daSearch);
 	}
-
+	
+	/**
+	 * Shows the albumpanel at the center. See <code>showPlaylist</code> for more details.
+	 * @param album The album the user wants to receive more information from.
+	 */
 	public void showAlbum(Album album) {
 		pnAlbum = new AlbumPanel(this, album);
 		pnAlbum.setBackground(DezibelColor.Background);
@@ -256,15 +274,24 @@ public class DezibelPanel extends JPanel {
 		this.showAtCenter(daAlbum);
 
 	}
-
+	
+	/**
+	 * Shows the newspanel at the center, where the user can see all news from his favorised users/labels.
+	 * @param n The news given by <code>n</code> will be selected and details will be displayed.
+	 */
 	public void showNews(News n) {
 		NewsPanel pnNews = new NewsPanel(this, n);
-		Dockable daNews = new DefaultDockable("pnNews", pnNews, "Neuigkeiten",
+		Dockable daNews = new DefaultDockable("pnNews", pnNews, "News",
 				null, DockingMode.CENTER + DockingMode.SINGLE);
 		this.showAtCenter(daNews);
 
 	}
-
+	
+	/**
+	 * This function is called from any child-panel if its content changes and other panels have to display the
+	 * same content.
+	 * @param ue A constant of which change was made.
+	 */
 	public void refresh(UpdateEntity ue) {
 		switch (ue) {
 		case PLAYLIST:
@@ -317,6 +344,9 @@ public class DezibelPanel extends JPanel {
 		default:
 			break;
 		}
+		
+		// Check if the user is now an artist or labelmanager. In this case the user 
+		// is allowed to create news at the menubar.
 		if ((Database.getInstance().getLoggedInUser().isArtist() == true)
 				|| Database.getInstance().getLoggedInUser().isLabelManager() == true) {
 			if (itemCreateNews != null) {
@@ -341,12 +371,8 @@ public class DezibelPanel extends JPanel {
 
 		// Set the frame properties and show it.
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		// frame.setLocation((screenSize.width - 600) / 2,
-		// (screenSize.height - 800) / 2);
 		frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
-		frame.setMinimumSize(new Dimension(1024, 700)); // TODO: sinnvolle
-														// Minimalgröße?
+		frame.setMinimumSize(new Dimension(1024, 700)); 
 		frame.setLocationRelativeTo(null);
 
 		// Create the panel and add it to the frame.
@@ -360,8 +386,7 @@ public class DezibelPanel extends JPanel {
 	/**
 	 * Main-Function, it creates a the typical UI
 	 * 
-	 * @param args
-	 *            startup-arguments (will be ignored!)
+	 * @param args startup-arguments (will be ignored!)
 	 */
 	public static void main(String args[]) {
 		Runnable doCreateAndShowGUI = new Runnable() {
@@ -372,6 +397,11 @@ public class DezibelPanel extends JPanel {
 		SwingUtilities.invokeLater(doCreateAndShowGUI);
 	}
 
+	/**
+	 * Creates the typical docking-behavior for each panel.
+	 * Any panel is placed in a Dockable and the dockmodel for DezibelPanel
+	 * is set to FloatDockModel.
+	 */
 	private void createDocking() {
 		executor = new DockingExecutor();
 
@@ -431,9 +461,14 @@ public class DezibelPanel extends JPanel {
 		leftLineDock.setOrientation(LineDock.ORIENTATION_VERTICAL);
 		rightLineDock.setOrientation(LineDock.ORIENTATION_VERTICAL);
 
+		// Adding some listener to the panels, for dynamic layouts.
 		this.addSideCenterListener();
 		this.addTopBottomCenterListener();
 
+		// Setting the main Dock to BorderDock, which have five positions
+		// left,right,top,bottom and center. Every dockable to be docked at the
+		// borderdock will be docked in a new LeafDock, depending on its
+		// dockingmode.
 		borderDock = new BorderDock();
 		borderDock.setChildDockFactory(new LeafDockFactory());
 		borderDock.setDock(leftLineDock, Position.LEFT);
@@ -473,6 +508,14 @@ public class DezibelPanel extends JPanel {
 		return wrapper;
 	}
 
+	/**
+	 * See <code>addActions</code> for more details.
+	 * Actions will be the normal behavior, close, minimize and externalize.
+	 * @param dockable
+	 *            the dockable where the actions should be added
+	 * @return a new dockable with the actions, based on the object given as
+	 *         parameter
+	 */
 	private Dockable addActionsWithCloseExt(Dockable dockable) {
 		int[] states = { DockableState.NORMAL, DockableState.CLOSED,
 				DockableState.MINIMIZED, DockableState.EXTERNALIZED };
@@ -550,7 +593,7 @@ public class DezibelPanel extends JPanel {
 
 			@Override
 			public void dockingWillChange(DockingEvent e) {
-				// TODO Auto-generated method stub
+				
 			}
 		});
 	}
@@ -562,18 +605,6 @@ public class DezibelPanel extends JPanel {
 		daPlayer.addDockingListener(new DockingListener() {
 			@Override
 			public void dockingChanged(DockingEvent e) {
-				// System.out.println("Docking Changed wurde aufgerufen von Player");
-				// if(e.getOriginDock() != null)
-				// System.out.println("von: " + e.getOriginDock().toString());
-				// else
-				// System.out.println("von: -");
-				//
-				// if(e.getDestinationDock() != null)
-				// System.out.println("nach: " +
-				// e.getDestinationDock().toString());
-				// else
-				// System.out.println("nach: -");
-
 				DragablePanel pn = (DragablePanel) daPlayer.getContent();
 				if (e.getDestinationDock() == centerDock) {
 					pn.onCenter();
@@ -645,11 +676,17 @@ public class DezibelPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * Creates the typical menubar with icons
+	 */
 	private void createMenubar() {
 		UIManager.put("MenuItem.selectionForeground", Color.BLUE);
 		if (this.menuBar == null) {
 			JMenu menuShow;
 			JCheckBoxMenuItem cbMenuItem;
+			ImageIcon icon;
+			JMenuItem ibn;
+			
 			menuBar = new JMenuBar();
 			JMenuItem menuLogout = new JMenuItem("Logout", new ImageIcon(this
 					.getClass().getResource("/img/logout24x24.png")));
@@ -667,9 +704,6 @@ public class DezibelPanel extends JPanel {
 				}
 			});
 
-			ImageIcon icon;
-			JButton bn;
-			JMenuItem ibn;
 			icon = new ImageIcon(this.getClass().getResource(
 					"/img/profil24x24.png"));
 			ibn = new JMenuItem("Profil", icon);
@@ -708,7 +742,7 @@ public class DezibelPanel extends JPanel {
 			});
 			menuBar.add(ibn);
 
-			cbMenuItem = new JCheckBoxMenuItem("Neuigkeiten");
+			cbMenuItem = new JCheckBoxMenuItem("News");
 			cbMenuItem.setSelected(true);
 			cbMenuItem.addActionListener(new ActionListener() {
 				@Override
@@ -764,7 +798,7 @@ public class DezibelPanel extends JPanel {
 				}
 			});
 
-			JMenu menuNews = new JMenu("Neuigkeiten");
+			JMenu menuNews = new JMenu("News");
 			menuNews.setIcon(new ImageIcon(this.getClass().getResource(
 					"/img/news24x24.png")));
 			itemCreateNews = new JMenuItem("News schreiben", new ImageIcon(this
@@ -783,8 +817,6 @@ public class DezibelPanel extends JPanel {
 			} else
 				itemCreateNews.setEnabled(false);
 
-			// Ausloggen, Upload,
-			// menuNews.add(itemCreateNews);
 			menuBar.add(itemUpload);
 			menuBar.add(itemCreateNews);
 			if (Database.getInstance().getLoggedInUser().isAdmin()) {
@@ -807,6 +839,9 @@ public class DezibelPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * Removes the menubar from the frame. Needed for logout.
+	 */
 	private void removeMenubar() {
 		if (this.menuBar != null) {
 			menuBar.removeAll();
@@ -815,6 +850,12 @@ public class DezibelPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * Shows the dockable give by <code>da</code> at the center.
+	 * If the centerdock has already a dockable it will be removed.
+	 * If there is a empty childdock, like linedock it will be removed.
+	 * @param da The dockable that should be displayed at the center.
+	 */
 	private void showAtCenter(Dockable da) {
 
 		if (da.getState() != DockableState.EXTERNALIZED) {
@@ -838,25 +879,32 @@ public class DezibelPanel extends JPanel {
 
 		} else {
 			JOptionPane.showMessageDialog(this,
-					"Kann diese Aktion nicht ausf�hren,"
+					"Kann diese Aktion nicht ausführen,"
 							+ "solange das Fenster nicht angedockt ist",
 					"Fehler beim Andocken des Fensters",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
+	/**
+	 * Just like <code>clearCenter</code>
+	 * @param newDa If the newDa is an instance of <code>PlaylistPanel</code> the refresh
+	 * 				method is called.
+	 */
 	private void clearCenter(Dockable newDa) {
 		if (this.centerDock.getDockableCount() > 0) {
 			// refresh panels to clear selection and to load new data
 			if ((this.centerDock.getDockable(0).getContent() instanceof PlaylistPanel)
 					&& !(newDa.getContent() instanceof PlaylistPanel)) {
 				this.refresh(UpdateEntity.PLAYLIST);
-			}// TODO Andere Panels beim schließen bestimmter Komponenten
-				// aktualisieren
+			}
 			this.clearCenter();
 		}
 	}
 
+	/**
+	 * Clear the centerdock from any dockable
+	 */
 	public void clearCenter() {
 		if (this.centerDock.getDockableCount() > 0) {
 			// close the dockable at centerposition
@@ -866,7 +914,11 @@ public class DezibelPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * This function is called, if the user press the logout-button in the menubar.
+	 */
 	private void onLogout() {
+		// Check if player is not externalized, otherwise the user can not logout.
 		if (daPlayer.getState() == DockableState.EXTERNALIZED) {
 			JOptionPane.showMessageDialog(this,
 					"Ausloggen nicht moeglich, solange "
@@ -904,6 +956,7 @@ public class DezibelPanel extends JPanel {
 				daPlayer.getDock().removeDockable(daPlayer);
 			}
 
+			// Clear the center, and remove all user-specific content from the panels.
 			this.clearCenter();
 			pnLogin.reset();
 			pnRegister.reset();
@@ -920,6 +973,12 @@ public class DezibelPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * If the specific menuitem is selected the dockable will be displayed, otherwise it
+	 * will be removed from the sidebar.
+	 * @param src The menuitem for the dockable.
+	 * @param da The dockable to be added/removed from the sidebar.
+	 */
 	private void onMenuCheckedSideBar(JCheckBoxMenuItem src, Dockable da) {
 		if (src.isSelected()) {
 			showSidebar(da);
@@ -930,29 +989,53 @@ public class DezibelPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * Displays the specific dockable at the center.
+	 * @param da dockable which should be displayed at the center.
+	 */
 	private void onGoTo(Dockable da) {
 		this.showAtCenter(da);
 	}
 
+	/**
+	 * Shows a new <code>UploadDialog</code> to upload a new musicfile.
+	 */
 	private void onUpload() {
 		UploadDialog ud = new UploadDialog(frame, null, null, this);
 		ud.setVisible(true);
 	}
 
+	/**
+	 * Shows a new <code>GenreDialog</code> for editing the genre list.
+	 * Can only be called, if the current user is the administrator.
+	 */
 	private void onGenre() {
 		GenreDialog dl = new GenreDialog(frame);
 		dl.setVisible(true);
 	}
 
+	/**
+	 * Shows a new <code>NewsDialog</code> for creating a new news.
+	 * Can only be called, if the current user is an artist or labelmanager.
+	 */
 	private void onCreateNews() {
 		NewsDialog nd = new NewsDialog(frame, this);
 		nd.setVisible(true);
 	}
 
+	/**
+	 * returns the frame, which has <code>DezibelPanel</code> as childpanel.
+	 * @return The frame in wich <code>Dezipelpanel</code> is displayed
+	 */
 	public JFrame getFrame() {
 		return this.frame;
 	}
-
+	
+	/**
+	 * Shows an instance of <code>Mediumpanel</code> at the center.
+	 * The content of the panel is the information of the <code>medium</code>
+	 * @param medium The medium the user wants to receive information.
+	 */
 	public void showMedium(Medium medium) {
 		MediumPanel pnMedium = new MediumPanel(this, medium);
 		pnMedium.setBackground(DezibelColor.Background);
