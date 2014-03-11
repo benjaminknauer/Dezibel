@@ -1,7 +1,6 @@
 package de.dezibel.gui;
 
 import de.dezibel.UpdateEntity;
-import de.dezibel.control.AlbumControl;
 import de.dezibel.control.UploadControl;
 import de.dezibel.data.Album;
 import de.dezibel.data.Genre;
@@ -53,6 +52,7 @@ public final class UploadDialog extends JDialog {
      * labelmanager
      * @param medium is set if the medium already exists but contains no file
      * and you want to upload a file now
+     * @param dp The parent dezibel panel
      */
     public UploadDialog(JFrame frame, Label label, Medium medium, DezibelPanel dp) {
         super(frame);
@@ -187,6 +187,8 @@ public final class UploadDialog extends JDialog {
                         if (ret == JOptionPane.OK_OPTION) {
                             newAlbumName = tfAlbumTitle.getText().trim();
                             coverPath = tfFilePath.getText();
+                        } else {
+                            return;
                         }
                         album = null;
                     } else {
