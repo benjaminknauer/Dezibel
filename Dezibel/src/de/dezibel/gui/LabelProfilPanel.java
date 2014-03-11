@@ -84,6 +84,7 @@ public class LabelProfilPanel extends DragablePanel {
     private JButton btnLock;
     private JTable tArtists;
     private JScrollPane sptArtist;
+    private int showTabNr;
 
     /**
      * Constructor of the ProfilPanel class.
@@ -101,10 +102,21 @@ public class LabelProfilPanel extends DragablePanel {
         this.add(tabPanel, BorderLayout.CENTER);
 
         this.profileControler = new LabelControl();
+        showTabNr = 0;
     }
 
+    /**
+     * Sets the tab which should be currently displayed.
+     * 
+     * @param tabNr nr of the tab which should be displayed
+     */
+    public void setTab(int tabNr){
+        showTabNr = tabNr;
+    }
+    
     public void setUser(Label newLabel) {
         this.currentLabel = newLabel;
+        showTabNr = 0;
         this.refresh();
     }
 
@@ -118,7 +130,7 @@ public class LabelProfilPanel extends DragablePanel {
         if (currentLabel != null) {
 
             if (!(currentLabel.isLocked() && !(profileControler.getLoggedInUser().isAdmin()))) {
-                tabPanel.setSelectedIndex(0);
+                
 
                 tfName.setText(profileControler.getName(currentLabel));
                 taCompanyDetails.setText(profileControler.getCompanyDetails(currentLabel));
@@ -169,6 +181,8 @@ public class LabelProfilPanel extends DragablePanel {
                 managerModell.setData(profileControler.getManagers(currentLabel));
                 applicationsModell.setData(profileControler.getApplications(currentLabel));
                 artistModell.setData(profileControler.getArtists(currentLabel));
+                
+                tabPanel.setSelectedIndex(showTabNr);
             }
         }
     }
@@ -232,6 +246,7 @@ public class LabelProfilPanel extends DragablePanel {
                 } else {
                     taCompanyDetails.setEnabled(true);
                 }
+                showTabNr = 0;
                 refresh();
             }
         });
@@ -246,6 +261,7 @@ public class LabelProfilPanel extends DragablePanel {
                 } else {
                     profileControler.addFollower(currentLabel);
                 }
+                showTabNr = 0;
                 refresh();
                 parent.refresh(UpdateEntity.FAVORITES);
             }
@@ -260,6 +276,7 @@ public class LabelProfilPanel extends DragablePanel {
                 } else {
                     adminControler.unlock(currentLabel);
                 }
+                showTabNr = 0;
                 refresh();
             }
         });
