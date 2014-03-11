@@ -1,8 +1,11 @@
 package de.dezibel.control;
 
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
+
 import de.dezibel.ErrorCode;
 import de.dezibel.data.Database;
 import de.dezibel.data.Label;
@@ -43,13 +46,13 @@ public class NewsControl {
     }
 
     /**
-     * search in the news from favourised labels and users and returns the 15
-     * newest news.
+     * search in the news from favourised labels and users and returns the
+     * news in a <code>LinkedList</code>.
      *
      * @return a list that contains the actual news
      */
     public LinkedList<de.dezibel.data.News> searchForNews() {
-        LinkedList<de.dezibel.data.News> ret = new LinkedList<de.dezibel.data.News>();
+        HashSet<de.dezibel.data.News> ret = new HashSet<de.dezibel.data.News>();
         User current = Database.getInstance().getLoggedInUser();
         User user;
         Label label;
@@ -65,7 +68,7 @@ public class NewsControl {
 
             while (newsIter.hasNext()) {
                 news = newsIter.next();
-                ret.push(news);
+                ret.add(news);
             }
         }
 
@@ -75,15 +78,24 @@ public class NewsControl {
 
             while (newsIter.hasNext()) {
                 news = newsIter.next();
-                ret.push(news);
+                ret.add(news);
             }
         }
-
-        Collections.sort(ret, new NewsDateComparator());
-        while (ret.size() > maxNumberOfNews) {
-            ret.removeLast();
+        
+        LinkedList<de.dezibel.data.News> retList = new LinkedList<de.dezibel.data.News>();
+        Iterator<de.dezibel.data.News> hashIter;
+        hashIter = ret.iterator();
+        
+        while(hashIter.hasNext()){
+        	news = hashIter.next();
+        	retList.add(news);
         }
+        
+        Collections.sort(retList, new NewsDateComparator());
+//        while (retList.size() > maxNumberOfNews) {
+//            retList.removeLast();
+//        }
 
-        return ret;
+        return retList;
     }
 }
