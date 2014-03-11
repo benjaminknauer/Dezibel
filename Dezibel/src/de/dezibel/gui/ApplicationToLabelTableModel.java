@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Shows the information of users in the ProfilPanel.
+ * The table model for applications as they are shown in a label's profile
  * @author Richard, Tobias, Alexander
  */
 public class ApplicationToLabelTableModel extends DefaultTableModel {
@@ -76,7 +76,12 @@ public class ApplicationToLabelTableModel extends DefaultTableModel {
         fireTableDataChanged();
     }
     
-    public Application getUserAt(int i){
+    /**
+     * Returns the application in row i.
+     * @param i the row of the application you want to have
+     * @return the application in the specified row
+     */    
+    public Application getApplicationAt(int i){
         return data[i];
     }
     
