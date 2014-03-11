@@ -80,7 +80,9 @@ public class Player {
         if (this.player != null) {
             this.player.stop();
             this.currentPosition = 0;
-            this.createPlayer(this.currentPlaylist.get(this.currentPosition));
+            if (this.currentPosition < this.currentPlaylist.size()) {
+                this.createPlayer(this.currentPlaylist.get(this.currentPosition));
+            }
             this.notifyObserver();
         }
     }
