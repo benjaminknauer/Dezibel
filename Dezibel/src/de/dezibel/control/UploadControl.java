@@ -8,9 +8,13 @@ import de.dezibel.data.Label;
 import de.dezibel.data.Medium;
 import de.dezibel.data.User;
 import java.awt.Component;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaException;
+import javafx.scene.media.MediaPlayer;
 import javax.swing.JOptionPane;
 
 /**
@@ -55,6 +59,25 @@ public class UploadControl {
                 db.addAlbum(m, newAlbumName, user, coverPath, false);
                 return ErrorCode.SUCCESS;
             }
+        }
+    }
+    
+    /**
+     * Checks if the given file is playable.
+     * @param f The file to check
+     * @return true, if the file is playable, else false
+     */
+    public boolean isPlayable(File f) {
+        try {
+            Media m = new Media(f.toURI().toString());
+            MediaPlayer tmpPlayer = new MediaPlayer(m);
+            tmpPlayer.setVolume(0);
+            tmpPlayer.play();
+            tmpPlayer.stop();
+            return true;
+        }
+        catch(MediaException me){
+            return false;
         }
     }
 
