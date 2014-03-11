@@ -35,6 +35,10 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableCellRenderer;
 
+/**
+ * A panel to show all the information about an Album
+ * @author Henner, Benjamin
+ */
 public class AlbumPanel extends DragablePanel {
 
     JLabel lbTitle;
@@ -54,6 +58,11 @@ public class AlbumPanel extends DragablePanel {
     JLabel lbAlbumCover;
 
 
+    /**
+     * Created an AlbumPanel with the given parent for the given Album
+     * @param parent Parent container
+     * @param currentAlbum Album this panel is created for
+     */
     public AlbumPanel(DezibelPanel parent, Album currentAlbum) {
         super(parent);
         this.dp = parent;
