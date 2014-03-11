@@ -80,7 +80,9 @@ public class FavoritesPanel extends DragablePanel {
             
             @Override
             public void focusLost(FocusEvent e){
+                if(! e.isTemporary()){
                 tblFavorites.clearSelection();
+                }
             }
             
         });
@@ -102,6 +104,7 @@ public class FavoritesPanel extends DragablePanel {
             }
             
             private void showPopup(MouseEvent me) {
+                System.out.println(tblFavorites.getSelectedRow());
                 ContextMenu contextMenu = new ContextMenu(parent);
                 currentPopupMenu = contextMenu.getContextMenu(tblFavorites, me);
                 currentPopupMenu.show(me.getComponent(), me.getX(), me.getY());

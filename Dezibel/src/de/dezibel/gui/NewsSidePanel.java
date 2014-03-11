@@ -58,20 +58,22 @@ public class NewsSidePanel extends DragablePanel {
         tblNews.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if(tblNews.getSelectedRow() != -1){
-                News n = (News) model.getValueAt(
-                        tblNews.getSelectedRow(), -1);
-                if (n != null) {
-                    onClick(n);
+                if (tblNews.getSelectedRow() != -1) {
+                    News n = (News) model.getValueAt(
+                            tblNews.getSelectedRow(), -1);
+                    if (n != null) {
+                        onClick(n);
+                    }
                 }
-            }
             }
         });
 
         tblNews.addFocusListener(new FocusAdapter() {
             @Override
-            public void focusLost(FocusEvent e){
-                tblNews.clearSelection();
+            public void focusLost(FocusEvent e) {
+                if (!e.isTemporary()) {
+                    tblNews.clearSelection();
+                }
             }
         });
 
