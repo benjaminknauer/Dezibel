@@ -42,6 +42,8 @@ public final class UploadDialog extends JDialog {
     private final Label label;
     private final Medium medium;
     private DezibelPanel dPanel;
+    private String newAlbumName;
+    private String coverPath;
 
     /**
      * Constructor
@@ -126,10 +128,8 @@ public final class UploadDialog extends JDialog {
                     JOptionPane.showMessageDialog(UploadDialog.this, "Bitte geben Sie einen Titel an", "Titel angeben", JOptionPane.INFORMATION_MESSAGE);
                 } else if (medium == null) {
                     Object albumSelection = cbAlbum.getSelectedItem();
-                    Album album;
-                    String newAlbumName = null;
-                    String coverPath = null;
-                    if (albumSelection instanceof String) {
+                    Album album = null;
+                    if (albumSelection instanceof String && newAlbumName == null && coverPath == null) {
                         // Get attributes for new album
                         JPanel panel = new JPanel();
                         JLabel lbAlbumTitle = new JLabel("Titel des Albums");
@@ -183,15 +183,14 @@ public final class UploadDialog extends JDialog {
                         panel.setPreferredSize(new Dimension(270, 215));
 
                         int ret = JOptionPane.showConfirmDialog(UploadDialog.this, panel,
-                                "Neues Album anlegen", JOptionPane.OK_CANCEL_OPTION);
+                                "Neues Album anlegen", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                         if (ret == JOptionPane.OK_OPTION) {
                             newAlbumName = tfAlbumTitle.getText().trim();
                             coverPath = tfFilePath.getText();
                         } else {
                             return;
                         }
-                        album = null;
-                    } else {
+                    } else if (newAlbumName == null && coverPath == null) {
                         album = (Album) cbAlbum.getSelectedItem();
                     }
                     switch (upc.upload(tfTitle.getText(), (User) cbUser.getSelectedItem(),
