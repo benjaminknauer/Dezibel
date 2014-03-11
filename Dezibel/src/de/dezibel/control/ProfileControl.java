@@ -270,8 +270,6 @@ public class ProfileControl {
                             + "datum entspricht nicht der gängigen Formatierungen.\n"
                             + "Bitte wie im folgenden Beispiel angeben: "
                             + "01.01.2014");
-                    Logger.getLogger(ProfileControl.class.getName()).log(Level.SEVERE,
-                            null, ex);
                 }
             }
         }
