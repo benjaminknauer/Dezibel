@@ -45,7 +45,7 @@ public class NewsPanel extends DragablePanel {
     private JScrollPane spNews1;
     private JScrollPane spNews2;
     private NewsSideTableModel model;
-    private Container pnNews;
+    //private Container pnNews;
     
     LinkedList<News> allNews;
     
@@ -55,8 +55,7 @@ public class NewsPanel extends DragablePanel {
         super(parent);
         this.createNewsPanel();
     } 
-    public  void createNewsPanel(){
-        
+    public  void createNewsPanel(){ 
       lbnews = new JLabel("News");
       lbAutor = new JLabel("Autor" );
       lbDatum = new JLabel("Datum");
@@ -101,7 +100,7 @@ public class NewsPanel extends DragablePanel {
       
       
               
-      GroupLayout layout = new GroupLayout(pnNews);
+      GroupLayout layout = new GroupLayout(this);
       layout.setHorizontalGroup(layout
             .createSequentialGroup( )
             .addGroup(
@@ -170,7 +169,7 @@ public class NewsPanel extends DragablePanel {
 
         layout.setAutoCreateContainerGaps(true);
         layout.setAutoCreateGaps(true);
-        pnNews.setLayout(layout);
+        this.setLayout(layout);
     }
 
     public void showCurrentNews() {       

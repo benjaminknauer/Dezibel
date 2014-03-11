@@ -258,7 +258,11 @@ public class DezibelPanel extends JPanel {
     }
     
     public void showNews(News n){
-    	System.out.println("News soll hier angezeigt werden!");
+    	NewsPanel pnNews = new NewsPanel(this);
+    	Dockable daNews = new DefaultDockable("pnNews",pnNews,"Neuigkeiten",null,
+    			DockingMode.CENTER + DockingMode.SINGLE);
+    	this.showAtCenter(daNews);
+    	
     }
     
     public void refresh(UpdateEntity ue) {
