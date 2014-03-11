@@ -128,7 +128,6 @@ public class ContextMenu {
         JMenuItem menuItemComment = new JMenuItem("Kommentieren");
 
         menuItemShow.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 Medium m = (Medium) currentTableModel.getValueAt(
@@ -261,7 +260,7 @@ public class ContextMenu {
                 if (title != null && !title.isEmpty()) {
                     new PlaylistControl().createPlaylist(title,
                             (Medium) currentTableModel.getValueAt(
-                                    currentTable.getSelectedRow(), -1));
+                            currentTable.getSelectedRow(), -1));
                 }
                 dp.refresh(UpdateEntity.PLAYLIST);
             }
@@ -276,9 +275,11 @@ public class ContextMenu {
             }
         });
 
-        if (Database.getInstance().getLoggedInUser()
-                == (((Medium) currentTableModel.getValueAt(
-                        currentTable.getSelectedRow(), -1)).getArtist())) {
+        User currentMediumArtist = ((Medium) currentTableModel.getValueAt(
+                currentTable.getSelectedRow(), -1)).getArtist();
+        
+        if (Database.getInstance().getLoggedInUser() == currentMediumArtist
+                || isManagedArtist(currentMediumArtist)) {
             JMenu menuAddToAlbum = new JMenu("zu Album hinzufügen");
             JMenuItem menuItemNewAlbum = new JMenuItem("neues Album");
 
@@ -289,7 +290,6 @@ public class ContextMenu {
                             currentTable.getSelectedRow(), -1), dp).setVisible(true);
                     dp.refresh(UpdateEntity.ALBUM);
                 }
-
             });
 
             currentPopupMenu.add(menuAddToAlbum);
@@ -480,7 +480,6 @@ public class ContextMenu {
 
                 JMenuItem currentLabelMenuItem = new JMenuItem(currentLabel.getName());
                 currentLabelMenuItem.addActionListener(new ActionListener() {
-
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         new ApplicationDialog(dp.getFrame(), selectedUser, currentLabel, false).setVisible(true);
@@ -584,7 +583,6 @@ public class ContextMenu {
                 && !Database.getInstance().getLoggedInUser().hasPublisher(selectedLabel)) {
             JMenuItem menuItemApply = new JMenuItem("Als Künstler bewerben");
             menuItemApply.addActionListener(new ActionListener() {
-
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     new ApplicationDialog(dp.getFrame(), Database.getInstance().getLoggedInUser(), selectedLabel, true).setVisible(true);
@@ -644,12 +642,10 @@ public class ContextMenu {
                 Database.getInstance().getLoggedInUser())) {
             JMenuItem menuItemDelete = new JMenuItem("Löschen");
             menuItemDelete.addActionListener(new ActionListener() {
-
                 @Override
                 public void actionPerformed(ActionEvent ae) {
                     selectedLabel.delete();
                 }
-
             });
             currentPopupMenu.add(menuItemDelete);
         }
@@ -694,7 +690,6 @@ public class ContextMenu {
                     Database.getInstance().getLoggedInUser().addFavoriteAlbum(a);
                     dp.refresh(UpdateEntity.ALBUM);
                 }
-
             });
             currentPopupMenu.add(menuItemFavorize);
         } else {
@@ -705,7 +700,6 @@ public class ContextMenu {
                     Database.getInstance().getLoggedInUser().removeFavoriteAlbum(a);
                     dp.refresh(UpdateEntity.ALBUM);
                 }
-
             });
             currentPopupMenu.add(menuItemFavorize);
         }
@@ -812,7 +806,6 @@ public class ContextMenu {
                     Database.getInstance().getLoggedInUser().addFavoritePlaylist(p);
                     dp.refresh(UpdateEntity.PLAYLIST);
                 }
-
             });
             currentPopupMenu.add(menuItemFavorize);
         } else {
@@ -823,7 +816,6 @@ public class ContextMenu {
                     Database.getInstance().getLoggedInUser().removeFavoritePlaylist(p);
                     dp.refresh(UpdateEntity.PLAYLIST);
                 }
-
             });
             currentPopupMenu.add(menuItemFavorize);
         }
@@ -920,5 +912,14 @@ public class ContextMenu {
             }
         });
         currentPopupMenu.add(menuItemDecline);
+    }
+
+    private boolean isManagedArtist(User u) {
+        for (Label l : Database.getInstance().getLoggedInUser().getManagedLabels()) {
+            if (l.getArtists().contains(u)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

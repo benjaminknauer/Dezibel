@@ -6,7 +6,9 @@ package de.dezibel.control;
 
 import de.dezibel.data.Album;
 import de.dezibel.data.Database;
+import de.dezibel.data.Label;
 import de.dezibel.data.Medium;
+import de.dezibel.data.User;
 
 /**
  * Manages the creation of albums.
@@ -20,9 +22,14 @@ public class AlbumControl {
      * @param firstMedium The first medium to add to the album
      * @param coverPath The path of the cover file
      */
-    public void createAlbum(String title, Medium firstMedium, String coverPath){
-               Database.getInstance().addAlbum(firstMedium, title, Database.getInstance()
-                .getLoggedInUser(), coverPath, true);
+    public void createAlbum(String title, Medium firstMedium, User user, String coverPath){
+               Database.getInstance().addAlbum(firstMedium, title, user, coverPath, true);
+    }
+    
+     public void createAlbum(String title, Medium firstMedium, Label label, String coverPath){
+               Database.getInstance().addAlbum(firstMedium, title, label, coverPath, true);
+               
+               
     }
     
     /**
