@@ -39,7 +39,7 @@ public class CreateAlbumDialog extends JDialog{
      */
     public CreateAlbumDialog(JFrame frame, Medium medium) {
         super(frame);
-        
+        this.setLocationRelativeTo(frame);
         this.medium = medium;
         
         createComponents();

@@ -20,7 +20,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 /**
- *
+ * Sidepanel for favorized users and labels
  * @author Aris, Tristan
  */
 public class FavoritesPanel extends DragablePanel {
@@ -32,6 +32,10 @@ public class FavoritesPanel extends DragablePanel {
     private JPopupMenu currentPopupMenu;
     private User currentUser;
 
+    /**
+     * Constructor with parent frame
+     * @param parent 
+     */
     public FavoritesPanel(DezibelPanel parent) {
         super(parent);
         createComponents();
