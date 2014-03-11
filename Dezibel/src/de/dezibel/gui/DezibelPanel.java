@@ -303,8 +303,9 @@ public class DezibelPanel extends JPanel {
                 
             case NEWS:
                 ((ProfilPanel)daProfil.getContent()).setTab(6);
-                ((LabelProfilPanel)daLabelProfil.getContent()).setTab(6);
+                ((LabelProfilPanel)daLabelProfil.getContent()).setTab(3);
                 pnProfil.refresh();
+                pnLabelProfil.refresh();
                 pnSideNews.refresh();
                 break;
                 
