@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Shows the information of users in the ProfilPanel.
+ * TableModel for the followers in the Profile of a Label or User
  * @author Richard, Tobias
  */
 public class FollowerTableModel extends DefaultTableModel {
