@@ -310,11 +310,16 @@ public class DezibelPanel extends JPanel {
             default:
                 break;
         }
-        if (Database.getInstance().getLoggedInUser().isArtist()
-                || Database.getInstance().getLoggedInUser().isLabelManager()) {
-            if (itemCreateNews != null) {
-                itemCreateNews.setEnabled(true);
-            }
+        if ((Database.getInstance().getLoggedInUser().isArtist() == true) 
+                || Database.getInstance().getLoggedInUser().isLabelManager() == true) {
+            		if (itemCreateNews != null) {
+            				itemCreateNews.setEnabled(true);
+            		}
+        	}	
+            else{
+            	if(itemCreateNews!=null){
+            		itemCreateNews.setEnabled(false);
+            	}
         }
     }
 
@@ -749,10 +754,12 @@ public class DezibelPanel extends JPanel {
                 }
             });
 
-            if ((Database.getInstance().getLoggedInUser().isArtist() == false)
-                    || (Database.getInstance().getLoggedInUser().isLabelManager() == false)) {
-                itemCreateNews.setEnabled(false);
+            if ((Database.getInstance().getLoggedInUser().isArtist() == true)
+                    || (Database.getInstance().getLoggedInUser().isLabelManager() == true)) {
+                itemCreateNews.setEnabled(true);
             }
+                else
+                	itemCreateNews.setEnabled(false);
 
             // Ausloggen, Upload,
             //menuNews.add(itemCreateNews);
