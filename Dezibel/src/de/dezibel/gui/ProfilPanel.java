@@ -40,6 +40,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
+/**
+ * Class representing a User's profile page. The different information (Uploads, Favorites, General information) are shown in tabbed panels.
+ * @author Alex, Bastian, Benni, Henner
+ */
 public class ProfilPanel extends DragablePanel {
 
     private static final long serialVersionUID = 1L;
@@ -1205,7 +1209,8 @@ public class ProfilPanel extends DragablePanel {
                         }
                     }
                 }
-                taApplications.setText(a.getText());
+                if(a != null)
+                    taApplications.setText(a.getText());
             }
             
             @Override
