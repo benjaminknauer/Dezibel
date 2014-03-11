@@ -88,11 +88,11 @@ public class LoginPanel extends DragablePanel {
                 .addGroup(
                         GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(labelMail, 128, 128, 128)
-                        .addComponent(tfMail, 128, 128, 128))
+                        .addComponent(tfMail, 120, 128, 165))
                 .addGroup(
                         GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(labelPassword, 128, 128, 128)
-                        .addComponent(tfPassword, 128, 128, 128))
+                        .addComponent(tfPassword, 120, 128, 165))
                 .addGroup(
                         GroupLayout.Alignment.CENTER, layout.createSequentialGroup()
                         .addGap(min, pref, max)
