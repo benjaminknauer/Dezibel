@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package de.dezibel.gui;
 
 import de.dezibel.data.Label;
@@ -14,7 +8,7 @@ import javax.swing.GroupLayout;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ * TableModel for news objects in the NewsPanel
  * @author Aris, Tristan
  */
 
@@ -92,6 +86,10 @@ public class NewsPanelTableModel extends DefaultTableModel {
         fireTableDataChanged();
     }
 
+    /**
+     * Set the ColumnNames to headlines
+     * @param headlines the column's names
+     */
     public void setHeader(String[] headlines) {
         this.headlines = headlines;
     }
