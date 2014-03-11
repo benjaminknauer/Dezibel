@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Shows the information of users in the ProfilPanel.
+ * Shows the information of users in the SearchPanel.
  * @author Richard, Tobias
  */
 public class ArtistTableModel extends DefaultTableModel {
@@ -75,7 +75,11 @@ public class ArtistTableModel extends DefaultTableModel {
         }
         fireTableDataChanged();
     }
-    
+    /**
+     * Returns the user in row i.
+     * @param i the row of the user you want to have
+     * @return the user in the specified row
+     */
     public User getUserAt(int i){
         return data[i];
     }
