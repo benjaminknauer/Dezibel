@@ -648,6 +648,9 @@ public class DezibelPanel extends JPanel {
             ibn.addActionListener(new ActionListener(){
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
+                                    ((ProfilPanel)daProfil.getContent(
+                                        )).setUser(Database.getInstance(
+                                        ).getLoggedInUser());
 					onGoTo(daProfil);
 				}
             });
