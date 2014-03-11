@@ -20,9 +20,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 /**
- *
+ * Class for the Panel which contains all information about news the user can see.
  * @author Aris, Tristan
- *
  */
 public class NewsPanel extends DragablePanel {
 
@@ -45,10 +44,8 @@ public class NewsPanel extends DragablePanel {
     private JScrollPane spNews1;
     private JScrollPane spNews2;
     private NewsSideTableModel model;
-    //private Container pnNews;
     
     private LinkedList<News> allNews;
-   // LinkedList<de.dezibel.data.News> asdfas;
     private NewsControl nc;
     
 
@@ -73,11 +70,7 @@ public class NewsPanel extends DragablePanel {
       taText = new JTextArea();  
       taText.setEditable(false);
       nptm = new NewsPanelTableModel();
-      tNews = new JTable(nptm);/*{
-            public boolean isCellEditable(int rowIndex, int vColIndex) {
-                return false;
-            }
-      };*/
+      tNews = new JTable(nptm);
       
       tNews.getTableHeader().setVisible(false);
       
@@ -180,6 +173,9 @@ public class NewsPanel extends DragablePanel {
         this.setLayout(layout);
     }
 
+    /**
+     * Displays the currently selected news in detail.
+     */
     public void showCurrentNews() {      
         tNews.setRowSelectionInterval(nptm.getNewsIndex(currentNews), nptm.getNewsIndex(currentNews));
         tfTitel.setText(currentNews.getTitle());
@@ -206,7 +202,10 @@ public class NewsPanel extends DragablePanel {
         }
     }
 
-    public void fillTable() {
+    /**
+     * Helpmethod to load and store the data in the tablemodel
+     */
+    private void fillTable() {
        allNews = new LinkedList<News>();
        nc = new NewsControl();
        
