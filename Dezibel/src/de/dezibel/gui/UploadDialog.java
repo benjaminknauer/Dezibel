@@ -112,10 +112,11 @@ public final class UploadDialog extends JDialog {
                 JFileChooser fc = new JFileChooser();
                 int returnVal = fc.showOpenDialog(UploadDialog.this);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    if(upc.isPlayable(fc.getSelectedFile()))
+                    if (upc.isPlayable(fc.getSelectedFile())) {
                         tfUpload.setText(fc.getSelectedFile().getAbsolutePath());
-                    else
+                    } else {
                         JOptionPane.showMessageDialog(UploadDialog.this, "Die Datei wird nicht abgespielt werden können!", "Mediumfehler", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
         });
@@ -179,7 +180,7 @@ public final class UploadDialog extends JDialog {
 
                         btnFilePath.setBounds(225, 118, 40, 28);
                         panel.add(btnFilePath);
-                        
+
                         panel.setPreferredSize(new Dimension(270, 215));
 
                         int ret = JOptionPane.showConfirmDialog(UploadDialog.this, panel,
