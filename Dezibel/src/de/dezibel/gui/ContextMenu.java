@@ -292,7 +292,6 @@ public class ContextMenu {
                 }
             });
 
-            currentPopupMenu.add(menuAddToAlbum);
 
             menuAddToAlbum.add(menuItemNewAlbum);
 
@@ -331,6 +330,8 @@ public class ContextMenu {
                 }
                 menuAddToAlbum.addSeparator();
             }
+            
+            currentPopupMenu.add(menuAddToAlbum);
         }
         MenuItem currentMenuItem;
         for (Playlist currentPlaylist : Database.getInstance()
