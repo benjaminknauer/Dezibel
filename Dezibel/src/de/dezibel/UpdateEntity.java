@@ -15,5 +15,6 @@ public enum UpdateEntity{
     ALBUM,
     FAVORITES,
     APPLICATION,
-    RECOMMENDATIONS;
+    RECOMMENDATIONS,
+    LABEL;
 }

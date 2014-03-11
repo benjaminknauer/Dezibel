@@ -653,18 +653,20 @@ public class ContextMenu {
                 currentPopupMenu.add(lockItem);
             }
         }
-// die haben gesagt ich soll das machen
-//        if (selectedLabel.getLabelManagers().contains(
-//                Database.getInstance().getLoggedInUser())) {
-//            JMenuItem menuItemDelete = new JMenuItem("Löschen");
-//            menuItemDelete.addActionListener(new ActionListener() {
-//                @Override
-//                public void actionPerformed(ActionEvent ae) {
-//                    selectedLabel.delete();
-//                }
-//            });
-//            currentPopupMenu.add(menuItemDelete);
-//        }
+
+        if (selectedLabel.getLabelManagers().contains(
+                Database.getInstance().getLoggedInUser())) {
+            JMenuItem menuItemDelete = new JMenuItem("Löschen");
+            menuItemDelete.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    selectedLabel.delete();
+                    dp.refresh(UpdateEntity.LABEL);
+                }
+            });
+            currentPopupMenu.add(menuItemDelete);
+            
+        }
     }
 
     /**
