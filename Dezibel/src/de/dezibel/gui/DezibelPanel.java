@@ -337,12 +337,13 @@ public class DezibelPanel extends JPanel {
 			((ProfilPanel) daProfil.getContent()).setTab(6);
 			((LabelProfilPanel) daLabelProfil.getContent()).setTab(3);
 			pnProfil.refresh();
-			pnLabelProfil.refresh();
+                        if (!(Database.getInstance().getLabels().isEmpty())){
+                            pnLabelProfil.refresh();
+                        }
 			pnSideNews.refresh();
 			break;
                 case LABEL:
 			((ProfilPanel) daProfil.getContent()).setTab(5);
-			((LabelProfilPanel) daLabelProfil.getContent()).setTab(3);
 			pnProfil.refresh();
 			pnSideNews.refresh();
 			break;
