@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<linked-list-array>
+  <linked-list>
+    <de.dezibel.data.User>
+      <artist>false</artist>
+      <labelManager>false</labelManager>
+      <admin>true</admin>
+      <firstname>admin</firstname>
+      <lastname>admin</lastname>
+      <birthdate>2014-03-11 15:22:48.886 UTC</birthdate>
+      <male>false</male>
+      <locked>false</locked>
+      <email>admin@dezibel-music.de</email>
+      <password>e429a540296393d7b12828291172f7e9</password>
+      <favorizedUsers/>
+      <followers/>
+      <favorizedLabels/>
+      <managedLabels/>
+      <publishingLabels/>
+      <newsList/>
+      <sentApplications/>
+      <createdMediums/>
+      <favorizedMediums/>
+      <createdPlaylists/>
+      <favorizedPlaylists/>
+      <createdComments/>
+      <createdAlbums/>
+      <favorizedAlbums/>
+    </de.dezibel.data.User>
+    <de.dezibel.data.User>
+      <artist>true</artist>
+      <labelManager>false</labelManager>
+      <admin>false</admin>
+      <firstname>Bob</firstname>
+      <lastname>Dylan</lastname>
+      <pseudonym>Bob Dylan</pseudonym>
+      <male>true</male>
+      <locked>false</locked>
+      <email>bob@dylan.de</email>
+      <password>2114b32971c8f10876c7d319f5eebd8e</password>
+      <favorizedUsers/>
+      <followers/>
+      <favorizedLabels/>
+      <managedLabels/>
+      <publishingLabels/>
+      <newsList/>
+      <sentApplications/>
+      <createdMediums>
+        <de.dezibel.data.Medium>
+          <path>.\Uploads\Media\1394551945690</path>
+          <title>Blowing in the Wind</title>
+          <uploadDate>2014-03-11 15:32:25.689 UTC</uploadDate>
+          <avgRating>0.0</avgRating>
+          <artist reference="../../.."/>
+          <genre>
+            <name>Musik</name>
+            <subGenres>
+              <de.dezibel.data.Genre>
+                <name>Jazz</name>
+                <superGenre reference="../../.."/>
+                <subGenres>
+                  <de.dezibel.data.Genre>
+                    <name>Acid Jazz</name>
+                    <superGenre reference="../../.."/>
+                    <subGenres/>
+                    <media/>
+                    <markedForDeletion>false</markedForDeletion>
+                    <changingSubGenre>false</changingSubGenre>
+                  </de.dezibel.data.Genre>
+                  <de.dezibel.data.Genre>
+                    <name>Modern Jazz</name>
+                    <superGenre reference="../../.."/>
+                    <subGenres/>
+                    <media/>
+                    <markedForDeletion>false</markedForDeletion>
+                    <changingSubGenre>false</changingSubGenre>
+                  </de.dezibel.data.Genre>
+                  <de.dezibel.data.Genre>
+                    <name>Swing</name>
+                    <superGenre reference="../../.."/>
+                    <subGenres/>
+                    <media/>
+                    <markedForDeletion>false</markedForDeletion>
+                    <changingSubGenre>false</changingSubGenre>
+                  </de.dezibel.data.Genre>
+                </subGenres>
+                <media/>
+                <markedForDeletion>false</markedForDeletion>
+                <changingSubGenre>false</changingSubGenre>
+              </de.dezibel.data.Genre>
+              <de.dezibel.data.Genre>
+                <name>Elektronische Popmusik</name>
+                <superGenre reference="../../.."/>
+                <subGenres>
+                  <de.dezibel.data.Genre>
+                    <name>Bitpop</name>
+                    <superGenre reference="../../.."/>
+                    <subGenres/>
+                    <media/>
+                    <markedForDeletion>false</markedForDeletion>
+                    <changingSubGenre>false</changingSubGenre>
+                  </de.dezibel.data.Genre>
+                  <de.dezibel.data.Genre>
+                    <name>Chiptune</name>
+                    <superGenre reference="../../.."/>
+                    <subGenres/>
+                    <media/>
+                    <markedForDeletion>false</markedForDeletion>
+                    <changingSubGenre>false</changingSubGenre>
+                  </de.dezibel.data.Genre>
+                  <de.dezibel.data.Genre>
+                    <name>Future Pop</name>
+                    <superGenre reference="../../.."/>
+                    <subGenres/>
+                    <media/>
+                    <markedForDeletion>false</markedForDeletion>
+                    <changingSubGenre>false</changingSubGenre>
+                  </de.dezibel.data.Genre>
+                  <de.dezibel.data.Genre>
+                    <name>Synthiepop</name>
+                    <superGenre reference="../../.."/>
+                    <subGenres/>
+                    <media/>
+                    <markedForDeletion>false</markedForDeletion>
+                    <changingSubGenre>false</changingSubGenre>
+                  </de.dezibel.data.Genre>
+                </subGenres>
+                <media/>
+                <markedForDeletion>false</markedForDeletion>
+                <changingSubGenre>false</changingSubGenre>
+              </de.dezibel.data.Genre>
+              <de.dezibel.data.Genre>
+                <name>Dance</name>
+                <superGenre reference="../../.."/>
+                <subGenres>
+                  <de.dezibel.data.Genre>
+                    <name>Disco</name>
+                    <superGenre reference="../../.."/>
+                    <subGenres/>
+                    <media/>
+                    <markedForDeletion>false</markedForDeletion>
+                    <changingSubGenre>false</changingSubGenre>
+                  </de.dezibel.data.Genre>
+                  <de.dezibel.data.Genre>
+                    <name>Freestyle</name>
+                    <superGenre reference="../../.."/>
+                    <subGenres/>
+                    <media/>
+                    <markedForDeletion>false</markedForDeletion>
+                    <changingSubGenre>false</changingSubGenre>
+                  </de.dezibel.data.Genre>
+                  <de.dezibel.data.Genre>
+                    <name>New Beat</name>
+                    <superGenre reference="../../.."/>
+                    <subGenres/>
+                    <media/>
+                    <markedForDeletion>false</markedForDeletion>
+                    <changingSubGenre>false</changingSubGenre>
+                  </de.dezibel.data.Genre>
+                </subGenres>
+                <media/>
+                <markedForDeletion>false</markedForDeletion>
+                <changingSubGenre>false</changingSubGenre>
+              </de.dezibel.data.Genre>
+              <de.dezibel.data.Genre>
+                <name>Rock</name>
+                <superGenre reference="../../.."/>
+                <subGenres>
+                  <de.dezibel.data.Genre>
+                    <name>Alternative</name>
+                    <superGenre reference="../../.."/>
+                    <subGenres>
+                      <de.dezibel.data.Genre>
+                        <name>Alternative</name>
+                        <superGenre reference="../../.."/>
+                        <subGenres/>
+                        <media/>
+                        <markedForDeletion>false</markedForDeletion>
+                        <changingSubGenre>false</changingSubGenre>
+                      </de.dezibel.data.Genre>
+                      <de.dezibel.data.Genre>
+                        <name>Hamburger Schule</name>
+                        <superGenre reference="../../.."/>
+                        <subGenres/>
+                        <media/>
+                        <markedForDeletion>false</markedForDeletion>
+                        <changingSubGenre>false</changingSubGenre>
+                      </de.dezibel.data.Genre>
+                      <de.dezibel.data.Genre>
+                        <name>Indie Rock</name>
+                        <superGenre reference="../../.."/>
+                        <subGenres/>
+                        <media/>
+                        <markedForDeletion>false</markedForDeletion>
+                        <changingSubGenre>false</changingSubGenre>
+                      </de.dezibel.data.Genre>
+                      <de.dezibel.data.Genre>
+                        <name>Shoegazing</name>
+                        <superGenre reference="../../.."/>
+                        <subGenres/>
+                        <media/>
+                        <markedForDeletion>false</markedForDeletion>
+                        <changingSubGenre>false</changingSubGenre>
+                      </de.dezibel.data.Genre>
+                    </subGenres>
+                    <media/>
+                    <markedForDeletion>false</markedForDeletion>
+                    <changingSubGenre>false</changingSubGenre>
+                  </de.dezibel.data.Genre>
+                  <de.dezibel.data.Genre>
+                    <name>Deutschrock</name>
+                    <superGenre reference="../../.."/>
+                    <subGenres>
+                      <de.dezibel.data.Genre>
+                        <name>Krautrock</name>
+                        <superGenre reference="../../.."/>
+                        <subGenres/>
+                        <media/>
+                        <markedForDeletion>false</markedForDeletion>
+                        <changingSubGenre>false</changingSubGenre>
+                      </de.dezibel.data.Genre>
+                    </subGenres>
+                    <media/>
+                    <markedForDeletion>false</markedForDeletion>
+                    <changingSubGenre>false</changingSubGenre>
+                  </de.dezibel.data.Genre>
+                  <de.dezibel.data.Genre>
+                    <name>Hard Rock</name>
+                    <superGenre reference="../../.."/>
+                    <subGenres>
+                      <de.dezibel.data.Genre>
+                        <name>Glam Rock</name>
+                        <superGenre reference="../../.."/>
+                        <subGenres/>
+                        <media/>
+                        <markedForDeletion>false</markedForDeletion>
+                        <changingSubGenre>false</changingSubGenre>
+                      </de.dezibel.data.Genre>
+                      <de.dezibel.data.Genre>
+                        <name>Grunge</name>
+                        <superGenre reference="../../.."/>
+                        <subGenres/>
+                        <media/>
+                        <markedForDeletion>false</markedForDeletion>
+                        <changingSubGenre>false</changingSubGenre>
+                      </de.dezibel.data.Genre>
+                    </subGenres>
+                    <media/>
+                    <markedForDeletion>false</markedForDeletion>
+                    <changingSubGenre>false</changingSubGenre>
+                  </de.dezibel.data.Genre>
+                </subGenres>
+                <media/>
+                <markedForDeletion>false</markedForDeletion>
+                <changingSubGenre>false</changingSubGenre>
+              </de.dezibel.data.Genre>
+              <de.dezibel.data.Genre>
+                <name>House</name>
+                <superGenre reference="../../.."/>
+                <subGenres>
+                  <de.dezibel.data.Genre>
+                    <name>Acid House</name>
+                    <superGenre reference="../../.."/>
+                    <subGenres/>
+                    <media/>
+                    <markedForDeletion>false</markedForDeletion>
+                    <changingSubGenre>false</changingSubGenre>
+                  </de.dezibel.data.Genre>
+                  <de.dezibel.data.Genre>
+                    <name>Speed Garage</name>
+                    <superGenre reference="../../.."/>
+                    <subGenres/>
+                    <media/>
+                    <markedForDeletion>false</markedForDeletion>
+                    <changingSubGenre>false</changingSubGenre>
+                  </de.dezibel.data.Genre>
+                  <de.dezibel.data.Genre>
+                    <name>Vocal House</name>
+                    <superGenre reference="../../.."/>
+                    <subGenres/>
+                    <media/>
+                    <markedForDeletion>false</markedForDeletion>
+                    <changingSubGenre>false</changingSubGenre>
+                  </de.dezibel.data.Genre>
+                  <de.dezibel.data.Genre>
+                    <name>Electro House</name>
+                    <superGenre reference="../../.."/>
+                    <subGenres/>
+                    <media/>
+                    <markedForDeletion>false</markedForDeletion>
+                    <changingSubGenre>false</changingSubGenre>
+                  </de.dezibel.data.Genre>
+                </subGenres>
+                <media/>
+                <markedForDeletion>false</markedForDeletion>
+                <changingSubGenre>false</changingSubGenre>
+              </de.dezibel.data.Genre>
+              <de.dezibel.data.Genre>
+                <name>Spirituelle &amp; Geistliche Musik</name>
+                <superGenre reference="../../.."/>
+                <subGenres>
+                  <de.dezibel.data.Genre>
+                    <name>Gospel</name>
+                    <superGenre reference="../../.."/>
+                    <subGenres>
+                      <de.dezibel.data.Genre>
+                        <name>Praise and Warship</name>
+                        <superGenre reference="../../.."/>
+                        <subGenres/>
+                        <media/>
+                        <markedForDeletion>false</markedForDeletion>
+                        <changingSubGenre>false</changingSubGenre>
+                      </de.dezibel.data.Genre>
+                      <de.dezibel.data.Genre>
+                        <name>Black Gospel</name>
+                        <superGenre reference="../../.."/>
+                        <subGenres/>
+                        <media/>
+                        <markedForDeletion>false</markedForDeletion>
+                        <changingSubGenre>false</changingSubGenre>
+                      </de.dezibel.data.Genre>
+                    </subGenres>
+                    <media/>
+                    <markedForDeletion>false</markedForDeletion>
+                    <changingSubGenre>false</changingSubGenre>
+                  </de.dezibel.data.Genre>
+                  <de.dezibel.data.Genre>
+                    <name>Christliche Popmusik</name>
+                    <superGenre reference="../../.."/>
+                    <subGenres/>
+                    <media/>
+                    <markedForDeletion>false</markedForDeletion>
+                    <changingSubGenre>false</changingSubGenre>
+                  </de.dezibel.data.Genre>
+                  <de.dezibel.data.Genre>
+                    <name>Chazzan</name>
+                    <superGenre reference="../../.."/>
+                    <subGenres/>
+                    <media/>
+                    <markedForDeletion>false</markedForDeletion>
+                    <changingSubGenre>false</changingSubGenre>
+                  </de.dezibel.data.Genre>
+                  <de.dezibel.data.Genre>
+                    <name>Bhajan</name>
+                    <superGenre reference="../../.."/>
+                    <subGenres/>
+                    <media/>
+                    <markedForDeletion>false</markedForDeletion>
+                    <changingSubGenre>false</changingSubGenre>
+                  </de.dezibel.data.Genre>
+                </subGenres>
+                <media/>
+                <markedForDeletion>false</markedForDeletion>
+                <changingSubGenre>false</changingSubGenre>
+              </de.dezibel.data.Genre>
+            </subGenres>
+            <media>
+              <de.dezibel.data.Medium>
+                <path>.\Uploads\Media\1394551891612</path>
+                <title>Weit weg</title>
+                <uploadDate>2014-03-11 15:31:31.611 UTC</uploadDate>
+                <avgRating>0.0</avgRating>
+                <artist>
+                  <artist>true</artist>
+                  <labelManager>false</labelManager>
+                  <admin>false</admin>
+                  <firstname>Aki</firstname>
+                  <lastname>Bosse</lastname>
+                  <pseudonym>Bosse</pseudonym>
+                  <male>true</male>
+                  <locked>false</locked>
+                  <email>aki_bosse@dezibel-music.de</email>
+                  <password>2114b32971c8f10876c7d319f5eebd8e</password>
+                  <favorizedUsers/>
+                  <followers/>
+                  <favorizedLabels/>
+                  <managedLabels/>
+                  <publishingLabels/>
+                  <newsList/>
+                  <sentApplications/>
+                  <createdMediums>
+                    <de.dezibel.data.Medium reference="../../.."/>
+                  </createdMediums>
+                  <favorizedMediums/>
+                  <createdPlaylists/>
+                  <favorizedPlaylists/>
+                  <createdComments/>
+                  <createdAlbums/>
+                  <favorizedAlbums/>
+                </artist>
+                <genre reference="../../.."/>
+                <deleted>false</deleted>
+                <locked>false</locked>
+                <addingPL>false</addingPL>
+                <removingPL>false</removingPL>
+                <settingAlbum>false</settingAlbum>
+                <settingGenre>false</settingGenre>
+                <ratingList/>
+                <commentList/>
+                <playlistList/>
+              </de.dezibel.data.Medium>
+              <de.dezibel.data.Medium reference="../../.."/>
+              <de.dezibel.data.Medium>
+                <path>.\Uploads\Media\1394551991567</path>
+                <title>Hurricane</title>
+                <album>
+                  <coverPath>.\Uploads\Img\1394551992065</coverPath>
+                  <title>Best of</title>
+                  <artist reference="../../../../../../.."/>
+                  <mediaList>
+                    <de.dezibel.data.Medium reference="../../.."/>
+                    <de.dezibel.data.Medium>
+                      <path>.\Uploads\Media\1394552068976</path>
+                      <title>Just like a woman</title>
+                      <album reference="../../.."/>
+                      <uploadDate>2014-03-11 15:34:28.975 UTC</uploadDate>
+                      <avgRating>0.0</avgRating>
+                      <artist reference="../../../../../../../../.."/>
+                      <genre reference="../../../../../.."/>
+                      <deleted>false</deleted>
+                      <locked>false</locked>
+                      <addingPL>false</addingPL>
+                      <removingPL>false</removingPL>
+                      <settingAlbum>false</settingAlbum>
+                      <settingGenre>false</settingGenre>
+                      <ratingList/>
+                      <commentList/>
+                      <playlistList/>
+                    </de.dezibel.data.Medium>
+                    <de.dezibel.data.Medium>
+                      <path>.\Uploads\Media\1394552105285</path>
+                      <title>Knocking on Heaven&apos;s Door</title>
+                      <album reference="../../.."/>
+                      <uploadDate>2014-03-11 15:35:05.284 UTC</uploadDate>
+                      <avgRating>0.0</avgRating>
+                      <artist reference="../../../../../../../../.."/>
+                      <genre reference="../../../../../.."/>
+                      <deleted>false</deleted>
+                      <locked>false</locked>
+                      <addingPL>false</addingPL>
+                      <removingPL>false</removingPL>
+                      <settingAlbum>false</settingAlbum>
+                      <settingGenre>false</settingGenre>
+                      <ratingList/>
+                      <commentList/>
+                      <playlistList/>
+                    </de.dezibel.data.Medium>
+                  </mediaList>
+                  <comments/>
+                  <isAuthorLabel>false</isAuthorLabel>
+                  <addingMed>false</addingMed>
+                  <addingNewMed>false</addingNewMed>
+                  <removingMed>false</removingMed>
+                  <settingLabel>false</settingLabel>
+                  <markedForDeletion>false</markedForDeletion>
+                </album>
+                <uploadDate>2014-03-11 15:33:11.567 UTC</uploadDate>
+                <avgRating>0.0</avgRating>
+                <artist reference="../../../../../.."/>
+                <genre reference="../../.."/>
+                <deleted>false</deleted>
+                <locked>false</locked>
+                <addingPL>false</addingPL>
+                <removingPL>false</removingPL>
+                <settingAlbum>false</settingAlbum>
+                <settingGenre>false</settingGenre>
+                <ratingList/>
+                <commentList/>
+                <playlistList/>
+              </de.dezibel.data.Medium>
+              <de.dezibel.data.Medium reference="../de.dezibel.data.Medium[3]/album/mediaList/de.dezibel.data.Medium[2]"/>
+              <de.dezibel.data.Medium reference="../de.dezibel.data.Medium[3]/album/mediaList/de.dezibel.data.Medium[3]"/>
+            </media>
+            <markedForDeletion>false</markedForDeletion>
+            <changingSubGenre>false</changingSubGenre>
+          </genre>
+          <deleted>false</deleted>
+          <locked>false</locked>
+          <addingPL>false</addingPL>
+          <removingPL>false</removingPL>
+          <settingAlbum>false</settingAlbum>
+          <settingGenre>false</settingGenre>
+          <ratingList/>
+          <commentList/>
+          <playlistList/>
+        </de.dezibel.data.Medium>
+        <de.dezibel.data.Medium reference="../de.dezibel.data.Medium/genre/media/de.dezibel.data.Medium[3]"/>
+        <de.dezibel.data.Medium reference="../de.dezibel.data.Medium/genre/media/de.dezibel.data.Medium[3]/album/mediaList/de.dezibel.data.Medium[2]"/>
+        <de.dezibel.data.Medium reference="../de.dezibel.data.Medium/genre/media/de.dezibel.data.Medium[3]/album/mediaList/de.dezibel.data.Medium[3]"/>
+      </createdMediums>
+      <favorizedMediums/>
+      <createdPlaylists/>
+      <favorizedPlaylists/>
+      <createdComments/>
+      <createdAlbums>
+        <de.dezibel.data.Album reference="../../createdMediums/de.dezibel.data.Medium/genre/media/de.dezibel.data.Medium[3]/album"/>
+      </createdAlbums>
+      <favorizedAlbums/>
+    </de.dezibel.data.User>
+    <de.dezibel.data.User reference="../de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/media/de.dezibel.data.Medium/artist"/>
+  </linked-list>
+  <linked-list/>
+  <linked-list>
+    <de.dezibel.data.Medium reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/media/de.dezibel.data.Medium"/>
+    <de.dezibel.data.Medium reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium"/>
+    <de.dezibel.data.Medium reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/media/de.dezibel.data.Medium[3]"/>
+    <de.dezibel.data.Medium reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/media/de.dezibel.data.Medium[3]/album/mediaList/de.dezibel.data.Medium[2]"/>
+    <de.dezibel.data.Medium reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/media/de.dezibel.data.Medium[3]/album/mediaList/de.dezibel.data.Medium[3]"/>
+  </linked-list>
+  <linked-list/>
+  <linked-list>
+    <de.dezibel.data.Album reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/media/de.dezibel.data.Medium[3]/album"/>
+  </linked-list>
+  <linked-list/>
+  <linked-list/>
+  <linked-list/>
+  <linked-list/>
+  <linked-list>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre/subGenres/de.dezibel.data.Genre"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre/subGenres/de.dezibel.data.Genre[2]"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre/subGenres/de.dezibel.data.Genre[3]"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[2]/subGenres/de.dezibel.data.Genre"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[2]/subGenres/de.dezibel.data.Genre[2]"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[2]/subGenres/de.dezibel.data.Genre[3]"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[2]/subGenres/de.dezibel.data.Genre[4]"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[2]"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[3]"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[3]/subGenres/de.dezibel.data.Genre"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[3]/subGenres/de.dezibel.data.Genre[2]"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[3]/subGenres/de.dezibel.data.Genre[3]"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[4]"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[4]/subGenres/de.dezibel.data.Genre"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[4]/subGenres/de.dezibel.data.Genre/subGenres/de.dezibel.data.Genre"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[4]/subGenres/de.dezibel.data.Genre/subGenres/de.dezibel.data.Genre[2]"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[4]/subGenres/de.dezibel.data.Genre/subGenres/de.dezibel.data.Genre[3]"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[4]/subGenres/de.dezibel.data.Genre/subGenres/de.dezibel.data.Genre[4]"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[4]/subGenres/de.dezibel.data.Genre[2]"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[4]/subGenres/de.dezibel.data.Genre[2]/subGenres/de.dezibel.data.Genre"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[4]/subGenres/de.dezibel.data.Genre[3]"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[4]/subGenres/de.dezibel.data.Genre[3]/subGenres/de.dezibel.data.Genre"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[4]/subGenres/de.dezibel.data.Genre[3]/subGenres/de.dezibel.data.Genre[2]"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[5]"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[5]/subGenres/de.dezibel.data.Genre"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[5]/subGenres/de.dezibel.data.Genre[2]"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[5]/subGenres/de.dezibel.data.Genre[3]"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[5]/subGenres/de.dezibel.data.Genre[4]"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[6]/subGenres/de.dezibel.data.Genre"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[6]/subGenres/de.dezibel.data.Genre/subGenres/de.dezibel.data.Genre"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[6]/subGenres/de.dezibel.data.Genre/subGenres/de.dezibel.data.Genre[2]"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[6]/subGenres/de.dezibel.data.Genre[2]"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[6]/subGenres/de.dezibel.data.Genre[3]"/>
+    <de.dezibel.data.Genre reference="../../linked-list/de.dezibel.data.User[2]/createdMediums/de.dezibel.data.Medium/genre/subGenres/de.dezibel.data.Genre[6]/subGenres/de.dezibel.data.Genre[4]"/>
+  </linked-list>
+</linked-list-array>
