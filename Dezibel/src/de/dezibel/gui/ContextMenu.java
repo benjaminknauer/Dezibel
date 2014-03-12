@@ -661,6 +661,10 @@ public class ContextMenu {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
                     selectedLabel.delete();
+                    if (!(Database.getInstance().getLabels().isEmpty())){
+                            dp.showProfile(Database.getInstance().getLabels().getFirst());
+                        }
+                    dp.showProfile(Database.getInstance().getLoggedInUser());
                     dp.refresh(UpdateEntity.LABEL);
                 }
             });
