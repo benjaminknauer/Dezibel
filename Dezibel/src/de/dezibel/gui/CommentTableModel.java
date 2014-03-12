@@ -50,7 +50,7 @@ public class CommentTableModel extends DefaultTableModel {
                 case 0:
                     return c.getText();
                 case 1:
-                    return c.getAuthor();
+                    return c.getAuthor().getFirstname() +" " + c.getAuthor().getLastname();
                 case 2:
                      SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
                      return sdf.format(c.getCreationDate());
