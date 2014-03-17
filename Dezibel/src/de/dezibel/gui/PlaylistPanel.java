@@ -70,9 +70,9 @@ public class PlaylistPanel extends DragablePanel {
         lbComments = new JLabel("Kommentare");
         lbCreator.setHorizontalAlignment(JLabel.RIGHT);
         btnComment = new JButton(new ImageIcon(this.getClass().getResource("/img/icons/commentIcon.png")));
-        btnComment.setOpaque(false);
-        btnComment.setBorderPainted(false);
-        btnComment.setContentAreaFilled(false);
+        btnComment.setOpaque(true);
+        btnComment.setBorderPainted(true);
+        btnComment.setContentAreaFilled(true);
         btnComment.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

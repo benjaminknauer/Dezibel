@@ -541,6 +541,7 @@ public class PlayerPanel extends DragablePanel {
     @Override
     public void onTopBottom() {
         createTopBottomLayout();
+        this.setPreferredSize(null);
     }
 
     @Override
